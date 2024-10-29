@@ -8,6 +8,9 @@ enum GlobalFailCode {
     UNKNOWN_ERROR = 1;
     INVALID_REQUEST = 2;
     AUTHENTICATION_FAILED = 3;
+    // TODO 좀 더 정확하게 실패코드 넣어야 하긴 하는데 일단 완성 목적으로 달림
+    REGISTER_FAILED = 4;
+    CREATE_ROOM_FAILED = 5;
 }
 
 /*
@@ -24,9 +27,9 @@ message RoomData {
 message UserData {
     string id = 1;
     string nickname = 2;
-    string characterRCode = 3;
-    int32 rollType = 4; // TARGET 혹은 자신일 경우에만 세팅, 그 외엔 NONE으로 세팅
-    int32 hp = 5;
+    optional string characterRCode = 3;
+    optional int32 rollType = 4; // TARGET 혹은 자신일 경우에만 세팅, 그 외엔 NONE으로 세팅
+    optional int32 hp = 5;
     repeated CardData handCards = 6; // 자신일 경우에만 세팅, 그 외엔 빈 배열로 세팅
     repeated CardData equipCards = 7;
 }
@@ -77,7 +80,8 @@ message C2SCreateRoomRequest {
 
 message S2CCreateRoomResponse {
     bool success = 1;
-    RoomData room = 2;
+    // success가 fail일 때 보낼 수가 없음
+    optional RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -87,7 +91,7 @@ message C2SJoinRoomRequest {
 
 message S2CJoinRoomResponse {
     bool success = 1;
-    RoomData room = 2;
+    optional RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -97,7 +101,7 @@ message C2SJoinRandomRoomRequest {
 
 message S2CJoinRandomRoomResponse {
     bool success = 1;
-    RoomData room = 2;
+    optional RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -106,7 +110,7 @@ message S2CJoinRoomNotification {
 }
 
 message C2SLeaveRoomRequest {
-
+    int32 roomId = 1;
 }
 
 message S2CLeaveRoomResponse {

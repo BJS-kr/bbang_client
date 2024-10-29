@@ -25,7 +25,10 @@ const createPool = (dbConfig) => {
         params ? `, ${JSON.stringify(params)}` : ``
       }`,
     );
-    return originalQuery.call(pool, sql, params);
+    return originalQuery.call(pool, sql, params).then(
+      (r) => ({ result: r, error: null }),
+      (err) => ({ result: null, error: err }),
+    );
   };
 
   return pool;
