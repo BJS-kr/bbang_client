@@ -21,9 +21,13 @@ message RoomData {
     string ownerId = 2;
     string name = 3;
     int32 maxUserNum = 4;
-    repeated UserData users = 5;
+    int32 state = 5; // WAIT 0, PREPARE 1, INAGAME 2
+    repeated UserData users = 6; // 인덱스 기반으로 턴 진행
 }
 
+// 입장했을때는 랜덤으로 체력만큼 카드 받음.
+// 하루 종료 시 체력만큼의 카드만 남길 수 있음.
+// 이후 낮이 될때마다 카드 두장 받고 시작
 message UserData {
     string id = 1;
     string nickname = 2;
@@ -43,6 +47,17 @@ message UserPositionData {
 message CardData {
     int32 type = 1;
     int32 count = 2;
+}
+
+message GameStateData {
+    int32 phaseType = 1; // DAY 1, EVENING 2, END 3 (하루 종료시 카드 버리는 턴)
+    int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
+}
+
+message UserStateData {
+    int32 state = 1; // NONE 0, BBANG_SHOOTER 1, BBANG_TARGET 2, DEATH_MATCH 3, DEATH_MATCH_TURN 4
+    int32 nextState = 2;
+    int64 nextStateAt = 3; // state가 nextState로 풀리는 밀리초 타임스탬프. state가 NONE이면 0
 }
 
 /* 
@@ -75,7 +90,7 @@ message S2CLoginResponse {
 
 message C2SCreateRoomRequest {
     string name = 1;
-    int32 maxUserNum = 2;
+    short maxUserNum = 2;
 }
 
 message S2CCreateRoomResponse {
@@ -83,6 +98,14 @@ message S2CCreateRoomResponse {
     // success가 fail일 때 보낼 수가 없음
     optional RoomData room = 2;
     GlobalFailCode failCode = 3;
+}
+
+message C2SGetRoomListRequest {
+    
+}
+
+message S2CGetRoomListResponse{
+    repeated RoomData rooms = 1;
 }
 
 message C2SJoinRoomRequest {
@@ -122,23 +145,43 @@ message S2CLeaveRoomNotification {
     string userId = 1;
 }
 
+// 게임 시작 전 역할 및 캐릭터 셔플 요청
+message C2SGamePrepareRequest {
+
+}
+
+message S2CGamePrepareResponse {
+    bool success = 1;
+    GlobalFailCode failCode = 2;
+}
+
+message S2CGamePrepareNotification {
+    RoomData room = 1;
+    repeated UserData users = 2;
+}
+
 message C2SGameStartRequest {
 
 }
 
-message S2CGameStartNotification {
-    repeated UserData users = 1;
-    repeated UserPositionData userPositions = 2;
+message S2CGameStartResponse {
+    bool success = 1;
+    GlobalFailCode failCode = 2;
 }
 
-// TODO 자기 턴에만 움직일 수 있나?
+message S2CGameStartNotification {
+    GameStateData gameState = 1;
+    repeated UserData users = 2;
+    repeated UserPositionData userPositions = 3;
+}
+
 message C2SPositionUpdateRequest {
     int32 x = 1;
     int32 y = 2;
 }
 
 message S2CPositionUpdateNotification {
-    UserPositionData UserPositions = 1;
+    UserPositionData UserPosition = 1;
 }
 
 message C2SUseCardRequest {
@@ -146,14 +189,43 @@ message C2SUseCardRequest {
     string targetUserId = 2; // 타겟 없으면 빈 값
 }
 
+message S2CUseCardResponse { // 성공 여부만 반환하고 대상 유저 효과는 S2CUserUpdateNotification로 통지
+    bool success = 1;
+    GlobalFailCode failCode = 2;
+}
+
 message S2CUseCardNotification {
+    int32 cardType = 1;
+    string userId = 2;
+    string targetUserId = 3; // 타겟 없으면 빈 값
+}
+
+message S2CEquipCardNotification {
     int32 cardType = 1;
     string userId = 2;
 }
 
+message S2CCardEffectNotification {
+    int32 cardType = 1;
+    string userId = 2;
+    bool success = 3;
+}
+
+message S2CUserUpdateNotification {
+    repeated UserData user = 1;
+}
+
 message S2CPhaseUpdateNotification {
-    int32 phaseType = 1; // DAY 1, EVENING 2
+    int32 phaseType = 1; // DAY 1, EVENING 2, END 3
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
+}
+
+message C2SDestroyCardRequest {
+    repeated CardData destroyCards = 1;
+}
+
+message S2CDestroyCardNotification {
+    repeated CardData handCards = 1;
 }
 
 message S2CGameEndNotification {
@@ -173,40 +245,62 @@ message GamePacket {
         C2SCreateRoomRequest createRoomRequest = 5;
         S2CCreateRoomResponse createRoomResponse = 6;
 
+        // 방 목록 조회
+        C2SGetRoomListRequest getRoomListRequest = 7;
+        S2CGetRoomListResponse getRoomListResponse = 8;
+
         // 방 참가
-        C2SJoinRoomRequest joinRoomRequest = 7;
-        S2CJoinRoomResponse joinRoomResponse = 8;
+        C2SJoinRoomRequest joinRoomRequest = 9;
+        S2CJoinRoomResponse joinRoomResponse = 10;
 
         // 랜덤 방 참가
-        C2SJoinRandomRoomRequest randomRoomRequest = 9;
-        S2CJoinRandomRoomResponse randomRoomResponse = 10;
+        C2SJoinRandomRoomRequest joinRandomRoomRequest = 11;
+        S2CJoinRandomRoomResponse joinRandomRoomResponse = 12;
 
         // 방 참가 알림
-        S2CJoinRoomNotification joinRoomNotification = 11;
+        S2CJoinRoomNotification joinRoomNotification = 13;
 
         // 방 나가기
-        C2SLeaveRoomRequest leaveRoomRequest = 12;
-        S2CLeaveRoomResponse leaveRoomResponse = 13;
+        C2SLeaveRoomRequest leaveRoomRequest = 14;
+        S2CLeaveRoomResponse leaveRoomResponse = 15;
 
         // 방 나가기 알림
-        S2CLeaveRoomNotification leaveRoomNotification = 14;
+        S2CLeaveRoomNotification leaveRoomNotification = 16;
+
+        // 게임 시작 전 역할 및 캐릭터 셔플 요청
+        C2SGamePrepareRequest gamePrepareRequest = 17;
+        S2CGamePrepareResponse gamePrepareResponse = 18;
+        S2CGamePrepareNotification gamePrepareNotification = 19;
 
         // 게임 시작
-        C2SGameStartRequest gameStartRequest = 15;
-        S2CGameStartNotification gameStartNotification = 16;
+        C2SGameStartRequest gameStartRequest = 20;
+        S2CGameStartResponse gameStartResponse = 21;
+        S2CGameStartNotification gameStartnotification = 22;
 
         // 위치 업데이트
-        C2SPositionUpdateRequest positionUpdateRequest = 17;
-        S2CPositionUpdateNotification positionUpdateNotification = 18;
+        C2SPositionUpdateRequest positionUpdateRequest = 23;
+        S2CPositionUpdateNotification positionUpdateNotification = 24;
 
         // 카드 사용
-        C2SUseCardRequest useCardRequest = 19;
-        S2CUseCardNotification useCardNotification = 20;
+        C2SUseCardRequest useCardRequest = 25;
+        S2CUseCardResponse useCardResponse = 26;
 
+        // 카드 효과 알림
+        S2CUseCardNotification useCardNotification = 27;
+        S2CEquipCardNotification equipCardNotification = 28;
+        S2CCardEffectNotification cardEffectNotification = 29;
+
+        // 카드 사용 등으로 인한 유저 정보 업데이트
+        S2CUserUpdateNotification userUpdateNotification = 30;
+        
         // 페이즈 업데이트
-        S2CPhaseUpdateNotification phaseUpdateNotification = 21;
+        S2CPhaseUpdateNotification phaseUpdateNotification = 31;
+
+        // 턴 종료시 (phaseType 3) 카드 버리기
+        C2SDestroyCardRequest destroyCardRequest = 32;
+        S2CDestroyCardNotification destroyCardNotification = 33;
 
         // 게임 종료
-        S2CGameEndNotification gameEndNotification = 22;
+        S2CGameEndNotification gameEndNotification = 34;
     }
 }
