@@ -90,7 +90,7 @@ message S2CLoginResponse {
 
 message C2SCreateRoomRequest {
     string name = 1;
-    short maxUserNum = 2;
+    int32 maxUserNum = 2;
 }
 
 message S2CCreateRoomResponse {
