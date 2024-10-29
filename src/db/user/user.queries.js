@@ -1,6 +1,5 @@
-export const SQL_QUERIES = {
-  FIND_USER_BY_DEVICE_ID: "SELECT * FROM user WHERE device_id = ?",
-  CREATE_USER: "INSERT INTO user (id, device_id) VALUES (?, ?)",
-  UPDATE_USER_LOGIN:
-    "UPDATE user SET last_login = CURRENT_TIMESTAMP WHERE id = ?",
+export const USER_QUERIES = {
+  CREATE_USER:
+    "INSERT INTO users (id, user_id, password, nickname) VALUES (?, ?, ?, ?)",
+  GET_USER_BY_USER_ID: "SELECT * FROM users WHERE user_id = ?",
 };

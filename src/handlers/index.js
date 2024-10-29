@@ -115,14 +115,6 @@ export const routes = {
   },
 };
 
-export const FailCode = {
-  NONE: 0,
-  UNKNOWN_ERROR: 1,
-  INVALID_REQUEST: 2,
-  AUTHENTICATION_FAILED: 3,
-  // 추가적인 에러 코드들
-};
-
 export const createPacket = (packetType, version, sequence, payloadBuffer) => {
   // packetType (2바이트)
   const packetTypeBuffer = Buffer.alloc(config.packet.typeLength);
@@ -157,6 +149,7 @@ const GamePacket = protoRoot.lookupType("GamePacket");
 
 export const encodePayload = (packetType, payload) => {
   const packetInfo = routes[packetType];
+
   if (!packetInfo) {
     throw new CustomError(
       ErrorCodes.INVALID_PACKET,

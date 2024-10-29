@@ -90,12 +90,12 @@ message S2CLoginResponse {
 
 message C2SCreateRoomRequest {
     string name = 1;
-    short maxUserNum = 2;
+    int32 maxUserNum = 2;
 }
 
 message S2CCreateRoomResponse {
     bool success = 1;
-    RoomData room = 2;
+    optional RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -113,7 +113,7 @@ message C2SJoinRoomRequest {
 
 message S2CJoinRoomResponse {
     bool success = 1;
-    RoomData room = 2;
+    optional RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -123,7 +123,7 @@ message C2SJoinRandomRoomRequest {
 
 message S2CJoinRandomRoomResponse {
     bool success = 1;
-    RoomData room = 2;
+    optional RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 

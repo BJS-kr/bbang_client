@@ -1,13 +1,20 @@
 import { config } from "../config/config.js";
-import { decodePayload } from "../handlers/index.js";
+import { decodePayload, encodePayload, routes } from "../handlers/index.js";
 import { PACKET_TYPE } from "../constants/packetType.js";
 import {
   registerRequestHandler,
   loginRequestHandler,
 } from "../handlers/authHandler.js";
+import "types.js";
+import { FAIL_CODE } from "../constants/fail.js";
+import {
+  createRoomRequestHandler,
+  joinRandomRoomRequestHandler,
+  joinRoomRequestHandler,
+  leaveRoomRequestHandler,
+} from "../handlers/roomHandler.js";
 
 export const onData = (socket) => async (data) => {
-  // try {
   socket.buffer = Buffer.concat([socket.buffer, data]);
 
   let offset = 0;
@@ -74,21 +81,65 @@ export const onData = (socket) => async (data) => {
           sequence,
           registerRequest,
         );
+
         break;
 
       case PACKET_TYPE.LOGIN_REQUEST:
         const loginRequest = decodePayload(packetType, payloadBuffer);
         await loginRequestHandler(socket, version, sequence, loginRequest);
+
+        break;
+
+      case PACKET_TYPE.CREATE_ROOM_REQUEST:
+        const createRoomRequest = decodePayload(packetType, payloadBuffer);
+        await createRoomRequestHandler(
+          socket,
+          version,
+          sequence,
+          createRoomRequest,
+        );
+
+        break;
+
+      case PACKET_TYPE.JOIN_ROOM_REQUEST:
+        const joinRoomRequest = decodePayload(packetType, payloadBuffer);
+        await joinRoomRequestHandler(
+          socket,
+          version,
+          sequence,
+          joinRoomRequest,
+        );
+
+        break;
+
+      case PACKET_TYPE.JOIN_RANDOM_ROOM_REQUEST:
+        const joinRandomRoomRequest = decodePayload(packetType, payloadBuffer);
+        await joinRoomRequestHandler(
+          socket,
+          version,
+          sequence,
+          joinRandomRoomRequest,
+        );
+
+        break;
+
+      case PACKET_TYPE.LEAVE_ROOM_REQUEST:
+        const leaveRoomRequest = decodePayload(packetType, payloadBuffer);
+        await leaveRoomRequestHandler(
+          socket,
+          version,
+          sequence,
+          leaveRoomRequest,
+        );
+
         break;
 
       default:
         const request = decodePayload(packetType, payloadBuffer);
         const handler = getHandlerByType(packetType);
         await handler(socket, version, sequence, request);
+
         break;
     }
   }
-  // } catch (error) {
-  //     console.error(error.message);
-  // }
 };
