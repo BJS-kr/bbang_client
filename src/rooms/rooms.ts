@@ -8,7 +8,7 @@ import { writePayload } from '../utils/writePalyload';
 
 export class Rooms {
   #rooms = new Map<number, Room>();
-  #roomId = 0;
+  #roomId = 1;
 
   createRoom(roomId, roomName, ownerId, maxUserNum, onPhaseChange) {
     if (this.isRoomExist(roomId)) return false;
@@ -72,6 +72,8 @@ export class Rooms {
     if (!room) return null;
 
     const userIndex = room.users.findIndex((user) => user.id === userId);
+
+    if (userIndex === -1) return null;
 
     const [leavedUser] = room.users.splice(userIndex, 1);
 
