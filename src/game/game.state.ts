@@ -1,4 +1,4 @@
-import { PHASE_TYPE } from '../constants/game.js';
+import { PHASE_TYPE } from '../constants/game';
 
 const DAY_SECOND = 180; // 3분
 const EVENING_SECOND = 60; // 1분

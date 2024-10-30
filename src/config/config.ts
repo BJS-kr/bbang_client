@@ -12,8 +12,8 @@ import {
   DB2_PASSWORD,
   DB2_HOST,
   DB2_PORT,
-} from '../constants/env.js';
-import { PACKET_TYPE_LENGTH, PACKET_VERSION_LENGTH, SEQUENCE_LENGTH, PAYLOAD_LENGTH } from '../constants/header.js';
+} from '../constants/env';
+import { PACKET_TYPE_LENGTH, PACKET_VERSION_LENGTH, SEQUENCE_LENGTH, PAYLOAD_LENGTH } from '../constants/header';
 
 export const config = {
   server: {

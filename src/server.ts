@@ -1,7 +1,6 @@
-import net from 'net';
+import net from 'node:net';
 import { config } from './config/config';
 import { onConnection } from './events/onConnection';
-import './db/migrations/createSchemas';
 
 const server = net.createServer(onConnection);
 
