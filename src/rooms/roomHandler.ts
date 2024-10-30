@@ -84,8 +84,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
     joinUser,
   };
 
-  const targets = room.users.filter((user) => user.id !== joinUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload, version, sequence);
+  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, version, sequence, joinNotificationPayload);
 };
 
 export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, sequence, joinRandomRoomRequest, ctx: Context) => {
@@ -116,8 +115,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
     joinUser,
   };
 
-  const targets = room.users.filter((user) => user.id !== joinUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload, version, sequence);
+  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, version, sequence, joinNotificationPayload);
 };
 
 export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, leaveRoomRequest, ctx: Context) => {
@@ -149,6 +147,6 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     userId: leavedUser.id,
   };
 
-  const targets = rooms.getRoom(roomId)?.users.filter((user) => user.id !== leavedUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload, version, sequence);
+  const room = rooms.getRoom(roomId);
+  room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, version, sequence, leaveNotificationPayload);
 };

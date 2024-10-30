@@ -1,8 +1,8 @@
-import { Rooms } from './rooms';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Context } from '../events/types';
 import { User } from '../users/types';
+import { Rooms } from './types';
 
 const onPhaseChange = (phaseType) => {
   console.log(phaseType);
