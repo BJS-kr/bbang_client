@@ -14,7 +14,7 @@ class Session {
   }
 
   getUser(userId: string) {
-    return this.#users.get(userId);
+    return this.#users.get(userId) ?? null;
   }
 
   quit(userId: string) {
