@@ -10,7 +10,7 @@ export class Rooms {
   #rooms = new Map<number, Room>();
   #roomId = 1;
 
-  createRoom(roomId, roomName, ownerId, maxUserNum, onPhaseChange) {
+  create(roomId, roomName, ownerId, maxUserNum, onPhaseChange) {
     if (this.isRoomExist(roomId)) return false;
 
     this.#rooms.set(roomId, {
@@ -51,7 +51,7 @@ export class Rooms {
     return room.users.some((user) => user.id === userId);
   }
 
-  joinRoom(roomId: number, user: User, ctx: Context) {
+  join(roomId: number, user: User, ctx: Context) {
     if (!this.isRoomExist(roomId)) return false;
 
     const room = this.#rooms.get(roomId);
@@ -64,7 +64,7 @@ export class Rooms {
     return true;
   }
 
-  leaveRoom(roomId: number, userId: string, ctx: Context) {
+  quit(roomId: number, userId: string, ctx: Context) {
     if (!this.isUserInRoom(roomId, userId)) return null;
 
     const room = this.#rooms.get(roomId);
@@ -86,7 +86,7 @@ export class Rooms {
     return leavedUser;
   }
 
-  isFullRoom(roomId) {
+  isFull(roomId) {
     if (!this.isRoomExist(roomId)) return false;
 
     const room = this.#rooms.get(roomId)!;
@@ -99,11 +99,12 @@ export class Rooms {
     const picked = Math.floor(Math.random() * roomIds.length);
     const roomId = roomIds[picked];
 
-    if (this.isFullRoom(roomId)) return this.pickRandomRoomId();
+    if (this.isFull(roomId)) return this.pickRandomRoomId();
 
     return roomId;
   }
 
+  // TODO 얘는 Rooms가 아니라 Room에 있어야 할 듯?
   broadcast(targets: User[], packetType: number, payload: MessageProps<any>, version: number, sequence: number) {
     targets.forEach((user) => {
       writePayload(user.socket, packetType, version, sequence, payload);

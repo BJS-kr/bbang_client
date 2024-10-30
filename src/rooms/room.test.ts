@@ -13,7 +13,7 @@ test('Rooms Test', async (t) => {
   await t.test('create room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.createRoom(roomId, 'test', 'test', 10, onPhaseChange);
+    const result = rooms.create(roomId, 'test', 'test', 10, onPhaseChange);
     const room = rooms.getRoom(roomId);
 
     if (!room) {
@@ -29,8 +29,8 @@ test('Rooms Test', async (t) => {
   await t.test('join room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.createRoom(roomId, 'test', 'test', 10, onPhaseChange);
-    const joinResult = rooms.joinRoom(roomId, new User('test', 'test', null as any), ctx);
+    const result = rooms.create(roomId, 'test', 'test', 10, onPhaseChange);
+    const joinResult = rooms.join(roomId, new User('test', 'test', null as any), ctx);
     const room = rooms.getRoom(roomId);
 
     if (!room) {
@@ -46,9 +46,9 @@ test('Rooms Test', async (t) => {
   await t.test('leave room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.createRoom(roomId, 'test', 'test', 10, onPhaseChange);
-    const joinResult = rooms.joinRoom(roomId, new User('test', 'test', null as any), ctx);
-    const leaveResult = rooms.leaveRoom(roomId, 'test', ctx);
+    const result = rooms.create(roomId, 'test', 'test', 10, onPhaseChange);
+    const joinResult = rooms.join(roomId, new User('test', 'test', null as any), ctx);
+    const leaveResult = rooms.quit(roomId, 'test', ctx);
     const room = rooms.getRoom(roomId);
 
     assert.equal(result, true);
