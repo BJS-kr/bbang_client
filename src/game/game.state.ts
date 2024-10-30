@@ -7,16 +7,18 @@ const END_SECOND = 10; // 10초
 export class GameState {
   phaseType;
   nextPhaseAt = 0;
+  #roomId;
   #phaseTimer;
   #onPhaseChange;
 
-  constructor(onPhaseChange) {
+  constructor() {
     this.phaseType = PHASE_TYPE.NONE;
     this.nextPhaseAt = 0;
-    this.#onPhaseChange = onPhaseChange;
   }
 
-  gameStart() {
+  gameStart(roomId, onPhaseChange) {
+    this.#roomId = roomId;
+    this.#onPhaseChange = onPhaseChange;
     this.#startDay();
   }
 
@@ -43,7 +45,7 @@ export class GameState {
       clearTimeout(this.#phaseTimer);
     }
 
-    this.#onPhaseChange(this.phaseType);
+    this.#onPhaseChange(this.#roomId, this.phaseType, this.nextPhaseAt);
     this.#phaseTimer = setTimeout(() => {
       switch (this.phaseType) {
         case PHASE_TYPE.DAY:

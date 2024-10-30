@@ -74,7 +74,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
 
       case PACKET_TYPE.CREATE_ROOM_REQUEST:
         const createRoomRequest = decodePayload(packetType, payloadBuffer);
-        await createRoomRequestHandler(socket, version, sequence, createRoomRequest, () => {}, ctx);
+        await createRoomRequestHandler(socket, version, sequence, createRoomRequest, ctx);
 
         break;
 

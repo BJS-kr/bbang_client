@@ -4,13 +4,14 @@ import type { Room } from './types';
 import { GameState } from '../game/game.state';
 import { Context } from '../events/types';
 import { MessageProps } from '../protobuf/props';
-import { writePayload } from '../utils/writePalyload';
+import { writePayload } from '../utils/writePayload';
+import { config } from '../config/config';
 
 export class Rooms {
   #rooms = new Map<number, Room>();
   #roomId = 1;
 
-  createRoom(roomId, roomName, ownerId, maxUserNum, onPhaseChange) {
+  createRoom(roomId, roomName, ownerId, maxUserNum) {
     if (this.isRoomExist(roomId)) return false;
 
     this.#rooms.set(roomId, {
@@ -19,7 +20,7 @@ export class Rooms {
       maxUserNum,
       users: [],
       state: RoomState.WAIT,
-      gameState: new GameState(onPhaseChange),
+      gameState: new GameState(),
     });
 
     return true;
@@ -104,9 +105,9 @@ export class Rooms {
     return roomId;
   }
 
-  broadcast(targets: User[], packetType: number, payload: MessageProps<any>, version: number, sequence: number) {
+  broadcast(targets: User[], packetType: number, payload: MessageProps<any>) {
     targets.forEach((user) => {
-      writePayload(user.socket, packetType, version, sequence, payload);
+      writePayload(user.socket, packetType, config.client.version, 0, payload);
     });
   }
 }

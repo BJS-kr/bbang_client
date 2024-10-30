@@ -1,6 +1,6 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import { createUser, getUserByUserId } from './user.repository';
-import { writePayload } from '../utils/writePalyload';
+import { writePayload } from '../utils/writePayload';
 import { ROLE_TYPE, USER_STATE } from '../constants/game';
 import { FailCode } from '../constants/fail';
 import net from 'node:net';

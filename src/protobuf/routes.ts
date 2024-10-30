@@ -1,7 +1,4 @@
 import { PACKET_TYPE } from '../constants/packetType';
-import { registerRequestHandler, loginRequestHandler } from '../users/user.handler';
-import { createRoomRequestHandler, joinRoomRequestHandler, joinRandomRoomRequestHandler, leaveRoomRequestHandler } from '../rooms/roomHandler';
-import { gameStartRequestHandler, positionUpdateRequestHandler, useCardRequestHandler } from '../game/gameHandler';
 
 export const protoRoutes = {
   [PACKET_TYPE.REGISTER_REQUEST]: {

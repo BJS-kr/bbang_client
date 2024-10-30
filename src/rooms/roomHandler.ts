@@ -10,7 +10,7 @@ import {
   S2CLeaveRoomResponse,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { writePayload } from '../utils/writePalyload';
+import { writePayload } from '../utils/writePayload';
 import net from 'node:net';
 import { rooms } from './rooms';
 import { Context } from '../events/types';
@@ -26,7 +26,7 @@ const joinRoomFailPayload: MessageProps<S2CJoinRoomResponse> = {
   failCode: GlobalFailCode.JOIN_ROOM_FAILED,
 };
 
-export const createRoomRequestHandler = async (socket: net.Socket, version, sequence, createRoomRequest, onPhaseChange, ctx: Context) => {
+export const createRoomRequestHandler = async (socket: net.Socket, version, sequence, createRoomRequest, ctx: Context) => {
   const { name, maxUserNum } = createRoomRequest;
   const roomId = rooms.createRoomId();
   const user = session.getUser(ctx.userId);
@@ -35,7 +35,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const createResult = rooms.createRoom(roomId, name, user.id, maxUserNum, onPhaseChange);
+  const createResult = rooms.createRoom(roomId, name, user.id, maxUserNum);
 
   if (!createResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
@@ -85,7 +85,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   };
 
   const targets = room.users.filter((user) => user.id !== joinUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload, version, sequence);
+  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
 export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, sequence, joinRandomRoomRequest, ctx: Context) => {
@@ -117,7 +117,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
   };
 
   const targets = room.users.filter((user) => user.id !== joinUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload, version, sequence);
+  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
 export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, leaveRoomRequest, ctx: Context) => {
@@ -150,5 +150,5 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   };
 
   const targets = rooms.getRoom(roomId)?.users.filter((user) => user.id !== leavedUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload, version, sequence);
+  rooms.broadcast(targets, PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
 };

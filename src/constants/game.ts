@@ -37,8 +37,8 @@ export const CHARACTER_TYPE = {
   CHA00009: 9, // 물안경군
   CHA00010: 10, // 가면군
   CHA00011: 11, // 슬라임
-  CHA00012: 12, // 미정
-  CHA00013: 13, // 미정
+  CHA00012: 12, // 공룡이
+  CHA00013: 13, // 핑크슬라임
 } as const;
 
 export const ROLE_TYPE = {
@@ -68,4 +68,20 @@ export const USER_STATE = {
   BBANG_TARGET: 2, // 빵야 대상 (쉴드 사용가능 상태)
   DEATH_MATCH: 3, // 현피 중 자신의 턴이 아닐 때
   DEATH_MATCH_TURN: 4, // 현피 중 자신의 턴
+} as const;
+
+export const CHARACTER_HP = {
+  [CHARACTER_TYPE.CHA00001]: 4, // 르탄이
+  [CHARACTER_TYPE.CHA00002]: 4, // 우탄이
+  [CHARACTER_TYPE.CHA00003]: 4, // 상어군
+  [CHARACTER_TYPE.CHA00004]: 4, // 기사군
+  [CHARACTER_TYPE.CHA00005]: 4, // 말랑이
+  [CHARACTER_TYPE.CHA00006]: 4, // 다이노
+  [CHARACTER_TYPE.CHA00007]: 4, // 개굴군
+  [CHARACTER_TYPE.CHA00008]: 4, // 핑크군
+  [CHARACTER_TYPE.CHA00009]: 4, // 물안경군
+  [CHARACTER_TYPE.CHA00010]: 4, // 가면군
+  [CHARACTER_TYPE.CHA00011]: 4, // 슬라임
+  [CHARACTER_TYPE.CHA00012]: 3, // 공룡이
+  [CHARACTER_TYPE.CHA00013]: 3, // 핑크슬라임
 } as const;
