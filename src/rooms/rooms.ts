@@ -3,6 +3,8 @@ import { User } from '../users/types';
 import type { Room } from './types';
 import { GameState } from '../game/game.state';
 import { Context } from '../events/types';
+import { MessageProps } from '../protobuf/props';
+import { writePayload } from '../utils/writePalyload';
 
 export class Rooms {
   #rooms = new Map<number, Room>();
@@ -32,17 +34,7 @@ export class Rooms {
 
     const room = this.#rooms.get(roomId);
 
-    if (!room) return null;
-
-    const roomData = {
-      id: roomId,
-      name: room.name,
-      ownerId: room.ownerId,
-      maxUserNum: room.maxUserNum,
-      users: room.users,
-    };
-
-    return roomData;
+    return room ?? null;
   }
 
   isRoomExist(roomId) {
@@ -100,14 +92,23 @@ export class Rooms {
     return room.users.length >= room.maxUserNum;
   }
 
-  pickRandomRoom() {
+  pickRandomRoomId() {
     const roomIds = Array.from(this.#rooms.keys());
     const picked = Math.floor(Math.random() * roomIds.length);
     const roomId = roomIds[picked];
 
-    if (this.isFullRoom(roomId)) return this.pickRandomRoom();
+    if (this.isFullRoom(roomId)) return this.pickRandomRoomId();
 
     return roomId;
+  }
+
+  broadcast(roomId: number, trigger: User, packetType: number, payload: MessageProps<any>, version: number, sequence: number) {
+    const room = this.getRoom(roomId);
+    const broadcastTargets = room?.users.filter((user) => user.id !== trigger.id);
+
+    broadcastTargets.forEach((user) => {
+      writePayload(user.socket, packetType, version, sequence, payload);
+    });
   }
 }
 

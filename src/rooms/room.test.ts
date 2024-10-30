@@ -21,7 +21,6 @@ test('Rooms Test', async (t) => {
     }
 
     assert.equal(result, true);
-    assert.equal(room.id, roomId);
     assert.equal(room.ownerId, 'test');
     assert.equal(room.name, 'test');
     assert.equal(room.maxUserNum, 10);

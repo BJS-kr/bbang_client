@@ -84,11 +84,11 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
     joinUser,
   };
 
-  broadcastToRoom(roomId, joinNotificationPayload, version, sequence);
+  rooms.broadcast(roomId, joinUser, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload, version, sequence);
 };
 
 export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, sequence, joinRandomRoomRequest, ctx: Context) => {
-  const roomId = rooms.pickRandomRoom();
+  const roomId = rooms.pickRandomRoomId();
   const user = session.getUser(ctx.userId);
 
   if (!user) {
@@ -115,7 +115,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
     joinUser,
   };
 
-  broadcastToRoom(roomId, joinNotificationPayload, version, sequence);
+  rooms.broadcast(roomId, joinUser, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload, version, sequence);
 };
 
 export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, leaveRoomRequest, ctx: Context) => {
@@ -147,16 +147,5 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     userId: leavedUser.id,
   };
 
-  broadcastToRoom(roomId, leaveNotificationPayload, version, sequence);
+  rooms.broadcast(roomId, leavedUser, PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload, version, sequence);
 };
-
-function broadcastToRoom(roomId: number, payload: MessageProps<any>, version: number, sequence: number) {
-  const room = rooms.getRoom(roomId);
-  const broadcastTargets = room?.users.filter((user) => user.id !== user.id);
-
-  if (!broadcastTargets) return;
-
-  broadcastTargets.forEach((user) => {
-    writePayload(user.socket, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, version, sequence, payload);
-  });
-}
