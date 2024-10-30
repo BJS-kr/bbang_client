@@ -85,7 +85,7 @@ message C2SCreateRoomRequest {
 
 message S2CCreateRoomResponse {
     bool success = 1;
-    optional RoomData room = 2;
+    RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -103,7 +103,7 @@ message C2SJoinRoomRequest {
 
 message S2CJoinRoomResponse {
     bool success = 1;
-    optional RoomData room = 2;
+    RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 
@@ -113,7 +113,7 @@ message C2SJoinRandomRoomRequest {
 
 message S2CJoinRandomRoomResponse {
     bool success = 1;
-    optional RoomData room = 2;
+    RoomData room = 2;
     GlobalFailCode failCode = 3;
 }
 

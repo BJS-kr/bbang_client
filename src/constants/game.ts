@@ -46,7 +46,7 @@ export const ROLE_TYPE = {
   TARGET: 1,
   BODYGUARD: 2,
   HITMAN: 3,
-  PSYCHOPASS: 4,
+  PSYCHOPATH: 4,
 } as const;
 
 export const ROOM_STATE_TYPE = {
