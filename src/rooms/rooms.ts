@@ -1,7 +1,7 @@
 import { ROLE_TYPE } from '../constants/game';
 import { RoomState } from './types';
 
-import type { User } from '../users/types';
+import { User } from '../users/types';
 import type { Room } from './types';
 import { GameState } from '../game/game.state';
 
@@ -9,7 +9,7 @@ export class Rooms {
   #rooms = new Map<number, Room>();
   #roomId = 0;
 
-  createRoom(roomId, roomName, ownerId, maxUserNum) {
+  createRoom(roomId, roomName, ownerId, maxUserNum, onPhaseChange) {
     if (this.isRoomExist(roomId)) return false;
 
     this.#rooms.set(roomId, {
@@ -18,7 +18,7 @@ export class Rooms {
       maxUserNum,
       users: [],
       state: RoomState.WAIT,
-      gameState: new GameState(),
+      gameState: new GameState(onPhaseChange),
     });
 
     return true;
@@ -47,22 +47,7 @@ export class Rooms {
   }
 
   createInitialUserData(userId: string, nickname: string): User {
-    const userData = {
-      id: userId,
-      nickname,
-      characterType: null,
-      roleType: ROLE_TYPE.NONE,
-      hp: 0,
-      weapon: 0,
-      state: {
-        state: 0,
-        nextState: 0,
-        nextStateAt: 0,
-      },
-      equips: [],
-      debuffs: [],
-      handCards: [],
-    };
+    const userData = new User(userId, nickname);
 
     return userData;
   }
@@ -110,4 +95,11 @@ export class Rooms {
 
     return true;
   }
+  pickRandomRoom() {
+    const roomId = Math.floor(Math.random() * this.#roomId);
+
+    return roomId;
+  }
 }
+
+export const rooms = new Rooms();

@@ -2,11 +2,15 @@ import { Rooms } from './rooms';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+const onPhaseChange = (phaseType) => {
+  console.log(phaseType);
+};
+
 test('Rooms Test', async (t) => {
   await t.test('create room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.createRoom(roomId, 'test', 'test', 10);
+    const result = rooms.createRoom(roomId, 'test', 'test', 10, onPhaseChange);
     const room = rooms.getRoom(roomId, 'test');
 
     if (!room) {
@@ -23,7 +27,7 @@ test('Rooms Test', async (t) => {
   await t.test('join room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.createRoom(roomId, 'test', 'test', 10);
+    const result = rooms.createRoom(roomId, 'test', 'test', 10, onPhaseChange);
     const joinResult = rooms.joinRoom(roomId, 'test', 'test');
     const room = rooms.getRoom(roomId, 'test');
 
@@ -40,7 +44,7 @@ test('Rooms Test', async (t) => {
   await t.test('leave room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.createRoom(roomId, 'test', 'test', 10);
+    const result = rooms.createRoom(roomId, 'test', 'test', 10, onPhaseChange);
     const joinResult = rooms.joinRoom(roomId, 'test', 'test');
     const leaveResult = rooms.leaveRoom(roomId, 'test');
     const room = rooms.getRoom(roomId, 'test');

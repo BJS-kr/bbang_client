@@ -1,3 +1,5 @@
+import { CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+
 type Card = {
   type: number;
   count: number;
@@ -9,15 +11,24 @@ type UserState = {
   nextStateAt: number;
 };
 
-export type User = {
+export class User {
   id: string;
   nickname: string;
-  characterType: number | null;
-  roleType: number;
-  hp: number;
-  weapon: number;
-  state: UserState;
-  equips: number[];
-  debuffs: number[];
-  handCards: Card[];
-};
+  characterType: number = CHARACTER_TYPE.CHA00001;
+  roleType: number = ROLE_TYPE.NONE;
+  hp: number = 0;
+  weapon: number = 0;
+  state: UserState = {
+    state: 0,
+    nextState: 0,
+    nextStateAt: 0,
+  };
+  equips: number[] = [];
+  debuffs: number[] = [];
+  handCards: Card[] = [];
+
+  constructor(id: string, nickname: string) {
+    this.id = id;
+    this.nickname = nickname;
+  }
+}

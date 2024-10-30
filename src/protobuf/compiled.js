@@ -2244,6 +2244,9 @@ $root.S2CRegisterResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -2287,6 +2290,18 @@ $root.S2CRegisterResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -2788,6 +2803,9 @@ $root.S2CLoginResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -2838,6 +2856,18 @@ $root.S2CLoginResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -3322,6 +3352,9 @@ $root.S2CCreateRoomResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -3368,6 +3401,18 @@ $root.S2CCreateRoomResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -4223,6 +4268,9 @@ $root.S2CJoinRoomResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -4269,6 +4317,18 @@ $root.S2CJoinRoomResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -4725,6 +4785,9 @@ $root.S2CJoinRandomRoomResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -4771,6 +4834,18 @@ $root.S2CJoinRandomRoomResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -5374,6 +5449,9 @@ $root.S2CLeaveRoomResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -5415,6 +5493,18 @@ $root.S2CLeaveRoomResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -6008,6 +6098,9 @@ $root.S2CGamePrepareResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -6049,6 +6142,18 @@ $root.S2CGamePrepareResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -6692,6 +6797,9 @@ $root.S2CGameStartResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -6733,6 +6841,18 @@ $root.S2CGameStartResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -7908,6 +8028,9 @@ $root.S2CUseCardResponse = (function() {
             case 1:
             case 2:
             case 3:
+            case 4:
+            case 5:
+            case 6:
                 break;
             }
         return null;
@@ -7949,6 +8072,18 @@ $root.S2CUseCardResponse = (function() {
         case "AUTHENTICATION_FAILED":
         case 3:
             message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
             break;
         }
         return message;
@@ -11212,6 +11347,9 @@ $root.GamePacket = (function() {
  * @property {number} UNKNOWN_ERROR=1 UNKNOWN_ERROR value
  * @property {number} INVALID_REQUEST=2 INVALID_REQUEST value
  * @property {number} AUTHENTICATION_FAILED=3 AUTHENTICATION_FAILED value
+ * @property {number} CREATE_ROOM_FAILED=4 CREATE_ROOM_FAILED value
+ * @property {number} JOIN_ROOM_FAILED=5 JOIN_ROOM_FAILED value
+ * @property {number} LEAVE_ROOM_FAILED=6 LEAVE_ROOM_FAILED value
  */
 $root.GlobalFailCode = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -11219,6 +11357,9 @@ $root.GlobalFailCode = (function() {
     values[valuesById[1] = "UNKNOWN_ERROR"] = 1;
     values[valuesById[2] = "INVALID_REQUEST"] = 2;
     values[valuesById[3] = "AUTHENTICATION_FAILED"] = 3;
+    values[valuesById[4] = "CREATE_ROOM_FAILED"] = 4;
+    values[valuesById[5] = "JOIN_ROOM_FAILED"] = 5;
+    values[valuesById[6] = "LEAVE_ROOM_FAILED"] = 6;
     return values;
 })();
 
