@@ -104,11 +104,8 @@ export class Rooms {
     return roomId;
   }
 
-  broadcast(roomId: number, trigger: User, packetType: number, payload: MessageProps<any>, version: number, sequence: number) {
-    const room = this.getRoom(roomId);
-    const broadcastTargets = room?.users.filter((user) => user.id !== trigger.id);
-
-    broadcastTargets.forEach((user) => {
+  broadcast(targets: User[], packetType: number, payload: MessageProps<any>, version: number, sequence: number) {
+    targets.forEach((user) => {
       writePayload(user.socket, packetType, version, sequence, payload);
     });
   }
