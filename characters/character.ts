@@ -9,6 +9,22 @@ const DEFENSE_CHANCE_MAX = 100;
 const DAMAGE_MULTIPLIER_MIN = 1;
 const DAMAGE_MULTIPLIER_MAX = 10;
 const HP_MIN = 0;
+const handler = {
+  get: function (target: Character, key: string) {
+    const prop = target[key];
+
+    if (typeof prop === 'function') {
+      return function (...args: any[]) {
+        const result = prop.apply(target, args);
+        target.emit(key, result);
+
+        return result;
+      };
+    }
+
+    return prop;
+  },
+};
 
 export class Character extends EventEmitter {
   instanceId: string;
@@ -57,10 +73,14 @@ export class Character extends EventEmitter {
     this.defenseChance = baseDefenseChance;
     this.amountForDefense = amountForDefense;
     this.bangPerDay = bangPerDay;
+
+    return new Proxy(this, handler);
   }
 
   useCard(card: CardData) {
     // TODO 카드 사용 로직 구현
+
+    return card;
   }
 
   takeDamage(amount: number) {
@@ -70,7 +90,7 @@ export class Character extends EventEmitter {
 
     this.hp = Math.max(HP_MIN, this.hp - damage);
 
-    this.emit('takeDamage', damage);
+    return damage;
   }
 
   isDefended() {
@@ -79,7 +99,8 @@ export class Character extends EventEmitter {
 
   acquireCard(card: Card) {
     this.cards.set(card.type, (this.cards.get(card.type) || 0) + card.count);
-    this.emit('acquireCard', card);
+
+    return card;
   }
 
   loseCard(card: Card) {
@@ -89,56 +110,63 @@ export class Character extends EventEmitter {
       this.cards.delete(card.type);
     }
 
-    this.emit('loseCard', card);
+    return card;
   }
 
   increaseDefenseChance(chance: number) {
     this.defenseChance = Math.min(DEFENSE_CHANCE_MAX, this.defenseChance + chance);
-    this.emit('increaseDefenseChance', chance);
+
+    return chance;
   }
 
   decreaseDefenseChance(chance: number) {
     this.defenseChance = Math.max(this.baseDefenseChance, this.defenseChance - chance);
-    this.emit('decreaseDefenseChance', chance);
+
+    return chance;
   }
 
   increaseDamageMultiplier(amount: number) {
     this.damageMultiplier = Math.max(DAMAGE_MULTIPLIER_MAX, this.damageMultiplier + amount);
-    this.emit('increaseDamageMultiplier', amount);
+
+    return amount;
   }
 
   decreaseDamageMultiplier(amount: number) {
     this.damageMultiplier = Math.min(DAMAGE_MULTIPLIER_MIN, this.damageMultiplier - amount);
-    this.emit('decreaseDamageMultiplier', amount);
+
+    return amount;
   }
 
   addInvisibleFrom(characters: Character[]) {
     characters.forEach((character) => {
       this.invisibleFrom.add(character);
     });
-    this.emit('addInvisibleFrom', characters);
+
+    return characters;
   }
 
   removeInvisibleFrom(characters: Character[]) {
     characters.forEach((character) => {
       this.invisibleFrom.delete(character);
     });
-    this.emit('removeInvisibleFrom', characters);
+
+    return characters;
   }
 
   addBangCount(count: number) {
     this.todayBangCount += count;
-    this.emit('addBangCount', count);
+
+    return count;
   }
 
   resetBangCount() {
     this.todayBangCount = 0;
-    this.emit('resetBangCount');
   }
 
   setAmountForDefense(amount: number) {
     this.amountForDefense = amount;
-    this.emit('setAmountForDefense', amount);
+
+    return amount;
   }
 
   getRandomCard() {
@@ -158,6 +186,7 @@ export class Character extends EventEmitter {
 
   static recover(amount: number, character: Character) {
     character.hp = Math.min(character.maxHp, character.hp + amount);
-    character.emit('recover', amount);
+
+    return amount;
   }
 }
