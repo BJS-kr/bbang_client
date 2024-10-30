@@ -1,18 +1,10 @@
-import { config } from "../config/config.js";
-import { decodePayload, encodePayload, routes } from "../handlers/index.js";
-import { PACKET_TYPE } from "../constants/packetType.js";
-import {
-  registerRequestHandler,
-  loginRequestHandler,
-} from "../handlers/authHandler.js";
-import "types.js";
-import { FAIL_CODE } from "../constants/fail.js";
-import {
-  createRoomRequestHandler,
-  joinRandomRoomRequestHandler,
-  joinRoomRequestHandler,
-  leaveRoomRequestHandler,
-} from "../handlers/roomHandler.js";
+import { config } from '../config/config.js';
+import { decodePayload, encodePayload, routes } from '../handlers/index.js';
+import { PACKET_TYPE } from '../constants/packetType.js';
+import { registerRequestHandler, loginRequestHandler } from '../handlers/authHandler.js';
+import 'types.js';
+import { FAIL_CODE } from '../constants/fail.js';
+import { createRoomRequestHandler, joinRandomRoomRequestHandler, joinRoomRequestHandler, leaveRoomRequestHandler } from '../handlers/roomHandler.js';
 
 export const onData = (socket) => async (data) => {
   socket.buffer = Buffer.concat([socket.buffer, data]);
@@ -22,10 +14,7 @@ export const onData = (socket) => async (data) => {
     const packetType = socket.buffer.readUInt16BE(0);
     offset += config.packet.typeLength;
 
-    if (
-      socket.buffer.length <
-      config.packet.typeLength + config.packet.versionLengthSize
-    ) {
+    if (socket.buffer.length < config.packet.typeLength + config.packet.versionLengthSize) {
       break;
     }
 
@@ -37,9 +26,7 @@ export const onData = (socket) => async (data) => {
     }
 
     // TODO 버전 관리
-    const version = socket.buffer
-      .subarray(offset, offset + versionLength)
-      .toString("utf8");
+    const version = socket.buffer.subarray(offset, offset + versionLength).toString('utf8');
     offset += versionLength;
 
     if (socket.buffer.length < offset + config.packet.sequenceLength) {
@@ -75,12 +62,7 @@ export const onData = (socket) => async (data) => {
 
       case PACKET_TYPE.REGISTER_REQUEST:
         const registerRequest = decodePayload(packetType, payloadBuffer);
-        await registerRequestHandler(
-          socket,
-          version,
-          sequence,
-          registerRequest,
-        );
+        await registerRequestHandler(socket, version, sequence, registerRequest);
 
         break;
 
@@ -92,45 +74,25 @@ export const onData = (socket) => async (data) => {
 
       case PACKET_TYPE.CREATE_ROOM_REQUEST:
         const createRoomRequest = decodePayload(packetType, payloadBuffer);
-        await createRoomRequestHandler(
-          socket,
-          version,
-          sequence,
-          createRoomRequest,
-        );
+        await createRoomRequestHandler(socket, version, sequence, createRoomRequest);
 
         break;
 
       case PACKET_TYPE.JOIN_ROOM_REQUEST:
         const joinRoomRequest = decodePayload(packetType, payloadBuffer);
-        await joinRoomRequestHandler(
-          socket,
-          version,
-          sequence,
-          joinRoomRequest,
-        );
+        await joinRoomRequestHandler(socket, version, sequence, joinRoomRequest);
 
         break;
 
       case PACKET_TYPE.JOIN_RANDOM_ROOM_REQUEST:
         const joinRandomRoomRequest = decodePayload(packetType, payloadBuffer);
-        await joinRoomRequestHandler(
-          socket,
-          version,
-          sequence,
-          joinRandomRoomRequest,
-        );
+        await joinRoomRequestHandler(socket, version, sequence, joinRandomRoomRequest);
 
         break;
 
       case PACKET_TYPE.LEAVE_ROOM_REQUEST:
         const leaveRoomRequest = decodePayload(packetType, payloadBuffer);
-        await leaveRoomRequestHandler(
-          socket,
-          version,
-          sequence,
-          leaveRoomRequest,
-        );
+        await leaveRoomRequestHandler(socket, version, sequence, leaveRoomRequest);
 
         break;
 

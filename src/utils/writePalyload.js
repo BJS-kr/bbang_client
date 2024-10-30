@@ -1,4 +1,4 @@
-import { createPacket, encodePayload } from "../handlers";
+import { createPacket, encodePayload } from '../handlers';
 
 export function writePayload(socket, packetType, version, sequence, payload) {
   try {

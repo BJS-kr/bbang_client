@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
-import pools from "../database.js";
-import { USER_QUERIES } from "./user.queries.js";
-import "../types.js";
+import { v4 as uuidv4 } from 'uuid';
+import pools from '../database.js';
+import { USER_QUERIES } from './user.queries.js';
+import '../types.js';
 
 /**
  * @returns {QueryResult}
@@ -9,12 +9,7 @@ import "../types.js";
 export const createUser = async (userId, password, nickname) => {
   const id = uuidv4();
 
-  return pools.USER_DB.query(USER_QUERIES.CREATE_USER, [
-    id,
-    userId,
-    password,
-    nickname,
-  ]);
+  return pools.USER_DB.query(USER_QUERIES.CREATE_USER, [id, userId, password, nickname]);
 };
 
 /**

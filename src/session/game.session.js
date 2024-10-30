@@ -1,4 +1,4 @@
-import { gameSessions } from "./sessions.js";
+import { gameSessions } from './sessions.js';
 
 export const addGameSession = (id) => {
   const session = { id };

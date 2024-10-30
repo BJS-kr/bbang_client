@@ -1,6 +1,6 @@
-import mysql from "mysql2/promise";
-import { config } from "../config/config.js";
-import { formatDate } from "../utils/dateFormatter.js";
+import mysql from 'mysql2/promise';
+import { config } from '../config/config.js';
+import { formatDate } from '../utils/dateFormatter.js';
 
 const { databases } = config;
 const createPool = (dbConfig) => {
@@ -20,11 +20,7 @@ const createPool = (dbConfig) => {
   pool.query = (sql, params) => {
     const date = new Date();
     // 쿼리 실행시 로그
-    console.log(
-      `[${formatDate(date)}] Executing query: ${sql} ${
-        params ? `, ${JSON.stringify(params)}` : ``
-      }`,
-    );
+    console.log(`[${formatDate(date)}] Executing query: ${sql} ${params ? `, ${JSON.stringify(params)}` : ``}`);
     return originalQuery.call(pool, sql, params).then(
       (r) => ({ result: r, error: null }),
       (err) => ({ result: null, error: err }),

@@ -1,9 +1,9 @@
-import { FailCode } from "../constants/fail.js";
-import { PACKET_TYPE } from "../constants/packetType.js";
-import jwt from "jsonwebtoken";
-import { writePayload } from "../utils/writePalyload.js";
-import { getUserByUserId } from "../db/user/user.db.js";
-import { Rooms } from "./rooms.js";
+import { FailCode } from '../constants/fail.js';
+import { PACKET_TYPE } from '../constants/packetType.js';
+import jwt from 'jsonwebtoken';
+import { writePayload } from '../utils/writePalyload.js';
+import { getUserByUserId } from '../db/user/user.db.js';
+import { Rooms } from './rooms.js';
 
 const rooms = new Rooms();
 const createRoomFailPayload = {
@@ -15,45 +15,25 @@ const joinRoomFailPayload = {
   failCode: FailCode.JOIN_ROOM_FAILED,
 };
 
-export const createRoomRequestHandler = async (
-  socket,
-  version,
-  sequence,
-  createRoomRequest,
-) => {
+export const createRoomRequestHandler = async (socket, version, sequence, createRoomRequest) => {
   const { name, maxUserNum } = createRoomRequest;
   const roomId = rooms.createRoomId();
   const user = await getUserByUserId(socket.id);
 
   if (user.error) {
-    return writePayload(
-      PACKET_TYPE.CREATE_ROOM_RESPONSE,
-      version,
-      sequence,
-      createRoomFailPayload,
-    );
+    return writePayload(PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
   const createResult = rooms.createRoom(roomId, name, user.id, maxUserNum);
 
   if (!createResult) {
-    return writePayload(
-      PACKET_TYPE.CREATE_ROOM_RESPONSE,
-      version,
-      sequence,
-      createRoomFailPayload,
-    );
+    return writePayload(PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
   const joinResult = rooms.joinRoom(roomId, user.id, user.nickname);
 
   if (!joinResult) {
-    return writePayload(
-      PACKET_TYPE.CREATE_ROOM_RESPONSE,
-      version,
-      sequence,
-      joinRoomFailPayload,
-    );
+    return writePayload(PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
   const room = rooms.getRoom(roomId, user.id);
@@ -63,41 +43,21 @@ export const createRoomRequestHandler = async (
     failCode: FailCode.NONE,
   };
 
-  return writePayload(
-    PACKET_TYPE.CREATE_ROOM_RESPONSE,
-    version,
-    sequence,
-    payload,
-  );
+  return writePayload(PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, payload);
 };
 
-export const joinRoomRequestHandler = async (
-  socket,
-  version,
-  sequence,
-  joinRoomRequest,
-) => {
+export const joinRoomRequestHandler = async (socket, version, sequence, joinRoomRequest) => {
   const { roomId } = joinRoomRequest;
   const user = await getUserByUserId(socket.id);
 
   if (user.error) {
-    return writePayload(
-      PACKET_TYPE.JOIN_ROOM_RESPONSE,
-      version,
-      sequence,
-      joinRoomFailPayload,
-    );
+    return writePayload(PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
   const joinResult = rooms.joinRoom(roomId, user.id, user.nickname);
 
   if (!joinResult) {
-    return writePayload(
-      PACKET_TYPE.JOIN_ROOM_RESPONSE,
-      version,
-      sequence,
-      joinRoomFailPayload,
-    );
+    return writePayload(PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
   const room = rooms.getRoom(roomId, user.id);
@@ -107,20 +67,10 @@ export const joinRoomRequestHandler = async (
     failCode: FailCode.NONE,
   };
 
-  return writePayload(
-    PACKET_TYPE.JOIN_ROOM_RESPONSE,
-    version,
-    sequence,
-    payload,
-  );
+  return writePayload(PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, payload);
 };
 
-export const leaveRoomRequestHandler = async (
-  socket,
-  version,
-  sequence,
-  leaveRoomRequest,
-) => {
+export const leaveRoomRequestHandler = async (socket, version, sequence, leaveRoomRequest) => {
   const { roomId } = leaveRoomRequest;
   const leaveResult = rooms.leaveRoom(roomId, socket.id);
 

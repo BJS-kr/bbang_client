@@ -1,15 +1,10 @@
-import { PACKET_TYPE } from "../constants/packetType.js";
-import { createUser, getUserPasswordByUserId } from "../db/user/user.db.js";
-import { writePayload } from "../utils/writePalyload.js";
-import { FailCode } from "./index.js";
-import jwt from "jsonwebtoken";
+import { PACKET_TYPE } from '../constants/packetType.js';
+import { createUser, getUserPasswordByUserId } from '../db/user/user.db.js';
+import { writePayload } from '../utils/writePalyload.js';
+import { FailCode } from './index.js';
+import jwt from 'jsonwebtoken';
 
-export const registerRequestHandler = async (
-  socket,
-  version,
-  sequence,
-  registerRequest,
-) => {
+export const registerRequestHandler = async (socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
   // TODO password 해시 할깝쇼?
   const { error } = await createUser(id, password, nickname);
@@ -18,25 +13,14 @@ export const registerRequestHandler = async (
 
   const payload = {
     success: error ? false : true,
-    message: error ? "회원가입 실패" : "회원가입 성공",
+    message: error ? '회원가입 실패' : '회원가입 성공',
     failCode: error ? FailCode.REGISTER_FAILED : FailCode.NONE,
   };
 
-  writePayload(
-    socket,
-    PACKET_TYPE.REGISTER_RESPONSE,
-    version,
-    sequence,
-    payload,
-  );
+  writePayload(socket, PACKET_TYPE.REGISTER_RESPONSE, version, sequence, payload);
 };
 
-export const loginRequestHandler = async (
-  socket,
-  version,
-  sequence,
-  loginRequest,
-) => {
+export const loginRequestHandler = async (socket, version, sequence, loginRequest) => {
   const { id, password } = loginRequest;
   socket.id = id;
 
@@ -45,15 +29,15 @@ export const loginRequestHandler = async (
   if (user.error || user.result.password !== password) {
     return writePayload(socket, PACKET_TYPE.LOGIN_RESPONSE, version, sequence, {
       success: false,
-      message: "로그인 실패",
+      message: '로그인 실패',
       failCode: FailCode.LOGIN_FAILED,
     });
   }
 
   const payload = {
     success: true,
-    message: "로그인 성공",
-    token: jwt.sign({ userId: id }, "secret"),
+    message: '로그인 성공',
+    token: jwt.sign({ userId: id }, 'secret'),
     myInfo: {
       id: user.result.id,
       nickname: user.result.nickname,

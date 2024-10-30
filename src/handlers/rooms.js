@@ -1,4 +1,4 @@
-import { RollType } from "../constants/role.js";
+import { RollType } from '../constants/role.js';
 
 export class Rooms {
   #rooms = new Map();
@@ -63,9 +63,7 @@ export class Rooms {
   joinRoom(roomId, userId, nickname) {
     if (!this.isRoomExist(roomId)) return false;
 
-    this.#rooms
-      .get(roomId)
-      .users.push(this.createInitialUserData(userId, nickname));
+    this.#rooms.get(roomId).users.push(this.createInitialUserData(userId, nickname));
 
     return true;
   }
@@ -73,9 +71,7 @@ export class Rooms {
   leaveRoom(roomId, userId) {
     if (!this.isUserInRoom(roomId, userId)) return false;
 
-    const userIndex = this.#rooms
-      .get(roomId)
-      .users.findIndex((user) => user.id === userId);
+    const userIndex = this.#rooms.get(roomId).users.findIndex((user) => user.id === userId);
 
     this.#rooms.get(roomId).users.splice(userIndex, 1);
 
