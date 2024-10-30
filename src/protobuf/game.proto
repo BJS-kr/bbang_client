@@ -1,14 +1,5 @@
 syntax = "proto3";
 
-/* 
-    실패 코드
-*/
-enum GlobalFailCode {
-    NONE = 0;
-    UNKNOWN_ERROR = 1;
-    INVALID_REQUEST = 2;
-    AUTHENTICATION_FAILED = 3;
-}
 /*
     게임 데이터 명세
 */
@@ -301,4 +292,14 @@ message GamePacket {
         // 게임 종료
         S2CGameEndNotification gameEndNotification = 34;
     }
+}
+
+/* 
+    실패 코드
+*/
+enum GlobalFailCode {
+    NONE = 0;
+    UNKNOWN_ERROR = 1;
+    INVALID_REQUEST = 2;
+    AUTHENTICATION_FAILED = 3;
 }
