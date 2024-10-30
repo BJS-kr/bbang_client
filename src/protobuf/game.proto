@@ -9,7 +9,6 @@ enum GlobalFailCode {
     INVALID_REQUEST = 2;
     AUTHENTICATION_FAILED = 3;
 }
-
 /*
     게임 데이터 명세
 */
@@ -55,7 +54,7 @@ message GameStateData {
 }
 
 message UserStateData {
-    int32 state = 1; // NONE 0, BBANG_SHOOTER 1, BBANG_TARGET 2, DEATH_MATCH 3, DEATH_MATCH_TURN 4
+    int32 state = 1;
     int32 nextState = 2;
     int64 nextStateAt = 3; // state가 nextState로 풀리는 밀리초 타임스탬프. state가 NONE이면 0
 }
