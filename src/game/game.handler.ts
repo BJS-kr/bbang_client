@@ -246,6 +246,4 @@ function removeRandCard(user, count) {
     }
     user.handCards.splice(randNum, 1);
   }
-
-  user.handCards = user.handCards.filter((card) => card.count > 0);
 }
