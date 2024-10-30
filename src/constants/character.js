@@ -1,7 +1,0 @@
-export const STATE = {
-  NONE: 0,
-  BBANG_SHOOTER: 1,
-  BBANG_TARGET: 2,
-  DEATH_MATCH: 3,
-  DEATH_MATCH_TURN: 4,
-};
