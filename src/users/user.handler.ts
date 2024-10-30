@@ -1,9 +1,11 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import { createUser, getUserByUserId } from './user.repository';
 import { writePayload } from '../utils/writePalyload';
-import { ROLE_TYPE, USER_STATE } from '../constants/game';
+import { CHARACTER_TYPE, ROLE_TYPE, USER_STATE } from '../constants/game';
 import { FailCode } from '../constants/fail';
 import net from 'node:net';
+import { IS2CLoginResponse, S2CLoginResponse } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
 
 export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
@@ -39,14 +41,14 @@ export const loginRequestHandler = async (socket, version, sequence, loginReques
 
   socket.userId = result.id;
 
-  const payload = {
+  const payload: MessageProps<S2CLoginResponse> = {
     success: true,
     message: '로그인 성공',
     token: 'pseudo-token',
     myInfo: {
       id: result.id,
       nickname: result.nickname,
-      characterType: 0, // 이 필드는 constants가 없나용?
+      characterType: 0,
       roleType: ROLE_TYPE.NONE,
       hp: 0,
       weapon: 0,
