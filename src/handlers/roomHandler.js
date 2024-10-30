@@ -1,8 +1,6 @@
 import { FailCode } from '../constants/fail.js';
 import { PACKET_TYPE } from '../constants/packetType.js';
-import jwt from 'jsonwebtoken';
 import { writePayload } from '../utils/writePalyload.js';
-import { getUserByUserId } from '../db/user/user.db.js';
 import { Rooms } from './rooms.js';
 
 const rooms = new Rooms();
@@ -18,7 +16,7 @@ const joinRoomFailPayload = {
 export const createRoomRequestHandler = async (socket, version, sequence, createRoomRequest) => {
   const { name, maxUserNum } = createRoomRequest;
   const roomId = rooms.createRoomId();
-  const user = await getUserByUserId(socket.id);
+  const { user } = socket;
 
   if (user.error) {
     return writePayload(PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
@@ -48,7 +46,7 @@ export const createRoomRequestHandler = async (socket, version, sequence, create
 
 export const joinRoomRequestHandler = async (socket, version, sequence, joinRoomRequest) => {
   const { roomId } = joinRoomRequest;
-  const user = await getUserByUserId(socket.id);
+  const { user } = socket;
 
   if (user.error) {
     return writePayload(PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);

@@ -1,8 +1,9 @@
 import { PACKET_TYPE } from '../constants/packetType.js';
-import { createUser, getUserPasswordByUserId } from '../db/user/user.db.js';
+import { STATE } from '../constants/character.js';
+import { createUser } from '../db/user/user.db.js';
 import { writePayload } from '../utils/writePalyload.js';
 import { FailCode } from './index.js';
-import jwt from 'jsonwebtoken';
+import { ROLE_TYPE } from '../constants/game.js';
 
 export const registerRequestHandler = async (socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
@@ -34,14 +35,24 @@ export const loginRequestHandler = async (socket, version, sequence, loginReques
     });
   }
 
+  socket.user = user.result;
+
   const payload = {
     success: true,
     message: '로그인 성공',
-    token: jwt.sign({ userId: id }, 'secret'),
+    token: 'pseudo-token',
     myInfo: {
       id: user.result.id,
       nickname: user.result.nickname,
-      // TODO UserData 초깃값 뭘로 설정해야하는지? 일단 optional로 설정
+      characterType: 0, // 이 필드는 constants가 없나용?
+      roleType: ROLE_TYPE.ROLE_NONE,
+      hp: 0,
+      weapon: 0,
+      state: {
+        state: STATE.NONE,
+        nextState: STATE.NONE,
+        nextStateAt: 0,
+      },
     },
     failCode: FailCode.NONE,
   };

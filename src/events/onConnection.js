@@ -5,7 +5,7 @@ import 'types.js';
 
 /**
  *
- * @param {net.Socket & { buffer: Buffer; id: string}} socket
+ * @param {CustomSocket} socket
  */
 export const onConnection = (socket) => {
   console.log(`새로운 클라이언트 연결: ${socket.remoteAddress}:${socket.remotePort}`);

@@ -10,7 +10,7 @@ export const ROLE_TYPE = {
   TARGET: 1,
   BODYGUARD: 2,
   HITMAN: 3,
-  PSYCHOPASS: 4,
+  PSYCHOPATH: 4,
 };
 
 export const PHASE_TYPE = {
