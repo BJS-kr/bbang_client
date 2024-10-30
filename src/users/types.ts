@@ -1,4 +1,5 @@
 import { CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+import net from 'node:net';
 
 type Card = {
   type: number;
@@ -26,9 +27,11 @@ export class User {
   equips: number[] = [];
   debuffs: number[] = [];
   handCards: Card[] = [];
+  socket: net.Socket;
 
-  constructor(id: string, nickname: string) {
+  constructor(id: string, nickname: string, socket: net.Socket) {
     this.id = id;
     this.nickname = nickname;
+    this.socket = socket;
   }
 }

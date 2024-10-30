@@ -1,9 +1,8 @@
-import { ROLE_TYPE } from '../constants/game';
 import { RoomState } from './types';
-
 import { User } from '../users/types';
 import type { Room } from './types';
 import { GameState } from '../game/game.state';
+import { Context } from '../events/types';
 
 export class Rooms {
   #rooms = new Map<number, Room>();
@@ -28,7 +27,7 @@ export class Rooms {
     return this.#roomId++;
   }
 
-  getRoom(roomId, ownerId) {
+  getRoom(roomId) {
     if (!this.isRoomExist(roomId)) return null;
 
     const room = this.#rooms.get(roomId);
@@ -46,12 +45,6 @@ export class Rooms {
     return roomData;
   }
 
-  createInitialUserData(userId: string, nickname: string): User {
-    const userData = new User(userId, nickname);
-
-    return userData;
-  }
-
   isRoomExist(roomId) {
     return this.#rooms.has(roomId);
   }
@@ -66,37 +59,53 @@ export class Rooms {
     return room.users.some((user) => user.id === userId);
   }
 
-  joinRoom(roomId, userId, nickname) {
+  joinRoom(roomId: number, user: User, ctx: Context) {
     if (!this.isRoomExist(roomId)) return false;
 
     const room = this.#rooms.get(roomId);
 
     if (!room) return false;
 
-    room.users.push(this.createInitialUserData(userId, nickname));
+    room.users.push(user);
+    ctx.roomId = roomId;
 
     return true;
   }
 
-  leaveRoom(roomId, userId) {
-    if (!this.isUserInRoom(roomId, userId)) return false;
+  leaveRoom(roomId: number, userId: string, ctx: Context) {
+    if (!this.isUserInRoom(roomId, userId)) return null;
 
     const room = this.#rooms.get(roomId);
 
-    if (!room) return false;
+    if (!room) return null;
 
     const userIndex = room.users.findIndex((user) => user.id === userId);
 
-    room.users.splice(userIndex, 1);
+    const [leavedUser] = room.users.splice(userIndex, 1);
+
+    ctx.roomId = 0;
 
     if (room.users.length === 0) {
       this.#rooms.delete(roomId);
     }
 
-    return true;
+    return leavedUser;
   }
+
+  isFullRoom(roomId) {
+    if (!this.isRoomExist(roomId)) return false;
+
+    const room = this.#rooms.get(roomId)!;
+
+    return room.users.length >= room.maxUserNum;
+  }
+
   pickRandomRoom() {
-    const roomId = Math.floor(Math.random() * this.#roomId);
+    const roomIds = Array.from(this.#rooms.keys());
+    const picked = Math.floor(Math.random() * roomIds.length);
+    const roomId = roomIds[picked];
+
+    if (this.isFullRoom(roomId)) return this.pickRandomRoom();
 
     return roomId;
   }
