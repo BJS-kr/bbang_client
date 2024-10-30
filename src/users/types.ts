@@ -14,7 +14,7 @@ type UserState = {
 export class User {
   id: string;
   nickname: string;
-  characterType: number = CHARACTER_TYPE.CHA00001;
+  characterType: number = CHARACTER_TYPE.NONE;
   roleType: number = ROLE_TYPE.NONE;
   hp: number = 0;
   weapon: number = 0;

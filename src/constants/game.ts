@@ -25,6 +25,7 @@ export const CARD_TYPE = {
 } as const;
 
 export const CHARACTER_TYPE = {
+  NONE: 0,
   CHA00001: 1, // 르탄이
   CHA00002: 2, // 우탄이
   CHA00003: 3, // 상어군
