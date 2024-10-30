@@ -5,6 +5,7 @@ import { createRoomRequestHandler, joinRandomRoomRequestHandler, joinRoomRequest
 import net from 'node:net';
 import { decodePayload } from '../protobuf/packet';
 import { Context } from './types';
+import { gamePrepareRequestHandler, gameStartRequestHandler } from '../game/game.handler';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
   buf = Buffer.concat([buf, data]);
@@ -95,6 +96,19 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         await leaveRoomRequestHandler(socket, version, sequence, leaveRoomRequest, ctx);
 
         break;
+
+      case PACKET_TYPE.GAME_PREPARE_REQUEST:
+        const gamePrepareRequest = decodePayload(packetType, payloadBuffer);
+        await gamePrepareRequestHandler(socket, version, sequence, gamePrepareRequest, ctx);
+
+        break;
+
+      case PACKET_TYPE.GAME_START_REQUEST:
+        const gameStartRequest = decodePayload(packetType, payloadBuffer);
+        await gameStartRequestHandler(socket, version, sequence, gameStartRequest, ctx);
+
+        break;
+
       default:
         console.error(`Unhandled packet type: ${packetType}`);
     }
