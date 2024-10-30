@@ -17,6 +17,13 @@ export class Blue extends Character {
   }
 
   switchCard(from: Card, to: Card) {
+    if (this.cards.get(from.type) < 1) {
+      return;
+    }
+
+    from.count = 1;
+    to.count = 1;
+
     this.loseCard(from);
     this.acquireCard(to);
   }
