@@ -29,7 +29,7 @@ message UserData {
     string id = 1;
     string nickname = 2;
     int32 characterType = 3;
-    int32 rollType = 4; // TARGET 혹은 자신일 경우에만 세팅, 그 외엔 NONE으로 세팅
+    int32 roleType = 4; // TARGET 혹은 자신일 경우에만 세팅, 그 외엔 NONE으로 세팅
     int32 hp = 5;
     int32 weapon = 6;
     UserStateData state = 7;

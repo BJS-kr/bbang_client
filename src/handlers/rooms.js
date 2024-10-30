@@ -1,4 +1,4 @@
-import { RollType } from '../constants/role.js';
+import { ROLE_TYPE } from '../constants/game.js';
 
 export class Rooms {
   #rooms = new Map();
@@ -41,7 +41,7 @@ export class Rooms {
       id: userId,
       nickname,
       characterRCode: null,
-      rollType: RollType.NONE,
+      roleType: ROLE_TYPE.NONE,
       hp: 0,
       handCards: [],
       equipCards: [],

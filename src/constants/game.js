@@ -5,7 +5,7 @@ export const CARD_TYPE = {
   DEBUFF: 3,
 };
 
-export const ROLL_TYPE = {
+export const ROLE_TYPE = {
   NONE: 0,
   TARGET: 1,
   BODYGUARD: 2,
