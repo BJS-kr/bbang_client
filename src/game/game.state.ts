@@ -1,17 +1,19 @@
 import { PHASE_TYPE } from '../constants/game.js';
 
-const DAY_SECIOND = 180; // 3분
+const DAY_SECOND = 180; // 3분
 const EVENING_SECOND = 60; // 1분
 const END_SECOND = 10; // 10초
 
 export class GameState {
-  phaseType: (typeof PHASE_TYPE)[keyof typeof PHASE_TYPE] = PHASE_TYPE.NONE;
+  phaseType;
   nextPhaseAt = 0;
-  #phaseTimer: NodeJS.Timeout | null = null;
+  #phaseTimer;
+  #onPhaseChange;
 
-  constructor() {
+  constructor(onPhaseChange) {
     this.phaseType = PHASE_TYPE.NONE;
     this.nextPhaseAt = 0;
+    this.#onPhaseChange = onPhaseChange;
   }
 
   gameStart() {
@@ -19,21 +21,18 @@ export class GameState {
   }
 
   #startDay() {
-    console.log('[GameState] Start Day ... ');
     this.phaseType = PHASE_TYPE.DAY;
-    this.nextPhaseAt = Date.now() + DAY_SECIOND * 1000;
+    this.nextPhaseAt = Date.now() + DAY_SECOND * 1000;
     this.#startPhaseTimer();
   }
 
   #startEvening() {
-    console.log('[GameState] Start Evening ... ');
     this.phaseType = PHASE_TYPE.EVENING;
     this.nextPhaseAt = Date.now() + EVENING_SECOND * 1000;
     this.#startPhaseTimer();
   }
 
   #startEnd() {
-    console.log('[GameState] Start End ... ');
     this.phaseType = PHASE_TYPE.END;
     this.nextPhaseAt = Date.now() + END_SECOND * 1000;
     this.#startPhaseTimer();
@@ -44,6 +43,7 @@ export class GameState {
       clearTimeout(this.#phaseTimer);
     }
 
+    this.#onPhaseChange(this.phaseType);
     this.#phaseTimer = setTimeout(() => {
       switch (this.phaseType) {
         case PHASE_TYPE.DAY:
