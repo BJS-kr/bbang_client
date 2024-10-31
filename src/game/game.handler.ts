@@ -206,12 +206,12 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
 function createUserDataView(user, userDatas) {
   const result = userDatas.map((userData) => {
     let roleType = ROLE_TYPE.NONE as number;
-    if (user.userId === userData.id || userData.roleType === ROLE_TYPE.TARGET) {
+    if (user.id === userData.id || userData.roleType === ROLE_TYPE.TARGET) {
       roleType = userData.roleType;
     }
 
     let handCards = [];
-    if (user.userId === userData.userId) {
+    if (user.id === userData.userId) {
       handCards = userData.handCards;
     }
 
