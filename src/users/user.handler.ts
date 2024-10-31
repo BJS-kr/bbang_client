@@ -46,7 +46,7 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
     message: '로그인 성공',
     token: 'pseudo-token',
     myInfo: {
-      id: result.id,
+      id: result.userId,
       nickname: result.nickname,
       characterType: 0,
       roleType: ROLE_TYPE.NONE,
