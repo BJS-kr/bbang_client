@@ -34,8 +34,8 @@ message CharacterData {
 
 message UserPositionData {
     string id = 1;
-    int32 x = 2;
-    int32 y = 3;
+    float x = 2;
+    float y = 3;
 }
 
 message CardData {

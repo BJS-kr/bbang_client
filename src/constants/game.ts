@@ -26,8 +26,8 @@ export enum CARD_TYPE {
 
 export enum CHARACTER_TYPE {
   NONE = 0,
-  CHA00001 = 1, // 르탄이
-  CHA00002 = 2, // 우탄이
+  CHA00001 = 1, // 빨강이
+  CHA00002 = 2, // 파랑이
   CHA00003 = 3, // 상어군
   CHA00004 = 4, // 기사군
   CHA00005 = 5, // 말랑이
@@ -37,9 +37,8 @@ export enum CHARACTER_TYPE {
   CHA00009 = 9, // 물안경군
   CHA00010 = 10, // 가면군
   CHA00011 = 11, // 슬라임
-  CHA00012 = 12, // 빨강이
-  CHA00013 = 13, // 파랑이
-  CHA00014 = 14, // 핑크슬라임
+  CHA00012 = 12, // 공룡이
+  CHA00013 = 13, // 핑크슬라임
 }
 
 export enum ROLE_TYPE {
