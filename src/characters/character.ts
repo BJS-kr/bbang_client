@@ -1,10 +1,11 @@
 import { cards } from '../cards';
 import { Card } from '../cards/card';
 import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { CardData, CharacterData, CharacterStateData } from '../protobuf/compiled';
+import { CardData, CharacterData, CharacterPositionData, CharacterStateData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 
+export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
 
 const HP_MIN = 0;
@@ -32,6 +33,7 @@ export class Character extends EventEmitter {
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
   state: CharacterStateData;
+  position: CharacterPosition;
   weapon: number;
   equips: number[];
   debuffs: number[];
@@ -41,11 +43,13 @@ export class Character extends EventEmitter {
     roleType,
     characterType,
     baseDefenseChance,
+    position,
   }: {
     hp: number;
     roleType: ROLE_TYPE;
     characterType: CHARACTER_TYPE;
     baseDefenseChance: number;
+    position: CharacterPosition;
   }) {
     super();
 
@@ -53,6 +57,7 @@ export class Character extends EventEmitter {
     this.characterType = characterType;
     this.roleType = roleType;
     this.baseDefenseChance = baseDefenseChance;
+    this.position = position;
 
     return new Proxy(this, handler);
   }
@@ -63,6 +68,8 @@ export class Character extends EventEmitter {
       roleType: this.roleType,
       hp: this.hp,
       weapon: this.weapon,
+      state: this.state,
+      position: this.position,
       equips: this.equips,
       debuffs: this.debuffs,
       handCards: this.getHandCards(),

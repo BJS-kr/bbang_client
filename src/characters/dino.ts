@@ -8,6 +8,7 @@ export class Dino extends Character {
       characterType: CHARACTER_TYPE.CHA00006,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00006],
       roleType: ROLE_TYPE.NONE,
+      position: { x: 0, y: 0 },
     });
   }
 

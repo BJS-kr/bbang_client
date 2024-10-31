@@ -1,5 +1,5 @@
 import { RoomState } from '../rooms/types';
-import { CARD_TYPE, CHARACTER_HP, CHARACTER_TYPE, PHASE_TYPE, ROLE_TYPE, USER_STATE } from '../constants/game';
+import { CARD_TYPE, CHARACTER_TYPE, GAME_INIT_POSITION, PHASE_TYPE, ROLE_TYPE } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
@@ -8,6 +8,7 @@ import {
   S2CGameStartNotification,
   S2CGameStartResponse,
   S2CPhaseUpdateNotification,
+  UserData,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../utils/writePayload';
@@ -15,9 +16,11 @@ import { rooms } from '../rooms/rooms';
 import { Context } from '../events/types';
 import { session } from '../users/session';
 import { config } from '../config/config';
+import { createCharacter } from '../characters/createCharacter';
+import { CardProps } from '../characters/character';
 
 // TODO
-const TARGET_CARD_COUNT = 1;
+const TARGET_CARD_BONUS = 1;
 const DAILY_CARD_COUNT = 2;
 const cardTypes = Object.values(CARD_TYPE);
 
@@ -52,13 +55,6 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
-  // 캐릭터 셔플 & 부여
-  const shuffleCharacters = Object.values(CHARACTER_TYPE).sort(() => Math.random() - 0.5);
-  for (let i = 0; i < room.users.length; i++) {
-    room.users[i].characterType = shuffleCharacters[i] as number;
-    room.users[i].hp = CHARACTER_HP[room.users[i].characterType];
-  }
-
   const roles = [ROLE_TYPE.TARGET, ROLE_TYPE.BODYGUARD, ROLE_TYPE.HITMAN, ROLE_TYPE.PSYCHOPATH];
   const additionalRoles = [ROLE_TYPE.BODYGUARD, ROLE_TYPE.HITMAN, ROLE_TYPE.PSYCHOPATH];
   const addRoleCount = room.users.length - roles.length;
@@ -69,13 +65,17 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     roles.push(additionalRoles[randNum]);
   }
 
-  // 역할 셔플 & 부여
+  // 역할, 캐릭터, 초기 위치 셔플
+  const shuffleCharacters = Object.values(CHARACTER_TYPE).sort(() => Math.random() - 0.5);
   const shuffleRoles = Object.values(ROLE_TYPE).sort(() => Math.random() - 0.5);
+  const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
+
+  // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
-    room.users[i].roleType = shuffleRoles[i] as number;
-    if (room.users[i].roleType === ROLE_TYPE.TARGET) {
-      room.users[i].hp += 1;
-    }
+    const characterType = shuffleCharacters[i] as number;
+    const roleType = shuffleRoles[i] as number;
+    room.users[i].character = createCharacter({ characterType, roleType });
+    room.users[i].character.position = suhfflePositions[i];
   }
 
   // 상태 변경
@@ -130,17 +130,17 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   }
 
   room.users.forEach((user) => {
-    user.handCards = [];
+    user.character.handCards.clear();
 
-    // 체력만큼 카드 분배
-    addRandCard(user, user.hp);
-
-    // 타겟은 카드 한장 더
-    if (user.roleType === ROLE_TYPE.TARGET) {
-      addRandCard(user, TARGET_CARD_COUNT);
+    let initCardCount = user.character.hp;
+    if (user.character.roleType === ROLE_TYPE.TARGET) {
+      initCardCount += TARGET_CARD_BONUS;
     }
 
-    // TODO 캐릭터 능력치 반영
+    for (let i = 0; i < initCardCount; i++) {
+      const card = createRandCard();
+      user.character.acquireCard(card);
+    }
   });
 
   room.state = RoomState.IN_GAME;
@@ -157,7 +157,6 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   room.users.forEach((user) => {
     writePayload(user.socket, PACKET_TYPE.GAME_START_NOTIFICATION, version, 0, {
       users: createUserDataView(user, room.users),
-      userPositions: [], // TODO 인덱스에 따른 포지션 초기값
     } satisfies MessageProps<S2CGameStartNotification>);
   });
 
@@ -175,16 +174,19 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
 
   switch (phaseType) {
     case PHASE_TYPE.DAY:
-      room.users.forEach((user) => {
-        const removeCount = getTotalCardCount(user) - user.hp;
+      const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
+      room.users.forEach((user, index) => {
+        user.character.position = suhfflePositions[index];
+        const removeCount = getTotalCardCount(user) - user.character.hp;
         if (removeCount > 0) {
           // 1. 초과 카드 대신 버리기
           removeRandCard(user, removeCount);
         }
         // 2. 데일리 카드 주기
-        addRandCard(user, DAILY_CARD_COUNT);
-
-        // 알림
+        for (let i = 0; i < DAILY_CARD_COUNT; i++) {
+          const card = createRandCard();
+          user.character.acquireCard(card);
+        }
         writePayload(user.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, config.client.version, 0, user);
       });
       break;
@@ -215,23 +217,15 @@ function createUserDataView(user, userDatas) {
       handCards = userData.handCards;
     }
 
-    return { ...userData, roleType, handCards };
+    return { ...userData, roleType, handCards } satisfies MessageProps<UserData>;
   });
 
   return result;
 }
 
-function addRandCard(user, count = 1) {
-  for (let i = 0; i < count; i++) {
-    const randType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-    const existCard = user.handCards.find((card) => card.type === randType);
-    if (existCard) {
-      existCard.count += 1;
-      continue;
-    }
-
-    user.handCards.push({ type: randType, count: 1 });
-  }
+function createRandCard(): CardProps {
+  const type = Math.floor(Math.random() * cardTypes.length);
+  return { type, count: 1 };
 }
 
 function getTotalCardCount(user) {

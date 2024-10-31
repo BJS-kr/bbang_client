@@ -4,10 +4,11 @@ import { CardProps, Character } from './character';
 export class Blue extends Character {
   constructor() {
     super({
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00013],
-      characterType: CHARACTER_TYPE.CHA00013,
+      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00002],
+      characterType: CHARACTER_TYPE.CHA00002,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00013],
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00002],
+      position: { x: 0, y: 0 },
     });
   }
 

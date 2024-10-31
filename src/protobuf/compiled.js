@@ -616,6 +616,7 @@ $root.CharacterData = (function() {
      * @property {number|null} [hp] CharacterData hp
      * @property {number|null} [weapon] CharacterData weapon
      * @property {ICharacterStateData|null} [state] CharacterData state
+     * @property {ICharacterPositionData|null} [position] CharacterData position
      * @property {Array.<number>|null} [equips] CharacterData equips
      * @property {Array.<number>|null} [debuffs] CharacterData debuffs
      * @property {Array.<ICardData>|null} [handCards] CharacterData handCards
@@ -680,6 +681,14 @@ $root.CharacterData = (function() {
     CharacterData.prototype.state = null;
 
     /**
+     * CharacterData position.
+     * @member {ICharacterPositionData|null|undefined} position
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.position = null;
+
+    /**
      * CharacterData equips.
      * @member {Array.<number>} equips
      * @memberof CharacterData
@@ -737,21 +746,23 @@ $root.CharacterData = (function() {
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.weapon);
         if (message.state != null && Object.hasOwnProperty.call(message, "state"))
             $root.CharacterStateData.encode(message.state, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
+            $root.CharacterPositionData.encode(message.position, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.equips != null && message.equips.length) {
-            writer.uint32(/* id 6, wireType 2 =*/50).fork();
+            writer.uint32(/* id 7, wireType 2 =*/58).fork();
             for (var i = 0; i < message.equips.length; ++i)
                 writer.int32(message.equips[i]);
             writer.ldelim();
         }
         if (message.debuffs != null && message.debuffs.length) {
-            writer.uint32(/* id 7, wireType 2 =*/58).fork();
+            writer.uint32(/* id 8, wireType 2 =*/66).fork();
             for (var i = 0; i < message.debuffs.length; ++i)
                 writer.int32(message.debuffs[i]);
             writer.ldelim();
         }
         if (message.handCards != null && message.handCards.length)
             for (var i = 0; i < message.handCards.length; ++i)
-                $root.CardData.encode(message.handCards[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+                $root.CardData.encode(message.handCards[i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
         return writer;
     };
 
@@ -807,6 +818,10 @@ $root.CharacterData = (function() {
                     break;
                 }
             case 6: {
+                    message.position = $root.CharacterPositionData.decode(reader, reader.uint32());
+                    break;
+                }
+            case 7: {
                     if (!(message.equips && message.equips.length))
                         message.equips = [];
                     if ((tag & 7) === 2) {
@@ -817,7 +832,7 @@ $root.CharacterData = (function() {
                         message.equips.push(reader.int32());
                     break;
                 }
-            case 7: {
+            case 8: {
                     if (!(message.debuffs && message.debuffs.length))
                         message.debuffs = [];
                     if ((tag & 7) === 2) {
@@ -828,7 +843,7 @@ $root.CharacterData = (function() {
                         message.debuffs.push(reader.int32());
                     break;
                 }
-            case 8: {
+            case 9: {
                     if (!(message.handCards && message.handCards.length))
                         message.handCards = [];
                     message.handCards.push($root.CardData.decode(reader, reader.uint32()));
@@ -886,6 +901,11 @@ $root.CharacterData = (function() {
             if (error)
                 return "state." + error;
         }
+        if (message.position != null && message.hasOwnProperty("position")) {
+            var error = $root.CharacterPositionData.verify(message.position);
+            if (error)
+                return "position." + error;
+        }
         if (message.equips != null && message.hasOwnProperty("equips")) {
             if (!Array.isArray(message.equips))
                 return "equips: array expected";
@@ -936,6 +956,11 @@ $root.CharacterData = (function() {
             if (typeof object.state !== "object")
                 throw TypeError(".CharacterData.state: object expected");
             message.state = $root.CharacterStateData.fromObject(object.state);
+        }
+        if (object.position != null) {
+            if (typeof object.position !== "object")
+                throw TypeError(".CharacterData.position: object expected");
+            message.position = $root.CharacterPositionData.fromObject(object.position);
         }
         if (object.equips) {
             if (!Array.isArray(object.equips))
@@ -988,6 +1013,7 @@ $root.CharacterData = (function() {
             object.hp = 0;
             object.weapon = 0;
             object.state = null;
+            object.position = null;
         }
         if (message.characterType != null && message.hasOwnProperty("characterType"))
             object.characterType = message.characterType;
@@ -999,6 +1025,8 @@ $root.CharacterData = (function() {
             object.weapon = message.weapon;
         if (message.state != null && message.hasOwnProperty("state"))
             object.state = $root.CharacterStateData.toObject(message.state, options);
+        if (message.position != null && message.hasOwnProperty("position"))
+            object.position = $root.CharacterPositionData.toObject(message.position, options);
         if (message.equips && message.equips.length) {
             object.equips = [];
             for (var j = 0; j < message.equips.length; ++j)
@@ -1046,26 +1074,25 @@ $root.CharacterData = (function() {
     return CharacterData;
 })();
 
-$root.UserPositionData = (function() {
+$root.CharacterPositionData = (function() {
 
     /**
-     * Properties of a UserPositionData.
-     * @exports IUserPositionData
-     * @interface IUserPositionData
-     * @property {string|null} [id] UserPositionData id
-     * @property {number|null} [x] UserPositionData x
-     * @property {number|null} [y] UserPositionData y
+     * Properties of a CharacterPositionData.
+     * @exports ICharacterPositionData
+     * @interface ICharacterPositionData
+     * @property {number|null} [x] CharacterPositionData x
+     * @property {number|null} [y] CharacterPositionData y
      */
 
     /**
-     * Constructs a new UserPositionData.
-     * @exports UserPositionData
-     * @classdesc Represents a UserPositionData.
-     * @implements IUserPositionData
+     * Constructs a new CharacterPositionData.
+     * @exports CharacterPositionData
+     * @classdesc Represents a CharacterPositionData.
+     * @implements ICharacterPositionData
      * @constructor
-     * @param {IUserPositionData=} [properties] Properties to set
+     * @param {ICharacterPositionData=} [properties] Properties to set
      */
-    function UserPositionData(properties) {
+    function CharacterPositionData(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1073,103 +1100,89 @@ $root.UserPositionData = (function() {
     }
 
     /**
-     * UserPositionData id.
-     * @member {string} id
-     * @memberof UserPositionData
-     * @instance
-     */
-    UserPositionData.prototype.id = "";
-
-    /**
-     * UserPositionData x.
+     * CharacterPositionData x.
      * @member {number} x
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @instance
      */
-    UserPositionData.prototype.x = 0;
+    CharacterPositionData.prototype.x = 0;
 
     /**
-     * UserPositionData y.
+     * CharacterPositionData y.
      * @member {number} y
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @instance
      */
-    UserPositionData.prototype.y = 0;
+    CharacterPositionData.prototype.y = 0;
 
     /**
-     * Creates a new UserPositionData instance using the specified properties.
+     * Creates a new CharacterPositionData instance using the specified properties.
      * @function create
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
-     * @param {IUserPositionData=} [properties] Properties to set
-     * @returns {UserPositionData} UserPositionData instance
+     * @param {ICharacterPositionData=} [properties] Properties to set
+     * @returns {CharacterPositionData} CharacterPositionData instance
      */
-    UserPositionData.create = function create(properties) {
-        return new UserPositionData(properties);
+    CharacterPositionData.create = function create(properties) {
+        return new CharacterPositionData(properties);
     };
 
     /**
-     * Encodes the specified UserPositionData message. Does not implicitly {@link UserPositionData.verify|verify} messages.
+     * Encodes the specified CharacterPositionData message. Does not implicitly {@link CharacterPositionData.verify|verify} messages.
      * @function encode
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
-     * @param {IUserPositionData} message UserPositionData message or plain object to encode
+     * @param {ICharacterPositionData} message CharacterPositionData message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserPositionData.encode = function encode(message, writer) {
+    CharacterPositionData.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.x);
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.x);
         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.y);
+            writer.uint32(/* id 3, wireType 5 =*/29).float(message.y);
         return writer;
     };
 
     /**
-     * Encodes the specified UserPositionData message, length delimited. Does not implicitly {@link UserPositionData.verify|verify} messages.
+     * Encodes the specified CharacterPositionData message, length delimited. Does not implicitly {@link CharacterPositionData.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
-     * @param {IUserPositionData} message UserPositionData message or plain object to encode
+     * @param {ICharacterPositionData} message CharacterPositionData message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserPositionData.encodeDelimited = function encodeDelimited(message, writer) {
+    CharacterPositionData.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a UserPositionData message from the specified reader or buffer.
+     * Decodes a CharacterPositionData message from the specified reader or buffer.
      * @function decode
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {UserPositionData} UserPositionData
+     * @returns {CharacterPositionData} CharacterPositionData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserPositionData.decode = function decode(reader, length) {
+    CharacterPositionData.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserPositionData();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.CharacterPositionData();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1: {
-                    message.id = reader.string();
-                    break;
-                }
             case 2: {
-                    message.x = reader.int32();
+                    message.x = reader.float();
                     break;
                 }
             case 3: {
-                    message.y = reader.int32();
+                    message.y = reader.float();
                     break;
                 }
             default:
@@ -1181,119 +1194,111 @@ $root.UserPositionData = (function() {
     };
 
     /**
-     * Decodes a UserPositionData message from the specified reader or buffer, length delimited.
+     * Decodes a CharacterPositionData message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UserPositionData} UserPositionData
+     * @returns {CharacterPositionData} CharacterPositionData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserPositionData.decodeDelimited = function decodeDelimited(reader) {
+    CharacterPositionData.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a UserPositionData message.
+     * Verifies a CharacterPositionData message.
      * @function verify
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    UserPositionData.verify = function verify(message) {
+    CharacterPositionData.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
         if (message.x != null && message.hasOwnProperty("x"))
-            if (!$util.isInteger(message.x))
-                return "x: integer expected";
+            if (typeof message.x !== "number")
+                return "x: number expected";
         if (message.y != null && message.hasOwnProperty("y"))
-            if (!$util.isInteger(message.y))
-                return "y: integer expected";
+            if (typeof message.y !== "number")
+                return "y: number expected";
         return null;
     };
 
     /**
-     * Creates a UserPositionData message from a plain object. Also converts values to their respective internal types.
+     * Creates a CharacterPositionData message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {UserPositionData} UserPositionData
+     * @returns {CharacterPositionData} CharacterPositionData
      */
-    UserPositionData.fromObject = function fromObject(object) {
-        if (object instanceof $root.UserPositionData)
+    CharacterPositionData.fromObject = function fromObject(object) {
+        if (object instanceof $root.CharacterPositionData)
             return object;
-        var message = new $root.UserPositionData();
-        if (object.id != null)
-            message.id = String(object.id);
+        var message = new $root.CharacterPositionData();
         if (object.x != null)
-            message.x = object.x | 0;
+            message.x = Number(object.x);
         if (object.y != null)
-            message.y = object.y | 0;
+            message.y = Number(object.y);
         return message;
     };
 
     /**
-     * Creates a plain object from a UserPositionData message. Also converts values to other types if specified.
+     * Creates a plain object from a CharacterPositionData message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
-     * @param {UserPositionData} message UserPositionData
+     * @param {CharacterPositionData} message CharacterPositionData
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    UserPositionData.toObject = function toObject(message, options) {
+    CharacterPositionData.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
         if (options.defaults) {
-            object.id = "";
             object.x = 0;
             object.y = 0;
         }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
         if (message.x != null && message.hasOwnProperty("x"))
-            object.x = message.x;
+            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
-            object.y = message.y;
+            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
         return object;
     };
 
     /**
-     * Converts this UserPositionData to JSON.
+     * Converts this CharacterPositionData to JSON.
      * @function toJSON
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    UserPositionData.prototype.toJSON = function toJSON() {
+    CharacterPositionData.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     /**
-     * Gets the default type url for UserPositionData
+     * Gets the default type url for CharacterPositionData
      * @function getTypeUrl
-     * @memberof UserPositionData
+     * @memberof CharacterPositionData
      * @static
      * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    UserPositionData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+    CharacterPositionData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
         if (typeUrlPrefix === undefined) {
             typeUrlPrefix = "type.googleapis.com";
         }
-        return typeUrlPrefix + "/UserPositionData";
+        return typeUrlPrefix + "/CharacterPositionData";
     };
 
-    return UserPositionData;
+    return CharacterPositionData;
 })();
 
 $root.CardData = (function() {
@@ -7123,7 +7128,6 @@ $root.S2CGameStartNotification = (function() {
      * @interface IS2CGameStartNotification
      * @property {IGameStateData|null} [gameState] S2CGameStartNotification gameState
      * @property {Array.<IUserData>|null} [users] S2CGameStartNotification users
-     * @property {Array.<IUserPositionData>|null} [userPositions] S2CGameStartNotification userPositions
      */
 
     /**
@@ -7136,7 +7140,6 @@ $root.S2CGameStartNotification = (function() {
      */
     function S2CGameStartNotification(properties) {
         this.users = [];
-        this.userPositions = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -7158,14 +7161,6 @@ $root.S2CGameStartNotification = (function() {
      * @instance
      */
     S2CGameStartNotification.prototype.users = $util.emptyArray;
-
-    /**
-     * S2CGameStartNotification userPositions.
-     * @member {Array.<IUserPositionData>} userPositions
-     * @memberof S2CGameStartNotification
-     * @instance
-     */
-    S2CGameStartNotification.prototype.userPositions = $util.emptyArray;
 
     /**
      * Creates a new S2CGameStartNotification instance using the specified properties.
@@ -7196,9 +7191,6 @@ $root.S2CGameStartNotification = (function() {
         if (message.users != null && message.users.length)
             for (var i = 0; i < message.users.length; ++i)
                 $root.UserData.encode(message.users[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-        if (message.userPositions != null && message.userPositions.length)
-            for (var i = 0; i < message.userPositions.length; ++i)
-                $root.UserPositionData.encode(message.userPositions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -7241,12 +7233,6 @@ $root.S2CGameStartNotification = (function() {
                     if (!(message.users && message.users.length))
                         message.users = [];
                     message.users.push($root.UserData.decode(reader, reader.uint32()));
-                    break;
-                }
-            case 3: {
-                    if (!(message.userPositions && message.userPositions.length))
-                        message.userPositions = [];
-                    message.userPositions.push($root.UserPositionData.decode(reader, reader.uint32()));
                     break;
                 }
             default:
@@ -7298,15 +7284,6 @@ $root.S2CGameStartNotification = (function() {
                     return "users." + error;
             }
         }
-        if (message.userPositions != null && message.hasOwnProperty("userPositions")) {
-            if (!Array.isArray(message.userPositions))
-                return "userPositions: array expected";
-            for (var i = 0; i < message.userPositions.length; ++i) {
-                var error = $root.UserPositionData.verify(message.userPositions[i]);
-                if (error)
-                    return "userPositions." + error;
-            }
-        }
         return null;
     };
 
@@ -7337,16 +7314,6 @@ $root.S2CGameStartNotification = (function() {
                 message.users[i] = $root.UserData.fromObject(object.users[i]);
             }
         }
-        if (object.userPositions) {
-            if (!Array.isArray(object.userPositions))
-                throw TypeError(".S2CGameStartNotification.userPositions: array expected");
-            message.userPositions = [];
-            for (var i = 0; i < object.userPositions.length; ++i) {
-                if (typeof object.userPositions[i] !== "object")
-                    throw TypeError(".S2CGameStartNotification.userPositions: object expected");
-                message.userPositions[i] = $root.UserPositionData.fromObject(object.userPositions[i]);
-            }
-        }
         return message;
     };
 
@@ -7363,10 +7330,8 @@ $root.S2CGameStartNotification = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults) {
+        if (options.arrays || options.defaults)
             object.users = [];
-            object.userPositions = [];
-        }
         if (options.defaults)
             object.gameState = null;
         if (message.gameState != null && message.hasOwnProperty("gameState"))
@@ -7375,11 +7340,6 @@ $root.S2CGameStartNotification = (function() {
             object.users = [];
             for (var j = 0; j < message.users.length; ++j)
                 object.users[j] = $root.UserData.toObject(message.users[j], options);
-        }
-        if (message.userPositions && message.userPositions.length) {
-            object.userPositions = [];
-            for (var j = 0; j < message.userPositions.length; ++j)
-                object.userPositions[j] = $root.UserPositionData.toObject(message.userPositions[j], options);
         }
         return object;
     };
@@ -7646,7 +7606,8 @@ $root.S2CPositionUpdateNotification = (function() {
      * Properties of a S2CPositionUpdateNotification.
      * @exports IS2CPositionUpdateNotification
      * @interface IS2CPositionUpdateNotification
-     * @property {IUserPositionData|null} [UserPosition] S2CPositionUpdateNotification UserPosition
+     * @property {string|null} [userId] S2CPositionUpdateNotification userId
+     * @property {ICharacterPositionData|null} [position] S2CPositionUpdateNotification position
      */
 
     /**
@@ -7665,12 +7626,20 @@ $root.S2CPositionUpdateNotification = (function() {
     }
 
     /**
-     * S2CPositionUpdateNotification UserPosition.
-     * @member {IUserPositionData|null|undefined} UserPosition
+     * S2CPositionUpdateNotification userId.
+     * @member {string} userId
      * @memberof S2CPositionUpdateNotification
      * @instance
      */
-    S2CPositionUpdateNotification.prototype.UserPosition = null;
+    S2CPositionUpdateNotification.prototype.userId = "";
+
+    /**
+     * S2CPositionUpdateNotification position.
+     * @member {ICharacterPositionData|null|undefined} position
+     * @memberof S2CPositionUpdateNotification
+     * @instance
+     */
+    S2CPositionUpdateNotification.prototype.position = null;
 
     /**
      * Creates a new S2CPositionUpdateNotification instance using the specified properties.
@@ -7696,8 +7665,10 @@ $root.S2CPositionUpdateNotification = (function() {
     S2CPositionUpdateNotification.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.UserPosition != null && Object.hasOwnProperty.call(message, "UserPosition"))
-            $root.UserPositionData.encode(message.UserPosition, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
+            $root.CharacterPositionData.encode(message.position, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -7733,7 +7704,11 @@ $root.S2CPositionUpdateNotification = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.UserPosition = $root.UserPositionData.decode(reader, reader.uint32());
+                    message.userId = reader.string();
+                    break;
+                }
+            case 2: {
+                    message.position = $root.CharacterPositionData.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -7771,10 +7746,13 @@ $root.S2CPositionUpdateNotification = (function() {
     S2CPositionUpdateNotification.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.UserPosition != null && message.hasOwnProperty("UserPosition")) {
-            var error = $root.UserPositionData.verify(message.UserPosition);
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            if (!$util.isString(message.userId))
+                return "userId: string expected";
+        if (message.position != null && message.hasOwnProperty("position")) {
+            var error = $root.CharacterPositionData.verify(message.position);
             if (error)
-                return "UserPosition." + error;
+                return "position." + error;
         }
         return null;
     };
@@ -7791,10 +7769,12 @@ $root.S2CPositionUpdateNotification = (function() {
         if (object instanceof $root.S2CPositionUpdateNotification)
             return object;
         var message = new $root.S2CPositionUpdateNotification();
-        if (object.UserPosition != null) {
-            if (typeof object.UserPosition !== "object")
-                throw TypeError(".S2CPositionUpdateNotification.UserPosition: object expected");
-            message.UserPosition = $root.UserPositionData.fromObject(object.UserPosition);
+        if (object.userId != null)
+            message.userId = String(object.userId);
+        if (object.position != null) {
+            if (typeof object.position !== "object")
+                throw TypeError(".S2CPositionUpdateNotification.position: object expected");
+            message.position = $root.CharacterPositionData.fromObject(object.position);
         }
         return message;
     };
@@ -7812,10 +7792,14 @@ $root.S2CPositionUpdateNotification = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults)
-            object.UserPosition = null;
-        if (message.UserPosition != null && message.hasOwnProperty("UserPosition"))
-            object.UserPosition = $root.UserPositionData.toObject(message.UserPosition, options);
+        if (options.defaults) {
+            object.userId = "";
+            object.position = null;
+        }
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            object.userId = message.userId;
+        if (message.position != null && message.hasOwnProperty("position"))
+            object.position = $root.CharacterPositionData.toObject(message.position, options);
         return object;
     };
 
