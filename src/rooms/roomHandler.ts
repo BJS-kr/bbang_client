@@ -30,7 +30,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const roomId = rooms.createRoomId();
   const user = session.getUser(ctx.userId);
 
-  if (!user || !user.nickname) {
+  if (!user) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
@@ -40,7 +40,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const joinResult = rooms.join(roomId, new User(user.id, user.nickname, socket), ctx);
+  const joinResult = rooms.join(roomId, new User(user.id, user.nickname ?? 'pseudo-nickname', socket), ctx);
 
   if (!joinResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
@@ -60,10 +60,10 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   const { roomId } = joinRoomRequest;
   const user = session.getUser(ctx.userId);
 
-  if (!user || !user.nickname) {
+  if (!user) {
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
-  const joinUser = new User(user.id, user.nickname, socket);
+  const joinUser = new User(user.id, user.nickname ?? 'pseudo-nickname', socket);
   const joinResult = rooms.join(roomId, joinUser, ctx);
 
   if (!joinResult) {
@@ -95,11 +95,11 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
   const roomId = rooms.pickRandomRoomId();
   const user = session.getUser(ctx.userId);
 
-  if (!user || !user.nickname) {
+  if (!user) {
     return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
-  const joinUser = new User(user.id, user.nickname, socket);
+  const joinUser = new User(user.id, user.nickname ?? 'pseudo-nickname', socket);
   const joinResult = rooms.join(roomId, joinUser, ctx);
 
   if (!joinResult) {
