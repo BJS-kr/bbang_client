@@ -17,6 +17,10 @@ export class Dino extends Character {
   }
 
   recoverByLoseTwoCards(card1: Card, card2: Card) {
+    if (this.cards.get(card1.type) < 1 || this.cards.get(card2.type) < 1) {
+      return;
+    }
+
     this.loseCard(card1);
     this.loseCard(card2);
     Character.recover(1, this);
