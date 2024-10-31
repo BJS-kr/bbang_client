@@ -171,7 +171,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   } satisfies MessageProps<S2CLeaveRoomResponse>);
 
   const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
-    userId: leavedUser.userId,
+    userId: leavedUser.id,
   };
 
   room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);

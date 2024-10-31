@@ -93,7 +93,7 @@ export class Rooms {
 
     if (!room) return false;
 
-    return room.users.some((user) => user.userId === userId);
+    return room.users.some((user) => user.id === userId);
   }
 
   join(roomId: number, user: User, ctx: Context) {
@@ -105,7 +105,7 @@ export class Rooms {
 
     if (this.isFull(roomId)) return false;
 
-    if (this.isUserInRoom(roomId, user.userId)) return false;
+    if (this.isUserInRoom(roomId, user.id)) return false;
 
     room.users.push(user);
     ctx.roomId = roomId;
@@ -120,7 +120,7 @@ export class Rooms {
 
     if (!room) return null;
 
-    const userIndex = room.users.findIndex((user) => user.userId === userId);
+    const userIndex = room.users.findIndex((user) => user.id === userId);
 
     if (userIndex === -1) return null;
 

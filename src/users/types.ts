@@ -13,7 +13,7 @@ type UserState = {
 };
 
 export class User {
-  userId: string;
+  id: string;
   nickname: string;
   characterType: number = CHARACTER_TYPE.NONE;
   roleType: number = ROLE_TYPE.NONE;
@@ -30,7 +30,7 @@ export class User {
   socket: net.Socket;
 
   constructor(userId: string, nickname: string, socket: net.Socket) {
-    this.userId = userId;
+    this.id = userId;
     this.nickname = nickname;
     this.socket = socket;
   }

@@ -41,7 +41,7 @@ test('Rooms Test', async (t) => {
     assert.equal(result, true);
     assert.equal(joinResult, true);
     assert.equal(room.users.length, 1);
-    assert.equal(room.users[0].userId, 'test');
+    assert.equal(room.users[0].id, 'test');
   });
 
   await t.test('leave room', () => {
