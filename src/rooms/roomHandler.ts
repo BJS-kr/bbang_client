@@ -98,7 +98,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
 };
 
 export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, sequence, joinRandomRoomRequest, ctx: Context) => {
-  const roomId = rooms.pickRandomRoomId();
+  const roomId = rooms.pickRandomRoomId({}, ctx.userId);
   const user = session.getUser(ctx.userId);
 
   if (!user) {
