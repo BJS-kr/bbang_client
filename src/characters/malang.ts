@@ -1,3 +1,4 @@
+import { pickRandomCardType } from '../cards/pickRandomCard';
 import { CARD_TYPE, CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
 import { Character } from './character';
 
@@ -13,8 +14,7 @@ export class Malang extends Character {
 
     this.on('takeDamage', (damage) => {
       for (let i = 0; i < damage; i++) {
-        // TODO 카드 획득 랜덤이어야 하나?
-        this.acquireCard({ type: CARD_TYPE.CAD00001, count: 1 });
+        this.acquireCard({ type: pickRandomCardType(), count: 1 });
       }
     });
   }
