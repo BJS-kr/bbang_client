@@ -8,6 +8,7 @@ export class SwimGlasses extends Character {
       characterType: CHARACTER_TYPE.CHA00009,
       roleType: ROLE_TYPE.NONE,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00009],
+      position: { x: 0, y: 0 },
     });
   }
 }

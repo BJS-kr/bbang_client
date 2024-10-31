@@ -8,6 +8,7 @@ export class Malang extends Character {
       characterType: CHARACTER_TYPE.CHA00005,
       roleType: ROLE_TYPE.NONE,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00005],
+      position: { x: 0, y: 0 },
     });
 
     this.on('takeDamage', (damage) => {
