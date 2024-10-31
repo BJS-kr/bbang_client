@@ -5,8 +5,7 @@
   "scripts": {
     "start": "ts-node src/server.ts",
     "dev": "nodemon src/server.ts",
-    "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate",
+    "migrate": "drizzle-kit generate --config ./src/db/drizzle.config.ts && drizzle-kit migrate --config ./src/db/drizzle.config.ts",
     "push": "drizzle-kit push",
     "generate:types": "pbjs -t static-module -w commonjs -o src/protobuf/compiled.js src/protobuf/game.proto && pbts -o src/protobuf/compiled.d.ts src/protobuf/compiled.js"
   },

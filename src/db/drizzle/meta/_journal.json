@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1730335245379,
+      "tag": "20241031004045_orange_stone_men",
+      "breakpoints": true
+    }
+  ]
+}
