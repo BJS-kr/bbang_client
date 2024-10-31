@@ -1,4 +1,4 @@
-import { CARD_TYPE, CHARACTER_TYPE } from '../src/constants/game';
+import { CARD_TYPE, CHARACTER_TYPE } from '../constants/game';
 import { Card, Character } from './character';
 import { v4 as uuid } from 'uuid';
 

@@ -1,6 +1,6 @@
-import { CARD_TYPE, CHARACTER_TYPE } from '../src/constants/game';
-import { CardData } from '../src/protobuf/compiled';
-import { MessageProps } from '../src/protobuf/props';
+import { CARD_TYPE, CHARACTER_TYPE } from '../constants/game';
+import { CardData } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 
 export type Card = MessageProps<CardData>;
