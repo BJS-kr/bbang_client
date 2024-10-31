@@ -1,7 +1,8 @@
-import { FailCode } from '../constants/fail';
-import { CARD_TYPE, CHARACTER_HP, CHARACTER_TYPE, PHASE_TYPE, ROLE_TYPE, ROOM_STATE_TYPE, USER_STATE } from '../constants/game';
+import { RoomState } from '../rooms/types';
+import { CARD_TYPE, CHARACTER_HP, CHARACTER_TYPE, PHASE_TYPE, ROLE_TYPE, USER_STATE } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
+  GlobalFailCode,
   S2CGamePrepareNotification,
   S2CGamePrepareResponse,
   S2CGameStartNotification,
@@ -25,7 +26,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   if (user === null) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
@@ -33,28 +34,28 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   if (room === null) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
-  if (room.state !== ROOM_STATE_TYPE.WAIT) {
+  if (room.state !== RoomState.WAIT || room.users.length < 4) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
   if (user.id !== room.ownerId) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
   // 캐릭터 셔플 & 부여
   const shuffleCharacters = Object.values(CHARACTER_TYPE).sort(() => Math.random() - 0.5);
   for (let i = 0; i < room.users.length; i++) {
-    room.users[i].characterType = shuffleCharacters[i];
+    room.users[i].characterType = shuffleCharacters[i] as number;
     room.users[i].hp = CHARACTER_HP[room.users[i].characterType];
   }
 
@@ -71,19 +72,19 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   // 역할 셔플 & 부여
   const shuffleRoles = Object.values(ROLE_TYPE).sort(() => Math.random() - 0.5);
   for (let i = 0; i < room.users.length; i++) {
-    room.users[i].roleType = shuffleRoles[i];
+    room.users[i].roleType = shuffleRoles[i] as number;
     if (room.users[i].roleType === ROLE_TYPE.TARGET) {
       room.users[i].hp += 1;
     }
   }
 
   // 상태 변경
-  room.state = ROOM_STATE_TYPE.PREPARE;
+  room.state = RoomState.PREPARE;
 
   // 게임 준비 응답
   const responsePayload: MessageProps<S2CGamePrepareResponse> = {
     success: true,
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   };
   writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, responsePayload);
 
@@ -102,7 +103,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   if (user === null) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
@@ -110,21 +111,21 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   if (room === null) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
-  if (room.state !== ROOM_STATE_TYPE.PREPARE) {
+  if (room.state !== RoomState.PREPARE) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
   if (user.id !== room.ownerId) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: FailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_REQUEST,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
@@ -142,13 +143,13 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     // TODO 캐릭터 능력치 반영
   });
 
-  room.state = ROOM_STATE_TYPE.INGAME;
+  room.state = RoomState.IN_GAME;
   room.gameState.gameStart(ctx.roomId, onPhaseChange);
 
   // 게임 시작 응답
   const responsePayload: MessageProps<S2CGameStartResponse> = {
     success: true,
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   };
   writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, responsePayload);
 
@@ -167,6 +168,11 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
   console.log(`[onPhaseChange] roomId: ${roomId}, phaseType:${phaseType}`);
 
   const room = rooms.getRoom(roomId);
+  if (room === null) {
+    console.error(`[onPhaseChange] Cannot find room:${roomId}`);
+    return;
+  }
+
   switch (phaseType) {
     case PHASE_TYPE.DAY:
       room.users.forEach((user) => {
@@ -194,7 +200,7 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
     phaseType: phaseType,
     nextPhaseAt: nextPhaseAt,
   };
-  rooms.broadcast(room.users, PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, responsePayload);
+  room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, responsePayload);
 };
 
 function createUserDataView(user, userDatas) {

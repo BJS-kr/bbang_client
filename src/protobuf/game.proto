@@ -305,4 +305,5 @@ enum GlobalFailCode {
     CREATE_ROOM_FAILED = 4;
     JOIN_ROOM_FAILED = 5;
     LEAVE_ROOM_FAILED = 6;
+    REGISTER_FAILED = 7;
 }

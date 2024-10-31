@@ -1,4 +1,3 @@
-import { FailCode } from '../constants/fail';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
@@ -31,17 +30,16 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const roomId = rooms.createRoomId();
   const user = session.getUser(ctx.userId);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const createResult = rooms.createRoom(roomId, name, user.id, maxUserNum);
-
+  const createResult = rooms.create(roomId, name, user.id, maxUserNum);
   if (!createResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const joinResult = rooms.joinRoom(roomId, new User(user.id, user.nickname, socket), ctx);
+  const joinResult = rooms.join(roomId, new User(user.id, user.nickname, socket), ctx);
 
   if (!joinResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
@@ -51,7 +49,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const payload: MessageProps<S2CCreateRoomResponse> = {
     success: true,
     room,
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   };
 
   return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, payload);
@@ -61,21 +59,26 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   const { roomId } = joinRoomRequest;
   const user = session.getUser(ctx.userId);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
   const joinUser = new User(user.id, user.nickname, socket);
-  const joinResult = rooms.joinRoom(roomId, joinUser, ctx);
+  const joinResult = rooms.join(roomId, joinUser, ctx);
 
   if (!joinResult) {
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
   const room = rooms.getRoom(roomId);
+
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
+  }
+
   const payload: MessageProps<S2CJoinRoomResponse> = {
     success: true,
     room,
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   };
 
   writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, payload);
@@ -84,30 +87,34 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
     joinUser,
   };
 
-  const targets = room.users.filter((user) => user.id !== joinUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
+  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
 export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, sequence, joinRandomRoomRequest, ctx: Context) => {
   const roomId = rooms.pickRandomRoomId();
   const user = session.getUser(ctx.userId);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
   const joinUser = new User(user.id, user.nickname, socket);
-  const joinResult = rooms.joinRoom(roomId, joinUser, ctx);
+  const joinResult = rooms.join(roomId, joinUser, ctx);
 
   if (!joinResult) {
     return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
   const room = rooms.getRoom(roomId);
+
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
+  }
+
   const payload: MessageProps<S2CJoinRandomRoomResponse> = {
     success: true,
     room,
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   };
 
   writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, payload);
@@ -116,8 +123,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
     joinUser,
   };
 
-  const targets = room.users.filter((user) => user.id !== joinUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
+  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
 export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, leaveRoomRequest, ctx: Context) => {
@@ -131,7 +137,16 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     } satisfies MessageProps<S2CLeaveRoomResponse>);
   }
 
-  const leavedUser = rooms.leaveRoom(roomId, ctx.userId, ctx);
+  const room = rooms.getRoom(roomId);
+
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.LEAVE_ROOM_FAILED,
+    } satisfies MessageProps<S2CLeaveRoomResponse>);
+  }
+
+  const leavedUser = rooms.quit(roomId, ctx.userId, ctx);
 
   if (!leavedUser) {
     return writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
@@ -142,13 +157,12 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
 
   writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
     success: true,
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   } satisfies MessageProps<S2CLeaveRoomResponse>);
 
   const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
     userId: leavedUser.id,
   };
 
-  const targets = rooms.getRoom(roomId)?.users.filter((user) => user.id !== leavedUser.id) ?? [];
-  rooms.broadcast(targets, PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
+  room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
 };

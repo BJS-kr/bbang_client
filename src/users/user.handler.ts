@@ -2,13 +2,11 @@ import { PACKET_TYPE } from '../constants/packetType';
 import { createUser, getUserByUserId } from './user.repository';
 import { writePayload } from '../utils/writePayload';
 import { ROLE_TYPE, USER_STATE } from '../constants/game';
-import { FailCode } from '../constants/fail';
-import net from 'node:net';
-import { S2CLoginResponse } from '../protobuf/compiled';
+import { GlobalFailCode, S2CLoginResponse } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { User } from './types';
 import { session } from './session';
 import { Context } from '../events/types';
+import net from 'node:net';
 
 export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
@@ -21,7 +19,7 @@ export const registerRequestHandler = async (socket: net.Socket, version, sequen
   const payload = {
     success: isError ? false : true,
     message: isError ? '회원가입 실패' : '회원가입 성공',
-    failCode: isError ? FailCode.REGISTER_FAILED : FailCode.NONE,
+    failCode: isError ? GlobalFailCode.REGISTER_FAILED : GlobalFailCode.NONE,
   };
 
   writePayload(socket, PACKET_TYPE.REGISTER_RESPONSE, version, sequence, payload);
@@ -38,7 +36,7 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
     return writePayload(socket, PACKET_TYPE.LOGIN_RESPONSE, version, sequence, {
       success: false,
       message: '로그인 실패',
-      failCode: FailCode.AUTHENTICATION_FAILED,
+      failCode: GlobalFailCode.AUTHENTICATION_FAILED,
     });
   }
 
@@ -59,7 +57,7 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
         nextStateAt: 0,
       },
     },
-    failCode: FailCode.NONE,
+    failCode: GlobalFailCode.NONE,
   };
 
   writePayload(socket, PACKET_TYPE.LOGIN_RESPONSE, version, sequence, payload);
