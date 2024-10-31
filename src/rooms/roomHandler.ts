@@ -49,7 +49,10 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const room = rooms.getRoom(roomId);
   const payload: MessageProps<S2CCreateRoomResponse> = {
     success: true,
-    room,
+    room: {
+      id: roomId,
+      ...room,
+    },
     failCode: GlobalFailCode.NONE,
   };
 

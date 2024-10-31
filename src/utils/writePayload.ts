@@ -1,4 +1,4 @@
-import { log } from '../utils/logger';
+import { error, log } from '../utils/logger';
 import { createPacket, encodePayload } from '../protobuf/packet';
 
 export function writePayload(socket, packetType, version, sequence, payload) {
@@ -12,6 +12,6 @@ export function writePayload(socket, packetType, version, sequence, payload) {
 
     socket.write(packet);
   } catch (e) {
-    console.error(e);
+    error(e);
   }
 }
