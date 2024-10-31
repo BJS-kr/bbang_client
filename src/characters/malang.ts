@@ -1,13 +1,13 @@
-import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+import { CARD_TYPE, CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
 import { Character } from './character';
 
 export class Malang extends Character {
   constructor() {
     super({
-      hp: 4,
+      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00005],
       characterType: CHARACTER_TYPE.CHA00005,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: 0,
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00005],
     });
 
     this.on('takeDamage', (damage) => {

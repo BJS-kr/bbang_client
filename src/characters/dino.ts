@@ -1,13 +1,13 @@
-import { CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
 import { Card, Character } from './character';
 import { v4 as uuid } from 'uuid';
 
 export class Dino extends Character {
   constructor() {
     super({
-      hp: 4,
+      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00006],
       characterType: CHARACTER_TYPE.CHA00006,
-      baseDefenseChance: 0,
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00006],
       roleType: ROLE_TYPE.NONE,
     });
   }

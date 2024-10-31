@@ -33,7 +33,6 @@ export class Character extends EventEmitter {
   weapon: number;
   equips: number[];
   debuffs: number[];
-  invisibleFrom = new Set<Character>();
 
   constructor({
     hp,
@@ -75,7 +74,7 @@ export class Character extends EventEmitter {
   }
 
   isDefended() {
-    return this.baseDefenseChance > Math.random() * 100;
+    return this.baseDefenseChance > Math.random();
   }
 
   acquireCard(card: Card) {
@@ -92,22 +91,6 @@ export class Character extends EventEmitter {
     }
 
     return card;
-  }
-
-  addInvisibleFrom(characters: Character[]) {
-    characters.forEach((character) => {
-      this.invisibleFrom.add(character);
-    });
-
-    return characters;
-  }
-
-  removeInvisibleFrom(characters: Character[]) {
-    characters.forEach((character) => {
-      this.invisibleFrom.delete(character);
-    });
-
-    return characters;
   }
 
   getRandomCard() {
