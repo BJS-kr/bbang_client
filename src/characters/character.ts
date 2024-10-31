@@ -76,7 +76,7 @@ export class Character extends EventEmitter {
     };
   }
 
-  useCard(card: CardProps): Card<(...args: any) => boolean> | Error {
+  useCard(card: CardProps): Card<Function> | Error {
     if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
 
     this.loseCard(card);

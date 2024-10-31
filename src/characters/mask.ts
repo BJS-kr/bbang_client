@@ -13,6 +13,8 @@ export class Mask extends Character {
   }
 
   acquireCardsFromDeadCharacter(character: Character) {
+    if (character.hp > 0) return;
+
     for (const [type, count] of character.handCards.entries()) {
       this.acquireCard({ type, count });
     }
