@@ -1,18 +1,13 @@
-import { CHARACTER_TYPE } from '../constants/game';
+import { CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
 import { Card, Character } from './character';
-import { v4 as uuid } from 'uuid';
 
 export class Knight extends Character {
   constructor() {
     super({
-      instanceId: uuid(),
-      name: '기사군',
       hp: 4,
       characterType: CHARACTER_TYPE.CHA00004,
-      isLeft: true,
       baseDefenseChance: 0,
-      amountForDefense: 2,
-      bangPerDay: 1,
+      roleType: ROLE_TYPE.NONE,
     });
   }
 

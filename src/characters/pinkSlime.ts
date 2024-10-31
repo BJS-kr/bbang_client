@@ -1,18 +1,13 @@
-import { CARD_TYPE, CHARACTER_TYPE } from '../constants/game';
-import { Card, Character } from './character';
-import { v4 as uuid } from 'uuid';
+import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+import { Character } from './character';
 
 export class PinkSlime extends Character {
   constructor() {
     super({
-      instanceId: uuid(),
-      name: '핑크슬라임',
       hp: 3,
       characterType: CHARACTER_TYPE.CHA00014,
-      isLeft: false,
+      roleType: ROLE_TYPE.NONE,
       baseDefenseChance: 0,
-      amountForDefense: 1,
-      bangPerDay: 1,
     });
   }
 

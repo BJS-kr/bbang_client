@@ -1,18 +1,13 @@
-import { CARD_TYPE, CHARACTER_TYPE } from '../constants/game';
+import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
 import { Character } from './character';
-import { v4 as uuid } from 'uuid';
 
 export class Malang extends Character {
   constructor() {
     super({
-      instanceId: uuid(),
-      name: '말랑이',
       hp: 4,
       characterType: CHARACTER_TYPE.CHA00005,
-      isLeft: false,
+      roleType: ROLE_TYPE.NONE,
       baseDefenseChance: 0,
-      amountForDefense: 1,
-      bangPerDay: 1,
     });
 
     this.on('takeDamage', (damage) => {

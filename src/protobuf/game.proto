@@ -18,14 +18,18 @@ message RoomData {
 message UserData {
     string id = 1;
     string nickname = 2;
-    int32 characterType = 3;
-    int32 roleType = 4; // TARGET 혹은 자신일 경우에만 세팅, 그 외엔 NONE으로 세팅
-    int32 hp = 5;
-    int32 weapon = 6;
-    UserStateData state = 7;
-    repeated int32 equips = 8;
-    repeated int32 debuffs = 9;
-    repeated CardData handCards = 10; // 자신일 경우에만 세팅, 그 외엔 빈 배열로 세팅
+    CharacterData characterData = 3;
+}
+
+message CharacterData {
+    int32 characterType = 1;
+    int32 roleType = 2;
+    int32 hp = 3;
+    int32 weapon = 4;
+    CharacterStateData state = 5;
+    repeated int32 equips = 6;
+    repeated int32 debuffs = 7;
+    repeated CardData handCards = 8;
 }
 
 message UserPositionData {
@@ -44,7 +48,7 @@ message GameStateData {
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
 }
 
-message UserStateData {
+message CharacterStateData {
     int32 state = 1;
     int32 nextState = 2;
     int64 nextStateAt = 3; // state가 nextState로 풀리는 밀리초 타임스탬프. state가 NONE이면 0

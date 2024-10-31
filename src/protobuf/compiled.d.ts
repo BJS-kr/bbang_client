@@ -136,29 +136,8 @@ export interface IUserData {
     /** UserData nickname */
     nickname?: (string|null);
 
-    /** UserData characterType */
-    characterType?: (number|null);
-
-    /** UserData roleType */
-    roleType?: (number|null);
-
-    /** UserData hp */
-    hp?: (number|null);
-
-    /** UserData weapon */
-    weapon?: (number|null);
-
-    /** UserData state */
-    state?: (IUserStateData|null);
-
-    /** UserData equips */
-    equips?: (number[]|null);
-
-    /** UserData debuffs */
-    debuffs?: (number[]|null);
-
-    /** UserData handCards */
-    handCards?: (ICardData[]|null);
+    /** UserData characterData */
+    characterData?: (ICharacterData|null);
 }
 
 /** Represents a UserData. */
@@ -176,29 +155,8 @@ export class UserData implements IUserData {
     /** UserData nickname. */
     public nickname: string;
 
-    /** UserData characterType. */
-    public characterType: number;
-
-    /** UserData roleType. */
-    public roleType: number;
-
-    /** UserData hp. */
-    public hp: number;
-
-    /** UserData weapon. */
-    public weapon: number;
-
-    /** UserData state. */
-    public state?: (IUserStateData|null);
-
-    /** UserData equips. */
-    public equips: number[];
-
-    /** UserData debuffs. */
-    public debuffs: number[];
-
-    /** UserData handCards. */
-    public handCards: ICardData[];
+    /** UserData characterData. */
+    public characterData?: (ICharacterData|null);
 
     /**
      * Creates a new UserData instance using the specified properties.
@@ -272,6 +230,145 @@ export class UserData implements IUserData {
 
     /**
      * Gets the default type url for UserData
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+/** Properties of a CharacterData. */
+export interface ICharacterData {
+
+    /** CharacterData characterType */
+    characterType?: (number|null);
+
+    /** CharacterData roleType */
+    roleType?: (number|null);
+
+    /** CharacterData hp */
+    hp?: (number|null);
+
+    /** CharacterData weapon */
+    weapon?: (number|null);
+
+    /** CharacterData state */
+    state?: (ICharacterStateData|null);
+
+    /** CharacterData equips */
+    equips?: (number[]|null);
+
+    /** CharacterData debuffs */
+    debuffs?: (number[]|null);
+
+    /** CharacterData handCards */
+    handCards?: (ICardData[]|null);
+}
+
+/** Represents a CharacterData. */
+export class CharacterData implements ICharacterData {
+
+    /**
+     * Constructs a new CharacterData.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: ICharacterData);
+
+    /** CharacterData characterType. */
+    public characterType: number;
+
+    /** CharacterData roleType. */
+    public roleType: number;
+
+    /** CharacterData hp. */
+    public hp: number;
+
+    /** CharacterData weapon. */
+    public weapon: number;
+
+    /** CharacterData state. */
+    public state?: (ICharacterStateData|null);
+
+    /** CharacterData equips. */
+    public equips: number[];
+
+    /** CharacterData debuffs. */
+    public debuffs: number[];
+
+    /** CharacterData handCards. */
+    public handCards: ICardData[];
+
+    /**
+     * Creates a new CharacterData instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns CharacterData instance
+     */
+    public static create(properties?: ICharacterData): CharacterData;
+
+    /**
+     * Encodes the specified CharacterData message. Does not implicitly {@link CharacterData.verify|verify} messages.
+     * @param message CharacterData message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: ICharacterData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified CharacterData message, length delimited. Does not implicitly {@link CharacterData.verify|verify} messages.
+     * @param message CharacterData message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: ICharacterData, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a CharacterData message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns CharacterData
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CharacterData;
+
+    /**
+     * Decodes a CharacterData message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns CharacterData
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CharacterData;
+
+    /**
+     * Verifies a CharacterData message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a CharacterData message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns CharacterData
+     */
+    public static fromObject(object: { [k: string]: any }): CharacterData;
+
+    /**
+     * Creates a plain object from a CharacterData message. Also converts values to other types if specified.
+     * @param message CharacterData
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: CharacterData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this CharacterData to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for CharacterData
      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns The default type url
      */
@@ -593,109 +690,109 @@ export class GameStateData implements IGameStateData {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
-/** Properties of a UserStateData. */
-export interface IUserStateData {
+/** Properties of a CharacterStateData. */
+export interface ICharacterStateData {
 
-    /** UserStateData state */
+    /** CharacterStateData state */
     state?: (number|null);
 
-    /** UserStateData nextState */
+    /** CharacterStateData nextState */
     nextState?: (number|null);
 
-    /** UserStateData nextStateAt */
+    /** CharacterStateData nextStateAt */
     nextStateAt?: (number|Long|null);
 }
 
-/** Represents a UserStateData. */
-export class UserStateData implements IUserStateData {
+/** Represents a CharacterStateData. */
+export class CharacterStateData implements ICharacterStateData {
 
     /**
-     * Constructs a new UserStateData.
+     * Constructs a new CharacterStateData.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IUserStateData);
+    constructor(properties?: ICharacterStateData);
 
-    /** UserStateData state. */
+    /** CharacterStateData state. */
     public state: number;
 
-    /** UserStateData nextState. */
+    /** CharacterStateData nextState. */
     public nextState: number;
 
-    /** UserStateData nextStateAt. */
+    /** CharacterStateData nextStateAt. */
     public nextStateAt: (number|Long);
 
     /**
-     * Creates a new UserStateData instance using the specified properties.
+     * Creates a new CharacterStateData instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns UserStateData instance
+     * @returns CharacterStateData instance
      */
-    public static create(properties?: IUserStateData): UserStateData;
+    public static create(properties?: ICharacterStateData): CharacterStateData;
 
     /**
-     * Encodes the specified UserStateData message. Does not implicitly {@link UserStateData.verify|verify} messages.
-     * @param message UserStateData message or plain object to encode
+     * Encodes the specified CharacterStateData message. Does not implicitly {@link CharacterStateData.verify|verify} messages.
+     * @param message CharacterStateData message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IUserStateData, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ICharacterStateData, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified UserStateData message, length delimited. Does not implicitly {@link UserStateData.verify|verify} messages.
-     * @param message UserStateData message or plain object to encode
+     * Encodes the specified CharacterStateData message, length delimited. Does not implicitly {@link CharacterStateData.verify|verify} messages.
+     * @param message CharacterStateData message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IUserStateData, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ICharacterStateData, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a UserStateData message from the specified reader or buffer.
+     * Decodes a CharacterStateData message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns UserStateData
+     * @returns CharacterStateData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): UserStateData;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CharacterStateData;
 
     /**
-     * Decodes a UserStateData message from the specified reader or buffer, length delimited.
+     * Decodes a CharacterStateData message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns UserStateData
+     * @returns CharacterStateData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): UserStateData;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CharacterStateData;
 
     /**
-     * Verifies a UserStateData message.
+     * Verifies a CharacterStateData message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a UserStateData message from a plain object. Also converts values to their respective internal types.
+     * Creates a CharacterStateData message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns UserStateData
+     * @returns CharacterStateData
      */
-    public static fromObject(object: { [k: string]: any }): UserStateData;
+    public static fromObject(object: { [k: string]: any }): CharacterStateData;
 
     /**
-     * Creates a plain object from a UserStateData message. Also converts values to other types if specified.
-     * @param message UserStateData
+     * Creates a plain object from a CharacterStateData message. Also converts values to other types if specified.
+     * @param message CharacterStateData
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: UserStateData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: CharacterStateData, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this UserStateData to JSON.
+     * Converts this CharacterStateData to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 
     /**
-     * Gets the default type url for UserStateData
+     * Gets the default type url for CharacterStateData
      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns The default type url
      */

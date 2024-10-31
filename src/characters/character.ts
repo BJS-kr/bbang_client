@@ -1,13 +1,10 @@
-import { CARD_TYPE, CHARACTER_TYPE } from '../constants/game';
-import { CardData } from '../protobuf/compiled';
+import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+import { CardData, CharacterStateData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 
 export type Card = MessageProps<CardData>;
 
-const DEFENSE_CHANCE_MAX = 100;
-const DAMAGE_MULTIPLIER_MIN = 1;
-const DAMAGE_MULTIPLIER_MAX = 10;
 const HP_MIN = 0;
 const handler = {
   get: function (target: Character, key: string) {
@@ -27,52 +24,34 @@ const handler = {
 };
 
 export class Character extends EventEmitter {
-  instanceId: string;
-  name: string;
   hp: number;
-  maxHp: number;
   characterType: CHARACTER_TYPE;
-  isLeft: boolean;
+  roleType: ROLE_TYPE;
   baseDefenseChance: number;
-  defenseChance: number;
-  amountForDefense: number;
-  bangPerDay: number;
-  todayBangCount = 0;
-  damageMultiplier = 1;
-  cards = new Map<CARD_TYPE, number>();
+  handCards = new Map<CARD_TYPE, number>();
+  state: CharacterStateData;
+  weapon: number;
+  equips: number[];
+  debuffs: number[];
   invisibleFrom = new Set<Character>();
 
   constructor({
-    instanceId,
-    name,
     hp,
+    roleType,
     characterType,
-    isLeft,
     baseDefenseChance,
-    amountForDefense,
-    bangPerDay,
   }: {
-    instanceId: string;
-    name: string;
     hp: number;
+    roleType: ROLE_TYPE;
     characterType: CHARACTER_TYPE;
-    isLeft: boolean;
     baseDefenseChance: number;
-    amountForDefense: number;
-    bangPerDay: number;
   }) {
     super();
 
-    this.instanceId = instanceId;
-    this.name = name;
     this.hp = hp;
-    this.maxHp = hp;
     this.characterType = characterType;
-    this.isLeft = isLeft;
+    this.roleType = roleType;
     this.baseDefenseChance = baseDefenseChance;
-    this.defenseChance = baseDefenseChance;
-    this.amountForDefense = amountForDefense;
-    this.bangPerDay = bangPerDay;
 
     return new Proxy(this, handler);
   }
@@ -83,58 +62,36 @@ export class Character extends EventEmitter {
     return card;
   }
 
+  getHandCards(): MessageProps<CardData>[] {
+    return Array.from(this.handCards.entries()).map(([type, count]) => ({ type, count }));
+  }
+
   takeDamage(amount: number) {
-    if (this.isDefended()) return;
+    if (this.isDefended()) return 0;
 
-    const damage = amount * this.damageMultiplier;
+    this.hp = Math.max(HP_MIN, this.hp - amount);
 
-    this.hp = Math.max(HP_MIN, this.hp - damage);
-
-    return damage;
+    return amount;
   }
 
   isDefended() {
-    return this.defenseChance > Math.random() * 100;
+    return this.baseDefenseChance > Math.random() * 100;
   }
 
   acquireCard(card: Card) {
-    this.cards.set(card.type, (this.cards.get(card.type) || 0) + card.count);
+    this.handCards.set(card.type, (this.handCards.get(card.type) || 0) + card.count);
 
     return card;
   }
 
   loseCard(card: Card) {
-    this.cards.set(card.type, (this.cards.get(card.type) || 0) - card.count);
+    this.handCards.set(card.type, (this.handCards.get(card.type) || 0) - card.count);
 
-    if (this.cards.get(card.type) === 0) {
-      this.cards.delete(card.type);
+    if (this.handCards.get(card.type) === 0) {
+      this.handCards.delete(card.type);
     }
 
     return card;
-  }
-
-  increaseDefenseChance(chance: number) {
-    this.defenseChance = Math.min(DEFENSE_CHANCE_MAX, this.defenseChance + chance);
-
-    return chance;
-  }
-
-  decreaseDefenseChance(chance: number) {
-    this.defenseChance = Math.max(this.baseDefenseChance, this.defenseChance - chance);
-
-    return chance;
-  }
-
-  increaseDamageMultiplier(amount: number) {
-    this.damageMultiplier = Math.max(DAMAGE_MULTIPLIER_MAX, this.damageMultiplier + amount);
-
-    return amount;
-  }
-
-  decreaseDamageMultiplier(amount: number) {
-    this.damageMultiplier = Math.min(DAMAGE_MULTIPLIER_MIN, this.damageMultiplier - amount);
-
-    return amount;
   }
 
   addInvisibleFrom(characters: Character[]) {
@@ -153,29 +110,13 @@ export class Character extends EventEmitter {
     return characters;
   }
 
-  addBangCount(count: number) {
-    this.todayBangCount += count;
-
-    return count;
-  }
-
-  resetBangCount() {
-    this.todayBangCount = 0;
-  }
-
-  setAmountForDefense(amount: number) {
-    this.amountForDefense = amount;
-
-    return amount;
-  }
-
   getRandomCard() {
-    const cardTypes = Array.from(this.cards.keys());
+    const cardTypes = Array.from(this.handCards.keys());
 
     if (cardTypes.length === 0) return null;
 
     const randomCardType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
-    const cardCount = this.cards.get(randomCardType);
+    const cardCount = this.handCards.get(randomCardType);
 
     if (!cardCount) return this.getRandomCard();
 
@@ -185,7 +126,7 @@ export class Character extends EventEmitter {
   }
 
   static recover(amount: number, character: Character) {
-    character.hp = Math.min(character.maxHp, character.hp + amount);
+    character.hp += amount;
 
     return amount;
   }

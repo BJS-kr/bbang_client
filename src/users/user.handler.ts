@@ -48,15 +48,6 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
     myInfo: {
       id: result.userId,
       nickname: result.nickname,
-      characterType: 0,
-      roleType: ROLE_TYPE.NONE,
-      hp: 0,
-      weapon: 0,
-      state: {
-        state: USER_STATE.NONE,
-        nextState: USER_STATE.NONE,
-        nextStateAt: 0,
-      },
     },
     failCode: GlobalFailCode.NONE,
   };

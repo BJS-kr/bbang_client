@@ -358,14 +358,7 @@ $root.UserData = (function() {
      * @interface IUserData
      * @property {string|null} [id] UserData id
      * @property {string|null} [nickname] UserData nickname
-     * @property {number|null} [characterType] UserData characterType
-     * @property {number|null} [roleType] UserData roleType
-     * @property {number|null} [hp] UserData hp
-     * @property {number|null} [weapon] UserData weapon
-     * @property {IUserStateData|null} [state] UserData state
-     * @property {Array.<number>|null} [equips] UserData equips
-     * @property {Array.<number>|null} [debuffs] UserData debuffs
-     * @property {Array.<ICardData>|null} [handCards] UserData handCards
+     * @property {ICharacterData|null} [characterData] UserData characterData
      */
 
     /**
@@ -377,9 +370,6 @@ $root.UserData = (function() {
      * @param {IUserData=} [properties] Properties to set
      */
     function UserData(properties) {
-        this.equips = [];
-        this.debuffs = [];
-        this.handCards = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -403,68 +393,12 @@ $root.UserData = (function() {
     UserData.prototype.nickname = "";
 
     /**
-     * UserData characterType.
-     * @member {number} characterType
+     * UserData characterData.
+     * @member {ICharacterData|null|undefined} characterData
      * @memberof UserData
      * @instance
      */
-    UserData.prototype.characterType = 0;
-
-    /**
-     * UserData roleType.
-     * @member {number} roleType
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.roleType = 0;
-
-    /**
-     * UserData hp.
-     * @member {number} hp
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.hp = 0;
-
-    /**
-     * UserData weapon.
-     * @member {number} weapon
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.weapon = 0;
-
-    /**
-     * UserData state.
-     * @member {IUserStateData|null|undefined} state
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.state = null;
-
-    /**
-     * UserData equips.
-     * @member {Array.<number>} equips
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.equips = $util.emptyArray;
-
-    /**
-     * UserData debuffs.
-     * @member {Array.<number>} debuffs
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.debuffs = $util.emptyArray;
-
-    /**
-     * UserData handCards.
-     * @member {Array.<ICardData>} handCards
-     * @memberof UserData
-     * @instance
-     */
-    UserData.prototype.handCards = $util.emptyArray;
+    UserData.prototype.characterData = null;
 
     /**
      * Creates a new UserData instance using the specified properties.
@@ -494,31 +428,8 @@ $root.UserData = (function() {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         if (message.nickname != null && Object.hasOwnProperty.call(message, "nickname"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.nickname);
-        if (message.characterType != null && Object.hasOwnProperty.call(message, "characterType"))
-            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.characterType);
-        if (message.roleType != null && Object.hasOwnProperty.call(message, "roleType"))
-            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.roleType);
-        if (message.hp != null && Object.hasOwnProperty.call(message, "hp"))
-            writer.uint32(/* id 5, wireType 0 =*/40).int32(message.hp);
-        if (message.weapon != null && Object.hasOwnProperty.call(message, "weapon"))
-            writer.uint32(/* id 6, wireType 0 =*/48).int32(message.weapon);
-        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
-            $root.UserStateData.encode(message.state, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-        if (message.equips != null && message.equips.length) {
-            writer.uint32(/* id 8, wireType 2 =*/66).fork();
-            for (var i = 0; i < message.equips.length; ++i)
-                writer.int32(message.equips[i]);
-            writer.ldelim();
-        }
-        if (message.debuffs != null && message.debuffs.length) {
-            writer.uint32(/* id 9, wireType 2 =*/74).fork();
-            for (var i = 0; i < message.debuffs.length; ++i)
-                writer.int32(message.debuffs[i]);
-            writer.ldelim();
-        }
-        if (message.handCards != null && message.handCards.length)
-            for (var i = 0; i < message.handCards.length; ++i)
-                $root.CardData.encode(message.handCards[i], writer.uint32(/* id 10, wireType 2 =*/82).fork()).ldelim();
+        if (message.characterData != null && Object.hasOwnProperty.call(message, "characterData"))
+            $root.CharacterData.encode(message.characterData, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -562,51 +473,7 @@ $root.UserData = (function() {
                     break;
                 }
             case 3: {
-                    message.characterType = reader.int32();
-                    break;
-                }
-            case 4: {
-                    message.roleType = reader.int32();
-                    break;
-                }
-            case 5: {
-                    message.hp = reader.int32();
-                    break;
-                }
-            case 6: {
-                    message.weapon = reader.int32();
-                    break;
-                }
-            case 7: {
-                    message.state = $root.UserStateData.decode(reader, reader.uint32());
-                    break;
-                }
-            case 8: {
-                    if (!(message.equips && message.equips.length))
-                        message.equips = [];
-                    if ((tag & 7) === 2) {
-                        var end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2)
-                            message.equips.push(reader.int32());
-                    } else
-                        message.equips.push(reader.int32());
-                    break;
-                }
-            case 9: {
-                    if (!(message.debuffs && message.debuffs.length))
-                        message.debuffs = [];
-                    if ((tag & 7) === 2) {
-                        var end2 = reader.uint32() + reader.pos;
-                        while (reader.pos < end2)
-                            message.debuffs.push(reader.int32());
-                    } else
-                        message.debuffs.push(reader.int32());
-                    break;
-                }
-            case 10: {
-                    if (!(message.handCards && message.handCards.length))
-                        message.handCards = [];
-                    message.handCards.push($root.CardData.decode(reader, reader.uint32()));
+                    message.characterData = $root.CharacterData.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -650,45 +517,10 @@ $root.UserData = (function() {
         if (message.nickname != null && message.hasOwnProperty("nickname"))
             if (!$util.isString(message.nickname))
                 return "nickname: string expected";
-        if (message.characterType != null && message.hasOwnProperty("characterType"))
-            if (!$util.isInteger(message.characterType))
-                return "characterType: integer expected";
-        if (message.roleType != null && message.hasOwnProperty("roleType"))
-            if (!$util.isInteger(message.roleType))
-                return "roleType: integer expected";
-        if (message.hp != null && message.hasOwnProperty("hp"))
-            if (!$util.isInteger(message.hp))
-                return "hp: integer expected";
-        if (message.weapon != null && message.hasOwnProperty("weapon"))
-            if (!$util.isInteger(message.weapon))
-                return "weapon: integer expected";
-        if (message.state != null && message.hasOwnProperty("state")) {
-            var error = $root.UserStateData.verify(message.state);
+        if (message.characterData != null && message.hasOwnProperty("characterData")) {
+            var error = $root.CharacterData.verify(message.characterData);
             if (error)
-                return "state." + error;
-        }
-        if (message.equips != null && message.hasOwnProperty("equips")) {
-            if (!Array.isArray(message.equips))
-                return "equips: array expected";
-            for (var i = 0; i < message.equips.length; ++i)
-                if (!$util.isInteger(message.equips[i]))
-                    return "equips: integer[] expected";
-        }
-        if (message.debuffs != null && message.hasOwnProperty("debuffs")) {
-            if (!Array.isArray(message.debuffs))
-                return "debuffs: array expected";
-            for (var i = 0; i < message.debuffs.length; ++i)
-                if (!$util.isInteger(message.debuffs[i]))
-                    return "debuffs: integer[] expected";
-        }
-        if (message.handCards != null && message.hasOwnProperty("handCards")) {
-            if (!Array.isArray(message.handCards))
-                return "handCards: array expected";
-            for (var i = 0; i < message.handCards.length; ++i) {
-                var error = $root.CardData.verify(message.handCards[i]);
-                if (error)
-                    return "handCards." + error;
-            }
+                return "characterData." + error;
         }
         return null;
     };
@@ -709,42 +541,10 @@ $root.UserData = (function() {
             message.id = String(object.id);
         if (object.nickname != null)
             message.nickname = String(object.nickname);
-        if (object.characterType != null)
-            message.characterType = object.characterType | 0;
-        if (object.roleType != null)
-            message.roleType = object.roleType | 0;
-        if (object.hp != null)
-            message.hp = object.hp | 0;
-        if (object.weapon != null)
-            message.weapon = object.weapon | 0;
-        if (object.state != null) {
-            if (typeof object.state !== "object")
-                throw TypeError(".UserData.state: object expected");
-            message.state = $root.UserStateData.fromObject(object.state);
-        }
-        if (object.equips) {
-            if (!Array.isArray(object.equips))
-                throw TypeError(".UserData.equips: array expected");
-            message.equips = [];
-            for (var i = 0; i < object.equips.length; ++i)
-                message.equips[i] = object.equips[i] | 0;
-        }
-        if (object.debuffs) {
-            if (!Array.isArray(object.debuffs))
-                throw TypeError(".UserData.debuffs: array expected");
-            message.debuffs = [];
-            for (var i = 0; i < object.debuffs.length; ++i)
-                message.debuffs[i] = object.debuffs[i] | 0;
-        }
-        if (object.handCards) {
-            if (!Array.isArray(object.handCards))
-                throw TypeError(".UserData.handCards: array expected");
-            message.handCards = [];
-            for (var i = 0; i < object.handCards.length; ++i) {
-                if (typeof object.handCards[i] !== "object")
-                    throw TypeError(".UserData.handCards: object expected");
-                message.handCards[i] = $root.CardData.fromObject(object.handCards[i]);
-            }
+        if (object.characterData != null) {
+            if (typeof object.characterData !== "object")
+                throw TypeError(".UserData.characterData: object expected");
+            message.characterData = $root.CharacterData.fromObject(object.characterData);
         }
         return message;
     };
@@ -762,49 +562,17 @@ $root.UserData = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults) {
-            object.equips = [];
-            object.debuffs = [];
-            object.handCards = [];
-        }
         if (options.defaults) {
             object.id = "";
             object.nickname = "";
-            object.characterType = 0;
-            object.roleType = 0;
-            object.hp = 0;
-            object.weapon = 0;
-            object.state = null;
+            object.characterData = null;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.nickname != null && message.hasOwnProperty("nickname"))
             object.nickname = message.nickname;
-        if (message.characterType != null && message.hasOwnProperty("characterType"))
-            object.characterType = message.characterType;
-        if (message.roleType != null && message.hasOwnProperty("roleType"))
-            object.roleType = message.roleType;
-        if (message.hp != null && message.hasOwnProperty("hp"))
-            object.hp = message.hp;
-        if (message.weapon != null && message.hasOwnProperty("weapon"))
-            object.weapon = message.weapon;
-        if (message.state != null && message.hasOwnProperty("state"))
-            object.state = $root.UserStateData.toObject(message.state, options);
-        if (message.equips && message.equips.length) {
-            object.equips = [];
-            for (var j = 0; j < message.equips.length; ++j)
-                object.equips[j] = message.equips[j];
-        }
-        if (message.debuffs && message.debuffs.length) {
-            object.debuffs = [];
-            for (var j = 0; j < message.debuffs.length; ++j)
-                object.debuffs[j] = message.debuffs[j];
-        }
-        if (message.handCards && message.handCards.length) {
-            object.handCards = [];
-            for (var j = 0; j < message.handCards.length; ++j)
-                object.handCards[j] = $root.CardData.toObject(message.handCards[j], options);
-        }
+        if (message.characterData != null && message.hasOwnProperty("characterData"))
+            object.characterData = $root.CharacterData.toObject(message.characterData, options);
         return object;
     };
 
@@ -835,6 +603,447 @@ $root.UserData = (function() {
     };
 
     return UserData;
+})();
+
+$root.CharacterData = (function() {
+
+    /**
+     * Properties of a CharacterData.
+     * @exports ICharacterData
+     * @interface ICharacterData
+     * @property {number|null} [characterType] CharacterData characterType
+     * @property {number|null} [roleType] CharacterData roleType
+     * @property {number|null} [hp] CharacterData hp
+     * @property {number|null} [weapon] CharacterData weapon
+     * @property {ICharacterStateData|null} [state] CharacterData state
+     * @property {Array.<number>|null} [equips] CharacterData equips
+     * @property {Array.<number>|null} [debuffs] CharacterData debuffs
+     * @property {Array.<ICardData>|null} [handCards] CharacterData handCards
+     */
+
+    /**
+     * Constructs a new CharacterData.
+     * @exports CharacterData
+     * @classdesc Represents a CharacterData.
+     * @implements ICharacterData
+     * @constructor
+     * @param {ICharacterData=} [properties] Properties to set
+     */
+    function CharacterData(properties) {
+        this.equips = [];
+        this.debuffs = [];
+        this.handCards = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * CharacterData characterType.
+     * @member {number} characterType
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.characterType = 0;
+
+    /**
+     * CharacterData roleType.
+     * @member {number} roleType
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.roleType = 0;
+
+    /**
+     * CharacterData hp.
+     * @member {number} hp
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.hp = 0;
+
+    /**
+     * CharacterData weapon.
+     * @member {number} weapon
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.weapon = 0;
+
+    /**
+     * CharacterData state.
+     * @member {ICharacterStateData|null|undefined} state
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.state = null;
+
+    /**
+     * CharacterData equips.
+     * @member {Array.<number>} equips
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.equips = $util.emptyArray;
+
+    /**
+     * CharacterData debuffs.
+     * @member {Array.<number>} debuffs
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.debuffs = $util.emptyArray;
+
+    /**
+     * CharacterData handCards.
+     * @member {Array.<ICardData>} handCards
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.handCards = $util.emptyArray;
+
+    /**
+     * Creates a new CharacterData instance using the specified properties.
+     * @function create
+     * @memberof CharacterData
+     * @static
+     * @param {ICharacterData=} [properties] Properties to set
+     * @returns {CharacterData} CharacterData instance
+     */
+    CharacterData.create = function create(properties) {
+        return new CharacterData(properties);
+    };
+
+    /**
+     * Encodes the specified CharacterData message. Does not implicitly {@link CharacterData.verify|verify} messages.
+     * @function encode
+     * @memberof CharacterData
+     * @static
+     * @param {ICharacterData} message CharacterData message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CharacterData.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.characterType != null && Object.hasOwnProperty.call(message, "characterType"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.characterType);
+        if (message.roleType != null && Object.hasOwnProperty.call(message, "roleType"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.roleType);
+        if (message.hp != null && Object.hasOwnProperty.call(message, "hp"))
+            writer.uint32(/* id 3, wireType 0 =*/24).int32(message.hp);
+        if (message.weapon != null && Object.hasOwnProperty.call(message, "weapon"))
+            writer.uint32(/* id 4, wireType 0 =*/32).int32(message.weapon);
+        if (message.state != null && Object.hasOwnProperty.call(message, "state"))
+            $root.CharacterStateData.encode(message.state, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.equips != null && message.equips.length) {
+            writer.uint32(/* id 6, wireType 2 =*/50).fork();
+            for (var i = 0; i < message.equips.length; ++i)
+                writer.int32(message.equips[i]);
+            writer.ldelim();
+        }
+        if (message.debuffs != null && message.debuffs.length) {
+            writer.uint32(/* id 7, wireType 2 =*/58).fork();
+            for (var i = 0; i < message.debuffs.length; ++i)
+                writer.int32(message.debuffs[i]);
+            writer.ldelim();
+        }
+        if (message.handCards != null && message.handCards.length)
+            for (var i = 0; i < message.handCards.length; ++i)
+                $root.CardData.encode(message.handCards[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified CharacterData message, length delimited. Does not implicitly {@link CharacterData.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof CharacterData
+     * @static
+     * @param {ICharacterData} message CharacterData message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    CharacterData.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a CharacterData message from the specified reader or buffer.
+     * @function decode
+     * @memberof CharacterData
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {CharacterData} CharacterData
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CharacterData.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.CharacterData();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.characterType = reader.int32();
+                    break;
+                }
+            case 2: {
+                    message.roleType = reader.int32();
+                    break;
+                }
+            case 3: {
+                    message.hp = reader.int32();
+                    break;
+                }
+            case 4: {
+                    message.weapon = reader.int32();
+                    break;
+                }
+            case 5: {
+                    message.state = $root.CharacterStateData.decode(reader, reader.uint32());
+                    break;
+                }
+            case 6: {
+                    if (!(message.equips && message.equips.length))
+                        message.equips = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.equips.push(reader.int32());
+                    } else
+                        message.equips.push(reader.int32());
+                    break;
+                }
+            case 7: {
+                    if (!(message.debuffs && message.debuffs.length))
+                        message.debuffs = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.debuffs.push(reader.int32());
+                    } else
+                        message.debuffs.push(reader.int32());
+                    break;
+                }
+            case 8: {
+                    if (!(message.handCards && message.handCards.length))
+                        message.handCards = [];
+                    message.handCards.push($root.CardData.decode(reader, reader.uint32()));
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a CharacterData message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof CharacterData
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {CharacterData} CharacterData
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    CharacterData.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a CharacterData message.
+     * @function verify
+     * @memberof CharacterData
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    CharacterData.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.characterType != null && message.hasOwnProperty("characterType"))
+            if (!$util.isInteger(message.characterType))
+                return "characterType: integer expected";
+        if (message.roleType != null && message.hasOwnProperty("roleType"))
+            if (!$util.isInteger(message.roleType))
+                return "roleType: integer expected";
+        if (message.hp != null && message.hasOwnProperty("hp"))
+            if (!$util.isInteger(message.hp))
+                return "hp: integer expected";
+        if (message.weapon != null && message.hasOwnProperty("weapon"))
+            if (!$util.isInteger(message.weapon))
+                return "weapon: integer expected";
+        if (message.state != null && message.hasOwnProperty("state")) {
+            var error = $root.CharacterStateData.verify(message.state);
+            if (error)
+                return "state." + error;
+        }
+        if (message.equips != null && message.hasOwnProperty("equips")) {
+            if (!Array.isArray(message.equips))
+                return "equips: array expected";
+            for (var i = 0; i < message.equips.length; ++i)
+                if (!$util.isInteger(message.equips[i]))
+                    return "equips: integer[] expected";
+        }
+        if (message.debuffs != null && message.hasOwnProperty("debuffs")) {
+            if (!Array.isArray(message.debuffs))
+                return "debuffs: array expected";
+            for (var i = 0; i < message.debuffs.length; ++i)
+                if (!$util.isInteger(message.debuffs[i]))
+                    return "debuffs: integer[] expected";
+        }
+        if (message.handCards != null && message.hasOwnProperty("handCards")) {
+            if (!Array.isArray(message.handCards))
+                return "handCards: array expected";
+            for (var i = 0; i < message.handCards.length; ++i) {
+                var error = $root.CardData.verify(message.handCards[i]);
+                if (error)
+                    return "handCards." + error;
+            }
+        }
+        return null;
+    };
+
+    /**
+     * Creates a CharacterData message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof CharacterData
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {CharacterData} CharacterData
+     */
+    CharacterData.fromObject = function fromObject(object) {
+        if (object instanceof $root.CharacterData)
+            return object;
+        var message = new $root.CharacterData();
+        if (object.characterType != null)
+            message.characterType = object.characterType | 0;
+        if (object.roleType != null)
+            message.roleType = object.roleType | 0;
+        if (object.hp != null)
+            message.hp = object.hp | 0;
+        if (object.weapon != null)
+            message.weapon = object.weapon | 0;
+        if (object.state != null) {
+            if (typeof object.state !== "object")
+                throw TypeError(".CharacterData.state: object expected");
+            message.state = $root.CharacterStateData.fromObject(object.state);
+        }
+        if (object.equips) {
+            if (!Array.isArray(object.equips))
+                throw TypeError(".CharacterData.equips: array expected");
+            message.equips = [];
+            for (var i = 0; i < object.equips.length; ++i)
+                message.equips[i] = object.equips[i] | 0;
+        }
+        if (object.debuffs) {
+            if (!Array.isArray(object.debuffs))
+                throw TypeError(".CharacterData.debuffs: array expected");
+            message.debuffs = [];
+            for (var i = 0; i < object.debuffs.length; ++i)
+                message.debuffs[i] = object.debuffs[i] | 0;
+        }
+        if (object.handCards) {
+            if (!Array.isArray(object.handCards))
+                throw TypeError(".CharacterData.handCards: array expected");
+            message.handCards = [];
+            for (var i = 0; i < object.handCards.length; ++i) {
+                if (typeof object.handCards[i] !== "object")
+                    throw TypeError(".CharacterData.handCards: object expected");
+                message.handCards[i] = $root.CardData.fromObject(object.handCards[i]);
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a CharacterData message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof CharacterData
+     * @static
+     * @param {CharacterData} message CharacterData
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    CharacterData.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults) {
+            object.equips = [];
+            object.debuffs = [];
+            object.handCards = [];
+        }
+        if (options.defaults) {
+            object.characterType = 0;
+            object.roleType = 0;
+            object.hp = 0;
+            object.weapon = 0;
+            object.state = null;
+        }
+        if (message.characterType != null && message.hasOwnProperty("characterType"))
+            object.characterType = message.characterType;
+        if (message.roleType != null && message.hasOwnProperty("roleType"))
+            object.roleType = message.roleType;
+        if (message.hp != null && message.hasOwnProperty("hp"))
+            object.hp = message.hp;
+        if (message.weapon != null && message.hasOwnProperty("weapon"))
+            object.weapon = message.weapon;
+        if (message.state != null && message.hasOwnProperty("state"))
+            object.state = $root.CharacterStateData.toObject(message.state, options);
+        if (message.equips && message.equips.length) {
+            object.equips = [];
+            for (var j = 0; j < message.equips.length; ++j)
+                object.equips[j] = message.equips[j];
+        }
+        if (message.debuffs && message.debuffs.length) {
+            object.debuffs = [];
+            for (var j = 0; j < message.debuffs.length; ++j)
+                object.debuffs[j] = message.debuffs[j];
+        }
+        if (message.handCards && message.handCards.length) {
+            object.handCards = [];
+            for (var j = 0; j < message.handCards.length; ++j)
+                object.handCards[j] = $root.CardData.toObject(message.handCards[j], options);
+        }
+        return object;
+    };
+
+    /**
+     * Converts this CharacterData to JSON.
+     * @function toJSON
+     * @memberof CharacterData
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    CharacterData.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for CharacterData
+     * @function getTypeUrl
+     * @memberof CharacterData
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    CharacterData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/CharacterData";
+    };
+
+    return CharacterData;
 })();
 
 $root.UserPositionData = (function() {
@@ -1555,26 +1764,26 @@ $root.GameStateData = (function() {
     return GameStateData;
 })();
 
-$root.UserStateData = (function() {
+$root.CharacterStateData = (function() {
 
     /**
-     * Properties of a UserStateData.
-     * @exports IUserStateData
-     * @interface IUserStateData
-     * @property {number|null} [state] UserStateData state
-     * @property {number|null} [nextState] UserStateData nextState
-     * @property {number|Long|null} [nextStateAt] UserStateData nextStateAt
+     * Properties of a CharacterStateData.
+     * @exports ICharacterStateData
+     * @interface ICharacterStateData
+     * @property {number|null} [state] CharacterStateData state
+     * @property {number|null} [nextState] CharacterStateData nextState
+     * @property {number|Long|null} [nextStateAt] CharacterStateData nextStateAt
      */
 
     /**
-     * Constructs a new UserStateData.
-     * @exports UserStateData
-     * @classdesc Represents a UserStateData.
-     * @implements IUserStateData
+     * Constructs a new CharacterStateData.
+     * @exports CharacterStateData
+     * @classdesc Represents a CharacterStateData.
+     * @implements ICharacterStateData
      * @constructor
-     * @param {IUserStateData=} [properties] Properties to set
+     * @param {ICharacterStateData=} [properties] Properties to set
      */
-    function UserStateData(properties) {
+    function CharacterStateData(properties) {
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -1582,51 +1791,51 @@ $root.UserStateData = (function() {
     }
 
     /**
-     * UserStateData state.
+     * CharacterStateData state.
      * @member {number} state
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @instance
      */
-    UserStateData.prototype.state = 0;
+    CharacterStateData.prototype.state = 0;
 
     /**
-     * UserStateData nextState.
+     * CharacterStateData nextState.
      * @member {number} nextState
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @instance
      */
-    UserStateData.prototype.nextState = 0;
+    CharacterStateData.prototype.nextState = 0;
 
     /**
-     * UserStateData nextStateAt.
+     * CharacterStateData nextStateAt.
      * @member {number|Long} nextStateAt
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @instance
      */
-    UserStateData.prototype.nextStateAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+    CharacterStateData.prototype.nextStateAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
-     * Creates a new UserStateData instance using the specified properties.
+     * Creates a new CharacterStateData instance using the specified properties.
      * @function create
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
-     * @param {IUserStateData=} [properties] Properties to set
-     * @returns {UserStateData} UserStateData instance
+     * @param {ICharacterStateData=} [properties] Properties to set
+     * @returns {CharacterStateData} CharacterStateData instance
      */
-    UserStateData.create = function create(properties) {
-        return new UserStateData(properties);
+    CharacterStateData.create = function create(properties) {
+        return new CharacterStateData(properties);
     };
 
     /**
-     * Encodes the specified UserStateData message. Does not implicitly {@link UserStateData.verify|verify} messages.
+     * Encodes the specified CharacterStateData message. Does not implicitly {@link CharacterStateData.verify|verify} messages.
      * @function encode
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
-     * @param {IUserStateData} message UserStateData message or plain object to encode
+     * @param {ICharacterStateData} message CharacterStateData message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserStateData.encode = function encode(message, writer) {
+    CharacterStateData.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.state != null && Object.hasOwnProperty.call(message, "state"))
@@ -1639,33 +1848,33 @@ $root.UserStateData = (function() {
     };
 
     /**
-     * Encodes the specified UserStateData message, length delimited. Does not implicitly {@link UserStateData.verify|verify} messages.
+     * Encodes the specified CharacterStateData message, length delimited. Does not implicitly {@link CharacterStateData.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
-     * @param {IUserStateData} message UserStateData message or plain object to encode
+     * @param {ICharacterStateData} message CharacterStateData message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    UserStateData.encodeDelimited = function encodeDelimited(message, writer) {
+    CharacterStateData.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a UserStateData message from the specified reader or buffer.
+     * Decodes a CharacterStateData message from the specified reader or buffer.
      * @function decode
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {UserStateData} UserStateData
+     * @returns {CharacterStateData} CharacterStateData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserStateData.decode = function decode(reader, length) {
+    CharacterStateData.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.UserStateData();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.CharacterStateData();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -1690,30 +1899,30 @@ $root.UserStateData = (function() {
     };
 
     /**
-     * Decodes a UserStateData message from the specified reader or buffer, length delimited.
+     * Decodes a CharacterStateData message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {UserStateData} UserStateData
+     * @returns {CharacterStateData} CharacterStateData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    UserStateData.decodeDelimited = function decodeDelimited(reader) {
+    CharacterStateData.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a UserStateData message.
+     * Verifies a CharacterStateData message.
      * @function verify
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    UserStateData.verify = function verify(message) {
+    CharacterStateData.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.state != null && message.hasOwnProperty("state"))
@@ -1729,17 +1938,17 @@ $root.UserStateData = (function() {
     };
 
     /**
-     * Creates a UserStateData message from a plain object. Also converts values to their respective internal types.
+     * Creates a CharacterStateData message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {UserStateData} UserStateData
+     * @returns {CharacterStateData} CharacterStateData
      */
-    UserStateData.fromObject = function fromObject(object) {
-        if (object instanceof $root.UserStateData)
+    CharacterStateData.fromObject = function fromObject(object) {
+        if (object instanceof $root.CharacterStateData)
             return object;
-        var message = new $root.UserStateData();
+        var message = new $root.CharacterStateData();
         if (object.state != null)
             message.state = object.state | 0;
         if (object.nextState != null)
@@ -1757,15 +1966,15 @@ $root.UserStateData = (function() {
     };
 
     /**
-     * Creates a plain object from a UserStateData message. Also converts values to other types if specified.
+     * Creates a plain object from a CharacterStateData message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
-     * @param {UserStateData} message UserStateData
+     * @param {CharacterStateData} message CharacterStateData
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    UserStateData.toObject = function toObject(message, options) {
+    CharacterStateData.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -1791,32 +2000,32 @@ $root.UserStateData = (function() {
     };
 
     /**
-     * Converts this UserStateData to JSON.
+     * Converts this CharacterStateData to JSON.
      * @function toJSON
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    UserStateData.prototype.toJSON = function toJSON() {
+    CharacterStateData.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     /**
-     * Gets the default type url for UserStateData
+     * Gets the default type url for CharacterStateData
      * @function getTypeUrl
-     * @memberof UserStateData
+     * @memberof CharacterStateData
      * @static
      * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    UserStateData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+    CharacterStateData.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
         if (typeUrlPrefix === undefined) {
             typeUrlPrefix = "type.googleapis.com";
         }
-        return typeUrlPrefix + "/UserStateData";
+        return typeUrlPrefix + "/CharacterStateData";
     };
 
-    return UserStateData;
+    return CharacterStateData;
 })();
 
 $root.C2SRegisterRequest = (function() {
@@ -3222,15 +3431,6 @@ $root.S2CCreateRoomResponse = (function() {
      */
     S2CCreateRoomResponse.prototype.failCode = 0;
 
-    // OneOf field names bound to virtual getters and setters
-    var $oneOfFields;
-
-    // Virtual OneOf for proto3 optional field
-    Object.defineProperty(S2CCreateRoomResponse.prototype, "_room", {
-        get: $util.oneOfGetter($oneOfFields = ["room"]),
-        set: $util.oneOfSetter($oneOfFields)
-    });
-
     /**
      * Creates a new S2CCreateRoomResponse instance using the specified properties.
      * @function create
@@ -3342,17 +3542,13 @@ $root.S2CCreateRoomResponse = (function() {
     S2CCreateRoomResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        var properties = {};
         if (message.success != null && message.hasOwnProperty("success"))
             if (typeof message.success !== "boolean")
                 return "success: boolean expected";
         if (message.room != null && message.hasOwnProperty("room")) {
-            properties._room = 1;
-            {
-                var error = $root.RoomData.verify(message.room);
-                if (error)
-                    return "room." + error;
-            }
+            var error = $root.RoomData.verify(message.room);
+            if (error)
+                return "room." + error;
         }
         if (message.failCode != null && message.hasOwnProperty("failCode"))
             switch (message.failCode) {
@@ -3448,15 +3644,13 @@ $root.S2CCreateRoomResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
+            object.room = null;
             object.failCode = options.enums === String ? "NONE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
-        if (message.room != null && message.hasOwnProperty("room")) {
+        if (message.room != null && message.hasOwnProperty("room"))
             object.room = $root.RoomData.toObject(message.room, options);
-            if (options.oneofs)
-                object._room = "room";
-        }
         if (message.failCode != null && message.hasOwnProperty("failCode"))
             object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
         return object;
@@ -4143,15 +4337,6 @@ $root.S2CJoinRoomResponse = (function() {
      */
     S2CJoinRoomResponse.prototype.failCode = 0;
 
-    // OneOf field names bound to virtual getters and setters
-    var $oneOfFields;
-
-    // Virtual OneOf for proto3 optional field
-    Object.defineProperty(S2CJoinRoomResponse.prototype, "_room", {
-        get: $util.oneOfGetter($oneOfFields = ["room"]),
-        set: $util.oneOfSetter($oneOfFields)
-    });
-
     /**
      * Creates a new S2CJoinRoomResponse instance using the specified properties.
      * @function create
@@ -4263,17 +4448,13 @@ $root.S2CJoinRoomResponse = (function() {
     S2CJoinRoomResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        var properties = {};
         if (message.success != null && message.hasOwnProperty("success"))
             if (typeof message.success !== "boolean")
                 return "success: boolean expected";
         if (message.room != null && message.hasOwnProperty("room")) {
-            properties._room = 1;
-            {
-                var error = $root.RoomData.verify(message.room);
-                if (error)
-                    return "room." + error;
-            }
+            var error = $root.RoomData.verify(message.room);
+            if (error)
+                return "room." + error;
         }
         if (message.failCode != null && message.hasOwnProperty("failCode"))
             switch (message.failCode) {
@@ -4369,15 +4550,13 @@ $root.S2CJoinRoomResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
+            object.room = null;
             object.failCode = options.enums === String ? "NONE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
-        if (message.room != null && message.hasOwnProperty("room")) {
+        if (message.room != null && message.hasOwnProperty("room"))
             object.room = $root.RoomData.toObject(message.room, options);
-            if (options.oneofs)
-                object._room = "room";
-        }
         if (message.failCode != null && message.hasOwnProperty("failCode"))
             object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
         return object;
@@ -4665,15 +4844,6 @@ $root.S2CJoinRandomRoomResponse = (function() {
      */
     S2CJoinRandomRoomResponse.prototype.failCode = 0;
 
-    // OneOf field names bound to virtual getters and setters
-    var $oneOfFields;
-
-    // Virtual OneOf for proto3 optional field
-    Object.defineProperty(S2CJoinRandomRoomResponse.prototype, "_room", {
-        get: $util.oneOfGetter($oneOfFields = ["room"]),
-        set: $util.oneOfSetter($oneOfFields)
-    });
-
     /**
      * Creates a new S2CJoinRandomRoomResponse instance using the specified properties.
      * @function create
@@ -4785,17 +4955,13 @@ $root.S2CJoinRandomRoomResponse = (function() {
     S2CJoinRandomRoomResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        var properties = {};
         if (message.success != null && message.hasOwnProperty("success"))
             if (typeof message.success !== "boolean")
                 return "success: boolean expected";
         if (message.room != null && message.hasOwnProperty("room")) {
-            properties._room = 1;
-            {
-                var error = $root.RoomData.verify(message.room);
-                if (error)
-                    return "room." + error;
-            }
+            var error = $root.RoomData.verify(message.room);
+            if (error)
+                return "room." + error;
         }
         if (message.failCode != null && message.hasOwnProperty("failCode"))
             switch (message.failCode) {
@@ -4891,15 +5057,13 @@ $root.S2CJoinRandomRoomResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
+            object.room = null;
             object.failCode = options.enums === String ? "NONE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
-        if (message.room != null && message.hasOwnProperty("room")) {
+        if (message.room != null && message.hasOwnProperty("room"))
             object.room = $root.RoomData.toObject(message.room, options);
-            if (options.oneofs)
-                object._room = "room";
-        }
         if (message.failCode != null && message.hasOwnProperty("failCode"))
             object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
         return object;
