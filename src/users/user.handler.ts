@@ -27,7 +27,6 @@ export const registerRequestHandler = async (socket: net.Socket, version, sequen
 
 export const loginRequestHandler = async (socket: net.Socket, version, sequence, loginRequest, ctx: Context) => {
   const { id, password } = loginRequest;
-  ctx.userId = id;
 
   const result = await getUserByUserId(id);
   const isError = result instanceof Error;
@@ -39,6 +38,8 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
       failCode: GlobalFailCode.AUTHENTICATION_FAILED,
     });
   }
+
+  ctx.userId = result.userId;
 
   const payload: MessageProps<S2CLoginResponse> = {
     success: true,

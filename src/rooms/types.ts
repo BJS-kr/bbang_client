@@ -102,6 +102,10 @@ export class Rooms {
 
     if (!room) return false;
 
+    if (this.isFull(roomId)) return false;
+
+    if (this.isUserInRoom(roomId, user.id)) return false;
+
     room.users.push(user);
     ctx.roomId = roomId;
 
