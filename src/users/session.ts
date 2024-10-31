@@ -23,6 +23,8 @@ class Session {
     }
 
     this.#users.delete(userId);
+
+    return null;
   }
 }
 

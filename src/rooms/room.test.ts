@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { Context } from '../events/types';
 import { User } from '../users/types';
 import { Rooms } from './types';
+import { log } from '../utils/logger';
 
 const onPhaseChange = (phaseType) => {
-  console.log(phaseType);
+  log(phaseType);
 };
 const ctx: Context = { userId: '', roomId: 0 };
 

@@ -151,4 +151,11 @@ export class Rooms {
 
     return roomId;
   }
+
+  getRoomList() {
+    return Array.from(this.#rooms.entries()).map(([roomId, room]) => ({
+      id: roomId,
+      ...room,
+    }));
+  }
 }

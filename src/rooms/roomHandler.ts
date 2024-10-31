@@ -2,6 +2,7 @@ import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
   S2CCreateRoomResponse,
+  S2CGetRoomListResponse,
   S2CJoinRandomRoomResponse,
   S2CJoinRoomNotification,
   S2CJoinRoomResponse,
@@ -166,4 +167,14 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   };
 
   room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, version, sequence, leaveNotificationPayload);
+};
+
+export const getRoomListRequestHandler = async (socket: net.Socket, version, sequence, getRoomListRequest, ctx: Context) => {
+  const roomList = rooms.getRoomList();
+
+  const payload: MessageProps<S2CGetRoomListResponse> = {
+    rooms: roomList,
+  };
+
+  writePayload(socket, PACKET_TYPE.GET_ROOM_LIST_RESPONSE, version, sequence, payload);
 };
