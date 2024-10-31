@@ -45,7 +45,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
-  if (user.id !== room.ownerId) {
+  if (user.userId !== room.ownerId) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -122,7 +122,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
-  if (user.id !== room.ownerId) {
+  if (user.userId !== room.ownerId) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -206,12 +206,12 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
 function createUserDataView(user, userDatas) {
   const result = userDatas.map((userData) => {
     let roleType = ROLE_TYPE.NONE as number;
-    if (user.id === userData.id || userData.roleType === ROLE_TYPE.TARGET) {
+    if (user.userId === userData.id || userData.roleType === ROLE_TYPE.TARGET) {
       roleType = userData.roleType;
     }
 
     let handCards = [];
-    if (user.id === userData.id) {
+    if (user.userId === userData.userId) {
       handCards = userData.handCards;
     }
 
