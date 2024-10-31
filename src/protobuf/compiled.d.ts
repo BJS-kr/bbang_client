@@ -254,6 +254,9 @@ export interface ICharacterData {
     /** CharacterData state */
     state?: (ICharacterStateData|null);
 
+    /** CharacterData position */
+    position?: (ICharacterPositionData|null);
+
     /** CharacterData equips */
     equips?: (number[]|null);
 
@@ -287,6 +290,9 @@ export class CharacterData implements ICharacterData {
 
     /** CharacterData state. */
     public state?: (ICharacterStateData|null);
+
+    /** CharacterData position. */
+    public position?: (ICharacterPositionData|null);
 
     /** CharacterData equips. */
     public equips: number[];
@@ -375,109 +381,103 @@ export class CharacterData implements ICharacterData {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
-/** Properties of a UserPositionData. */
-export interface IUserPositionData {
+/** Properties of a CharacterPositionData. */
+export interface ICharacterPositionData {
 
-    /** UserPositionData id */
-    id?: (string|null);
-
-    /** UserPositionData x */
+    /** CharacterPositionData x */
     x?: (number|null);
 
-    /** UserPositionData y */
+    /** CharacterPositionData y */
     y?: (number|null);
 }
 
-/** Represents a UserPositionData. */
-export class UserPositionData implements IUserPositionData {
+/** Represents a CharacterPositionData. */
+export class CharacterPositionData implements ICharacterPositionData {
 
     /**
-     * Constructs a new UserPositionData.
+     * Constructs a new CharacterPositionData.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IUserPositionData);
+    constructor(properties?: ICharacterPositionData);
 
-    /** UserPositionData id. */
-    public id: string;
-
-    /** UserPositionData x. */
+    /** CharacterPositionData x. */
     public x: number;
 
-    /** UserPositionData y. */
+    /** CharacterPositionData y. */
     public y: number;
 
     /**
-     * Creates a new UserPositionData instance using the specified properties.
+     * Creates a new CharacterPositionData instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns UserPositionData instance
+     * @returns CharacterPositionData instance
      */
-    public static create(properties?: IUserPositionData): UserPositionData;
+    public static create(properties?: ICharacterPositionData): CharacterPositionData;
 
     /**
-     * Encodes the specified UserPositionData message. Does not implicitly {@link UserPositionData.verify|verify} messages.
-     * @param message UserPositionData message or plain object to encode
+     * Encodes the specified CharacterPositionData message. Does not implicitly {@link CharacterPositionData.verify|verify} messages.
+     * @param message CharacterPositionData message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IUserPositionData, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ICharacterPositionData, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified UserPositionData message, length delimited. Does not implicitly {@link UserPositionData.verify|verify} messages.
-     * @param message UserPositionData message or plain object to encode
+     * Encodes the specified CharacterPositionData message, length delimited. Does not implicitly {@link CharacterPositionData.verify|verify} messages.
+     * @param message CharacterPositionData message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IUserPositionData, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ICharacterPositionData, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a UserPositionData message from the specified reader or buffer.
+     * Decodes a CharacterPositionData message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns UserPositionData
+     * @returns CharacterPositionData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): UserPositionData;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CharacterPositionData;
 
     /**
-     * Decodes a UserPositionData message from the specified reader or buffer, length delimited.
+     * Decodes a CharacterPositionData message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns UserPositionData
+     * @returns CharacterPositionData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): UserPositionData;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CharacterPositionData;
 
     /**
-     * Verifies a UserPositionData message.
+     * Verifies a CharacterPositionData message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a UserPositionData message from a plain object. Also converts values to their respective internal types.
+     * Creates a CharacterPositionData message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns UserPositionData
+     * @returns CharacterPositionData
      */
-    public static fromObject(object: { [k: string]: any }): UserPositionData;
+    public static fromObject(object: { [k: string]: any }): CharacterPositionData;
 
     /**
-     * Creates a plain object from a UserPositionData message. Also converts values to other types if specified.
-     * @param message UserPositionData
+     * Creates a plain object from a CharacterPositionData message. Also converts values to other types if specified.
+     * @param message CharacterPositionData
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: UserPositionData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: CharacterPositionData, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this UserPositionData to JSON.
+     * Converts this CharacterPositionData to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 
     /**
-     * Gets the default type url for UserPositionData
+     * Gets the default type url for CharacterPositionData
      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns The default type url
      */
@@ -2940,9 +2940,6 @@ export interface IS2CGameStartNotification {
 
     /** S2CGameStartNotification users */
     users?: (IUserData[]|null);
-
-    /** S2CGameStartNotification userPositions */
-    userPositions?: (IUserPositionData[]|null);
 }
 
 /** Represents a S2CGameStartNotification. */
@@ -2959,9 +2956,6 @@ export class S2CGameStartNotification implements IS2CGameStartNotification {
 
     /** S2CGameStartNotification users. */
     public users: IUserData[];
-
-    /** S2CGameStartNotification userPositions. */
-    public userPositions: IUserPositionData[];
 
     /**
      * Creates a new S2CGameStartNotification instance using the specified properties.
@@ -3147,8 +3141,11 @@ export class C2SPositionUpdateRequest implements IC2SPositionUpdateRequest {
 /** Properties of a S2CPositionUpdateNotification. */
 export interface IS2CPositionUpdateNotification {
 
-    /** S2CPositionUpdateNotification UserPosition */
-    UserPosition?: (IUserPositionData|null);
+    /** S2CPositionUpdateNotification userId */
+    userId?: (string|null);
+
+    /** S2CPositionUpdateNotification position */
+    position?: (ICharacterPositionData|null);
 }
 
 /** Represents a S2CPositionUpdateNotification. */
@@ -3160,8 +3157,11 @@ export class S2CPositionUpdateNotification implements IS2CPositionUpdateNotifica
      */
     constructor(properties?: IS2CPositionUpdateNotification);
 
-    /** S2CPositionUpdateNotification UserPosition. */
-    public UserPosition?: (IUserPositionData|null);
+    /** S2CPositionUpdateNotification userId. */
+    public userId: string;
+
+    /** S2CPositionUpdateNotification position. */
+    public position?: (ICharacterPositionData|null);
 
     /**
      * Creates a new S2CPositionUpdateNotification instance using the specified properties.

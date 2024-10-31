@@ -8,6 +8,7 @@ export class Dinosaur extends Character {
       roleType: ROLE_TYPE.NONE,
       characterType: CHARACTER_TYPE.CHA00012,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00012],
+      position: { x: 0, y: 0 },
     });
   }
 }
