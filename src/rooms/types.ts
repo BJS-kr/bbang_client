@@ -143,12 +143,24 @@ export class Rooms {
     return room.users.length >= room.maxUserNum;
   }
 
-  pickRandomRoomId() {
+  pickRandomRoomId(unavailableRoomIds: { [K in number]: true }, userId: string) {
     const roomIds = Array.from(this.#rooms.keys());
-    const picked = Math.floor(Math.random() * roomIds.length);
-    const roomId = roomIds[picked];
+    const filteredRoomIds = roomIds.filter((roomId) => !unavailableRoomIds[roomId]);
 
-    if (this.isFull(roomId)) return this.pickRandomRoomId();
+    if (filteredRoomIds.length === 0) {
+      const roomId = this.createRoomId();
+      this.create(roomId, '덤벼보시지!', userId, 7);
+
+      return roomId;
+    }
+
+    const picked = Math.floor(Math.random() * filteredRoomIds.length);
+    const roomId = filteredRoomIds[picked];
+
+    if (this.isFull(roomId)) {
+      unavailableRoomIds[roomId] = true;
+      return this.pickRandomRoomId(unavailableRoomIds, userId);
+    }
 
     return roomId;
   }
