@@ -4,16 +4,13 @@ import { Context } from '../events/types';
 import { User } from '../users/types';
 import { Rooms } from './types';
 
-const onPhaseChange = (phaseType) => {
-  console.log(phaseType);
-};
 const ctx: Context = { userId: '', roomId: 0 };
 
 test('Rooms Test', async (t) => {
   await t.test('create room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.create(roomId, 'test', 'test', 10, onPhaseChange);
+    const result = rooms.create(roomId, 'test', 'test', 10);
     const room = rooms.getRoom(roomId);
 
     if (!room) {
@@ -29,7 +26,7 @@ test('Rooms Test', async (t) => {
   await t.test('join room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.create(roomId, 'test', 'test', 10, onPhaseChange);
+    const result = rooms.create(roomId, 'test', 'test', 10);
     const joinResult = rooms.join(roomId, new User('test', 'test', null as any), ctx);
     const room = rooms.getRoom(roomId);
 
@@ -46,7 +43,7 @@ test('Rooms Test', async (t) => {
   await t.test('leave room', () => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
-    const result = rooms.create(roomId, 'test', 'test', 10, onPhaseChange);
+    const result = rooms.create(roomId, 'test', 'test', 10);
     const joinResult = rooms.join(roomId, new User('test', 'test', null as any), ctx);
     const leaveResult = rooms.quit(roomId, 'test', ctx);
     const room = rooms.getRoom(roomId);

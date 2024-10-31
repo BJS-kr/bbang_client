@@ -1,7 +1,8 @@
 import { Context } from '../events/types';
 import { GameState } from '../game/game.state';
 import type { User } from '../users/types';
-import { writePayload } from '../utils/writePalyload';
+import { writePayload } from '../utils/writePayload';
+import { config } from '../config/config';
 
 export enum RoomState {
   WAIT = 0,
@@ -40,9 +41,9 @@ export class Room {
     this.gameState = gameState;
   }
 
-  broadcast(packetType: number, version: number, sequence: number, payload: any) {
+  broadcast(packetType: number, payload: any) {
     this.users.forEach((user) => {
-      writePayload(user.socket, packetType, version, sequence, payload);
+      writePayload(user.socket, packetType, config.client.version, 0, payload);
     });
   }
 }
@@ -51,7 +52,7 @@ export class Rooms {
   #rooms = new Map<number, Room>();
   #roomId = 1;
 
-  create(roomId, roomName, ownerId, maxUserNum, onPhaseChange) {
+  create(roomId, roomName, ownerId, maxUserNum) {
     if (this.isRoomExist(roomId)) return false;
 
     this.#rooms.set(
@@ -62,7 +63,7 @@ export class Rooms {
         maxUserNum,
         users: [],
         state: RoomState.WAIT,
-        gameState: new GameState(onPhaseChange),
+        gameState: new GameState(),
       }),
     );
 

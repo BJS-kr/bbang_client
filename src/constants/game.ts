@@ -1,4 +1,4 @@
-export const enum CARD_TYPE {
+export enum CARD_TYPE {
   CAD00001 = 1,
   CAD00002 = 2,
   CAD00003 = 3,
@@ -24,7 +24,7 @@ export const enum CARD_TYPE {
   CAD00023 = 23,
 }
 
-export const enum CHARACTER_TYPE {
+export enum CHARACTER_TYPE {
   NONE = 0,
   CHA00001 = 1, // 르탄이
   CHA00002 = 2, // 우탄이
@@ -42,31 +42,47 @@ export const enum CHARACTER_TYPE {
   CHA00014 = 14, // 핑크슬라임
 }
 
-export const enum ROLE_TYPE {
+export enum ROLE_TYPE {
   NONE = 0,
   TARGET = 1,
   BODYGUARD = 2,
   HITMAN = 3,
-  PSYCHOPASS = 4,
+  PSYCHOPATH = 4,
 }
 
-export const enum ROOM_STATE_TYPE {
+export enum ROOM_STATE_TYPE {
   WAIT = 0,
   PREPARE = 1,
   INGAME = 2,
 }
 
-export const enum PHASE_TYPE {
+export enum PHASE_TYPE {
   NONE = 0,
   DAY = 1,
   EVENING = 2,
   END = 3,
 }
 
-export const enum USER_STATE {
+export enum USER_STATE {
   NONE = 0,
   BBANG_SHOOTER = 1, // 빵야 시전자
   BBANG_TARGET = 2, // 빵야 대상 (쉴드 사용가능 상태)
   DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
   DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
 }
+
+export const CHARACTER_HP = {
+  [CHARACTER_TYPE.CHA00001]: 4, // 르탄이
+  [CHARACTER_TYPE.CHA00002]: 4, // 우탄이
+  [CHARACTER_TYPE.CHA00003]: 4, // 상어군
+  [CHARACTER_TYPE.CHA00004]: 4, // 기사군
+  [CHARACTER_TYPE.CHA00005]: 4, // 말랑이
+  [CHARACTER_TYPE.CHA00006]: 4, // 다이노
+  [CHARACTER_TYPE.CHA00007]: 4, // 개굴군
+  [CHARACTER_TYPE.CHA00008]: 4, // 핑크군
+  [CHARACTER_TYPE.CHA00009]: 4, // 물안경군
+  [CHARACTER_TYPE.CHA00010]: 4, // 가면군
+  [CHARACTER_TYPE.CHA00011]: 4, // 슬라임
+  [CHARACTER_TYPE.CHA00012]: 3, // 공룡이
+  [CHARACTER_TYPE.CHA00013]: 3, // 핑크슬라임
+};
