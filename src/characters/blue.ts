@@ -17,7 +17,7 @@ export class Blue extends Character {
   }
 
   switchCard(from: Card, to: Card) {
-    if (this.cards.get(from.type) < 1) {
+    if ((this.cards.get(from.type) ?? 0) < 1) {
       return;
     }
 
