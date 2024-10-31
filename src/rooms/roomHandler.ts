@@ -30,7 +30,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const roomId = rooms.createRoomId();
   const user = session.getUser(ctx.userId);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
@@ -60,7 +60,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   const { roomId } = joinRoomRequest;
   const user = session.getUser(ctx.userId);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
   const joinUser = new User(user.id, user.nickname, socket);
@@ -71,6 +71,11 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   }
 
   const room = rooms.getRoom(roomId);
+
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
+  }
+
   const payload: MessageProps<S2CJoinRoomResponse> = {
     success: true,
     room,
@@ -90,7 +95,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
   const roomId = rooms.pickRandomRoomId();
   const user = session.getUser(ctx.userId);
 
-  if (!user) {
+  if (!user || !user.nickname) {
     return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
@@ -102,6 +107,11 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
   }
 
   const room = rooms.getRoom(roomId);
+
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
+  }
+
   const payload: MessageProps<S2CJoinRandomRoomResponse> = {
     success: true,
     room,
@@ -128,6 +138,15 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     } satisfies MessageProps<S2CLeaveRoomResponse>);
   }
 
+  const room = rooms.getRoom(roomId);
+
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.LEAVE_ROOM_FAILED,
+    } satisfies MessageProps<S2CLeaveRoomResponse>);
+  }
+
   const leavedUser = rooms.quit(roomId, ctx.userId, ctx);
 
   if (!leavedUser) {
@@ -146,6 +165,5 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     userId: leavedUser.id,
   };
 
-  const room = rooms.getRoom(roomId);
   room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, version, sequence, leaveNotificationPayload);
 };
