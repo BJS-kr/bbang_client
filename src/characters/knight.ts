@@ -1,5 +1,5 @@
 import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { Card, Character } from './character';
+import { CardProps, Character } from './character';
 
 export class Knight extends Character {
   constructor() {
@@ -11,7 +11,7 @@ export class Knight extends Character {
     });
   }
 
-  acquireCardTwice(card1: Card, card2: Card) {
+  acquireCardTwice(card1: CardProps, card2: CardProps) {
     this.acquireCard(card1);
     this.acquireCard(card2);
   }

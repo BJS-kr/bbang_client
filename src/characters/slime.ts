@@ -1,5 +1,5 @@
 import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { Card, Character } from './character';
+import { CardProps, Character } from './character';
 
 export class Slime extends Character {
   constructor() {
@@ -11,7 +11,7 @@ export class Slime extends Character {
     });
   }
 
-  acquireCardFromOtherCharacter(character: Character, card: Card) {
+  acquireCardFromOtherCharacter(character: Character, card: CardProps) {
     const otherCharacterCard = character.getRandomCard();
 
     if (!otherCharacterCard) return;

@@ -1,6 +1,5 @@
 import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { Card, Character } from './character';
-import { v4 as uuid } from 'uuid';
+import { CardProps, Character } from './character';
 
 export class Dino extends Character {
   constructor() {
@@ -12,7 +11,7 @@ export class Dino extends Character {
     });
   }
 
-  recoverByLoseTwoCards(card1: Card, card2: Card) {
+  recoverByLoseTwoCards(card1: CardProps, card2: CardProps) {
     if ((this.handCards.get(card1.type) ?? 0) < 1 || (this.handCards.get(card2.type) ?? 0) < 1) {
       return;
     }

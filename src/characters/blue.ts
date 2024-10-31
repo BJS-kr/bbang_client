@@ -1,5 +1,5 @@
 import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { Card, Character } from './character';
+import { CardProps, Character } from './character';
 
 export class Blue extends Character {
   constructor() {
@@ -11,7 +11,7 @@ export class Blue extends Character {
     });
   }
 
-  switchCard(from: Card, to: Card) {
+  switchCard(from: CardProps, to: CardProps) {
     if ((this.handCards.get(from.type) ?? 0) < 1) {
       return;
     }

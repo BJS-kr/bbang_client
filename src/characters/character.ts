@@ -1,9 +1,11 @@
+import { cards } from '../cards';
+import { Card } from '../cards/card';
 import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
 import { CardData, CharacterData, CharacterStateData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 
-export type Card = MessageProps<CardData>;
+export type CardProps = MessageProps<CardData>;
 
 const HP_MIN = 0;
 const handler = {
@@ -67,13 +69,18 @@ export class Character extends EventEmitter {
     };
   }
 
-  useCard(card: CardData) {
-    // TODO 카드 사용 로직 구현
+  useCard(card: CardProps): Card<(...args: any) => boolean> | Error {
+    if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
 
-    return card;
+    this.loseCard(card);
+    const cardInstance = cards[card.type];
+
+    if (!cardInstance) return new Error(`card type of ${card.type} is not found`);
+
+    return cardInstance;
   }
 
-  getHandCards(): MessageProps<CardData>[] {
+  getHandCards(): CardProps[] {
     return Array.from(this.handCards.entries()).map(([type, count]) => ({ type, count }));
   }
 
@@ -89,13 +96,13 @@ export class Character extends EventEmitter {
     return this.baseDefenseChance > Math.random();
   }
 
-  acquireCard(card: Card) {
+  acquireCard(card: CardProps) {
     this.handCards.set(card.type, (this.handCards.get(card.type) || 0) + card.count);
 
     return card;
   }
 
-  loseCard(card: Card) {
+  loseCard(card: CardProps) {
     this.handCards.set(card.type, (this.handCards.get(card.type) || 0) - card.count);
 
     if (this.handCards.get(card.type) === 0) {
