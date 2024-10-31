@@ -1,5 +1,5 @@
 import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { CardData, CharacterStateData } from '../protobuf/compiled';
+import { CardData, CharacterData, CharacterStateData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 
@@ -53,6 +53,18 @@ export class Character extends EventEmitter {
     this.baseDefenseChance = baseDefenseChance;
 
     return new Proxy(this, handler);
+  }
+
+  toCharacterData(): MessageProps<CharacterData> {
+    return {
+      characterType: this.characterType,
+      roleType: this.roleType,
+      hp: this.hp,
+      weapon: this.weapon,
+      equips: this.equips,
+      debuffs: this.debuffs,
+      handCards: this.getHandCards(),
+    };
   }
 
   useCard(card: CardData) {

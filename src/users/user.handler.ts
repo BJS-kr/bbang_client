@@ -6,6 +6,9 @@ import { MessageProps } from '../protobuf/props';
 import { session } from './session';
 import { Context } from '../events/types';
 import net from 'node:net';
+import { Character } from '../characters/character';
+import { CHARACTER_TYPE } from '../constants/game';
+import { ROLE_TYPE } from '../constants/game';
 
 export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
@@ -47,6 +50,12 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
     myInfo: {
       id: result.userId,
       nickname: result.nickname,
+      characterData: new Character({
+        hp: 0,
+        roleType: ROLE_TYPE.NONE,
+        characterType: CHARACTER_TYPE.CHA00001,
+        baseDefenseChance: 0,
+      }).toCharacterData(),
     },
     failCode: GlobalFailCode.NONE,
   };
