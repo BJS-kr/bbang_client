@@ -78,7 +78,10 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
 
   const payload: MessageProps<S2CJoinRoomResponse> = {
     success: true,
-    room,
+    room: {
+      id: roomId,
+      ...room,
+    },
     failCode: GlobalFailCode.NONE,
   };
 
@@ -114,7 +117,10 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
 
   const payload: MessageProps<S2CJoinRandomRoomResponse> = {
     success: true,
-    room,
+    room: {
+      id: roomId,
+      ...room,
+    },
     failCode: GlobalFailCode.NONE,
   };
 
