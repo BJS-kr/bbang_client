@@ -4,11 +4,11 @@ class Session {
   #users: Map<string, SelectedUser> = new Map();
 
   join(user: SelectedUser) {
-    if (this.#users.has(user.id)) {
+    if (this.#users.has(user.userId)) {
       return new Error('User already exists');
     }
 
-    this.#users.set(user.id, user);
+    this.#users.set(user.userId, user);
 
     return null;
   }
