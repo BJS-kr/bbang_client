@@ -10,7 +10,7 @@ import {
   S2CLeaveRoomResponse,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { writePayload } from '../utils/writePalyload';
+import { writePayload } from '../utils/writePayload';
 import net from 'node:net';
 import { rooms } from './rooms';
 import { Context } from '../events/types';
@@ -26,7 +26,7 @@ const joinRoomFailPayload: MessageProps<S2CJoinRoomResponse> = {
   failCode: GlobalFailCode.JOIN_ROOM_FAILED,
 };
 
-export const createRoomRequestHandler = async (socket: net.Socket, version, sequence, createRoomRequest, onPhaseChange, ctx: Context) => {
+export const createRoomRequestHandler = async (socket: net.Socket, version, sequence, createRoomRequest, ctx: Context) => {
   const { name, maxUserNum } = createRoomRequest;
   const roomId = rooms.createRoomId();
   const user = session.getUser(ctx.userId);
@@ -35,8 +35,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const createResult = rooms.create(roomId, name, user.id, maxUserNum, onPhaseChange);
-
+  const createResult = rooms.create(roomId, name, user.id, maxUserNum);
   if (!createResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
@@ -89,7 +88,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
     joinUser,
   };
 
-  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, version, sequence, joinNotificationPayload);
+  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
 export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, sequence, joinRandomRoomRequest, ctx: Context) => {
@@ -125,7 +124,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
     joinUser,
   };
 
-  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, version, sequence, joinNotificationPayload);
+  room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
 export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, leaveRoomRequest, ctx: Context) => {
@@ -166,7 +165,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     userId: leavedUser.id,
   };
 
-  room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, version, sequence, leaveNotificationPayload);
+  room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
 };
 
 export const getRoomListRequestHandler = async (socket: net.Socket, version, sequence, getRoomListRequest, ctx: Context) => {
