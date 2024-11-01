@@ -49,10 +49,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const room = rooms.getRoom(roomId);
   const payload: MessageProps<S2CCreateRoomResponse> = {
     success: true,
-    room: {
-      id: roomId,
-      ...room,
-    },
+    room: room?.toRoomData(roomId),
     failCode: GlobalFailCode.NONE,
   };
 
@@ -81,17 +78,14 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
 
   const payload: MessageProps<S2CJoinRoomResponse> = {
     success: true,
-    room: {
-      id: roomId,
-      ...room,
-    },
+    room: room?.toRoomData(roomId),
     failCode: GlobalFailCode.NONE,
   };
 
   writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, payload);
 
   const joinNotificationPayload: MessageProps<S2CJoinRoomNotification> = {
-    joinUser,
+    joinUser: joinUser.toUserData(ctx.userId),
   };
 
   room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
@@ -120,17 +114,14 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
 
   const payload: MessageProps<S2CJoinRandomRoomResponse> = {
     success: true,
-    room: {
-      id: roomId,
-      ...room,
-    },
+    room: room?.toRoomData(roomId),
     failCode: GlobalFailCode.NONE,
   };
 
   writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, payload);
 
   const joinNotificationPayload: MessageProps<S2CJoinRoomNotification> = {
-    joinUser,
+    joinUser: joinUser.toUserData(ctx.userId),
   };
 
   room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);

@@ -12,4 +12,12 @@ export class User {
     this.nickname = nickname;
     this.socket = socket;
   }
+
+  toUserData(viewerId) {
+    return {
+      id: this.id,
+      nickname: this.nickname,
+      character: this.character?.toCharacterData(viewerId),
+    };
+  }
 }

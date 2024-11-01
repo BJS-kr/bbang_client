@@ -46,6 +46,17 @@ export class Room {
       writePayload(user.socket, packetType, config.client.version, 0, payload);
     });
   }
+
+  toRoomData(roomId) {
+    return {
+      id: roomId,
+      name: this.name,
+      ownerId: this.ownerId,
+      maxUserNum: this.maxUserNum,
+      state: this.state,
+      users: this.users.map((user) => user.toUserData(user.id)),
+    };
+  }
 }
 
 export class Rooms {
@@ -166,9 +177,6 @@ export class Rooms {
   }
 
   getRoomList() {
-    return Array.from(this.#rooms.entries()).map(([roomId, room]) => ({
-      id: roomId,
-      ...room,
-    }));
+    return Array.from(this.#rooms.entries()).map(([roomId, room]) => room.toRoomData(roomId));
   }
 }
