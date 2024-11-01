@@ -74,6 +74,9 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     .filter((type) => type !== CHARACTER_TYPE.NONE)
     .sort(() => Math.random() - 0.5);
 
+  console.log(Object.values(CHARACTER_TYPE));
+  console.log(shuffleCharacters);
+
   // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
     const characterType = Number(shuffleCharacters[i]);
