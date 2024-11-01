@@ -77,7 +77,7 @@ export class Character extends EventEmitter {
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {
     return {
       characterType: this.characterType,
-      roleType: viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : ROLE_TYPE.NONE,
+      roleType: viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : 0,
       hp: this.hp,
       weapon: this.weapon,
       stateInfo: this.stateInfo,
