@@ -37,8 +37,8 @@ const handler = {
 export class Character extends EventEmitter {
   userId: string;
   hp: number;
-  characterType: CHARACTER_TYPE;
-  roleType: ROLE_TYPE;
+  characterType: number;
+  roleType: number;
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
   stateInfo: MessageProps<CharacterStateInfoData>;
@@ -57,8 +57,8 @@ export class Character extends EventEmitter {
   }: {
     userId: string;
     hp: number;
-    roleType: ROLE_TYPE;
-    characterType: CHARACTER_TYPE;
+    roleType: number;
+    characterType: number;
     baseDefenseChance: number;
     position: CharacterPosition;
   }) {

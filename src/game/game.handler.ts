@@ -282,7 +282,8 @@ function createRandCard(): CardProps {
 }
 
 function getTotalCardCount(user) {
-  const result = user.character.handCards.reduce((acc, card) => {
+  const cards = user.character.getHandCards();
+  const result = cards.reduce((acc, card) => {
     acc += card.count;
     return acc;
   }, 0);
@@ -292,7 +293,7 @@ function getTotalCardCount(user) {
 
 function removeRandCard(user, count) {
   for (let i = 0; i < count; i++) {
-    const randNum = Math.floor(Math.random() * user.handCards.length);
+    const randNum = Math.floor(Math.random() * user.handCards.count);
     if (user.handCards[randNum].count > 1) {
       user.handCards[randNum].count--;
       continue;
