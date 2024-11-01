@@ -67,15 +67,17 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     roles.push(additionalRoles[randNum]);
   }
 
-  // 역할, 캐릭터, 초기 위치 셔플
-  const shuffleCharacters = Object.values(CHARACTER_TYPE).sort(() => Math.random() - 0.5);
+  // 역할, 초기 위치, 캐릭터 셔플
   const shuffleRoles = Object.values(ROLE_TYPE).sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
+  const shuffleCharacters = Object.values(CHARACTER_TYPE)
+    .filter((type) => type !== CHARACTER_TYPE.NONE)
+    .sort(() => Math.random() - 0.5);
 
   // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
-    const characterType = shuffleCharacters[i] as number;
-    const roleType = shuffleRoles[i] as number;
+    const characterType = Number(shuffleCharacters[i]);
+    const roleType = Number(shuffleRoles[i]);
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
     room.users[i].character.position = suhfflePositions[i];
   }
