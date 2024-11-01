@@ -53,7 +53,7 @@ export class Character extends EventEmitter {
     roleType,
     characterType,
     baseDefenseChance,
-    position,
+    position = { x: 0, y: 0 },
   }: {
     userId: string;
     hp: number;
