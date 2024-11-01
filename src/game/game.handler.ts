@@ -77,6 +77,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
     const characterType = Number(shuffleCharacters[i]);
+    console.log(`characterType: ${characterType}`);
     const roleType = Number(shuffleRoles[i]);
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
     room.users[i].character.position = suhfflePositions[i];
