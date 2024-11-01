@@ -13,7 +13,7 @@ export class Slime extends Character {
     });
   }
 
-  acquireCardFromOtherCharacter(character: Character, card: CardProps) {
+  acquireCardFromOtherCharacter(character: Character) {
     const otherCharacterCard = character.getRandomCard();
 
     if (!otherCharacterCard) return;
