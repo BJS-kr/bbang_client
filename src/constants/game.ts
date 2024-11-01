@@ -1,7 +1,7 @@
 export enum CARD_TYPE {
-  CAD00001 = 1,
+  BBANG = 1,
   CAD00002 = 2,
-  CAD00003 = 3,
+  SHIELD = 3,
   CAD00004 = 4,
   CAD00005 = 5,
   CAD00006 = 6,
@@ -17,7 +17,7 @@ export enum CARD_TYPE {
   CAD00016 = 16,
   CAD00017 = 17,
   CAD00018 = 18,
-  CAD00019 = 19,
+  AUTO_SHIELD = 19,
   CAD00020 = 20,
   CAD00021 = 21,
   CAD00022 = 22,
@@ -116,3 +116,11 @@ export const GAME_INIT_POSITION = [
   { x: 15.337, y: -12.296 },
   { x: -15.202, y: -4.736 },
 ];
+
+export enum CharacterState {
+  NONE = 0,
+  BBANG_SHOOTER = 1, // 빵야 시전자
+  BBANG_TARGET = 2, // 빵야 대상 (쉴드 사용가능 상태)
+  DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
+  DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
+}

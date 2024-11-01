@@ -1,5 +1,5 @@
 import { RoomState } from '../rooms/types';
-import { CARD_TYPE, CHARACTER_TYPE, GAME_INIT_POSITION, PHASE_TYPE, ROLE_TYPE } from '../constants/game';
+import { CARD_TYPE, CHARACTER_TYPE, CharacterState, GAME_INIT_POSITION, PHASE_TYPE, ROLE_TYPE } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
@@ -19,7 +19,7 @@ import { Context } from '../events/types';
 import { session } from '../users/session';
 import { config } from '../config/config';
 import { createCharacter } from '../characters/createCharacter';
-import { CardProps, CharacterState } from '../characters/character';
+import { CardProps } from '../characters/character';
 
 // TODO
 const TARGET_CARD_BONUS = 1;

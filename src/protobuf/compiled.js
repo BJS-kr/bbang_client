@@ -2462,6 +2462,10 @@ $root.S2CRegisterResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -2521,6 +2525,22 @@ $root.S2CRegisterResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -3026,6 +3046,10 @@ $root.S2CLoginResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -3092,6 +3116,22 @@ $root.S2CLoginResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -3567,6 +3607,10 @@ $root.S2CCreateRoomResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -3629,6 +3673,22 @@ $root.S2CCreateRoomResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -4473,6 +4533,10 @@ $root.S2CJoinRoomResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -4535,6 +4599,22 @@ $root.S2CJoinRoomResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -4980,6 +5060,10 @@ $root.S2CJoinRandomRoomResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -5042,6 +5126,22 @@ $root.S2CJoinRandomRoomResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -5647,6 +5747,10 @@ $root.S2CLeaveRoomResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -5704,6 +5808,22 @@ $root.S2CLeaveRoomResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -6301,6 +6421,10 @@ $root.S2CGamePrepareResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -6358,6 +6482,22 @@ $root.S2CGamePrepareResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -6960,6 +7100,10 @@ $root.S2CGameStartResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -7017,6 +7161,22 @@ $root.S2CGameStartResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -7716,6 +7876,10 @@ $root.S2CPositionUpdateResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -7773,6 +7937,22 @@ $root.S2CPositionUpdateResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -8451,6 +8631,10 @@ $root.S2CUseCardResponse = (function() {
             case 5:
             case 6:
             case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
                 break;
             }
         return null;
@@ -8508,6 +8692,22 @@ $root.S2CUseCardResponse = (function() {
         case "REGISTER_FAILED":
         case 7:
             message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
             break;
         }
         return message;
@@ -11810,6 +12010,10 @@ $root.GamePacket = (function() {
  * @property {number} JOIN_ROOM_FAILED=5 JOIN_ROOM_FAILED value
  * @property {number} LEAVE_ROOM_FAILED=6 LEAVE_ROOM_FAILED value
  * @property {number} REGISTER_FAILED=7 REGISTER_FAILED value
+ * @property {number} ROOM_NOT_FOUND=8 ROOM_NOT_FOUND value
+ * @property {number} CHARACTER_NOT_FOUND=9 CHARACTER_NOT_FOUND value
+ * @property {number} CHARACTER_STATE_ERROR=10 CHARACTER_STATE_ERROR value
+ * @property {number} CHARACTER_NO_CARD=11 CHARACTER_NO_CARD value
  */
 $root.GlobalFailCode = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -11821,6 +12025,10 @@ $root.GlobalFailCode = (function() {
     values[valuesById[5] = "JOIN_ROOM_FAILED"] = 5;
     values[valuesById[6] = "LEAVE_ROOM_FAILED"] = 6;
     values[valuesById[7] = "REGISTER_FAILED"] = 7;
+    values[valuesById[8] = "ROOM_NOT_FOUND"] = 8;
+    values[valuesById[9] = "CHARACTER_NOT_FOUND"] = 9;
+    values[valuesById[10] = "CHARACTER_STATE_ERROR"] = 10;
+    values[valuesById[11] = "CHARACTER_NO_CARD"] = 11;
     return values;
 })();
 

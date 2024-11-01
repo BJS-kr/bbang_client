@@ -1,4 +1,4 @@
-import { CharacterState } from '../characters/character';
+import { CharacterState } from '../constants/game';
 
 const BBANG_SECOND = 5; // 5초
 const DEATH_MATCH_SECOND = 5; // 5초
@@ -10,7 +10,7 @@ export class CharacterStateInfo {
   #stateTimer;
   #onStateTimeout;
 
-  constructor(onStateTimeout) {
+  constructor(onStateTimeout: (...args: any[]) => void) {
     this.state = CharacterState.NONE;
     this.nextState = CharacterState.NONE;
     this.nextStateAt = 0;
