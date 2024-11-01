@@ -118,6 +118,15 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
     user: [user.toUserData(user.id), targetUser.toUserData(targetUserId)],
   });
 
+  // 기본 방어 롹률로 막혔는지 확인 ex) 개굴이
+  if (targetUser.character.isDefended()) {
+    targetUser.character.stateInfo.setState(CharacterState.NONE);
+
+    return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [targetUser.toUserData(targetUserId)],
+    } satisfies MessageProps<S2CUserUpdateNotification>);
+  }
+
   const autoShield = targetUser.character.drawCard({ type: CARD_TYPE.AUTO_SHIELD, count: 1 });
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (autoShield instanceof AutoShield) {
