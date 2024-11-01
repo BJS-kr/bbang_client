@@ -83,40 +83,41 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
 
   if (!targetUser) {
     error('handleBBang: target user not found');
+
     return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
     } satisfies UseCardResponsePayload);
   }
 
+  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER);
+  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET);
+
   const payload: UseCardResponsePayload = {
     success: true,
     failCode: GlobalFailCode.NONE,
   };
 
-  room.broadcast(PACKET_TYPE.USE_CARD_RESPONSE, payload);
+  // 빵 사용자에게 응답
+  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, payload);
 
-  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER);
-  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [user.toUserData(user.id)],
-  });
-  writePayload(targetUser.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [targetUser.toUserData(targetUserId)],
+  // 빵 사용 중계
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+    user: [user.toUserData(user.id), targetUser.toUserData(targetUserId)],
   });
 
   const autoShield = targetUser.character.drawCard({ type: CARD_TYPE.AUTO_SHIELD, count: 1 });
-  // 타겟이 자동 쉴드가 있는 경우
+  // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (autoShield instanceof AutoShield) {
-    room.broadcast(PACKET_TYPE.USE_CARD_RESPONSE, {
+    room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
       success: true,
       failCode: GlobalFailCode.NONE,
     });
 
     if (autoShield.isAutoShielded()) {
       targetUser.character.stateInfo.setState(CharacterState.NONE);
-      writePayload(targetUser.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
+      // 자동 쉴드로 방어에 성공했다면 다시 중계
+      room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
         user: [targetUser.toUserData(targetUserId)],
       });
     }
