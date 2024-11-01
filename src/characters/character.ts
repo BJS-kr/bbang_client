@@ -88,7 +88,10 @@ export class Character extends EventEmitter {
   drawCard(card: CardProps): Result<Card> {
     if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
 
-    this.loseCard(card);
+    const lostCard = this.loseCard(card);
+
+    if (lostCard instanceof Error) return lostCard;
+
     const cardInstance = cards[card.type];
 
     if (!cardInstance) return new Error(`card type of ${card.type} is not found`);
@@ -119,7 +122,13 @@ export class Character extends EventEmitter {
   }
 
   loseCard(card: CardProps) {
-    this.handCards.set(card.type, (this.handCards.get(card.type) || 0) - card.count);
+    const remain = (this.handCards.get(card.type) || 0) - card.count;
+
+    if (remain < 0) {
+      return new Error(`character has no card type of ${card.type}`);
+    }
+
+    this.handCards.set(card.type, remain < 0 ? 0 : remain);
 
     if (this.handCards.get(card.type) === 0) {
       this.handCards.delete(card.type);

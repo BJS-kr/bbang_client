@@ -21,6 +21,7 @@ import { Room } from '../rooms/types';
 import { Shield } from './shield';
 import { AutoShield } from './shield.auto';
 import { User } from '../users/types';
+import { Shark } from '../characters/shark';
 
 type UseCardResponsePayload = MessageProps<S2CUseCardResponse>;
 type HandlerBase = {
@@ -148,7 +149,12 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     targetUserId: '',
   } satisfies MessageProps<S2CUseCardNotification>);
 
-  const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
+  const countToShield = user.character instanceof Shark ? 2 : 1;
+  const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: countToShield });
+
+  if (shield instanceof Error) {
+    return error('handleShield: character no shield card. it could have been insufficient amount of card');
+  }
 
   if (shield instanceof Shield) {
     user.character.stateInfo.setState(CharacterState.NONE);
