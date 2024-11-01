@@ -164,6 +164,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   // 게임 시작 알림
   room.users.forEach((user) => {
     writePayload(user.socket, PACKET_TYPE.GAME_START_NOTIFICATION, version, 0, {
+      gameState: room.gameState,
       users: createUserDataView(user, room.users),
     } satisfies MessageProps<S2CGameStartNotification>);
   });

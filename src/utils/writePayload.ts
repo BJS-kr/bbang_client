@@ -7,7 +7,9 @@ export function writePayload(socket, packetType, version, sequence, payload) {
     const encodedPayload = encodePayload(packetType, payload);
 
     // TODO 테스트
-    log(`decodePayload: ${JSON.stringify(decodePayload(packetType, encodedPayload), (key, value) => (key === 'socket' ? undefined : value))}`);
+    log(
+      `decodePayload: ${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload), (key, value) => (key === 'socket' ? undefined : value))}`,
+    );
     const packet = createPacket(packetType, version, sequence, encodedPayload);
 
     socket.write(packet);
