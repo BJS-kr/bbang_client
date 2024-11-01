@@ -8,6 +8,8 @@ import {
   S2CGameStartNotification,
   S2CGameStartResponse,
   S2CPhaseUpdateNotification,
+  S2CPositionUpdateNotification,
+  S2CPositionUpdateResponse,
   UserData,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
@@ -17,7 +19,7 @@ import { Context } from '../events/types';
 import { session } from '../users/session';
 import { config } from '../config/config';
 import { createCharacter } from '../characters/createCharacter';
-import { CardProps } from '../characters/character';
+import { CardProps, CharacterState } from '../characters/character';
 
 // TODO
 const TARGET_CARD_BONUS = 1;
@@ -26,7 +28,7 @@ const cardTypes = Object.values(CARD_TYPE);
 
 export const gamePrepareRequestHandler = async (socket, version, sequence, gamePrepareRequest, ctx: Context) => {
   const user = session.getUser(ctx.userId);
-  if (user === null) {
+  if (!user) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -34,7 +36,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   }
 
   const room = rooms.getRoom(ctx.roomId);
-  if (room === null) {
+  if (!room) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -100,7 +102,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
 
 export const gameStartRequestHandler = async (socket, version, sequence, gameStartRequest, ctx: Context) => {
   const user = session.getUser(ctx.userId);
-  if (user === null) {
+  if (!user) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -108,7 +110,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   }
 
   const room = rooms.getRoom(ctx.roomId);
-  if (room === null) {
+  if (!room) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -163,11 +165,63 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   console.log(`[GameStart] roomId: ${ctx.roomId}`);
 };
 
+export const positionUpdateRequestHandler = async (socket, version, sequence, positionUpdateRequest, ctx: Context) => {
+  const { x, y } = positionUpdateRequest;
+  const user = session.getUser(ctx.userId);
+  if (!user) {
+    return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_REQUEST,
+    } satisfies MessageProps<S2CGameStartResponse>);
+  }
+
+  const room = rooms.getRoom(ctx.roomId);
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_REQUEST,
+    } satisfies MessageProps<S2CGameStartResponse>);
+  }
+
+  if (room.state !== RoomState.IN_GAME) {
+    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_REQUEST,
+    });
+  }
+
+  const roomUser = room.users.find((user) => user.id === ctx.userId);
+  if (!roomUser) {
+    return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_REQUEST,
+    } satisfies MessageProps<S2CGameStartResponse>);
+  }
+
+  if (roomUser.character.stateInfo.state !== CharacterState.NONE) {
+    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_REQUEST,
+    });
+  }
+
+  roomUser.character.position = { x, y };
+  writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE,
+  } satisfies MessageProps<S2CPositionUpdateResponse>);
+
+  writePayload(socket, PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, version, sequence, {
+    userId: ctx.userId,
+    position: roomUser.character.position,
+  } satisfies MessageProps<S2CPositionUpdateNotification>);
+};
+
 const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
   console.log(`[onPhaseChange] roomId: ${roomId}, phaseType:${phaseType}`);
 
   const room = rooms.getRoom(roomId);
-  if (room === null) {
+  if (!room) {
     console.error(`[onPhaseChange] Cannot find room:${roomId}`);
     return;
   }

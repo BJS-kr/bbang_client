@@ -251,8 +251,8 @@ export interface ICharacterData {
     /** CharacterData weapon */
     weapon?: (number|null);
 
-    /** CharacterData state */
-    state?: (ICharacterStateData|null);
+    /** CharacterData stateInfo */
+    stateInfo?: (ICharacterStateInfoData|null);
 
     /** CharacterData position */
     position?: (ICharacterPositionData|null);
@@ -288,8 +288,8 @@ export class CharacterData implements ICharacterData {
     /** CharacterData weapon. */
     public weapon: number;
 
-    /** CharacterData state. */
-    public state?: (ICharacterStateData|null);
+    /** CharacterData stateInfo. */
+    public stateInfo?: (ICharacterStateInfoData|null);
 
     /** CharacterData position. */
     public position?: (ICharacterPositionData|null);
@@ -690,109 +690,109 @@ export class GameStateData implements IGameStateData {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
-/** Properties of a CharacterStateData. */
-export interface ICharacterStateData {
+/** Properties of a CharacterStateInfoData. */
+export interface ICharacterStateInfoData {
 
-    /** CharacterStateData state */
+    /** CharacterStateInfoData state */
     state?: (number|null);
 
-    /** CharacterStateData nextState */
+    /** CharacterStateInfoData nextState */
     nextState?: (number|null);
 
-    /** CharacterStateData nextStateAt */
+    /** CharacterStateInfoData nextStateAt */
     nextStateAt?: (number|Long|null);
 }
 
-/** Represents a CharacterStateData. */
-export class CharacterStateData implements ICharacterStateData {
+/** Represents a CharacterStateInfoData. */
+export class CharacterStateInfoData implements ICharacterStateInfoData {
 
     /**
-     * Constructs a new CharacterStateData.
+     * Constructs a new CharacterStateInfoData.
      * @param [properties] Properties to set
      */
-    constructor(properties?: ICharacterStateData);
+    constructor(properties?: ICharacterStateInfoData);
 
-    /** CharacterStateData state. */
+    /** CharacterStateInfoData state. */
     public state: number;
 
-    /** CharacterStateData nextState. */
+    /** CharacterStateInfoData nextState. */
     public nextState: number;
 
-    /** CharacterStateData nextStateAt. */
+    /** CharacterStateInfoData nextStateAt. */
     public nextStateAt: (number|Long);
 
     /**
-     * Creates a new CharacterStateData instance using the specified properties.
+     * Creates a new CharacterStateInfoData instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns CharacterStateData instance
+     * @returns CharacterStateInfoData instance
      */
-    public static create(properties?: ICharacterStateData): CharacterStateData;
+    public static create(properties?: ICharacterStateInfoData): CharacterStateInfoData;
 
     /**
-     * Encodes the specified CharacterStateData message. Does not implicitly {@link CharacterStateData.verify|verify} messages.
-     * @param message CharacterStateData message or plain object to encode
+     * Encodes the specified CharacterStateInfoData message. Does not implicitly {@link CharacterStateInfoData.verify|verify} messages.
+     * @param message CharacterStateInfoData message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: ICharacterStateData, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: ICharacterStateInfoData, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified CharacterStateData message, length delimited. Does not implicitly {@link CharacterStateData.verify|verify} messages.
-     * @param message CharacterStateData message or plain object to encode
+     * Encodes the specified CharacterStateInfoData message, length delimited. Does not implicitly {@link CharacterStateInfoData.verify|verify} messages.
+     * @param message CharacterStateInfoData message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: ICharacterStateData, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: ICharacterStateInfoData, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a CharacterStateData message from the specified reader or buffer.
+     * Decodes a CharacterStateInfoData message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns CharacterStateData
+     * @returns CharacterStateInfoData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CharacterStateData;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): CharacterStateInfoData;
 
     /**
-     * Decodes a CharacterStateData message from the specified reader or buffer, length delimited.
+     * Decodes a CharacterStateInfoData message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns CharacterStateData
+     * @returns CharacterStateInfoData
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CharacterStateData;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): CharacterStateInfoData;
 
     /**
-     * Verifies a CharacterStateData message.
+     * Verifies a CharacterStateInfoData message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a CharacterStateData message from a plain object. Also converts values to their respective internal types.
+     * Creates a CharacterStateInfoData message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns CharacterStateData
+     * @returns CharacterStateInfoData
      */
-    public static fromObject(object: { [k: string]: any }): CharacterStateData;
+    public static fromObject(object: { [k: string]: any }): CharacterStateInfoData;
 
     /**
-     * Creates a plain object from a CharacterStateData message. Also converts values to other types if specified.
-     * @param message CharacterStateData
+     * Creates a plain object from a CharacterStateInfoData message. Also converts values to other types if specified.
+     * @param message CharacterStateInfoData
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: CharacterStateData, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: CharacterStateInfoData, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this CharacterStateData to JSON.
+     * Converts this CharacterStateInfoData to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 
     /**
-     * Gets the default type url for CharacterStateData
+     * Gets the default type url for CharacterStateInfoData
      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns The default type url
      */
@@ -3138,6 +3138,109 @@ export class C2SPositionUpdateRequest implements IC2SPositionUpdateRequest {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a S2CPositionUpdateResponse. */
+export interface IS2CPositionUpdateResponse {
+
+    /** S2CPositionUpdateResponse success */
+    success?: (boolean|null);
+
+    /** S2CPositionUpdateResponse failCode */
+    failCode?: (GlobalFailCode|null);
+}
+
+/** Represents a S2CPositionUpdateResponse. */
+export class S2CPositionUpdateResponse implements IS2CPositionUpdateResponse {
+
+    /**
+     * Constructs a new S2CPositionUpdateResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CPositionUpdateResponse);
+
+    /** S2CPositionUpdateResponse success. */
+    public success: boolean;
+
+    /** S2CPositionUpdateResponse failCode. */
+    public failCode: GlobalFailCode;
+
+    /**
+     * Creates a new S2CPositionUpdateResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CPositionUpdateResponse instance
+     */
+    public static create(properties?: IS2CPositionUpdateResponse): S2CPositionUpdateResponse;
+
+    /**
+     * Encodes the specified S2CPositionUpdateResponse message. Does not implicitly {@link S2CPositionUpdateResponse.verify|verify} messages.
+     * @param message S2CPositionUpdateResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CPositionUpdateResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CPositionUpdateResponse message, length delimited. Does not implicitly {@link S2CPositionUpdateResponse.verify|verify} messages.
+     * @param message S2CPositionUpdateResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CPositionUpdateResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CPositionUpdateResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CPositionUpdateResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CPositionUpdateResponse;
+
+    /**
+     * Decodes a S2CPositionUpdateResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CPositionUpdateResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CPositionUpdateResponse;
+
+    /**
+     * Verifies a S2CPositionUpdateResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CPositionUpdateResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CPositionUpdateResponse
+     */
+    public static fromObject(object: { [k: string]: any }): S2CPositionUpdateResponse;
+
+    /**
+     * Creates a plain object from a S2CPositionUpdateResponse message. Also converts values to other types if specified.
+     * @param message S2CPositionUpdateResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CPositionUpdateResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CPositionUpdateResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CPositionUpdateResponse
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a S2CPositionUpdateNotification. */
 export interface IS2CPositionUpdateNotification {
 
@@ -4325,6 +4428,9 @@ export interface IGamePacket {
     /** GamePacket positionUpdateRequest */
     positionUpdateRequest?: (IC2SPositionUpdateRequest|null);
 
+    /** GamePacket positionUpdateResponse */
+    positionUpdateResponse?: (IS2CPositionUpdateResponse|null);
+
     /** GamePacket positionUpdateNotification */
     positionUpdateNotification?: (IS2CPositionUpdateNotification|null);
 
@@ -4437,6 +4543,9 @@ export class GamePacket implements IGamePacket {
     /** GamePacket positionUpdateRequest. */
     public positionUpdateRequest?: (IC2SPositionUpdateRequest|null);
 
+    /** GamePacket positionUpdateResponse. */
+    public positionUpdateResponse?: (IS2CPositionUpdateResponse|null);
+
     /** GamePacket positionUpdateNotification. */
     public positionUpdateNotification?: (IS2CPositionUpdateNotification|null);
 
@@ -4471,7 +4580,7 @@ export class GamePacket implements IGamePacket {
     public gameEndNotification?: (IS2CGameEndNotification|null);
 
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartnotification"|"positionUpdateRequest"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardNotification"|"gameEndNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartnotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardNotification"|"gameEndNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.

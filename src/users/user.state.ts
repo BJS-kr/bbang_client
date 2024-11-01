@@ -1,9 +1,9 @@
-import { USER_STATE } from '../constants/game.js';
+import { CharacterState } from '../characters/character';
 
 const BBANG_SECOND = 5; // 5초
 const DEATH_MATCH_SECOND = 5; // 5초
 
-export class UserState {
+export class CharacterStateInfo {
   state;
   nextState;
   nextStateAt;
@@ -11,8 +11,8 @@ export class UserState {
   #onStateTimeout;
 
   constructor(onStateTimeout) {
-    this.state = USER_STATE.NONE;
-    this.nextState = USER_STATE.NONE;
+    this.state = CharacterState.NONE;
+    this.nextState = CharacterState.NONE;
     this.nextStateAt = 0;
     this.#onStateTimeout = onStateTimeout;
   }
@@ -20,28 +20,28 @@ export class UserState {
   setState(state) {
     this.state = state;
     switch (this.state) {
-      case USER_STATE.NONE:
-        this.nextState = USER_STATE.NONE;
+      case CharacterState.NONE:
+        this.nextState = CharacterState.NONE;
         this.nextStateAt = 0;
         break;
 
-      case USER_STATE.BBANG_SHOOTER:
-        this.nextState = USER_STATE.NONE;
+      case CharacterState.BBANG_SHOOTER:
+        this.nextState = CharacterState.NONE;
         this.nextStateAt = Date.now() + BBANG_SECOND * 1000;
         break;
 
-      case USER_STATE.BBANG_TARGET:
-        this.nextState = USER_STATE.NONE;
+      case CharacterState.BBANG_TARGET:
+        this.nextState = CharacterState.NONE;
         this.nextStateAt = Date.now() + BBANG_SECOND * 1000;
         break;
 
-      case USER_STATE.DEATH_MATCH:
-        this.nextState = USER_STATE.DEATH_MATCH_TURN;
+      case CharacterState.DEATH_MATCH:
+        this.nextState = CharacterState.DEATH_MATCH_TURN;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
         break;
 
-      case USER_STATE.DEATH_MATCH_TURN:
-        this.nextState = USER_STATE.DEATH_MATCH;
+      case CharacterState.DEATH_MATCH_TURN:
+        this.nextState = CharacterState.DEATH_MATCH;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
         break;
 
@@ -58,7 +58,7 @@ export class UserState {
       clearTimeout(this.#stateTimer);
     }
 
-    if (this.state === USER_STATE.NONE) {
+    if (this.state === CharacterState.NONE) {
       return;
     }
 

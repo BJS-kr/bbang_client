@@ -1,12 +1,20 @@
 import { cards } from '../cards';
 import { Card } from '../cards/card';
 import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { CardData, CharacterData, CharacterPositionData, CharacterStateData } from '../protobuf/compiled';
+import { CardData, CharacterData, CharacterPositionData, CharacterStateInfoData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
+
+export enum CharacterState {
+  NONE = 0,
+  BBANG_SHOOTER = 1, // 빵야 시전자
+  BBANG_TARGET = 2, // 빵야 대상 (쉴드 사용가능 상태)
+  DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
+  DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
+}
 
 const HP_MIN = 0;
 const handler = {
@@ -32,7 +40,7 @@ export class Character extends EventEmitter {
   roleType: ROLE_TYPE;
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
-  state: CharacterStateData;
+  stateInfo: MessageProps<CharacterStateInfoData>;
   position: CharacterPosition;
   weapon: number;
   equips: number[];
@@ -68,7 +76,7 @@ export class Character extends EventEmitter {
       roleType: this.roleType,
       hp: this.hp,
       weapon: this.weapon,
-      state: this.state,
+      stateInfo: this.stateInfo,
       position: this.position,
       equips: this.equips,
       debuffs: this.debuffs,

@@ -1,5 +1,9 @@
 import { config } from '../config/config';
 import { PACKET_TYPE } from '../constants/packetType';
+import net from 'node:net';
+import { decodePayload } from '../protobuf/packet';
+import { Context } from './types';
+import { error, log } from '../utils/logger';
 import { registerRequestHandler, loginRequestHandler } from '../users/user.handler';
 import {
   createRoomRequestHandler,
@@ -8,11 +12,7 @@ import {
   joinRoomRequestHandler,
   leaveRoomRequestHandler,
 } from '../rooms/roomHandler';
-import net from 'node:net';
-import { decodePayload } from '../protobuf/packet';
-import { Context } from './types';
-import { error, log } from '../utils/logger';
-import { gamePrepareRequestHandler, gameStartRequestHandler } from '../game/game.handler';
+import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateRequestHandler } from '../game/game.handler';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
   buf = Buffer.concat([buf, data]);
@@ -118,13 +118,22 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
 
       case PACKET_TYPE.GAME_PREPARE_REQUEST:
         const gamePrepareRequest = decodePayload(packetType, payloadBuffer);
+        log(`gamePrepareRequest: ${JSON.stringify(getRoomListRequest)}`);
         await gamePrepareRequestHandler(socket, version, sequence, gamePrepareRequest, ctx);
 
         break;
 
       case PACKET_TYPE.GAME_START_REQUEST:
         const gameStartRequest = decodePayload(packetType, payloadBuffer);
+        log(`gameStartRequest: ${JSON.stringify(gameStartRequest)}`);
         await gameStartRequestHandler(socket, version, sequence, gameStartRequest, ctx);
+
+        break;
+
+      case PACKET_TYPE.POSITION_UPDATE_REQUEST:
+        const positionUpdateRequest = decodePayload(packetType, payloadBuffer);
+        log(`positionUpdateRequest: ${JSON.stringify(positionUpdateRequest)}`);
+        await positionUpdateRequestHandler(socket, version, sequence, positionUpdateRequest, ctx);
 
         break;
 
