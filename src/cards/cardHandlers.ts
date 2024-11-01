@@ -12,7 +12,7 @@ import {
 } from '../protobuf/compiled';
 import { Socket } from 'node:net';
 import { rooms } from '../rooms/rooms';
-import { writePayload } from '../utils/writePayload';
+import { writePayload } from '../protobuf/writePayload';
 import { MessageProps } from '../protobuf/props';
 import { PACKET_TYPE } from '../constants/packetType';
 import { error, log } from '../utils/logger';

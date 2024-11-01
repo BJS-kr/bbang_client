@@ -13,7 +13,7 @@ import {
   S2CUserUpdateNotification,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { writePayload } from '../utils/writePayload';
+import { writePayload } from '../protobuf/writePayload';
 import { rooms } from '../rooms/rooms';
 import { Context } from '../events/types';
 import { session } from '../users/session';

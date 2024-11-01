@@ -1,6 +1,6 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import { createUser, getUserByUserId } from './user.repository';
-import { writePayload } from '../utils/writePayload';
+import { writePayload } from '../protobuf/writePayload';
 import { GlobalFailCode, S2CLoginResponse } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { session } from './session';

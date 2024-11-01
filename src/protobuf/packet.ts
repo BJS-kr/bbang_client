@@ -1,5 +1,5 @@
 import protobuf from 'protobufjs';
-import CustomError from '../utils/error/customError';
+import CustomError from '../utils/customError';
 import { config } from '../config/config';
 import { ERROR_CODES } from '../constants/error';
 import { protoRoutes } from './routes';

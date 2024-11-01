@@ -1,7 +1,7 @@
 import { Context } from '../events/types';
 import { GameState } from '../game/game.state';
 import type { User } from '../users/types';
-import { writePayload } from '../utils/writePayload';
+import { writePayload } from '../protobuf/writePayload';
 import { config } from '../config/config';
 
 export enum RoomState {

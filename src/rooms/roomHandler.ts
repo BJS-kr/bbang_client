@@ -10,7 +10,7 @@ import {
   S2CLeaveRoomResponse,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { writePayload } from '../utils/writePayload';
+import { writePayload } from '../protobuf/writePayload';
 import net from 'node:net';
 import { rooms } from './rooms';
 import { Context } from '../events/types';

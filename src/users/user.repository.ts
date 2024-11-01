@@ -4,7 +4,7 @@ import { db } from '../db/db';
 import { $users } from '../db/schema';
 import { identity } from '../utils/ident';
 import { eq } from 'drizzle-orm';
-import CustomError from '../utils/error/customError';
+import CustomError from '../utils/customError';
 import { ERROR_CODES } from '../constants/error';
 
 export const createUser = async (userId, password, nickname): Promise<Result<InsertedUser>> => {

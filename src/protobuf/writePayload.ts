@@ -1,5 +1,5 @@
 import { error, log } from '../utils/logger';
-import { createPacket, encodePayload } from '../protobuf/packet';
+import { createPacket, encodePayload } from './packet';
 
 export function writePayload(socket, packetType: number, version: string, sequence: number, payload) {
   log(`writePayload: ${JSON.stringify(payload, (key, value) => (key === 'socket' ? undefined : value))}`);
