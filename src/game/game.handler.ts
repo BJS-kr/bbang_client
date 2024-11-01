@@ -71,7 +71,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   const shuffleRoles = Object.values(ROLE_TYPE).sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
   const shuffleCharacters = Object.values(CHARACTER_TYPE)
-    .filter((type) => type !== CHARACTER_TYPE.NONE)
+    .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE)
     .sort(() => Math.random() - 0.5);
 
   console.log(Object.values(CHARACTER_TYPE));
