@@ -2,7 +2,14 @@ import { CARD_TYPE } from '../constants/game';
 import { CardProps, Character } from '../characters/character';
 import { CharacterState } from '../constants/game';
 import { Context } from '../events/types';
-import { C2SUseCardRequest, GlobalFailCode, S2CCardEffectNotification, S2CUseCardResponse, S2CUserUpdateNotification } from '../protobuf/compiled';
+import {
+  C2SUseCardRequest,
+  GlobalFailCode,
+  S2CCardEffectNotification,
+  S2CUseCardNotification,
+  S2CUseCardResponse,
+  S2CUserUpdateNotification,
+} from '../protobuf/compiled';
 import { Socket } from 'node:net';
 import { rooms } from '../rooms/rooms';
 import { writePayload } from '../utils/writePayload';
@@ -60,14 +67,15 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
     } satisfies UseCardResponsePayload);
   }
 
+  const base = { socket, version, sequence, ctx };
   switch (true) {
     case card instanceof BBang:
       log('handleUseCard: BBang');
-      handleBBang({ socket, version, sequence, ctx }, user, room, useCardRequest.targetUserId);
+      handleBBang(base, user, room, useCardRequest.targetUserId);
       break;
     case card instanceof Shield:
       log('handleUseCard: Shield');
-      handleShield(room);
+      handleShield(base, room, user);
       break;
     default:
       error(`handleUseCard: unknown card. card type: ${card.type}`);
@@ -92,6 +100,9 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
 
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER);
   targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET);
+  targetUser.character.setOnStateTimeout((from) => {
+    if (from === CharacterState.BBANG_TARGET) targetUser.character.takeDamage(1);
+  });
 
   const payload: UseCardResponsePayload = {
     success: true,
@@ -125,9 +136,24 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
   }
 }
 
-function handleShield(room: Room) {
-  room.broadcast(PACKET_TYPE.USE_CARD_RESPONSE, {
+function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
+  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE,
-  });
+  } satisfies UseCardResponsePayload);
+
+  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
+    cardType: CARD_TYPE.SHIELD,
+    userId: ctx.userId,
+    targetUserId: '',
+  } satisfies MessageProps<S2CUseCardNotification>);
+
+  const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
+
+  if (shield instanceof Shield) {
+    user.character.stateInfo.setState(CharacterState.NONE);
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [user.toUserData(ctx.userId)],
+    } satisfies MessageProps<S2CUserUpdateNotification>);
+  }
 }

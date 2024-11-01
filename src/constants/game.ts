@@ -4,7 +4,7 @@ export enum CARD_TYPE {
   SHIELD = 3,
   VACCINE = 4,
   CALL_119 = 5,
-  REAL_FIGHT = 6,
+  DEATH_MATCH = 6,
   GUERRILLA = 7,
   ABSORB = 8,
   HALLUCINATION = 9,

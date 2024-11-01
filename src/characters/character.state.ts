@@ -3,18 +3,22 @@ import { CharacterState } from '../constants/game';
 const BBANG_SECOND = 5; // 5초
 const DEATH_MATCH_SECOND = 5; // 5초
 
+export type OnStateTimeout = (from: CharacterState, to: CharacterState) => void;
 export class CharacterStateInfo {
   state;
   nextState;
   nextStateAt;
   #stateTimer;
-  #onStateTimeout;
+  #onStateTimeout: OnStateTimeout;
 
-  constructor(onStateTimeout: (...args: any[]) => void) {
+  constructor() {
     this.state = CharacterState.NONE;
     this.nextState = CharacterState.NONE;
     this.nextStateAt = 0;
-    this.#onStateTimeout = onStateTimeout;
+  }
+
+  setOnStateTimeout(fn: OnStateTimeout) {
+    this.#onStateTimeout = fn;
   }
 
   setState(state) {
@@ -23,6 +27,8 @@ export class CharacterStateInfo {
       case CharacterState.NONE:
         this.nextState = CharacterState.NONE;
         this.nextStateAt = 0;
+        this.resetTimer();
+
         break;
 
       case CharacterState.BBANG_SHOOTER:
@@ -57,6 +63,7 @@ export class CharacterStateInfo {
     if (this.#stateTimer) {
       clearTimeout(this.#stateTimer);
     }
+    this.#onStateTimeout = () => {};
   }
 
   #startStateTimer() {

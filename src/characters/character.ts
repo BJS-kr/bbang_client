@@ -4,7 +4,7 @@ import { CARD_TYPE, ROLE_TYPE } from '../constants/game';
 import { CardData, CharacterData, CharacterPositionData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
-import { CharacterStateInfo } from './character.state';
+import { CharacterStateInfo, OnStateTimeout } from './character.state';
 import { Result } from '../db/types';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
@@ -35,7 +35,7 @@ export class Character extends EventEmitter {
   roleType: number;
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
-  stateInfo = new CharacterStateInfo(() => {});
+  stateInfo = new CharacterStateInfo();
   position: CharacterPosition;
   weapon: number = 0;
   equips: number[] = [];
@@ -80,6 +80,9 @@ export class Character extends EventEmitter {
       debuffs: this.debuffs,
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
     };
+  }
+  setOnStateTimeout(fn: OnStateTimeout) {
+    this.stateInfo.setOnStateTimeout(fn);
   }
 
   drawCard(card: CardProps): Result<Card> {
@@ -138,6 +141,10 @@ export class Character extends EventEmitter {
     this.loseCard({ type: randomCardType, count: 1 });
 
     return { type: randomCardType, count: 1 };
+  }
+
+  isDead() {
+    return this.hp <= 0;
   }
 
   static recover(amount: number, character: Character) {
