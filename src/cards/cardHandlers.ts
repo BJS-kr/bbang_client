@@ -2,7 +2,7 @@ import { CARD_TYPE } from '../constants/game';
 import { CardProps, Character } from '../characters/character';
 import { CharacterState } from '../constants/game';
 import { Context } from '../events/types';
-import { C2SUseCardRequest, GlobalFailCode, S2CUseCardResponse, S2CUserUpdateNotification } from '../protobuf/compiled';
+import { C2SUseCardRequest, GlobalFailCode, S2CCardEffectNotification, S2CUseCardResponse, S2CUserUpdateNotification } from '../protobuf/compiled';
 import { Socket } from 'node:net';
 import { rooms } from '../rooms/rooms';
 import { writePayload } from '../utils/writePayload';
@@ -109,17 +109,18 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
   const autoShield = targetUser.character.drawCard({ type: CARD_TYPE.AUTO_SHIELD, count: 1 });
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (autoShield instanceof AutoShield) {
-    room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
+    room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: true,
-      failCode: GlobalFailCode.NONE,
-    });
+      userId: targetUserId,
+      cardType: CARD_TYPE.AUTO_SHIELD,
+    } satisfies MessageProps<S2CCardEffectNotification>);
 
     if (autoShield.isAutoShielded()) {
       targetUser.character.stateInfo.setState(CharacterState.NONE);
       // 자동 쉴드로 방어에 성공했다면 다시 중계
       room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
         user: [targetUser.toUserData(targetUserId)],
-      });
+      } satisfies MessageProps<S2CUserUpdateNotification>);
     }
   }
 }
