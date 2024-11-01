@@ -4,6 +4,7 @@ import { Character } from './character';
 export class Shark extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00003],
       characterType: CHARACTER_TYPE.CHA00003,
       roleType: ROLE_TYPE.NONE,

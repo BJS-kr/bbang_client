@@ -4,6 +4,7 @@ import { CardProps, Character } from './character';
 export class Knight extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00004],
       characterType: CHARACTER_TYPE.CHA00004,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00004],

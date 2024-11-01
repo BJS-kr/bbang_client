@@ -4,6 +4,7 @@ import { CardProps, Character } from './character';
 export class Dino extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00006],
       characterType: CHARACTER_TYPE.CHA00006,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00006],

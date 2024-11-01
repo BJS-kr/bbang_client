@@ -5,6 +5,7 @@ import { Character } from './character';
 export class Pink extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00008],
       characterType: CHARACTER_TYPE.CHA00008,
       roleType: ROLE_TYPE.NONE,

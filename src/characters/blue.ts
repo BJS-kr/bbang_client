@@ -4,6 +4,7 @@ import { CardProps, Character } from './character';
 export class Blue extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00002],
       characterType: CHARACTER_TYPE.CHA00002,
       roleType: ROLE_TYPE.NONE,

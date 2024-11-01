@@ -4,6 +4,7 @@ import { Character } from './character';
 export class PinkSlime extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00013],
       characterType: CHARACTER_TYPE.CHA00013,
       roleType: ROLE_TYPE.NONE,

@@ -4,6 +4,7 @@ import { Character } from './character';
 export class Froggy extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00007],
       characterType: CHARACTER_TYPE.CHA00007,
       roleType: ROLE_TYPE.NONE,

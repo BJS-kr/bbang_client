@@ -4,6 +4,7 @@ import { Character } from './character';
 export class Mask extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00010],
       characterType: CHARACTER_TYPE.CHA00010,
       roleType: ROLE_TYPE.NONE,

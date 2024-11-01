@@ -4,6 +4,7 @@ import { Character } from './character';
 export class SwimGlasses extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00009],
       characterType: CHARACTER_TYPE.CHA00009,
       roleType: ROLE_TYPE.NONE,

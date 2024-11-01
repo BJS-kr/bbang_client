@@ -4,6 +4,7 @@ import { CardProps, Character } from './character';
 export class Slime extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00011],
       characterType: CHARACTER_TYPE.CHA00011,
       roleType: ROLE_TYPE.NONE,

@@ -77,7 +77,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   for (let i = 0; i < room.users.length; i++) {
     const characterType = shuffleCharacters[i] as number;
     const roleType = shuffleRoles[i] as number;
-    room.users[i].character = createCharacter({ characterType, roleType });
+    room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
     room.users[i].character.position = suhfflePositions[i];
   }
 
@@ -219,7 +219,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
     failCode: GlobalFailCode.NONE,
   } satisfies MessageProps<S2CPositionUpdateResponse>);
 
-  writePayload(socket, PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, version, sequence, {
+  room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
     userId: ctx.userId,
     position: roomUser.character.position,
   } satisfies MessageProps<S2CPositionUpdateNotification>);
@@ -268,20 +268,11 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
 };
 
 function createUserDataView(user, userDatas) {
-  const result = userDatas.map((userData) => {
-    let roleType = ROLE_TYPE.NONE as number;
-    if (user.id === userData.id || userData.roleType === ROLE_TYPE.TARGET) {
-      roleType = userData.roleType;
-    }
-
-    let handCards = [];
-    if (user.id === userData.userId) {
-      handCards = userData.handCards;
-    }
-
-    return { ...userData, roleType, handCards } satisfies MessageProps<UserData>;
-  });
-
+  const result = userDatas.map((userData) => ({
+    id: userData.id,
+    nickname: userData.nickname,
+    ...userData.character.toCharacterData(user.id),
+  }));
   return result;
 }
 

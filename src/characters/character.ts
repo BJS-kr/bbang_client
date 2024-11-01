@@ -35,6 +35,7 @@ const handler = {
 };
 
 export class Character extends EventEmitter {
+  userId: string;
   hp: number;
   characterType: CHARACTER_TYPE;
   roleType: ROLE_TYPE;
@@ -47,12 +48,14 @@ export class Character extends EventEmitter {
   debuffs: number[];
 
   constructor({
+    userId,
     hp,
     roleType,
     characterType,
     baseDefenseChance,
     position,
   }: {
+    userId: string;
     hp: number;
     roleType: ROLE_TYPE;
     characterType: CHARACTER_TYPE;
@@ -61,6 +64,7 @@ export class Character extends EventEmitter {
   }) {
     super();
 
+    this.userId = userId;
     this.hp = hp;
     this.characterType = characterType;
     this.roleType = roleType;
@@ -70,17 +74,17 @@ export class Character extends EventEmitter {
     return new Proxy(this, handler);
   }
 
-  toCharacterData(): MessageProps<CharacterData> {
+  toCharacterData(viewUserId: string): MessageProps<CharacterData> {
     return {
       characterType: this.characterType,
-      roleType: this.roleType,
+      roleType: viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : ROLE_TYPE.NONE,
       hp: this.hp,
       weapon: this.weapon,
       stateInfo: this.stateInfo,
       position: this.position,
       equips: this.equips,
       debuffs: this.debuffs,
-      handCards: this.getHandCards(),
+      handCards: viewUserId === this.userId ? this.getHandCards() : [],
     };
   }
 

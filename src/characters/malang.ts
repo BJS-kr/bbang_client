@@ -5,6 +5,7 @@ import { Character } from './character';
 export class Malang extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00005],
       characterType: CHARACTER_TYPE.CHA00005,
       roleType: ROLE_TYPE.NONE,

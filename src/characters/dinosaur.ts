@@ -4,6 +4,7 @@ import { Character } from './character';
 export class Dinosaur extends Character {
   constructor() {
     super({
+      userId: '',
       hp: CHARACTER_HP[CHARACTER_TYPE.CHA00012],
       roleType: ROLE_TYPE.NONE,
       characterType: CHARACTER_TYPE.CHA00012,

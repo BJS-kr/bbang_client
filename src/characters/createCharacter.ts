@@ -31,14 +31,14 @@ const CHARACTER_CLASS_MAP = {
   [CHARACTER_TYPE.CHA00013]: PinkSlime,
 };
 
-export const createCharacter = ({ characterType, roleType }) => {
+export const createCharacter = ({ userId, characterType, roleType }) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
 
   switch (roleType) {
     case ROLE_TYPE.TARGET:
-      return new CharacterClass({ hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType });
+      return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType });
 
     default:
-      return new CharacterClass({ roleType });
+      return new CharacterClass({ userId, roleType });
   }
 };
