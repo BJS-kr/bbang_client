@@ -71,16 +71,12 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   const shuffleRoles = Object.values(ROLE_TYPE).sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
   const shuffleCharacters = Object.values(CHARACTER_TYPE)
-    .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE)
+    .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE) // TODO 이게 맞아..?
     .sort(() => Math.random() - 0.5);
-
-  console.log(Object.values(CHARACTER_TYPE));
-  console.log(shuffleCharacters);
 
   // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
     const characterType = Number(shuffleCharacters[i]);
-    console.log(`characterType: ${characterType}`);
     const roleType = Number(shuffleRoles[i]);
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
     room.users[i].character.position = suhfflePositions[i];
