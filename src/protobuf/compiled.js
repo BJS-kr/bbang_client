@@ -1140,9 +1140,9 @@ $root.CharacterPositionData = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
-            writer.uint32(/* id 2, wireType 5 =*/21).float(message.x);
+            writer.uint32(/* id 1, wireType 5 =*/13).float(message.x);
         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
-            writer.uint32(/* id 3, wireType 5 =*/29).float(message.y);
+            writer.uint32(/* id 2, wireType 5 =*/21).float(message.y);
         return writer;
     };
 
@@ -1177,11 +1177,11 @@ $root.CharacterPositionData = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 2: {
+            case 1: {
                     message.x = reader.float();
                     break;
                 }
-            case 3: {
+            case 2: {
                     message.y = reader.float();
                     break;
                 }

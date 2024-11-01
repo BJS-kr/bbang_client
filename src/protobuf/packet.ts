@@ -46,10 +46,12 @@ export const encodePayload = (packetType, payload) => {
   }
 
   const responseMessage = payloadType.create(payload);
+  console.log('Created response message:', responseMessage);
 
   const response = GamePacket.create({
     [payloadKey]: responseMessage,
   });
+  console.log('Created GamePacket:', response);
 
   return GamePacket.encode(response).finish();
 };
