@@ -5,9 +5,9 @@ export class Dino extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00006],
-      characterType: CHARACTER_TYPE.CHA00006,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00006],
+      hp: CHARACTER_HP[CHARACTER_TYPE.DINO],
+      characterType: CHARACTER_TYPE.DINO,
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.DINO],
       roleType: ROLE_TYPE.NONE,
       position: { x: 0, y: 0 },
     });

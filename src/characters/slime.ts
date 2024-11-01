@@ -5,10 +5,10 @@ export class Slime extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00011],
-      characterType: CHARACTER_TYPE.CHA00011,
+      hp: CHARACTER_HP[CHARACTER_TYPE.SLIME],
+      characterType: CHARACTER_TYPE.SLIME,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00011],
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.SLIME],
       position: { x: 0, y: 0 },
     });
   }

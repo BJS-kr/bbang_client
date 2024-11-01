@@ -5,9 +5,9 @@ export class Knight extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00004],
-      characterType: CHARACTER_TYPE.CHA00004,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00004],
+      hp: CHARACTER_HP[CHARACTER_TYPE.KNIGHT],
+      characterType: CHARACTER_TYPE.KNIGHT,
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.KNIGHT],
       roleType: ROLE_TYPE.NONE,
       position: { x: 0, y: 0 },
     });

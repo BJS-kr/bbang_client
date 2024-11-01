@@ -6,10 +6,10 @@ export class Pink extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00008],
-      characterType: CHARACTER_TYPE.CHA00008,
+      hp: CHARACTER_HP[CHARACTER_TYPE.PINK],
+      characterType: CHARACTER_TYPE.PINK,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00008],
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.PINK],
       position: { x: 0, y: 0 },
     });
 

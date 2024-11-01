@@ -1,44 +1,44 @@
 export enum CARD_TYPE {
   BBANG = 1,
-  CAD00002 = 2,
+  MASSACRE = 2,
   SHIELD = 3,
-  CAD00004 = 4,
-  CAD00005 = 5,
-  CAD00006 = 6,
-  CAD00007 = 7,
-  CAD00008 = 8,
-  CAD00009 = 9,
-  CAD00010 = 10,
-  CAD00011 = 11,
-  CAD00012 = 12,
-  CAD00013 = 13,
-  CAD00014 = 14,
-  CAD00015 = 15,
-  CAD00016 = 16,
-  CAD00017 = 17,
-  CAD00018 = 18,
+  VACCINE = 4,
+  CALL_119 = 5,
+  REAL_FIGHT = 6,
+  GUERRILLA = 7,
+  ABSORB = 8,
+  HALLUCINATION = 9,
+  FLEA_MARKET = 10,
+  MATURED_SAVINGS = 11,
+  WIN_LOTTERY = 12,
+  SNIPER_GUN = 13,
+  HAND_GUN = 14,
+  DESERT_EAGLE = 15,
+  AUTO_RIFLE = 16,
+  LASER_POINTER = 17,
+  RADAR = 18,
   AUTO_SHIELD = 19,
-  CAD00020 = 20,
-  CAD00021 = 21,
-  CAD00022 = 22,
-  CAD00023 = 23,
+  STEALTH_SUIT = 20,
+  CONTAINMENT_UNIT = 21,
+  SATELLITE_TARGET = 22,
+  BOMB = 23,
 }
 
 export enum CHARACTER_TYPE {
   NONE = 0,
-  CHA00001 = 1, // 빨강이
-  CHA00002 = 2, // 파랑이
-  CHA00003 = 3, // 상어군
-  CHA00004 = 4, // 기사군
-  CHA00005 = 5, // 말랑이
-  CHA00006 = 6, // 다이노
-  CHA00007 = 7, // 개굴군
-  CHA00008 = 8, // 핑크군
-  CHA00009 = 9, // 물안경군
-  CHA00010 = 10, // 가면군
-  CHA00011 = 11, // 슬라임
-  CHA00012 = 12, // 공룡이
-  CHA00013 = 13, // 핑크슬라임
+  RED = 1, // 빨강이
+  BLUE = 2, // 파랑이
+  SHARK = 3, // 상어군
+  KNIGHT = 4, // 기사군
+  MALANG = 5, // 말랑이
+  DINO = 6, // 다이노
+  FROGGY = 7, // 개굴군
+  PINK = 8, // 핑크군
+  SWIM_GLASSES = 9, // 물안경군
+  MASK = 10, // 가면군
+  SLIME = 11, // 슬라임
+  DINOSAUR = 12, // 공룡이
+  PINK_SLIME = 13, // 핑크슬라임
 }
 
 export enum ROLE_TYPE {
@@ -63,35 +63,35 @@ export enum PHASE_TYPE {
 }
 
 export const CHARACTER_HP = {
-  [CHARACTER_TYPE.CHA00001]: 4, // 르탄이
-  [CHARACTER_TYPE.CHA00002]: 4, // 우탄이
-  [CHARACTER_TYPE.CHA00003]: 4, // 상어군
-  [CHARACTER_TYPE.CHA00004]: 4, // 기사군
-  [CHARACTER_TYPE.CHA00005]: 4, // 말랑이
-  [CHARACTER_TYPE.CHA00006]: 4, // 다이노
-  [CHARACTER_TYPE.CHA00007]: 4, // 개굴군
-  [CHARACTER_TYPE.CHA00008]: 4, // 핑크군
-  [CHARACTER_TYPE.CHA00009]: 4, // 물안경군
-  [CHARACTER_TYPE.CHA00010]: 4, // 가면군
-  [CHARACTER_TYPE.CHA00011]: 4, // 슬라임
-  [CHARACTER_TYPE.CHA00012]: 3, // 공룡이
-  [CHARACTER_TYPE.CHA00013]: 3, // 핑크슬라임
+  [CHARACTER_TYPE.RED]: 4, // 빨강이
+  [CHARACTER_TYPE.BLUE]: 4, // 파랑이
+  [CHARACTER_TYPE.SHARK]: 4, // 상어군
+  [CHARACTER_TYPE.KNIGHT]: 4, // 기사군
+  [CHARACTER_TYPE.MALANG]: 4, // 말랑이
+  [CHARACTER_TYPE.DINO]: 4, // 다이노
+  [CHARACTER_TYPE.FROGGY]: 4, // 개굴군
+  [CHARACTER_TYPE.PINK]: 4, // 핑크군
+  [CHARACTER_TYPE.SWIM_GLASSES]: 4, // 물안경군
+  [CHARACTER_TYPE.MASK]: 4, // 가면군
+  [CHARACTER_TYPE.SLIME]: 4, // 슬라임
+  [CHARACTER_TYPE.DINOSAUR]: 3, // 공룡이
+  [CHARACTER_TYPE.PINK_SLIME]: 3, // 핑크슬라임
 };
 
 export const CHARACTER_BASE_DEFENSE_CHANCE = {
-  [CHARACTER_TYPE.CHA00001]: 0, // 르탄이
-  [CHARACTER_TYPE.CHA00002]: 0, // 우탄이
-  [CHARACTER_TYPE.CHA00003]: 0, // 상어군
-  [CHARACTER_TYPE.CHA00004]: 0, // 기사군
-  [CHARACTER_TYPE.CHA00005]: 0, // 말랑이
-  [CHARACTER_TYPE.CHA00006]: 0, // 다이노
-  [CHARACTER_TYPE.CHA00007]: 0.25, // 개굴군
-  [CHARACTER_TYPE.CHA00008]: 0, // 핑크군
-  [CHARACTER_TYPE.CHA00009]: 0, // 물안경군
-  [CHARACTER_TYPE.CHA00010]: 0, // 가면군
-  [CHARACTER_TYPE.CHA00011]: 0, // 슬라임
-  [CHARACTER_TYPE.CHA00012]: 0, // 공룡이
-  [CHARACTER_TYPE.CHA00013]: 0, // 핑크슬라임
+  [CHARACTER_TYPE.RED]: 0, // 빨강이
+  [CHARACTER_TYPE.BLUE]: 0, // 파랑이
+  [CHARACTER_TYPE.SHARK]: 0, // 상어군
+  [CHARACTER_TYPE.KNIGHT]: 0, // 기사군
+  [CHARACTER_TYPE.MALANG]: 0, // 말랑이
+  [CHARACTER_TYPE.DINO]: 0, // 다이노
+  [CHARACTER_TYPE.FROGGY]: 0.25, // 개굴군
+  [CHARACTER_TYPE.PINK]: 0, // 핑크군
+  [CHARACTER_TYPE.SWIM_GLASSES]: 0, // 물안경군
+  [CHARACTER_TYPE.MASK]: 0, // 가면군
+  [CHARACTER_TYPE.SLIME]: 0, // 슬라임
+  [CHARACTER_TYPE.DINOSAUR]: 0, // 공룡이
+  [CHARACTER_TYPE.PINK_SLIME]: 0, // 핑크슬라임
 };
 
 export const GAME_INIT_POSITION = [

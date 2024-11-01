@@ -5,10 +5,10 @@ export class Red extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00001],
-      characterType: CHARACTER_TYPE.CHA00001,
+      hp: CHARACTER_HP[CHARACTER_TYPE.RED],
+      characterType: CHARACTER_TYPE.RED,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00001],
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.RED],
       position: { x: 0, y: 0 },
     });
   }

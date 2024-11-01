@@ -5,10 +5,10 @@ export class Blue extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00002],
-      characterType: CHARACTER_TYPE.CHA00002,
+      hp: CHARACTER_HP[CHARACTER_TYPE.BLUE],
+      characterType: CHARACTER_TYPE.BLUE,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00002],
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.BLUE],
       position: { x: 0, y: 0 },
     });
   }

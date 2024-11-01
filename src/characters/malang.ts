@@ -6,10 +6,10 @@ export class Malang extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00005],
-      characterType: CHARACTER_TYPE.CHA00005,
+      hp: CHARACTER_HP[CHARACTER_TYPE.MALANG],
+      characterType: CHARACTER_TYPE.MALANG,
       roleType: ROLE_TYPE.NONE,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00005],
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.MALANG],
       position: { x: 0, y: 0 },
     });
 

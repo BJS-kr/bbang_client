@@ -5,10 +5,10 @@ export class Dinosaur extends Character {
   constructor() {
     super({
       userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.CHA00012],
+      hp: CHARACTER_HP[CHARACTER_TYPE.DINOSAUR],
       roleType: ROLE_TYPE.NONE,
-      characterType: CHARACTER_TYPE.CHA00012,
-      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.CHA00012],
+      characterType: CHARACTER_TYPE.DINOSAUR,
+      baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.DINOSAUR],
       position: { x: 0, y: 0 },
     });
   }
