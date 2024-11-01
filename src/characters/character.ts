@@ -82,7 +82,7 @@ export class Character extends EventEmitter {
     };
   }
 
-  useCard(card: CardProps): Result<Card> {
+  drawCard(card: CardProps): Result<Card> {
     if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
 
     this.loseCard(card);

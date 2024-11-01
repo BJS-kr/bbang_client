@@ -49,7 +49,7 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
     } satisfies UseCardResponsePayload);
   }
 
-  const card = user.character.useCard(cardProps);
+  const card = user.character.drawCard(cardProps);
 
   if (card instanceof Error) {
     error('handleUseCard: character no card');
@@ -106,7 +106,7 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
     user: [targetUser.toUserData(targetUserId)],
   });
 
-  const autoShield = targetUser.character.useCard({ type: CARD_TYPE.AUTO_SHIELD, count: 1 });
+  const autoShield = targetUser.character.drawCard({ type: CARD_TYPE.AUTO_SHIELD, count: 1 });
   // 타겟이 자동 쉴드가 있는 경우
   if (autoShield instanceof AutoShield) {
     room.broadcast(PACKET_TYPE.USE_CARD_RESPONSE, {
