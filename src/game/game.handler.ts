@@ -94,8 +94,14 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   // 게임 준비 알림
   room.users.forEach((user) => {
     writePayload(user.socket, PACKET_TYPE.GAME_PREPARE_NOTIFICATION, version, 0, {
-      users: createUserDataView(user, room.users),
-      room,
+      room: {
+        id: ctx.roomId,
+        name: room.name,
+        ownerId: room.ownerId,
+        maxUserNum: room.maxUserNum,
+        state: room.state,
+        users: createUserDataView(user, room.users),
+      },
     } satisfies MessageProps<S2CGamePrepareNotification>);
   });
 

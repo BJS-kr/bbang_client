@@ -2640,9 +2640,6 @@ export interface IS2CGamePrepareNotification {
 
     /** S2CGamePrepareNotification room */
     room?: (IRoomData|null);
-
-    /** S2CGamePrepareNotification users */
-    users?: (IUserData[]|null);
 }
 
 /** Represents a S2CGamePrepareNotification. */
@@ -2656,9 +2653,6 @@ export class S2CGamePrepareNotification implements IS2CGamePrepareNotification {
 
     /** S2CGamePrepareNotification room. */
     public room?: (IRoomData|null);
-
-    /** S2CGamePrepareNotification users. */
-    public users: IUserData[];
 
     /**
      * Creates a new S2CGamePrepareNotification instance using the specified properties.

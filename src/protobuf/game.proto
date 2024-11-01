@@ -150,7 +150,6 @@ message S2CGamePrepareResponse {
 
 message S2CGamePrepareNotification {
     RoomData room = 1;
-    repeated UserData users = 2;
 }
 
 message C2SGameStartRequest {

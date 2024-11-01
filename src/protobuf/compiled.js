@@ -6423,7 +6423,6 @@ $root.S2CGamePrepareNotification = (function() {
      * @exports IS2CGamePrepareNotification
      * @interface IS2CGamePrepareNotification
      * @property {IRoomData|null} [room] S2CGamePrepareNotification room
-     * @property {Array.<IUserData>|null} [users] S2CGamePrepareNotification users
      */
 
     /**
@@ -6435,7 +6434,6 @@ $root.S2CGamePrepareNotification = (function() {
      * @param {IS2CGamePrepareNotification=} [properties] Properties to set
      */
     function S2CGamePrepareNotification(properties) {
-        this.users = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -6449,14 +6447,6 @@ $root.S2CGamePrepareNotification = (function() {
      * @instance
      */
     S2CGamePrepareNotification.prototype.room = null;
-
-    /**
-     * S2CGamePrepareNotification users.
-     * @member {Array.<IUserData>} users
-     * @memberof S2CGamePrepareNotification
-     * @instance
-     */
-    S2CGamePrepareNotification.prototype.users = $util.emptyArray;
 
     /**
      * Creates a new S2CGamePrepareNotification instance using the specified properties.
@@ -6484,9 +6474,6 @@ $root.S2CGamePrepareNotification = (function() {
             writer = $Writer.create();
         if (message.room != null && Object.hasOwnProperty.call(message, "room"))
             $root.RoomData.encode(message.room, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-        if (message.users != null && message.users.length)
-            for (var i = 0; i < message.users.length; ++i)
-                $root.UserData.encode(message.users[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
         return writer;
     };
 
@@ -6523,12 +6510,6 @@ $root.S2CGamePrepareNotification = (function() {
             switch (tag >>> 3) {
             case 1: {
                     message.room = $root.RoomData.decode(reader, reader.uint32());
-                    break;
-                }
-            case 2: {
-                    if (!(message.users && message.users.length))
-                        message.users = [];
-                    message.users.push($root.UserData.decode(reader, reader.uint32()));
                     break;
                 }
             default:
@@ -6571,15 +6552,6 @@ $root.S2CGamePrepareNotification = (function() {
             if (error)
                 return "room." + error;
         }
-        if (message.users != null && message.hasOwnProperty("users")) {
-            if (!Array.isArray(message.users))
-                return "users: array expected";
-            for (var i = 0; i < message.users.length; ++i) {
-                var error = $root.UserData.verify(message.users[i]);
-                if (error)
-                    return "users." + error;
-            }
-        }
         return null;
     };
 
@@ -6600,16 +6572,6 @@ $root.S2CGamePrepareNotification = (function() {
                 throw TypeError(".S2CGamePrepareNotification.room: object expected");
             message.room = $root.RoomData.fromObject(object.room);
         }
-        if (object.users) {
-            if (!Array.isArray(object.users))
-                throw TypeError(".S2CGamePrepareNotification.users: array expected");
-            message.users = [];
-            for (var i = 0; i < object.users.length; ++i) {
-                if (typeof object.users[i] !== "object")
-                    throw TypeError(".S2CGamePrepareNotification.users: object expected");
-                message.users[i] = $root.UserData.fromObject(object.users[i]);
-            }
-        }
         return message;
     };
 
@@ -6626,17 +6588,10 @@ $root.S2CGamePrepareNotification = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
-            object.users = [];
         if (options.defaults)
             object.room = null;
         if (message.room != null && message.hasOwnProperty("room"))
             object.room = $root.RoomData.toObject(message.room, options);
-        if (message.users && message.users.length) {
-            object.users = [];
-            for (var j = 0; j < message.users.length; ++j)
-                object.users[j] = $root.UserData.toObject(message.users[j], options);
-        }
         return object;
     };
 
