@@ -118,11 +118,10 @@ function handleBBang({ socket, version, sequence }: HandlerBase, user: User, roo
       cardType: CARD_TYPE.AUTO_SHIELD,
     } satisfies MessageProps<S2CCardEffectNotification>);
 
-    if (shielded) {
+    shielded &&
       room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
         user: [targetUser.toUserData(targetUserId)],
       } satisfies MessageProps<S2CUserUpdateNotification>);
-    }
   }
 }
 

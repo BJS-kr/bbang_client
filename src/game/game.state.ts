@@ -22,6 +22,12 @@ export class GameState {
     this.#startDay();
   }
 
+  resetTimer() {
+    if (this.#phaseTimer) {
+      clearTimeout(this.#phaseTimer);
+    }
+  }
+
   #startDay() {
     this.phaseType = PHASE_TYPE.DAY;
     this.nextPhaseAt = Date.now() + DAY_SECOND * 1000;

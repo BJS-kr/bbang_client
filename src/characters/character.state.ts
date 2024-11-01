@@ -53,6 +53,12 @@ export class CharacterStateInfo {
     this.#startStateTimer();
   }
 
+  resetTimer() {
+    if (this.#stateTimer) {
+      clearTimeout(this.#stateTimer);
+    }
+  }
+
   #startStateTimer() {
     if (this.#stateTimer) {
       clearTimeout(this.#stateTimer);

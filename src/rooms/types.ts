@@ -144,10 +144,26 @@ export class Rooms {
     ctx.roomId = 0;
 
     if (room.users.length === 0) {
-      this.#rooms.delete(roomId);
+      this.removeRoom(roomId);
     }
 
     return leavedUser;
+  }
+
+  removeRoom(roomId: number): boolean {
+    const room = this.#rooms.get(roomId);
+
+    if (!room) return false;
+
+    room.gameState.resetTimer();
+
+    for (const user of room.users) {
+      user.character.stateInfo.resetTimer();
+    }
+
+    this.#rooms.delete(roomId);
+
+    return true;
   }
 
   isFull(roomId) {
