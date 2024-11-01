@@ -10,7 +10,6 @@ import {
   S2CPhaseUpdateNotification,
   S2CPositionUpdateNotification,
   S2CPositionUpdateResponse,
-  UserData,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../utils/writePayload';
@@ -157,15 +156,15 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   room.gameState.gameStart(ctx.roomId, onPhaseChange);
 
   // 게임 시작 응답
-  const responsePayload: MessageProps<S2CGameStartResponse> = {
+  writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE,
-  };
-  writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, responsePayload);
+  } satisfies MessageProps<S2CGameStartResponse>);
 
   // 게임 시작 알림
   room.users.forEach((user) => {
     writePayload(user.socket, PACKET_TYPE.GAME_START_NOTIFICATION, version, 0, {
+      gameState: room.gameState,
       users: createUserDataView(user, room.users),
     } satisfies MessageProps<S2CGameStartNotification>);
   });
@@ -177,18 +176,18 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   const { x, y } = positionUpdateRequest;
   const user = session.getUser(ctx.userId);
   if (!user) {
-    return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
+    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
-    } satisfies MessageProps<S2CGameStartResponse>);
+    } satisfies MessageProps<S2CPositionUpdateResponse>);
   }
 
   const room = rooms.getRoom(ctx.roomId);
   if (!room) {
-    return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
+    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
-    } satisfies MessageProps<S2CGameStartResponse>);
+    } satisfies MessageProps<S2CPositionUpdateResponse>);
   }
 
   if (room.state !== RoomState.IN_GAME) {
@@ -200,10 +199,10 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
 
   const roomUser = room.users.find((user) => user.id === ctx.userId);
   if (!roomUser) {
-    return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
+    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
-    } satisfies MessageProps<S2CGameStartResponse>);
+    } satisfies MessageProps<S2CPositionUpdateResponse>);
   }
 
   if (roomUser.character.stateInfo.state !== CharacterState.NONE) {
