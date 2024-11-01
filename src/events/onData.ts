@@ -118,7 +118,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
 
       case PACKET_TYPE.GAME_PREPARE_REQUEST:
         const gamePrepareRequest = decodePayload(packetType, payloadBuffer);
-        log(`gamePrepareRequest: ${JSON.stringify(getRoomListRequest)}`);
+        log(`gamePrepareRequest: ${JSON.stringify(gamePrepareRequest)}`);
         await gamePrepareRequestHandler(socket, version, sequence, gamePrepareRequest, ctx);
 
         break;
