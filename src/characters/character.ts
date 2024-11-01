@@ -37,9 +37,9 @@ export class Character extends EventEmitter {
   handCards = new Map<CARD_TYPE, number>();
   stateInfo = new CharacterStateInfo(() => {});
   position: CharacterPosition;
-  weapon: number;
-  equips: number[];
-  debuffs: number[];
+  weapon: number = 0;
+  equips: number[] = [];
+  debuffs: number[] = [];
 
   constructor({
     userId,
