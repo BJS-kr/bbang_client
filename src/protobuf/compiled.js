@@ -358,7 +358,7 @@ $root.UserData = (function() {
      * @interface IUserData
      * @property {string|null} [id] UserData id
      * @property {string|null} [nickname] UserData nickname
-     * @property {ICharacterData|null} [characterData] UserData characterData
+     * @property {ICharacterData|null} [character] UserData character
      */
 
     /**
@@ -393,12 +393,12 @@ $root.UserData = (function() {
     UserData.prototype.nickname = "";
 
     /**
-     * UserData characterData.
-     * @member {ICharacterData|null|undefined} characterData
+     * UserData character.
+     * @member {ICharacterData|null|undefined} character
      * @memberof UserData
      * @instance
      */
-    UserData.prototype.characterData = null;
+    UserData.prototype.character = null;
 
     /**
      * Creates a new UserData instance using the specified properties.
@@ -428,8 +428,8 @@ $root.UserData = (function() {
             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         if (message.nickname != null && Object.hasOwnProperty.call(message, "nickname"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.nickname);
-        if (message.characterData != null && Object.hasOwnProperty.call(message, "characterData"))
-            $root.CharacterData.encode(message.characterData, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+        if (message.character != null && Object.hasOwnProperty.call(message, "character"))
+            $root.CharacterData.encode(message.character, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -473,7 +473,7 @@ $root.UserData = (function() {
                     break;
                 }
             case 3: {
-                    message.characterData = $root.CharacterData.decode(reader, reader.uint32());
+                    message.character = $root.CharacterData.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -517,10 +517,10 @@ $root.UserData = (function() {
         if (message.nickname != null && message.hasOwnProperty("nickname"))
             if (!$util.isString(message.nickname))
                 return "nickname: string expected";
-        if (message.characterData != null && message.hasOwnProperty("characterData")) {
-            var error = $root.CharacterData.verify(message.characterData);
+        if (message.character != null && message.hasOwnProperty("character")) {
+            var error = $root.CharacterData.verify(message.character);
             if (error)
-                return "characterData." + error;
+                return "character." + error;
         }
         return null;
     };
@@ -541,10 +541,10 @@ $root.UserData = (function() {
             message.id = String(object.id);
         if (object.nickname != null)
             message.nickname = String(object.nickname);
-        if (object.characterData != null) {
-            if (typeof object.characterData !== "object")
-                throw TypeError(".UserData.characterData: object expected");
-            message.characterData = $root.CharacterData.fromObject(object.characterData);
+        if (object.character != null) {
+            if (typeof object.character !== "object")
+                throw TypeError(".UserData.character: object expected");
+            message.character = $root.CharacterData.fromObject(object.character);
         }
         return message;
     };
@@ -565,14 +565,14 @@ $root.UserData = (function() {
         if (options.defaults) {
             object.id = "";
             object.nickname = "";
-            object.characterData = null;
+            object.character = null;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.nickname != null && message.hasOwnProperty("nickname"))
             object.nickname = message.nickname;
-        if (message.characterData != null && message.hasOwnProperty("characterData"))
-            object.characterData = $root.CharacterData.toObject(message.characterData, options);
+        if (message.character != null && message.hasOwnProperty("character"))
+            object.character = $root.CharacterData.toObject(message.character, options);
         return object;
     };
 

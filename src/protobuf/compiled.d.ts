@@ -136,8 +136,8 @@ export interface IUserData {
     /** UserData nickname */
     nickname?: (string|null);
 
-    /** UserData characterData */
-    characterData?: (ICharacterData|null);
+    /** UserData character */
+    character?: (ICharacterData|null);
 }
 
 /** Represents a UserData. */
@@ -155,8 +155,8 @@ export class UserData implements IUserData {
     /** UserData nickname. */
     public nickname: string;
 
-    /** UserData characterData. */
-    public characterData?: (ICharacterData|null);
+    /** UserData character. */
+    public character?: (ICharacterData|null);
 
     /**
      * Creates a new UserData instance using the specified properties.

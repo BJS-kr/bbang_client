@@ -271,7 +271,7 @@ function createUserDataView(user, userDatas) {
   const result = userDatas.map((userData) => ({
     id: userData.id,
     nickname: userData.nickname,
-    ...userData.character.toCharacterData(user.id),
+    character: userData.character.toCharacterData(user.id),
   }));
   return result;
 }

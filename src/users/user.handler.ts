@@ -50,11 +50,11 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
     myInfo: {
       id: result.userId,
       nickname: result.nickname,
-      characterData: new Character({
+      character: new Character({
         userId: result.userId,
         hp: 0,
         roleType: ROLE_TYPE.NONE,
-        characterType: CHARACTER_TYPE.CHA00001,
+        characterType: CHARACTER_TYPE.NONE,
         baseDefenseChance: 0,
         position: { x: 0, y: 0 },
       }).toCharacterData(result.userId),

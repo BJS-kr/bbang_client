@@ -18,7 +18,7 @@ message RoomData {
 message UserData {
     string id = 1;
     string nickname = 2;
-    CharacterData characterData = 3;
+    CharacterData character = 3;
 }
 
 message CharacterData {
