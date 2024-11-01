@@ -10,6 +10,7 @@ import {
   S2CPhaseUpdateNotification,
   S2CPositionUpdateNotification,
   S2CPositionUpdateResponse,
+  S2CUserUpdateNotification,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../utils/writePayload';
@@ -250,7 +251,9 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
           const card = createRandCard();
           user.character.acquireCard(card);
         }
-        writePayload(user.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, config.client.version, 0, user);
+        writePayload(user.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, config.client.version, 0, {
+          user: [user.toUserData(user.id)],
+        } satisfies MessageProps<S2CUserUpdateNotification>);
       });
       break;
 
