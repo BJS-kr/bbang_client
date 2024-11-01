@@ -272,7 +272,7 @@ message GamePacket {
         // 게임 시작
         C2SGameStartRequest gameStartRequest = 20;
         S2CGameStartResponse gameStartResponse = 21;
-        S2CGameStartNotification gameStartnotification = 22;
+        S2CGameStartNotification gameStartNotification = 22;
 
         // 위치 업데이트
         C2SPositionUpdateRequest positionUpdateRequest = 23;
