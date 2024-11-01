@@ -282,7 +282,7 @@ function createRandCard(): CardProps {
 }
 
 function getTotalCardCount(user) {
-  const result = user.handCards.reduce((acc, card) => {
+  const result = user.character.handCards.reduce((acc, card) => {
     acc += card.count;
     return acc;
   }, 0);
