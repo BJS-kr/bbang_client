@@ -1,20 +1,14 @@
 import { cards } from '../cards';
 import { Card } from '../cards/card';
-import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { CardData, CharacterData, CharacterPositionData, CharacterStateInfoData } from '../protobuf/compiled';
+import { CARD_TYPE, ROLE_TYPE } from '../constants/game';
+import { CardData, CharacterData, CharacterPositionData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
+import { CharacterStateInfo } from './character.state';
+import { Result } from '../db/types';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
-
-export enum CharacterState {
-  NONE = 0,
-  BBANG_SHOOTER = 1, // 빵야 시전자
-  BBANG_TARGET = 2, // 빵야 대상 (쉴드 사용가능 상태)
-  DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
-  DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
-}
 
 const HP_MIN = 0;
 const handler = {
@@ -41,7 +35,7 @@ export class Character extends EventEmitter {
   roleType: number;
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
-  stateInfo: MessageProps<CharacterStateInfoData>;
+  stateInfo = new CharacterStateInfo(() => {});
   position: CharacterPosition;
   weapon: number;
   equips: number[];
@@ -88,7 +82,7 @@ export class Character extends EventEmitter {
     };
   }
 
-  useCard(card: CardProps): Card<Function> | Error {
+  drawCard(card: CardProps): Result<Card> {
     if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
 
     this.loseCard(card);

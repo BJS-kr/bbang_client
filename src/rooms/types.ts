@@ -57,6 +57,10 @@ export class Room {
       users: this.users.map((user) => user.toUserData(user.id)),
     };
   }
+
+  getUser(userId: string) {
+    return this.users.find((user) => user.id === userId) ?? null;
+  }
 }
 
 export class Rooms {
@@ -85,7 +89,7 @@ export class Rooms {
     return this.#roomId++;
   }
 
-  getRoom(roomId) {
+  getRoom(roomId: number) {
     if (!this.isRoomExist(roomId)) return null;
 
     const room = this.#rooms.get(roomId);
