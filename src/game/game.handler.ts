@@ -43,7 +43,8 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
-  if (room.state !== RoomState.WAIT || room.users.length < 4) {
+  // TODO || room.users.length < 4
+  if (room.state !== RoomState.WAIT) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
