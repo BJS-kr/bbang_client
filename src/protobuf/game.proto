@@ -26,7 +26,7 @@ message CharacterData {
     int32 roleType = 2;
     int32 hp = 3;
     int32 weapon = 4;
-    CharacterStateData state = 5;
+    CharacterStateInfoData stateInfo = 5;
     CharacterPositionData position = 6;
     repeated int32 equips = 7;
     repeated int32 debuffs = 8;
@@ -48,7 +48,7 @@ message GameStateData {
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
 }
 
-message CharacterStateData {
+message CharacterStateInfoData {
     int32 state = 1;
     int32 nextState = 2;
     int64 nextStateAt = 3; // state가 nextState로 풀리는 밀리초 타임스탬프. state가 NONE이면 0
@@ -172,6 +172,11 @@ message C2SPositionUpdateRequest {
     int32 y = 2;
 }
 
+message S2CPositionUpdateResponse {
+    bool success = 1;
+    GlobalFailCode failCode = 2;
+}
+
 message S2CPositionUpdateNotification {
     string userId = 1;
     CharacterPositionData position = 2;
@@ -272,29 +277,30 @@ message GamePacket {
 
         // 위치 업데이트
         C2SPositionUpdateRequest positionUpdateRequest = 23;
-        S2CPositionUpdateNotification positionUpdateNotification = 24;
+        S2CPositionUpdateResponse positionUpdateResponse = 24;
+        S2CPositionUpdateNotification positionUpdateNotification = 25;
 
         // 카드 사용
-        C2SUseCardRequest useCardRequest = 25;
-        S2CUseCardResponse useCardResponse = 26;
+        C2SUseCardRequest useCardRequest = 26;
+        S2CUseCardResponse useCardResponse = 27;
 
         // 카드 효과 알림
-        S2CUseCardNotification useCardNotification = 27;
-        S2CEquipCardNotification equipCardNotification = 28;
-        S2CCardEffectNotification cardEffectNotification = 29;
+        S2CUseCardNotification useCardNotification = 28;
+        S2CEquipCardNotification equipCardNotification = 29;
+        S2CCardEffectNotification cardEffectNotification = 30;
 
         // 카드 사용 등으로 인한 유저 정보 업데이트
-        S2CUserUpdateNotification userUpdateNotification = 30;
+        S2CUserUpdateNotification userUpdateNotification = 31;
         
         // 페이즈 업데이트
-        S2CPhaseUpdateNotification phaseUpdateNotification = 31;
+        S2CPhaseUpdateNotification phaseUpdateNotification = 32;
 
         // 턴 종료시 (phaseType 3) 카드 버리기
-        C2SDestroyCardRequest destroyCardRequest = 32;
-        S2CDestroyCardNotification destroyCardNotification = 33;
+        C2SDestroyCardRequest destroyCardRequest = 33;
+        S2CDestroyCardNotification destroyCardNotification = 34;
 
         // 게임 종료
-        S2CGameEndNotification gameEndNotification = 34;
+        S2CGameEndNotification gameEndNotification = 35;
     }
 }
 

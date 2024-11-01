@@ -62,14 +62,6 @@ export enum PHASE_TYPE {
   END = 3,
 }
 
-export enum USER_STATE {
-  NONE = 0,
-  BBANG_SHOOTER = 1, // 빵야 시전자
-  BBANG_TARGET = 2, // 빵야 대상 (쉴드 사용가능 상태)
-  DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
-  DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
-}
-
 export const CHARACTER_HP = {
   [CHARACTER_TYPE.CHA00001]: 4, // 르탄이
   [CHARACTER_TYPE.CHA00002]: 4, // 우탄이
