@@ -33,7 +33,7 @@ export const encodePayload = (packetType, payload) => {
   const packetInfo = protoRoutes[packetType];
 
   if (!packetInfo) {
-    throw new CustomError(ERROR_CODES.INVALID_PACKET, `Unknown packet type: ${packetType}`);
+    return new CustomError(ERROR_CODES.INVALID_PACKET, `Unknown packet type: ${packetType}`);
   }
 
   const { requestType, payloadKey } = protoRoutes[packetType];
@@ -42,16 +42,17 @@ export const encodePayload = (packetType, payload) => {
   const verifyError = payloadType.verify(payload);
 
   if (verifyError) {
-    throw new CustomError(ERROR_CODES.INVALID_PAYLOAD, `Invalid payload: ${verifyError}`);
+    return new CustomError(ERROR_CODES.INVALID_PAYLOAD, `Invalid payload: ${verifyError}`);
   }
 
   const responseMessage = payloadType.create(payload);
-  console.log('Created response message:', responseMessage);
-
   const response = GamePacket.create({
     [payloadKey]: responseMessage,
   });
-  console.log('Created GamePacket:', response);
+
+  if (!response) {
+    return new CustomError(ERROR_CODES.PACKET_NOT_CREATED, `Packet not created. Please check the payload key exists in GamePacket: ${payloadKey}`);
+  }
 
   return GamePacket.encode(response).finish();
 };

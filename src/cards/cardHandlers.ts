@@ -18,7 +18,7 @@ import { User } from '../users/types';
 type UseCardResponsePayload = MessageProps<S2CUseCardResponse>;
 type HandlerBase = {
   socket: Socket;
-  version: number;
+  version: string;
   sequence: number;
   ctx: Context;
 };
