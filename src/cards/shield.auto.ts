@@ -7,7 +7,6 @@ export class AutoShield extends Card {
   constructor() {
     super({
       type: CARD_TYPE.AUTO_SHIELD,
-
       isDirectUse: false,
       isTargetSelect: false,
     });

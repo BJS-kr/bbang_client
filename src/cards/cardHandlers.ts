@@ -149,6 +149,7 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     targetUserId: '',
   } satisfies MessageProps<S2CUseCardNotification>);
 
+  // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
   const countToShield = user.character instanceof Shark ? 2 : 1;
   const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: countToShield });
 
