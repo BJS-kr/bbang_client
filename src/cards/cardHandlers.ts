@@ -138,7 +138,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
     user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
   });
 
-  // 기본 방어 롹률로 막혔는지 확인 ex) 개굴이
+  // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
     targetUser.character.stateInfo.setState(CharacterState.NONE);
 

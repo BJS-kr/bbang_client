@@ -1,4 +1,3 @@
-import { cards } from '../cards/card.instance.index';
 import { Card } from '../cards/card';
 import { CARD_TYPE, CharacterState, ROLE_TYPE } from '../constants/game';
 import { CardData, CharacterData, CharacterPositionData } from '../protobuf/compiled';
@@ -103,7 +102,7 @@ export class Character extends EventEmitter {
 
     if (lostCard instanceof Error) return lostCard;
 
-    const cardInstance = cards[card.type];
+    const cardInstance = card[card.type];
 
     if (!cardInstance) return new Error(`card type of ${card.type} is not found`);
 
