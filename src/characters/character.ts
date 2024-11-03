@@ -1,11 +1,12 @@
-import { cards } from '../cards';
+import { cards } from '../cards/card.instance.index';
 import { Card } from '../cards/card';
-import { CARD_TYPE, ROLE_TYPE } from '../constants/game';
+import { CARD_TYPE, CharacterState, ROLE_TYPE } from '../constants/game';
 import { CardData, CharacterData, CharacterPositionData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 import { CharacterStateInfo, OnStateTimeout } from './character.state';
 import { Result } from '../db/types';
+import { error } from '../utils/logger';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
@@ -35,7 +36,7 @@ export class Character extends EventEmitter {
   roleType: number;
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
-  stateInfo = new CharacterStateInfo();
+  stateInfo = new CharacterStateInfo(this.#onStateTimeout.bind(this));
   position: CharacterPosition;
   weapon: number = 0;
   equips: number[] = [];
@@ -68,6 +69,19 @@ export class Character extends EventEmitter {
     return new Proxy(this, handler);
   }
 
+  #onStateTimeout(from: CharacterState, to: CharacterState) {
+    switch (from) {
+      case CharacterState.DEATH_MATCH_TURN:
+        this.takeDamage(1);
+        break;
+      case CharacterState.BBANG_TARGET:
+        this.takeDamage(1);
+        break;
+      default:
+        error(`unhandled character state timeout: ${from} -> ${to}`);
+    }
+  }
+
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {
     return {
       characterType: Number(this.characterType),
@@ -80,9 +94,6 @@ export class Character extends EventEmitter {
       debuffs: this.debuffs,
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
     };
-  }
-  setOnStateTimeout(fn: OnStateTimeout) {
-    this.stateInfo.setOnStateTimeout(fn);
   }
 
   drawCard(card: CardProps): Result<Card> {

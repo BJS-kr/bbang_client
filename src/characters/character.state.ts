@@ -11,18 +11,16 @@ export class CharacterStateInfo {
   #stateTimer;
   #onStateTimeout: OnStateTimeout;
 
-  constructor() {
+  constructor(onStateTimeout: OnStateTimeout) {
     this.state = CharacterState.NONE;
     this.nextState = CharacterState.NONE;
     this.nextStateAt = 0;
-  }
-
-  setOnStateTimeout(fn: OnStateTimeout) {
-    this.#onStateTimeout = fn;
+    this.#onStateTimeout = onStateTimeout;
   }
 
   setState(state) {
     this.state = state;
+
     switch (this.state) {
       case CharacterState.NONE:
         this.nextState = CharacterState.NONE;
@@ -78,6 +76,7 @@ export class CharacterStateInfo {
     this.#stateTimer = setTimeout(() => {
       const lastState = this.state;
       this.state = this.nextState;
+
       this.#onStateTimeout(lastState, this.state);
     }, this.nextStateAt - Date.now());
   }

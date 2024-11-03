@@ -124,7 +124,6 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER);
   targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET);
-  targetUser.character.setOnStateTimeout((from) => from === CharacterState.BBANG_TARGET && targetUser.character.takeDamage(1));
 
   const payload: UseCardResponse = {
     success: true,
@@ -185,9 +184,6 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
 
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH);
   targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN);
-  targetUser.character.setOnStateTimeout((from) => {
-    if (from === CharacterState.DEATH_MATCH_TURN) targetUser.character.takeDamage(1);
-  });
 
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
@@ -241,7 +237,6 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
 
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH);
   targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN);
-  targetUser.character.setOnStateTimeout((from) => from === CharacterState.DEATH_MATCH_TURN && targetUser.character.takeDamage(1));
 
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
