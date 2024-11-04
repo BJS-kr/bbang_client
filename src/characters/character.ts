@@ -33,6 +33,7 @@ export class Character extends EventEmitter {
   characterType: number;
   roleType: number;
   baseDefenseChance: number;
+  useBBangCount: number;
   handCards = new Map<CARD_TYPE, number>();
   stateInfo = new CharacterStateInfo();
   position: CharacterPosition;
@@ -79,6 +80,18 @@ export class Character extends EventEmitter {
       debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
     };
+  }
+
+  getMaxBBangCount() {
+    return this.weapon === CARD_TYPE.SNIPER_GUN ? 2 : this.weapon === CARD_TYPE.HAND_GUN ? Infinity : 1;
+  }
+
+  acquireBBangCount() {
+    this.useBBangCount++;
+  }
+
+  getBBangDamage() {
+    return this.weapon === CARD_TYPE.DESERT_EAGLE ? 2 : 1;
   }
 
   drawCard(card: CardProps): Result<Card> {

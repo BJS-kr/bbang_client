@@ -252,6 +252,9 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
           const card = createRandCard();
           user.character.acquireCard(card);
         }
+        // 3. 빵 카운트 초기화
+        user.character.useBBangCount = 0;
+
         writePayload(user.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, config.client.version, 0, {
           user: [user.toUserData(user.id)],
         } satisfies MessageProps<S2CUserUpdateNotification>);

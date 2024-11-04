@@ -23,6 +23,7 @@ import { Absorb } from './absorb';
 import { Hallucination } from './hallucination';
 import { FleaMarket } from './fleamarket';
 import { MaturedSavings } from './matured.savings';
+import { SniperGun } from './snipergun';
 import { pickRandomCardType } from './pickRandomCard';
 import { WinLottery } from './win.lottery';
 import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './types';
@@ -34,6 +35,9 @@ import { StealthSuit } from './stealth.suit';
 import { ContainmentUnit } from './containment.unit';
 import { Bomb } from './bomb';
 import { SatelliteTarget } from './satellite.target';
+import { HandGun } from './handgun';
+import { AutoRefile } from './autorifle';
+import { DesertEagle } from './deserteagle';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -118,6 +122,22 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       log('handleUseCard: MaturedSavings');
       handleMaturedSavings(base, room, user);
       break;
+    case card instanceof SniperGun:
+      log('handleUseCard: SniperGun');
+      handleSniperGun(base, room, user);
+      break;
+    case card instanceof HandGun:
+      log('handleUseCard: HandGun');
+      handleHandGun(base, room, user);
+      break;
+    case card instanceof DesertEagle:
+      log('handleUseCard: DesertEagle');
+      handleDesertEagle(base, room, user);
+      break;
+    case card instanceof AutoRefile:
+      log('handleUseCard: AutoRefile');
+      handleAutoRifle(base, room, user);
+      break;
     case card instanceof WinLottery:
       log('handleUseCard: WinLottery');
       handleWinLottery(base, room, user);
@@ -180,8 +200,18 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 }
 
 function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
+  if (user.character.getMaxBBangCount() <= user.character.useBBangCount) {
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.ALREADY_USED_BBANG,
+    } satisfies UseCardResponse);
+  }
+
+  user.character.acquireBBangCount();
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
-  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(targetUser, room));
+
+  const damage = user.character.getBBangDamage();
+  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
@@ -274,8 +304,10 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
 
 function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
+
+  const damage = user.character.getBBangDamage();
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(targetUser, room));
+    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
     handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 
@@ -301,8 +333,9 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
 }
 
 function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  const damage = user.character.getBBangDamage();
   room.users.forEach((targetUser) => {
-    targetUser.character.takeDamage(1);
+    targetUser.character.takeDamage(damage);
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user);
@@ -371,6 +404,26 @@ function handleMaturedSavings({ socket, version, sequence }: HandlerBase, room: 
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.MATURED_SAVINGS, [user], room, user);
+}
+
+function handleSniperGun({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.weapon = CARD_TYPE.SNIPER_GUN;
+  responseSuccess(socket, version, sequence, CARD_TYPE.SNIPER_GUN, [user], room, user);
+}
+
+function handleHandGun({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.weapon = CARD_TYPE.HAND_GUN;
+  responseSuccess(socket, version, sequence, CARD_TYPE.HAND_GUN, [user], room, user);
+}
+
+function handleDesertEagle({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.weapon = CARD_TYPE.DESERT_EAGLE;
+  responseSuccess(socket, version, sequence, CARD_TYPE.DESERT_EAGLE, [user], room, user);
+}
+
+function handleAutoRifle({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.weapon = CARD_TYPE.AUTO_RIFLE;
+  responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_RIFLE, [user], room, user);
 }
 
 function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
