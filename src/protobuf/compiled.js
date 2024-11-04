@@ -1140,9 +1140,9 @@ $root.CharacterPositionData = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
-            writer.uint32(/* id 1, wireType 5 =*/13).float(message.x);
+            writer.uint32(/* id 1, wireType 1 =*/9).double(message.x);
         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
-            writer.uint32(/* id 2, wireType 5 =*/21).float(message.y);
+            writer.uint32(/* id 2, wireType 1 =*/17).double(message.y);
         return writer;
     };
 
@@ -1178,11 +1178,11 @@ $root.CharacterPositionData = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.x = reader.float();
+                    message.x = reader.double();
                     break;
                 }
             case 2: {
-                    message.y = reader.float();
+                    message.y = reader.double();
                     break;
                 }
             default:
@@ -7634,9 +7634,9 @@ $root.C2SPositionUpdateRequest = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.x);
+            writer.uint32(/* id 1, wireType 1 =*/9).double(message.x);
         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
-            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.y);
+            writer.uint32(/* id 2, wireType 1 =*/17).double(message.y);
         return writer;
     };
 
@@ -7672,11 +7672,11 @@ $root.C2SPositionUpdateRequest = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.x = reader.int32();
+                    message.x = reader.double();
                     break;
                 }
             case 2: {
-                    message.y = reader.int32();
+                    message.y = reader.double();
                     break;
                 }
             default:
@@ -7715,11 +7715,11 @@ $root.C2SPositionUpdateRequest = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.x != null && message.hasOwnProperty("x"))
-            if (!$util.isInteger(message.x))
-                return "x: integer expected";
+            if (typeof message.x !== "number")
+                return "x: number expected";
         if (message.y != null && message.hasOwnProperty("y"))
-            if (!$util.isInteger(message.y))
-                return "y: integer expected";
+            if (typeof message.y !== "number")
+                return "y: number expected";
         return null;
     };
 
@@ -7736,9 +7736,9 @@ $root.C2SPositionUpdateRequest = (function() {
             return object;
         var message = new $root.C2SPositionUpdateRequest();
         if (object.x != null)
-            message.x = object.x | 0;
+            message.x = Number(object.x);
         if (object.y != null)
-            message.y = object.y | 0;
+            message.y = Number(object.y);
         return message;
     };
 
@@ -7760,9 +7760,9 @@ $root.C2SPositionUpdateRequest = (function() {
             object.y = 0;
         }
         if (message.x != null && message.hasOwnProperty("x"))
-            object.x = message.x;
+            object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
-            object.y = message.y;
+            object.y = options.json && !isFinite(message.y) ? String(message.y) : message.y;
         return object;
     };
 

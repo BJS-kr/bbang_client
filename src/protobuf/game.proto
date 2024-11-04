@@ -34,8 +34,8 @@ message CharacterData {
 }
 
 message CharacterPositionData {
-    float x = 1;
-    float y = 2;
+    double x = 1;
+    double y = 2;
 }
 
 message CardData {
@@ -167,8 +167,8 @@ message S2CGameStartNotification {
 }
 
 message C2SPositionUpdateRequest {
-    int32 x = 1;
-    int32 y = 2;
+    double x = 1;
+    double y = 2;
 }
 
 message S2CPositionUpdateResponse {
