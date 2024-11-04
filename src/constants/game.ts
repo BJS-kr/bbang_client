@@ -1,6 +1,6 @@
 export enum CARD_TYPE {
   BBANG = 1,
-  MASSACRE = 2,
+  BIG_BBANG = 2,
   SHIELD = 3,
   VACCINE = 4,
   CALL_119 = 5,

@@ -23,7 +23,8 @@ import { AutoShield } from './shield.auto';
 import { User } from '../users/types';
 import { Shark } from '../characters/shark';
 import { DeathMatch } from './deathmatch';
-import { Massacre } from './massacre';
+import { BigBBang } from './massacre';
+import { onBBangTimeout, onDeathMatchTurnTimeout } from './onTimeout';
 
 type UseCardResponse = MessageProps<S2CUseCardResponse>;
 type UserUpdateNotification = MessageProps<S2CUserUpdateNotification>;
@@ -88,9 +89,9 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       log('handleUseCard: DeathMatch');
       handleDeathMatch(base, useCardRequest, room, user);
       break;
-    case card instanceof Massacre:
+    case card instanceof BigBBang:
       log('handleUseCard: Massacre');
-      handleMassacre(base, room, user);
+      handleBigBBang(base, room, user);
       break;
     default:
       error(`handleUseCard: unknown card. card type: ${card.type}`);
@@ -123,13 +124,7 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 
 function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
-  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, () => {
-    targetUser.character.takeDamage(1);
-
-    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-      user: [targetUser.toUserData(targetUser.id)],
-    } satisfies UserUpdateNotification);
-  });
+  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(targetUser, room));
 
   const payload: UseCardResponse = {
     success: true,
@@ -189,16 +184,7 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
   }
 
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
-  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, () => {
-    targetUser.character.takeDamage(1);
-
-    // TODO 이거 맞나요???
-    targetUser.character.stateInfo.setState(CharacterState.NONE, null);
-
-    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-      user: [targetUser.toUserData(targetUser.id)],
-    } satisfies UserUpdateNotification);
-  });
+  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
@@ -251,16 +237,7 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
   }
 
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
-  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, () => {
-    targetUser.character.takeDamage(1);
-
-    // TODO 이거 맞나요???
-    targetUser.character.stateInfo.setState(CharacterState.NONE, null);
-
-    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-      user: [targetUser.toUserData(targetUser.id)],
-    } satisfies UserUpdateNotification);
-  });
+  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
@@ -274,16 +251,10 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
   } satisfies UseCardNotification);
 }
 
-function handleMassacre({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
+function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, () => {
-      targetUser.character.takeDamage(1);
-
-      room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-        user: [targetUser.toUserData(targetUser.id)],
-      } satisfies UserUpdateNotification);
-    });
+    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(targetUser, room));
     handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 
@@ -293,7 +264,7 @@ function handleMassacre({ socket, version, sequence, ctx }: HandlerBase, room: R
   } satisfies UseCardResponse);
 
   room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.MASSACRE,
+    cardType: CARD_TYPE.BIG_BBANG,
     userId: user.id,
     targetUserId: '',
   } satisfies UseCardNotification);
