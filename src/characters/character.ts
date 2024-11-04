@@ -5,7 +5,6 @@ import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 import { CharacterStateInfo, OnStateTimeout } from './character.state';
 import { Result } from '../db/types';
-import { error } from '../utils/logger';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
@@ -38,8 +37,8 @@ export class Character extends EventEmitter {
   stateInfo = new CharacterStateInfo();
   position: CharacterPosition;
   weapon: number = 0;
-  equips: CARD_TYPE[] = [];
-  debuffs: CARD_TYPE[] = [];
+  equips = new Set<CARD_TYPE>();
+  debuffs = new Set<CARD_TYPE>();
 
   constructor({
     userId,
@@ -76,8 +75,8 @@ export class Character extends EventEmitter {
       weapon: this.weapon,
       stateInfo: this.stateInfo,
       position: this.position,
-      equips: this.equips,
-      debuffs: this.debuffs,
+      equips: Array.from(this.equips),
+      debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
     };
   }

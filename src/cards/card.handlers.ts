@@ -193,7 +193,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
     } satisfies UserUpdateNotification);
   }
 
-  const isAutoShieldExists = targetUser.character.equips.includes(CARD_TYPE.AUTO_SHIELD);
+  const isAutoShieldExists = targetUser.character.equips.has(CARD_TYPE.AUTO_SHIELD);
   const autoShield = cards[CARD_TYPE.AUTO_SHIELD];
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (isAutoShieldExists && autoShield instanceof AutoShield) {
@@ -237,7 +237,7 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
-  const countToShield = user.character instanceof Shark || user.character.equips.includes(CARD_TYPE.LASER_POINTER) ? 2 : 1;
+  const countToShield = user.character instanceof Shark || user.character.equips.has(CARD_TYPE.LASER_POINTER) ? 2 : 1;
   const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: countToShield });
 
   if (shield instanceof Error) {
@@ -382,36 +382,36 @@ function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room
 }
 
 function handleLaserPointer({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.equips.push(CARD_TYPE.LASER_POINTER);
+  user.character.equips.add(CARD_TYPE.LASER_POINTER);
   responseSuccess(socket, version, sequence, CARD_TYPE.LASER_POINTER, [user], room, user);
 }
 
 function handleRadar({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.equips.push(CARD_TYPE.RADAR);
+  user.character.equips.add(CARD_TYPE.RADAR);
   responseSuccess(socket, version, sequence, CARD_TYPE.RADAR, [user], room, user);
 }
 
 function handleAutoShield({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.equips.push(CARD_TYPE.AUTO_SHIELD);
+  user.character.equips.add(CARD_TYPE.AUTO_SHIELD);
   responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_SHIELD, [user], room, user);
 }
 
 function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.equips.push(CARD_TYPE.STEALTH_SUIT);
+  user.character.equips.add(CARD_TYPE.STEALTH_SUIT);
   responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user);
 }
 
 function handleContainmentUnit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.push(CARD_TYPE.CONTAINMENT_UNIT);
+  user.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
   responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user);
 }
 
 function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.push(CARD_TYPE.SATELLITE_TARGET);
+  user.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
   responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user);
 }
 
 function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.push(CARD_TYPE.BOMB);
+  user.character.debuffs.add(CARD_TYPE.BOMB);
   responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user);
 }
