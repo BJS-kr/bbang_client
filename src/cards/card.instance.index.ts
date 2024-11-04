@@ -13,6 +13,9 @@ import { FleaMarket } from './fleamarket';
 import { MaturedSavings } from './matured.savings';
 import { WinLottery } from './win.lottery';
 import { LaserPointer } from './laser.pointer';
+import { Bomb } from './bomb';
+import { SatelliteTarget } from './satellite.target';
+import { ContainmentUnit } from './containment.unit';
 
 export const cards = {
   [CARD_TYPE.BBANG]: new BBang(),
@@ -29,4 +32,7 @@ export const cards = {
   [CARD_TYPE.MATURED_SAVINGS]: new MaturedSavings(),
   [CARD_TYPE.WIN_LOTTERY]: new WinLottery(),
   [CARD_TYPE.LASER_POINTER]: new LaserPointer(),
+  [CARD_TYPE.BOMB]: new Bomb(),
+  [CARD_TYPE.SATELLITE_TARGET]: new SatelliteTarget(),
+  [CARD_TYPE.CONTAINMENT_UNIT]: new ContainmentUnit(),
 };

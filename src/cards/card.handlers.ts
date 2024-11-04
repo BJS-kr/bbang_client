@@ -31,6 +31,9 @@ import { LaserPointer } from './laser.pointer';
 import { Radar } from './radar';
 import { cards } from './card.instance.index';
 import { StealthSuit } from './stealth.suit';
+import { ContainmentUnit } from './containment.unit';
+import { Bomb } from './bomb';
+import { SatelliteTarget } from './satellite.target';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -134,6 +137,18 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
     case card instanceof StealthSuit:
       log('handleUseCard: StealthSuit');
       handleStealthSuit(base, room, user);
+      break;
+    case card instanceof ContainmentUnit:
+      log('handleUseCard: ContainmentUnit');
+      handleContainmentUnit(base, room, user);
+      break;
+    case card instanceof SatelliteTarget:
+      log('handleUseCard: SatelliteTarget');
+      handleSatelliteTarget(base, room, user);
+      break;
+    case card instanceof Bomb:
+      log('handleUseCard: Bomb');
+      handleBomb(base, room, user);
       break;
     default:
       error(`handleUseCard: unknown card. card type: ${card.type}`);
@@ -384,4 +399,19 @@ function handleAutoShield({ socket, version, sequence }: HandlerBase, room: Room
 function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.push(CARD_TYPE.STEALTH_SUIT);
   responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user);
+}
+
+function handleContainmentUnit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.debuffs.push(CARD_TYPE.CONTAINMENT_UNIT);
+  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user);
+}
+
+function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.debuffs.push(CARD_TYPE.SATELLITE_TARGET);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user);
+}
+
+function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.debuffs.push(CARD_TYPE.BOMB);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user);
 }

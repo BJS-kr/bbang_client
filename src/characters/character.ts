@@ -39,7 +39,7 @@ export class Character extends EventEmitter {
   position: CharacterPosition;
   weapon: number = 0;
   equips: CARD_TYPE[] = [];
-  debuffs: number[] = [];
+  debuffs: CARD_TYPE[] = [];
 
   constructor({
     userId,
