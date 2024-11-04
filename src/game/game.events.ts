@@ -5,6 +5,7 @@ import { SatelliteTarget } from '../cards/satellite.target';
 import { User } from '../users/types';
 import { Room } from '../rooms/types';
 import { PACKET_TYPE } from '../constants/packetType';
+import { error } from '../utils/logger';
 
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];
@@ -16,6 +17,10 @@ export class GameEvents extends EventEmitter {
     super();
 
     this.on('DAY', () => {
+      if (!this.#room) {
+        return error('room is not set in gameEvents');
+      }
+
       const updateUsers: User[] = [];
       this.containedUsers.forEach((cu) => {
         if (ContainmentUnit.canEscape()) {
@@ -42,6 +47,7 @@ export class GameEvents extends EventEmitter {
         }
       });
 
+      // TODO bomb넘기는건 어떻게 처리함...?
       this.bombUsers.forEach((bu) => {
         bu.character.takeDamage(2);
         this.bombUsers = this.bombUsers.filter((bu) => bu !== bu);
