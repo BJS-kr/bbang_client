@@ -1,4 +1,6 @@
 import { PHASE_TYPE } from '../constants/game';
+import { GameStateData } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
 
 const DAY_SECOND = 180; // 3분
 const EVENING_SECOND = 60; // 1분
@@ -14,6 +16,13 @@ export class GameState {
   constructor() {
     this.phaseType = PHASE_TYPE.NONE;
     this.nextPhaseAt = 0;
+  }
+
+  toGameStateData(): MessageProps<GameStateData> {
+    return {
+      phaseType: this.phaseType,
+      nextPhaseAt: this.nextPhaseAt,
+    };
   }
 
   gameStart(roomId, onPhaseChange) {

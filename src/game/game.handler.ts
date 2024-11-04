@@ -115,7 +115,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   if (!user) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.AUTHENTICATION_FAILED,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
@@ -123,18 +123,20 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   if (!room) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.ROOM_NOT_FOUND,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
   if (room.state !== RoomState.PREPARE) {
+    console.log(`[GAME_START_FAIL] ${ctx.roomId}, ${room.state}, ${room.ownerId}`);
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
+      failCode: GlobalFailCode.INVALID_ROOM_STATE,
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
   if (user.userId !== room.ownerId) {
+    console.log(`[GAME_START_FAIL] ${user.userId}, ${room.ownerId}`);
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -167,7 +169,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   // 게임 시작 알림
   room.users.forEach((user) => {
     writePayload(user.socket, PACKET_TYPE.GAME_START_NOTIFICATION, version, 0, {
-      gameState: room.gameState,
+      gameState: room.gameState.toGameStateData(),
       users: createUserDataView(user, room.users),
     } satisfies MessageProps<S2CGameStartNotification>);
   });
