@@ -2468,6 +2468,7 @@ $root.S2CRegisterResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -2551,6 +2552,10 @@ $root.S2CRegisterResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -3062,6 +3067,7 @@ $root.S2CLoginResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -3152,6 +3158,10 @@ $root.S2CLoginResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -3633,6 +3643,7 @@ $root.S2CCreateRoomResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -3719,6 +3730,10 @@ $root.S2CCreateRoomResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -4569,6 +4584,7 @@ $root.S2CJoinRoomResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -4655,6 +4671,10 @@ $root.S2CJoinRoomResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -5106,6 +5126,7 @@ $root.S2CJoinRandomRoomResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -5192,6 +5213,10 @@ $root.S2CJoinRandomRoomResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -5803,6 +5828,7 @@ $root.S2CLeaveRoomResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -5884,6 +5910,10 @@ $root.S2CLeaveRoomResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -6487,6 +6517,7 @@ $root.S2CGamePrepareResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -6568,6 +6599,10 @@ $root.S2CGamePrepareResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -7176,6 +7211,7 @@ $root.S2CGameStartResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -7257,6 +7293,10 @@ $root.S2CGameStartResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -7962,6 +8002,7 @@ $root.S2CPositionUpdateResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -8043,6 +8084,10 @@ $root.S2CPositionUpdateResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -8727,6 +8772,7 @@ $root.S2CUseCardResponse = (function() {
             case 11:
             case 12:
             case 13:
+            case 14:
                 break;
             }
         return null;
@@ -8808,6 +8854,10 @@ $root.S2CUseCardResponse = (function() {
         case "NOT_ROOM_OWNER":
         case 13:
             message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
             break;
         }
         return message;
@@ -12116,6 +12166,7 @@ $root.GamePacket = (function() {
  * @property {number} CHARACTER_NO_CARD=11 CHARACTER_NO_CARD value
  * @property {number} INVALID_ROOM_STATE=12 INVALID_ROOM_STATE value
  * @property {number} NOT_ROOM_OWNER=13 NOT_ROOM_OWNER value
+ * @property {number} ALREADY_USED_BBANG=14 ALREADY_USED_BBANG value
  */
 $root.GlobalFailCode = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -12133,6 +12184,7 @@ $root.GlobalFailCode = (function() {
     values[valuesById[11] = "CHARACTER_NO_CARD"] = 11;
     values[valuesById[12] = "INVALID_ROOM_STATE"] = 12;
     values[valuesById[13] = "NOT_ROOM_OWNER"] = 13;
+    values[valuesById[14] = "ALREADY_USED_BBANG"] = 14;
     return values;
 })();
 

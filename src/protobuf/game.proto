@@ -321,4 +321,5 @@ enum GlobalFailCode {
     CHARACTER_NO_CARD = 11;
     INVALID_ROOM_STATE = 12;
     NOT_ROOM_OWNER = 13;
+    ALREADY_USED_BBANG = 14;
 }

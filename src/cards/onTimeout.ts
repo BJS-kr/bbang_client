@@ -5,9 +5,9 @@ import { MessageProps } from '../protobuf/props';
 import { Room } from '../rooms/types';
 import { User } from '../users/types';
 
-export function onBBangTimeout(targetUser: User, room: Room) {
+export function onBBangTimeout(damage, targetUser: User, room: Room) {
   return () => {
-    targetUser.character.takeDamage(1);
+    targetUser.character.takeDamage(damage);
 
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
