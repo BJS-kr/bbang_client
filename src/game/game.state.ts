@@ -1,6 +1,7 @@
 import { PHASE_TYPE } from '../constants/game';
 import { GameStateData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
+import { GameEvents } from './game.events';
 
 const DAY_SECOND = 180; // 3분
 const EVENING_SECOND = 60; // 1분
@@ -9,11 +10,13 @@ const END_SECOND = 10; // 10초
 export class GameState {
   phaseType;
   nextPhaseAt = 0;
+  #gameEvents: GameEvents;
   #roomId;
   #phaseTimer;
   #onPhaseChange;
 
-  constructor() {
+  constructor(gameEvents: GameEvents) {
+    this.#gameEvents = gameEvents;
     this.phaseType = PHASE_TYPE.NONE;
     this.nextPhaseAt = 0;
   }
@@ -40,6 +43,7 @@ export class GameState {
   #startDay() {
     this.phaseType = PHASE_TYPE.DAY;
     this.nextPhaseAt = Date.now() + DAY_SECOND * 1000;
+    this.#gameEvents.emit('DAY');
     this.#startPhaseTimer();
   }
 

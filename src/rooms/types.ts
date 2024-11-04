@@ -3,6 +3,7 @@ import { GameState } from '../game/game.state';
 import type { User } from '../users/types';
 import { writePayload } from '../protobuf/writePayload';
 import { config } from '../config/config';
+import { GameEvents } from '../game/game.events';
 
 export enum RoomState {
   WAIT = 0,
@@ -17,6 +18,7 @@ export class Room {
   users: User[];
   state: RoomState;
   gameState: GameState;
+  gameEvents: GameEvents;
 
   constructor({
     name,
@@ -25,6 +27,7 @@ export class Room {
     users,
     state,
     gameState,
+    gameEvents,
   }: {
     name: string;
     ownerId: string;
@@ -32,6 +35,7 @@ export class Room {
     users: User[];
     state: RoomState;
     gameState: GameState;
+    gameEvents: GameEvents;
   }) {
     this.name = name;
     this.ownerId = ownerId;
@@ -39,6 +43,7 @@ export class Room {
     this.users = users;
     this.state = state;
     this.gameState = gameState;
+    this.gameEvents = gameEvents;
   }
 
   broadcast(packetType: number, payload: any) {
@@ -69,18 +74,20 @@ export class Rooms {
 
   create(roomId, roomName, ownerId, maxUserNum) {
     if (this.isRoomExist(roomId)) return false;
+    const gameEvents = new GameEvents();
+    const room = new Room({
+      name: roomName,
+      ownerId,
+      maxUserNum,
+      users: [],
+      state: RoomState.WAIT,
+      gameState: new GameState(gameEvents),
+      gameEvents,
+    });
 
-    this.#rooms.set(
-      roomId,
-      new Room({
-        name: roomName,
-        ownerId,
-        maxUserNum,
-        users: [],
-        state: RoomState.WAIT,
-        gameState: new GameState(),
-      }),
-    );
+    this.#rooms.set(roomId, room);
+
+    gameEvents.setRoom(room);
 
     return true;
   }

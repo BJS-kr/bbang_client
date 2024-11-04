@@ -403,15 +403,18 @@ function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Roo
 
 function handleContainmentUnit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
+  room.gameEvents.containedUsers.push(user);
   responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user);
 }
 
 function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
+  room.gameEvents.satelliteTargets.push(user);
   responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user);
 }
 
 function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.debuffs.add(CARD_TYPE.BOMB);
+  room.gameEvents.bombUsers.push(user);
   responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user);
 }
