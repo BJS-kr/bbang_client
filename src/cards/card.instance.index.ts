@@ -12,6 +12,7 @@ import { Hallucination } from './hallucination';
 import { FleaMarket } from './fleamarket';
 import { MaturedSavings } from './matured.savings';
 import { WinLottery } from './win.lottery';
+import { LaserPointer } from './laser.pointer';
 
 export const cards = {
   [CARD_TYPE.BBANG]: new BBang(),
@@ -27,4 +28,5 @@ export const cards = {
   [CARD_TYPE.FLEA_MARKET]: new FleaMarket(),
   [CARD_TYPE.MATURED_SAVINGS]: new MaturedSavings(),
   [CARD_TYPE.WIN_LOTTERY]: new WinLottery(),
+  [CARD_TYPE.LASER_POINTER]: new LaserPointer(),
 };

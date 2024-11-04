@@ -38,7 +38,7 @@ export class Character extends EventEmitter {
   stateInfo = new CharacterStateInfo();
   position: CharacterPosition;
   weapon: number = 0;
-  equips: number[] = [];
+  equips: CARD_TYPE[] = [];
   debuffs: number[] = [];
 
   constructor({

@@ -1,16 +1,7 @@
 import { CARD_TYPE } from '../constants/game';
 import { CardProps, Character } from '../characters/character';
 import { CharacterState } from '../constants/game';
-import { Context } from '../events/types';
-import {
-  C2SUseCardRequest,
-  GlobalFailCode,
-  S2CCardEffectNotification,
-  S2CUseCardNotification,
-  S2CUseCardResponse,
-  S2CUserUpdateNotification,
-} from '../protobuf/compiled';
-import { Socket } from 'node:net';
+import { C2SUseCardRequest, GlobalFailCode, S2CUserUpdateNotification } from '../protobuf/compiled';
 import { rooms } from '../rooms/rooms';
 import { writePayload } from '../protobuf/writePayload';
 import { MessageProps } from '../protobuf/props';
@@ -34,8 +25,12 @@ import { FleaMarket } from './fleamarket';
 import { MaturedSavings } from './matured.savings';
 import { pickRandomCardType } from './pickRandomCard';
 import { WinLottery } from './win.lottery';
-import { CardEffectNotification, HandlerBase, UseCardNotification, UseCardResponse, UserUpdateNotification } from './types';
+import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './types';
 import { responseSuccess } from './response.success';
+import { LaserPointer } from './laser.pointer';
+import { Radar } from './radar';
+import { cards } from './card.instance.index';
+import { StealthSuit } from './stealth.suit';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -124,6 +119,22 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       log('handleUseCard: WinLottery');
       handleWinLottery(base, room, user);
       break;
+    case card instanceof LaserPointer:
+      log('handleUseCard: LaserPointer');
+      handleLaserPointer(base, room, user);
+      break;
+    case card instanceof Radar:
+      log('handleUseCard: Radar');
+      handleRadar(base, room, user);
+      break;
+    case card instanceof AutoShield:
+      log('handleUseCard: AutoShield');
+      handleAutoShield(base, room, user);
+      break;
+    case card instanceof StealthSuit:
+      log('handleUseCard: StealthSuit');
+      handleStealthSuit(base, room, user);
+      break;
     default:
       error(`handleUseCard: unknown card. card type: ${card.type}`);
       return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
@@ -167,9 +178,10 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
     } satisfies UserUpdateNotification);
   }
 
-  const autoShield = targetUser.character.drawCard({ type: CARD_TYPE.AUTO_SHIELD, count: 1 });
+  const isAutoShieldExists = targetUser.character.equips.includes(CARD_TYPE.AUTO_SHIELD);
+  const autoShield = cards[CARD_TYPE.AUTO_SHIELD];
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
-  if (autoShield instanceof AutoShield) {
+  if (isAutoShieldExists && autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
     shielded && targetUser.character.stateInfo.setState(CharacterState.NONE, null);
 
@@ -210,7 +222,7 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
-  const countToShield = user.character instanceof Shark ? 2 : 1;
+  const countToShield = user.character instanceof Shark || user.character.equips.includes(CARD_TYPE.LASER_POINTER) ? 2 : 1;
   const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: countToShield });
 
   if (shield instanceof Error) {
@@ -352,4 +364,24 @@ function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.WIN_LOTTERY, [user], room, user);
+}
+
+function handleLaserPointer({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.equips.push(CARD_TYPE.LASER_POINTER);
+  responseSuccess(socket, version, sequence, CARD_TYPE.LASER_POINTER, [user], room, user);
+}
+
+function handleRadar({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.equips.push(CARD_TYPE.RADAR);
+  responseSuccess(socket, version, sequence, CARD_TYPE.RADAR, [user], room, user);
+}
+
+function handleAutoShield({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.equips.push(CARD_TYPE.AUTO_SHIELD);
+  responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_SHIELD, [user], room, user);
+}
+
+function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  user.character.equips.push(CARD_TYPE.STEALTH_SUIT);
+  responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user);
 }
