@@ -128,6 +128,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   }
 
   if (room.state !== RoomState.PREPARE) {
+    console.log(`[GAME_START_FAIL] ${ctx.roomId}, ${room.state}, ${room.ownerId}`);
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_ROOM_STATE,
