@@ -1,13 +1,14 @@
 import { error, log } from '../utils/logger';
-import { createPacket, encodePayload } from './packet';
+import { createPacket, decodePayload, encodePayload } from './packet';
 
 export function writePayload(socket, packetType: number, version: string, sequence: number, payload) {
-  log(`writePayload: ${JSON.stringify(payload, (key, value) => (key === 'socket' ? undefined : value))}`);
+  // log(`writePayload: ${JSON.stringify(payload, (key, value) => (key === 'socket' ? undefined : value))}`);
   const encodedPayload = encodePayload(packetType, payload);
 
   if (encodedPayload instanceof Error) {
     return error(encodedPayload);
   }
 
+  log(`decodePayload: ${packetType}|${decodePayload(packetType, encodedPayload)}`);
   socket.write(createPacket(packetType, version, sequence, encodedPayload));
 }
