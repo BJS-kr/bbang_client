@@ -15,6 +15,7 @@ export class PinkSlime extends Character {
 
   acquireCardFromOtherCharacter(otherCharacter: Character) {
     const card = otherCharacter.getRandomCard();
+    if (!card) return;
     this.acquireCard(card);
   }
 }
