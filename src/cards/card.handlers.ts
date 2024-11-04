@@ -34,18 +34,8 @@ import { FleaMarket } from './fleamarket';
 import { MaturedSavings } from './matured.savings';
 import { pickRandomCardType } from './pickRandomCard';
 import { WinLottery } from './win.lottery';
-
-type UseCardResponse = MessageProps<S2CUseCardResponse>;
-type UserUpdateNotification = MessageProps<S2CUserUpdateNotification>;
-type CardEffectNotification = MessageProps<S2CCardEffectNotification>;
-type UseCardNotification = MessageProps<S2CUseCardNotification>;
-
-type HandlerBase = {
-  socket: Socket;
-  version: string;
-  sequence: number;
-  ctx: Context;
-};
+import { CardEffectNotification, HandlerBase, UseCardNotification, UseCardResponse, UserUpdateNotification } from './types';
+import { responseSuccess } from './response.success';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -167,19 +157,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
   targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(targetUser, room));
 
-  const payload: UseCardResponse = {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  };
-
-  // 빵 사용자에게 응답
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, payload);
-
-  // 빵 사용 중계
-  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-    user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
-  });
-
+  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
     targetUser.character.stateInfo.setState(CharacterState.NONE, null);
@@ -227,42 +205,26 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-    user: [user.toUserData(user.id)],
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user], room, user);
 }
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.SHIELD,
-    userId: ctx.userId,
-    targetUserId: '',
-  } satisfies UseCardNotification);
-
   // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
   const countToShield = user.character instanceof Shark ? 2 : 1;
   const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: countToShield });
 
   if (shield instanceof Error) {
-    return error('handleShield: character no shield card. it could have been insufficient amount of card');
+    error('handleShield: character no shield card. it could have been insufficient amount of card');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NO_CARD,
+    } satisfies UseCardResponse);
   }
 
-  if (shield instanceof Shield) {
-    user.character.stateInfo.setState(CharacterState.NONE, null);
-    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-      user: [user.toUserData(ctx.userId)],
-    } satisfies UserUpdateNotification);
-  }
+  user.character.stateInfo.setState(CharacterState.NONE, null);
+
+  responseSuccess(socket, version, sequence, CARD_TYPE.SHIELD, [user], room, user);
 }
 
 function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -280,16 +242,7 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.DEATH_MATCH,
-    userId: user.id,
-    targetUserId: useCardRequest.targetUserId,
-  } satisfies UseCardNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.DEATH_MATCH, [user, targetUser], room, user);
 }
 
 function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
@@ -299,35 +252,13 @@ function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: R
     handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.BIG_BBANG,
-    userId: user.id,
-    targetUserId: '',
-  } satisfies UseCardNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user);
 }
 
 function handleVaccine({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   Character.recover(1, user.character);
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.VACCINE,
-    userId: user.id,
-    targetUserId: '',
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [user.toUserData(user.id)],
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.VACCINE, [user], room, user);
 }
 
 function handleCall119({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -339,20 +270,7 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
     });
   }
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.CALL_119,
-    userId: user.id,
-    targetUserId: useCardRequest.targetUserId,
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: room.users.map((user) => user.toUserData(user.id)),
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.CALL_119, room.users, room, user);
 }
 
 function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -360,20 +278,7 @@ function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room,
     targetUser.character.takeDamage(1);
   });
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.GUERRILLA,
-    userId: user.id,
-    targetUserId: '',
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: room.users.map((user) => user.toUserData(user.id)),
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user);
 }
 
 function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -402,20 +307,7 @@ function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest
 
   user.character.acquireCard(randomCard);
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.ABSORB,
-    userId: user.id,
-    targetUserId: useCardRequest.targetUserId,
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [targetUser.toUserData(targetUser.id), user.toUserData(user.id)],
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.ABSORB, [user, targetUser], room, user);
 }
 
 function handleHallucination({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -441,20 +333,7 @@ function handleHallucination({ socket, version, sequence }: HandlerBase, useCard
     } satisfies UseCardResponse);
   }
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.HALLUCINATION,
-    userId: user.id,
-    targetUserId: useCardRequest.targetUserId,
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [targetUser.toUserData(targetUser.id), user.toUserData(user.id)],
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.HALLUCINATION, [user, targetUser], room, user);
 }
 
 // TODO 명세 정해지면 나중에 구현
@@ -464,20 +343,7 @@ function handleMaturedSavings({ socket, version, sequence }: HandlerBase, room: 
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.MATURED_SAVINGS,
-    userId: user.id,
-    targetUserId: '',
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [user.toUserData(user.id)],
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.MATURED_SAVINGS, [user], room, user);
 }
 
 function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -485,18 +351,5 @@ function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
 
-  writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies UseCardResponse);
-
-  room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
-    cardType: CARD_TYPE.WIN_LOTTERY,
-    userId: user.id,
-    targetUserId: '',
-  } satisfies UseCardNotification);
-
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
-    user: [user.toUserData(user.id)],
-  } satisfies UserUpdateNotification);
+  responseSuccess(socket, version, sequence, CARD_TYPE.WIN_LOTTERY, [user], room, user);
 }
