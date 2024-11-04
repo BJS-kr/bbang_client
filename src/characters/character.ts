@@ -159,7 +159,7 @@ export class Character extends EventEmitter {
     }
   }
 
-  getRandomCard() {
+  getRandomCard(): CardProps | null {
     const cardTypes = Array.from(this.handCards.keys());
 
     if (cardTypes.length === 0) return null;
