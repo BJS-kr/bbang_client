@@ -21,12 +21,12 @@ export class GameEvents extends EventEmitter {
         return error('room is not set in gameEvents');
       }
 
-      const updateUsers: User[] = [];
+      const updatedUsers: User[] = [];
       this.containedUsers.forEach((cu) => {
         if (ContainmentUnit.canEscape()) {
           cu.character.debuffs.delete(CARD_TYPE.CONTAINMENT_UNIT);
           this.containedUsers = this.containedUsers.filter((cu) => cu !== cu);
-          updateUsers.push(cu);
+          updatedUsers.push(cu);
         }
       });
 
@@ -43,7 +43,7 @@ export class GameEvents extends EventEmitter {
           this.satelliteTargets.push(nextUser);
           this.satelliteTargets = this.satelliteTargets.filter((st) => st !== st);
 
-          updateUsers.push(st, nextUser);
+          updatedUsers.push(st, nextUser);
         }
       });
 
@@ -51,11 +51,11 @@ export class GameEvents extends EventEmitter {
       this.bombUsers.forEach((bu) => {
         bu.character.takeDamage(2);
         this.bombUsers = this.bombUsers.filter((bu) => bu !== bu);
-        updateUsers.push(bu);
+        updatedUsers.push(bu);
       });
 
       this.#room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-        users: updateUsers.map((u) => u.toUserData(u.id)),
+        users: updatedUsers.map((u) => u.toUserData(u.id)),
       });
     });
   }
