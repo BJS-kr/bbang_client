@@ -35,7 +35,7 @@ export class Character extends EventEmitter {
   roleType: number;
   baseDefenseChance: number;
   handCards = new Map<CARD_TYPE, number>();
-  stateInfo = new CharacterStateInfo(this.#onStateTimeout.bind(this));
+  stateInfo = new CharacterStateInfo();
   position: CharacterPosition;
   weapon: number = 0;
   equips: number[] = [];
@@ -66,19 +66,6 @@ export class Character extends EventEmitter {
     this.position = position;
 
     return new Proxy(this, handler);
-  }
-
-  #onStateTimeout(from: CharacterState, to: CharacterState) {
-    switch (from) {
-      case CharacterState.DEATH_MATCH_TURN:
-        this.takeDamage(1);
-        break;
-      case CharacterState.BBANG_TARGET:
-        this.takeDamage(1);
-        break;
-      default:
-        error(`unhandled character state timeout: ${from} -> ${to}`);
-    }
   }
 
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {

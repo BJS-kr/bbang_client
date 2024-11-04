@@ -9,17 +9,17 @@ export class CharacterStateInfo {
   nextState;
   nextStateAt;
   #stateTimer;
-  #onStateTimeout: OnStateTimeout;
+  #onStateTimeout: OnStateTimeout | null = null;
 
-  constructor(onStateTimeout: OnStateTimeout) {
+  constructor() {
     this.state = CharacterState.NONE;
     this.nextState = CharacterState.NONE;
     this.nextStateAt = 0;
-    this.#onStateTimeout = onStateTimeout;
   }
 
-  setState(state) {
+  setState(state: CharacterState, onStateTimeout: OnStateTimeout | null) {
     this.state = state;
+    this.#onStateTimeout = onStateTimeout;
 
     switch (this.state) {
       case CharacterState.NONE:
@@ -77,7 +77,9 @@ export class CharacterStateInfo {
       const lastState = this.state;
       this.state = this.nextState;
 
-      this.#onStateTimeout(lastState, this.state);
+      if (this.#onStateTimeout) {
+        this.#onStateTimeout(lastState, this.state);
+      }
     }, this.nextStateAt - Date.now());
   }
 }
