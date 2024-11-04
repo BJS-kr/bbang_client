@@ -134,6 +134,31 @@ export class Character extends EventEmitter {
     return card;
   }
 
+  loseRandomCards(count: number = 1) {
+    const cardTypes = Array.from(this.handCards.keys());
+
+    if (cardTypes.length === 0) return null;
+
+    const totalCards = Array.from(this.handCards.values()).reduce((sum, curr) => sum + curr, 0);
+    if (totalCards < count) return null;
+
+    let remainingCount = count;
+    while (remainingCount > 0) {
+      const randomIndex = Math.floor(Math.random() * cardTypes.length);
+      const randomCardType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+      const cardCount = this.handCards.get(randomCardType) || 0;
+
+      if (cardCount === 1) {
+        cardTypes.splice(randomIndex, 1);
+        continue;
+      }
+
+      const loseCount = Math.min(remainingCount, cardCount);
+      this.loseCard({ type: randomCardType, count: loseCount });
+      remainingCount -= loseCount;
+    }
+  }
+
   getRandomCard() {
     const cardTypes = Array.from(this.handCards.keys());
 

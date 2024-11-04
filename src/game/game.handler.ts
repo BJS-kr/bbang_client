@@ -241,10 +241,11 @@ const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
       const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
       room.users.forEach((user, index) => {
         user.character.position = suhfflePositions[index];
-        const removeCount = getTotalCardCount(user) - user.character.hp;
+        const handCards = user.character.getHandCards();
+        const removeCount = handCards.length - user.character.hp;
         if (removeCount > 0) {
           // 1. 초과 카드 대신 버리기
-          removeRandCard(user, removeCount);
+          user.character.loseRandomCards(removeCount);
         }
         // 2. 데일리 카드 주기
         for (let i = 0; i < DAILY_CARD_COUNT; i++) {
@@ -283,25 +284,4 @@ function createUserDataView(user, userDatas) {
 function createRandCard(): CardProps {
   const type = Math.floor(Math.random() * cardTypes.length);
   return { type, count: 1 };
-}
-
-function getTotalCardCount(user) {
-  const cards = user.character.getHandCards();
-  const result = cards.reduce((acc, card) => {
-    acc += card.count;
-    return acc;
-  }, 0);
-
-  return result;
-}
-
-function removeRandCard(user, count) {
-  for (let i = 0; i < count; i++) {
-    const randNum = Math.floor(Math.random() * user.handCards.count);
-    if (user.handCards[randNum].count > 1) {
-      user.handCards[randNum].count--;
-      continue;
-    }
-    user.handCards.splice(randNum, 1);
-  }
 }
