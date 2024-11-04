@@ -30,8 +30,15 @@ export class GameEvents extends EventEmitter {
           st.character.takeDamage(3);
         } else {
           st.character.debuffs.delete(CARD_TYPE.SATELLITE_TARGET);
+          const userIndex = this.#room.users.findIndex((u) => u === st);
+          const nextIndex = userIndex + 1 === this.#room.users.length ? 0 : userIndex + 1;
+          const nextUser = this.#room.users[nextIndex];
+
+          nextUser.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
+          this.satelliteTargets.push(nextUser);
           this.satelliteTargets = this.satelliteTargets.filter((st) => st !== st);
-          updateUsers.push(st);
+
+          updateUsers.push(st, nextUser);
         }
       });
 
