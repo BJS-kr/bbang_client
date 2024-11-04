@@ -167,10 +167,12 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   } satisfies MessageProps<S2CGameStartResponse>);
 
   // 게임 시작 알림
-  room.broadcast(PACKET_TYPE.GAME_START_NOTIFICATION, {
-    gameState: room.gameState.toGameStateData(),
-    users: createUserDataView(user, room.users),
-  } satisfies MessageProps<S2CGameStartNotification>);
+  room.users.forEach((user) => {
+    writePayload(user.socket, PACKET_TYPE.GAME_START_NOTIFICATION, version, 0, {
+      gameState: room.gameState.toGameStateData(),
+      users: createUserDataView(user, room.users),
+    } satisfies MessageProps<S2CGameStartNotification>);
+  });
 
   console.log(`[GameStart] roomId: ${ctx.roomId}`);
 };

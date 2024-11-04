@@ -9,6 +9,6 @@ export function writePayload(socket, packetType: number, version: string, sequen
     return error(encodedPayload);
   }
 
-  log(`decodePayload: ${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
+  log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
   socket.write(createPacket(packetType, version, sequence, encodedPayload));
 }
