@@ -11,9 +11,7 @@ export class GameState {
   phaseType;
   nextPhaseAt = 0;
   #gameEvents: GameEvents;
-  #roomId;
   #phaseTimer;
-  #onPhaseChange;
 
   constructor(gameEvents: GameEvents) {
     this.#gameEvents = gameEvents;
@@ -28,9 +26,7 @@ export class GameState {
     };
   }
 
-  gameStart(roomId, onPhaseChange) {
-    this.#roomId = roomId;
-    this.#onPhaseChange = onPhaseChange;
+  gameStart() {
     this.#startDay();
   }
 
@@ -64,7 +60,6 @@ export class GameState {
       clearTimeout(this.#phaseTimer);
     }
 
-    this.#onPhaseChange(this.#roomId, this.phaseType, this.nextPhaseAt);
     this.#phaseTimer = setTimeout(() => {
       switch (this.phaseType) {
         case PHASE_TYPE.DAY:

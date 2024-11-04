@@ -156,7 +156,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   });
 
   room.state = RoomState.IN_GAME;
-  room.gameState.gameStart(ctx.roomId, onPhaseChange);
+  room.gameState.gameStart();
 
   // 게임 시작 응답
   writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
