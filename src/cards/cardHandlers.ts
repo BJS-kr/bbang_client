@@ -122,8 +122,14 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 }
 
 function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER);
-  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET);
+  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
+  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, () => {
+    targetUser.character.takeDamage(1);
+
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [targetUser.toUserData(targetUser.id)],
+    } satisfies UserUpdateNotification);
+  });
 
   const payload: UseCardResponse = {
     success: true,
@@ -140,7 +146,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
 
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
-    targetUser.character.stateInfo.setState(CharacterState.NONE);
+    targetUser.character.stateInfo.setState(CharacterState.NONE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -151,7 +157,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
-    shielded && targetUser.character.stateInfo.setState(CharacterState.NONE);
+    shielded && targetUser.character.stateInfo.setState(CharacterState.NONE, null);
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,
@@ -182,8 +188,17 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
     } satisfies UseCardResponse);
   }
 
-  user.character.stateInfo.setState(CharacterState.DEATH_MATCH);
-  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN);
+  user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
+  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, () => {
+    targetUser.character.takeDamage(1);
+
+    // TODO 이거 맞나요???
+    targetUser.character.stateInfo.setState(CharacterState.NONE, null);
+
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [targetUser.toUserData(targetUser.id)],
+    } satisfies UserUpdateNotification);
+  });
 
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
@@ -216,7 +231,7 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
   }
 
   if (shield instanceof Shield) {
-    user.character.stateInfo.setState(CharacterState.NONE);
+    user.character.stateInfo.setState(CharacterState.NONE, null);
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [user.toUserData(ctx.userId)],
     } satisfies UserUpdateNotification);
@@ -235,8 +250,17 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
     } satisfies UseCardResponse);
   }
 
-  user.character.stateInfo.setState(CharacterState.DEATH_MATCH);
-  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN);
+  user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
+  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, () => {
+    targetUser.character.takeDamage(1);
+
+    // TODO 이거 맞나요???
+    targetUser.character.stateInfo.setState(CharacterState.NONE, null);
+
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [targetUser.toUserData(targetUser.id)],
+    } satisfies UserUpdateNotification);
+  });
 
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
@@ -251,9 +275,15 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
 }
 
 function handleMassacre({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
-  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER);
+  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET);
+    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, () => {
+      targetUser.character.takeDamage(1);
+
+      room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+        user: [targetUser.toUserData(targetUser.id)],
+      } satisfies UserUpdateNotification);
+    });
     handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 
