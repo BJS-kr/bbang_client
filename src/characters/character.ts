@@ -68,11 +68,7 @@ export class Character extends EventEmitter {
   }
 
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {
-    const roleType = viewUserId === this.userId || this.roleType === Number(ROLE_TYPE.TARGET) ? this.roleType : Number(ROLE_TYPE.NONE);
-
-    if (!roleType) {
-      throw new Error('roleType is not defined');
-    }
+    const roleType = viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : ROLE_TYPE.NONE;
 
     return {
       characterType: Number(this.characterType),
