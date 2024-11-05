@@ -31,7 +31,7 @@ const CHARACTER_CLASS_MAP = {
   [CHARACTER_TYPE.PINK_SLIME]: PinkSlime,
 };
 
-export const createCharacter = ({ userId, characterType, roleType }) => {
+export const createCharacter = ({ userId, characterType, roleType }: { userId: string; characterType: number; roleType: ROLE_TYPE }) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
   if (CharacterClass === Character) {
     throw new Error('CharacterClass is not defined');

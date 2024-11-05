@@ -74,6 +74,9 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   for (let i = 0; i < room.users.length; i++) {
     const characterType = Number(shuffleCharacters[i]);
     const roleType = Number(shuffleRoles[i]);
+    if (!characterType || !roleType) {
+      throw new Error('characterType or roleType is not defined');
+    }
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
     room.users[i].character.setPosition(suhfflePositions[i]);
   }
