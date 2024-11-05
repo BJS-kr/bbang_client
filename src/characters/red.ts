@@ -9,7 +9,6 @@ export class Red extends Character {
       characterType: CHARACTER_TYPE.RED,
       roleType: ROLE_TYPE.NONE,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.RED],
-      position: { x: 0, y: 0 },
     });
   }
 }

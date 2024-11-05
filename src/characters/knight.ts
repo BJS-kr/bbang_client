@@ -9,7 +9,6 @@ export class Knight extends Character {
       characterType: CHARACTER_TYPE.KNIGHT,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.KNIGHT],
       roleType: ROLE_TYPE.NONE,
-      position: { x: 0, y: 0 },
     });
   }
 

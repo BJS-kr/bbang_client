@@ -9,7 +9,6 @@ export class Froggy extends Character {
       characterType: CHARACTER_TYPE.FROGGY,
       roleType: ROLE_TYPE.NONE,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.FROGGY],
-      position: { x: 0, y: 0 },
     });
   }
 }

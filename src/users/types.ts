@@ -18,7 +18,6 @@ export class User {
       roleType: ROLE_TYPE.NONE,
       characterType: CHARACTER_TYPE.NONE,
       baseDefenseChance: 0,
-      position: { x: 0, y: 0 },
     });
   }
 
