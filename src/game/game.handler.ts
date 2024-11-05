@@ -64,19 +64,24 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   }
 
   // 역할, 초기 위치, 캐릭터 셔플
-  const shuffleRoles = Object.values(ROLE_TYPE).sort(() => Math.random() - 0.5);
+  const shuffleRoles = Object.values(ROLE_TYPE)
+    .filter((type) => typeof type === 'number' && type !== ROLE_TYPE.NONE)
+    .sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
   const shuffleCharacters = Object.values(CHARACTER_TYPE)
-    .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE) // TODO 이게 맞아..?
+    .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE)
     .sort(() => Math.random() - 0.5);
 
   // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
-    const characterType = Number(shuffleCharacters[i]);
-    const roleType = Number(shuffleRoles[i]);
+    const characterType = shuffleCharacters[i];
+    const roleType = shuffleRoles[i];
+
+    // ROLE_TYPE.NONE || CHARACTER_TYPE.NONE || falsy
     if (!characterType || !roleType) {
       throw new Error('characterType or roleType is not defined');
     }
+
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
     room.users[i].character.setPosition(suhfflePositions[i]);
   }
