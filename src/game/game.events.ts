@@ -84,8 +84,19 @@ export class GameEvents extends EventEmitter {
       } satisfies MessageProps<S2CUserUpdateNotification>);
     });
 
-    this.on('EVENING', () => {});
-    this.on('END', () => {});
+    this.on('EVENING', () => {
+      this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
+        phaseType: this.#room.gameState.phaseType,
+        nextPhaseAt: this.#room.gameState.nextPhaseAt,
+      } satisfies MessageProps<S2CPhaseUpdateNotification>);
+    });
+
+    this.on('END', () => {
+      this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
+        phaseType: this.#room.gameState.phaseType,
+        nextPhaseAt: this.#room.gameState.nextPhaseAt,
+      } satisfies MessageProps<S2CPhaseUpdateNotification>);
+    });
   }
 
   setRoom(room: Room) {
