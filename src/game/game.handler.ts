@@ -75,7 +75,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     const characterType = Number(shuffleCharacters[i]);
     const roleType = Number(shuffleRoles[i]);
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
-    room.users[i].character.positionInfo.setPosition(suhfflePositions[i]);
+    room.users[i].character.setPosition(suhfflePositions[i]);
   }
 
   // 상태 변경
@@ -210,7 +210,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
     });
   }
 
-  roomUser.character.positionInfo.setPosition({ x, y });
+  roomUser.character.setPosition({ x, y });
   writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE,

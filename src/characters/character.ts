@@ -80,6 +80,12 @@ export class Character extends EventEmitter {
     };
   }
 
+  setPosition({ x, y }: { x: number; y: number }) {
+    this.positionInfo.userId = this.userId;
+    this.positionInfo.x = x;
+    this.positionInfo.y = y;
+  }
+
   getMaxBBangCount() {
     return this.weapon === CARD_TYPE.SNIPER_GUN ? 2 : this.weapon === CARD_TYPE.HAND_GUN ? Infinity : 1;
   }

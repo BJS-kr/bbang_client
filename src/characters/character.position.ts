@@ -12,11 +12,6 @@ export class CharacterPositionInfo {
     this.y = 0;
   }
 
-  setPosition({ x, y }: { x: number; y: number }) {
-    this.x = x;
-    this.y = y;
-  }
-
   toPositionData(): MessageProps<CharacterPositionData> {
     return {
       id: this.userId,
