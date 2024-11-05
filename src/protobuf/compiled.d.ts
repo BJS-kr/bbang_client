@@ -2934,6 +2934,9 @@ export interface IS2CGameStartNotification {
 
     /** S2CGameStartNotification users */
     users?: (IUserData[]|null);
+
+    /** S2CGameStartNotification characterPositions */
+    characterPositions?: (ICharacterPositionData[]|null);
 }
 
 /** Represents a S2CGameStartNotification. */
@@ -2950,6 +2953,9 @@ export class S2CGameStartNotification implements IS2CGameStartNotification {
 
     /** S2CGameStartNotification users. */
     public users: IUserData[];
+
+    /** S2CGameStartNotification characterPositions. */
+    public characterPositions: ICharacterPositionData[];
 
     /**
      * Creates a new S2CGameStartNotification instance using the specified properties.

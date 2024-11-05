@@ -167,6 +167,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     writePayload(user.socket, PACKET_TYPE.GAME_START_NOTIFICATION, version, 0, {
       gameState: room.gameState.toGameStateData(),
       users: createUserDataView(user, room.users),
+      characterPositions: room.users.map((user) => user.character.positionInfo.toPositionData()),
     } satisfies MessageProps<S2CGameStartNotification>);
   });
 

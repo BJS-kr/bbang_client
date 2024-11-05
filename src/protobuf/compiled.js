@@ -7398,6 +7398,7 @@ $root.S2CGameStartNotification = (function() {
      * @interface IS2CGameStartNotification
      * @property {IGameStateData|null} [gameState] S2CGameStartNotification gameState
      * @property {Array.<IUserData>|null} [users] S2CGameStartNotification users
+     * @property {Array.<ICharacterPositionData>|null} [characterPositions] S2CGameStartNotification characterPositions
      */
 
     /**
@@ -7410,6 +7411,7 @@ $root.S2CGameStartNotification = (function() {
      */
     function S2CGameStartNotification(properties) {
         this.users = [];
+        this.characterPositions = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -7431,6 +7433,14 @@ $root.S2CGameStartNotification = (function() {
      * @instance
      */
     S2CGameStartNotification.prototype.users = $util.emptyArray;
+
+    /**
+     * S2CGameStartNotification characterPositions.
+     * @member {Array.<ICharacterPositionData>} characterPositions
+     * @memberof S2CGameStartNotification
+     * @instance
+     */
+    S2CGameStartNotification.prototype.characterPositions = $util.emptyArray;
 
     /**
      * Creates a new S2CGameStartNotification instance using the specified properties.
@@ -7461,6 +7471,9 @@ $root.S2CGameStartNotification = (function() {
         if (message.users != null && message.users.length)
             for (var i = 0; i < message.users.length; ++i)
                 $root.UserData.encode(message.users[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.characterPositions != null && message.characterPositions.length)
+            for (var i = 0; i < message.characterPositions.length; ++i)
+                $root.CharacterPositionData.encode(message.characterPositions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -7503,6 +7516,12 @@ $root.S2CGameStartNotification = (function() {
                     if (!(message.users && message.users.length))
                         message.users = [];
                     message.users.push($root.UserData.decode(reader, reader.uint32()));
+                    break;
+                }
+            case 3: {
+                    if (!(message.characterPositions && message.characterPositions.length))
+                        message.characterPositions = [];
+                    message.characterPositions.push($root.CharacterPositionData.decode(reader, reader.uint32()));
                     break;
                 }
             default:
@@ -7554,6 +7573,15 @@ $root.S2CGameStartNotification = (function() {
                     return "users." + error;
             }
         }
+        if (message.characterPositions != null && message.hasOwnProperty("characterPositions")) {
+            if (!Array.isArray(message.characterPositions))
+                return "characterPositions: array expected";
+            for (var i = 0; i < message.characterPositions.length; ++i) {
+                var error = $root.CharacterPositionData.verify(message.characterPositions[i]);
+                if (error)
+                    return "characterPositions." + error;
+            }
+        }
         return null;
     };
 
@@ -7584,6 +7612,16 @@ $root.S2CGameStartNotification = (function() {
                 message.users[i] = $root.UserData.fromObject(object.users[i]);
             }
         }
+        if (object.characterPositions) {
+            if (!Array.isArray(object.characterPositions))
+                throw TypeError(".S2CGameStartNotification.characterPositions: array expected");
+            message.characterPositions = [];
+            for (var i = 0; i < object.characterPositions.length; ++i) {
+                if (typeof object.characterPositions[i] !== "object")
+                    throw TypeError(".S2CGameStartNotification.characterPositions: object expected");
+                message.characterPositions[i] = $root.CharacterPositionData.fromObject(object.characterPositions[i]);
+            }
+        }
         return message;
     };
 
@@ -7600,8 +7638,10 @@ $root.S2CGameStartNotification = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.arrays || options.defaults)
+        if (options.arrays || options.defaults) {
             object.users = [];
+            object.characterPositions = [];
+        }
         if (options.defaults)
             object.gameState = null;
         if (message.gameState != null && message.hasOwnProperty("gameState"))
@@ -7610,6 +7650,11 @@ $root.S2CGameStartNotification = (function() {
             object.users = [];
             for (var j = 0; j < message.users.length; ++j)
                 object.users[j] = $root.UserData.toObject(message.users[j], options);
+        }
+        if (message.characterPositions && message.characterPositions.length) {
+            object.characterPositions = [];
+            for (var j = 0; j < message.characterPositions.length; ++j)
+                object.characterPositions[j] = $root.CharacterPositionData.toObject(message.characterPositions[j], options);
         }
         return object;
     };

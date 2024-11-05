@@ -164,6 +164,7 @@ message S2CGameStartResponse {
 message S2CGameStartNotification {
     GameStateData gameState = 1;
     repeated UserData users = 2;
+    repeated CharacterPositionData characterPositions = 3;
 }
 
 message C2SPositionUpdateRequest {
