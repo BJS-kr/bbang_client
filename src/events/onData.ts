@@ -13,6 +13,7 @@ import {
   leaveRoomRequestHandler,
 } from '../rooms/roomHandler';
 import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateRequestHandler } from '../game/game.handler';
+import { handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
   buf = Buffer.concat([buf, data]);
@@ -134,6 +135,13 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         const positionUpdateRequest = decodePayload(packetType, payloadBuffer);
         log(`positionUpdateRequest: ${JSON.stringify(positionUpdateRequest)}`);
         await positionUpdateRequestHandler(socket, version, sequence, positionUpdateRequest, ctx);
+
+        break;
+
+      case PACKET_TYPE.USE_CARD_REQUEST:
+        const useCardRequest = decodePayload(packetType, payloadBuffer);
+        log(`useCardRequest: ${JSON.stringify(useCardRequest)}`);
+        await handleUseCard({ socket, version, sequence, ctx }, useCardRequest);
 
         break;
 
