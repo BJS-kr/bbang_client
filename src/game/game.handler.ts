@@ -75,7 +75,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     const characterType = Number(shuffleCharacters[i]);
     const roleType = Number(shuffleRoles[i]);
     room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
-    room.users[i].character.position = suhfflePositions[i];
+    room.users[i].character.positionInfo.setPosition(suhfflePositions[i]);
   }
 
   // 상태 변경
@@ -151,7 +151,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   });
 
   room.state = RoomState.IN_GAME;
-  room.gameState.gameStart();
+  room.setTimer();
 
   // 게임 시작 응답
   writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
@@ -210,15 +210,14 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
     });
   }
 
-  roomUser.character.position = { x, y };
-  // writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-  //   success: true,
-  //   failCode: GlobalFailCode.NONE,
-  // } satisfies MessageProps<S2CPositionUpdateResponse>);
+  roomUser.character.positionInfo.setPosition({ x, y });
+  writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE,
+  } satisfies MessageProps<S2CPositionUpdateResponse>);
 
   room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
-    userId: ctx.userId,
-    position: roomUser.character.position,
+    characterPositions: room.users.map((user) => user.character.positionInfo.toPositionData()),
   } satisfies MessageProps<S2CPositionUpdateNotification>);
 };
 

@@ -27,15 +27,15 @@ message CharacterData {
     int32 hp = 3;
     int32 weapon = 4;
     CharacterStateInfoData stateInfo = 5;
-    CharacterPositionData position = 6;
-    repeated int32 equips = 7;
-    repeated int32 debuffs = 8;
-    repeated CardData handCards = 9;
+    repeated int32 equips = 6;
+    repeated int32 debuffs = 7;
+    repeated CardData handCards = 8;
 }
 
 message CharacterPositionData {
-    double x = 1;
-    double y = 2;
+    string id = 1;
+    double x = 2;
+    double y = 3;
 }
 
 message CardData {
@@ -177,8 +177,7 @@ message S2CPositionUpdateResponse {
 }
 
 message S2CPositionUpdateNotification {
-    string userId = 1;
-    CharacterPositionData position = 2;
+    repeated CharacterPositionData characterPositions = 1;
 }
 
 message C2SUseCardRequest {

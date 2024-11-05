@@ -254,9 +254,6 @@ export interface ICharacterData {
     /** CharacterData stateInfo */
     stateInfo?: (ICharacterStateInfoData|null);
 
-    /** CharacterData position */
-    position?: (ICharacterPositionData|null);
-
     /** CharacterData equips */
     equips?: (number[]|null);
 
@@ -290,9 +287,6 @@ export class CharacterData implements ICharacterData {
 
     /** CharacterData stateInfo. */
     public stateInfo?: (ICharacterStateInfoData|null);
-
-    /** CharacterData position. */
-    public position?: (ICharacterPositionData|null);
 
     /** CharacterData equips. */
     public equips: number[];
@@ -384,6 +378,9 @@ export class CharacterData implements ICharacterData {
 /** Properties of a CharacterPositionData. */
 export interface ICharacterPositionData {
 
+    /** CharacterPositionData id */
+    id?: (string|null);
+
     /** CharacterPositionData x */
     x?: (number|null);
 
@@ -399,6 +396,9 @@ export class CharacterPositionData implements ICharacterPositionData {
      * @param [properties] Properties to set
      */
     constructor(properties?: ICharacterPositionData);
+
+    /** CharacterPositionData id. */
+    public id: string;
 
     /** CharacterPositionData x. */
     public x: number;
@@ -3238,11 +3238,8 @@ export class S2CPositionUpdateResponse implements IS2CPositionUpdateResponse {
 /** Properties of a S2CPositionUpdateNotification. */
 export interface IS2CPositionUpdateNotification {
 
-    /** S2CPositionUpdateNotification userId */
-    userId?: (string|null);
-
-    /** S2CPositionUpdateNotification position */
-    position?: (ICharacterPositionData|null);
+    /** S2CPositionUpdateNotification characterPositions */
+    characterPositions?: (ICharacterPositionData[]|null);
 }
 
 /** Represents a S2CPositionUpdateNotification. */
@@ -3254,11 +3251,8 @@ export class S2CPositionUpdateNotification implements IS2CPositionUpdateNotifica
      */
     constructor(properties?: IS2CPositionUpdateNotification);
 
-    /** S2CPositionUpdateNotification userId. */
-    public userId: string;
-
-    /** S2CPositionUpdateNotification position. */
-    public position?: (ICharacterPositionData|null);
+    /** S2CPositionUpdateNotification characterPositions. */
+    public characterPositions: ICharacterPositionData[];
 
     /**
      * Creates a new S2CPositionUpdateNotification instance using the specified properties.

@@ -4,6 +4,7 @@ import { CardData, CharacterData, CharacterPositionData } from '../protobuf/comp
 import { MessageProps } from '../protobuf/props';
 import { EventEmitter } from 'node:events';
 import { CharacterStateInfo, OnStateTimeout } from './character.state';
+import { CharacterPositionInfo } from './character.position';
 import { Result } from '../db/types';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
@@ -36,7 +37,7 @@ export class Character extends EventEmitter {
   useBBangCount: number;
   handCards = new Map<CARD_TYPE, number>();
   stateInfo = new CharacterStateInfo();
-  position: CharacterPosition;
+  positionInfo: CharacterPositionInfo;
   weapon: number = 0;
   equips = new Set<CARD_TYPE>();
   debuffs = new Set<CARD_TYPE>();
@@ -47,14 +48,12 @@ export class Character extends EventEmitter {
     roleType,
     characterType,
     baseDefenseChance,
-    position,
   }: {
     userId: string;
     hp: number;
     roleType: number;
     characterType: number;
     baseDefenseChance: number;
-    position: CharacterPosition;
   }) {
     super();
 
@@ -63,7 +62,7 @@ export class Character extends EventEmitter {
     this.characterType = characterType;
     this.roleType = roleType;
     this.baseDefenseChance = baseDefenseChance;
-    this.position = position;
+    this.positionInfo = new CharacterPositionInfo(userId);
 
     return new Proxy(this, handler);
   }
@@ -75,7 +74,6 @@ export class Character extends EventEmitter {
       hp: this.hp,
       weapon: this.weapon,
       stateInfo: this.stateInfo,
-      position: this.position,
       equips: Array.from(this.equips),
       debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],

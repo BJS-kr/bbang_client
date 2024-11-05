@@ -616,7 +616,6 @@ $root.CharacterData = (function() {
      * @property {number|null} [hp] CharacterData hp
      * @property {number|null} [weapon] CharacterData weapon
      * @property {ICharacterStateInfoData|null} [stateInfo] CharacterData stateInfo
-     * @property {ICharacterPositionData|null} [position] CharacterData position
      * @property {Array.<number>|null} [equips] CharacterData equips
      * @property {Array.<number>|null} [debuffs] CharacterData debuffs
      * @property {Array.<ICardData>|null} [handCards] CharacterData handCards
@@ -681,14 +680,6 @@ $root.CharacterData = (function() {
     CharacterData.prototype.stateInfo = null;
 
     /**
-     * CharacterData position.
-     * @member {ICharacterPositionData|null|undefined} position
-     * @memberof CharacterData
-     * @instance
-     */
-    CharacterData.prototype.position = null;
-
-    /**
      * CharacterData equips.
      * @member {Array.<number>} equips
      * @memberof CharacterData
@@ -746,23 +737,21 @@ $root.CharacterData = (function() {
             writer.uint32(/* id 4, wireType 0 =*/32).int32(message.weapon);
         if (message.stateInfo != null && Object.hasOwnProperty.call(message, "stateInfo"))
             $root.CharacterStateInfoData.encode(message.stateInfo, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
-            $root.CharacterPositionData.encode(message.position, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
         if (message.equips != null && message.equips.length) {
-            writer.uint32(/* id 7, wireType 2 =*/58).fork();
+            writer.uint32(/* id 6, wireType 2 =*/50).fork();
             for (var i = 0; i < message.equips.length; ++i)
                 writer.int32(message.equips[i]);
             writer.ldelim();
         }
         if (message.debuffs != null && message.debuffs.length) {
-            writer.uint32(/* id 8, wireType 2 =*/66).fork();
+            writer.uint32(/* id 7, wireType 2 =*/58).fork();
             for (var i = 0; i < message.debuffs.length; ++i)
                 writer.int32(message.debuffs[i]);
             writer.ldelim();
         }
         if (message.handCards != null && message.handCards.length)
             for (var i = 0; i < message.handCards.length; ++i)
-                $root.CardData.encode(message.handCards[i], writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+                $root.CardData.encode(message.handCards[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
         return writer;
     };
 
@@ -818,10 +807,6 @@ $root.CharacterData = (function() {
                     break;
                 }
             case 6: {
-                    message.position = $root.CharacterPositionData.decode(reader, reader.uint32());
-                    break;
-                }
-            case 7: {
                     if (!(message.equips && message.equips.length))
                         message.equips = [];
                     if ((tag & 7) === 2) {
@@ -832,7 +817,7 @@ $root.CharacterData = (function() {
                         message.equips.push(reader.int32());
                     break;
                 }
-            case 8: {
+            case 7: {
                     if (!(message.debuffs && message.debuffs.length))
                         message.debuffs = [];
                     if ((tag & 7) === 2) {
@@ -843,7 +828,7 @@ $root.CharacterData = (function() {
                         message.debuffs.push(reader.int32());
                     break;
                 }
-            case 9: {
+            case 8: {
                     if (!(message.handCards && message.handCards.length))
                         message.handCards = [];
                     message.handCards.push($root.CardData.decode(reader, reader.uint32()));
@@ -901,11 +886,6 @@ $root.CharacterData = (function() {
             if (error)
                 return "stateInfo." + error;
         }
-        if (message.position != null && message.hasOwnProperty("position")) {
-            var error = $root.CharacterPositionData.verify(message.position);
-            if (error)
-                return "position." + error;
-        }
         if (message.equips != null && message.hasOwnProperty("equips")) {
             if (!Array.isArray(message.equips))
                 return "equips: array expected";
@@ -956,11 +936,6 @@ $root.CharacterData = (function() {
             if (typeof object.stateInfo !== "object")
                 throw TypeError(".CharacterData.stateInfo: object expected");
             message.stateInfo = $root.CharacterStateInfoData.fromObject(object.stateInfo);
-        }
-        if (object.position != null) {
-            if (typeof object.position !== "object")
-                throw TypeError(".CharacterData.position: object expected");
-            message.position = $root.CharacterPositionData.fromObject(object.position);
         }
         if (object.equips) {
             if (!Array.isArray(object.equips))
@@ -1013,7 +988,6 @@ $root.CharacterData = (function() {
             object.hp = 0;
             object.weapon = 0;
             object.stateInfo = null;
-            object.position = null;
         }
         if (message.characterType != null && message.hasOwnProperty("characterType"))
             object.characterType = message.characterType;
@@ -1025,8 +999,6 @@ $root.CharacterData = (function() {
             object.weapon = message.weapon;
         if (message.stateInfo != null && message.hasOwnProperty("stateInfo"))
             object.stateInfo = $root.CharacterStateInfoData.toObject(message.stateInfo, options);
-        if (message.position != null && message.hasOwnProperty("position"))
-            object.position = $root.CharacterPositionData.toObject(message.position, options);
         if (message.equips && message.equips.length) {
             object.equips = [];
             for (var j = 0; j < message.equips.length; ++j)
@@ -1080,6 +1052,7 @@ $root.CharacterPositionData = (function() {
      * Properties of a CharacterPositionData.
      * @exports ICharacterPositionData
      * @interface ICharacterPositionData
+     * @property {string|null} [id] CharacterPositionData id
      * @property {number|null} [x] CharacterPositionData x
      * @property {number|null} [y] CharacterPositionData y
      */
@@ -1098,6 +1071,14 @@ $root.CharacterPositionData = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * CharacterPositionData id.
+     * @member {string} id
+     * @memberof CharacterPositionData
+     * @instance
+     */
+    CharacterPositionData.prototype.id = "";
 
     /**
      * CharacterPositionData x.
@@ -1139,10 +1120,12 @@ $root.CharacterPositionData = (function() {
     CharacterPositionData.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
-            writer.uint32(/* id 1, wireType 1 =*/9).double(message.x);
+            writer.uint32(/* id 2, wireType 1 =*/17).double(message.x);
         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
-            writer.uint32(/* id 2, wireType 1 =*/17).double(message.y);
+            writer.uint32(/* id 3, wireType 1 =*/25).double(message.y);
         return writer;
     };
 
@@ -1178,10 +1161,14 @@ $root.CharacterPositionData = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.x = reader.double();
+                    message.id = reader.string();
                     break;
                 }
             case 2: {
+                    message.x = reader.double();
+                    break;
+                }
+            case 3: {
                     message.y = reader.double();
                     break;
                 }
@@ -1220,6 +1207,9 @@ $root.CharacterPositionData = (function() {
     CharacterPositionData.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.id != null && message.hasOwnProperty("id"))
+            if (!$util.isString(message.id))
+                return "id: string expected";
         if (message.x != null && message.hasOwnProperty("x"))
             if (typeof message.x !== "number")
                 return "x: number expected";
@@ -1241,6 +1231,8 @@ $root.CharacterPositionData = (function() {
         if (object instanceof $root.CharacterPositionData)
             return object;
         var message = new $root.CharacterPositionData();
+        if (object.id != null)
+            message.id = String(object.id);
         if (object.x != null)
             message.x = Number(object.x);
         if (object.y != null)
@@ -1262,9 +1254,12 @@ $root.CharacterPositionData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
+            object.id = "";
             object.x = 0;
             object.y = 0;
         }
+        if (message.id != null && message.hasOwnProperty("id"))
+            object.id = message.id;
         if (message.x != null && message.hasOwnProperty("x"))
             object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
@@ -8197,8 +8192,7 @@ $root.S2CPositionUpdateNotification = (function() {
      * Properties of a S2CPositionUpdateNotification.
      * @exports IS2CPositionUpdateNotification
      * @interface IS2CPositionUpdateNotification
-     * @property {string|null} [userId] S2CPositionUpdateNotification userId
-     * @property {ICharacterPositionData|null} [position] S2CPositionUpdateNotification position
+     * @property {Array.<ICharacterPositionData>|null} [characterPositions] S2CPositionUpdateNotification characterPositions
      */
 
     /**
@@ -8210,6 +8204,7 @@ $root.S2CPositionUpdateNotification = (function() {
      * @param {IS2CPositionUpdateNotification=} [properties] Properties to set
      */
     function S2CPositionUpdateNotification(properties) {
+        this.characterPositions = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -8217,20 +8212,12 @@ $root.S2CPositionUpdateNotification = (function() {
     }
 
     /**
-     * S2CPositionUpdateNotification userId.
-     * @member {string} userId
+     * S2CPositionUpdateNotification characterPositions.
+     * @member {Array.<ICharacterPositionData>} characterPositions
      * @memberof S2CPositionUpdateNotification
      * @instance
      */
-    S2CPositionUpdateNotification.prototype.userId = "";
-
-    /**
-     * S2CPositionUpdateNotification position.
-     * @member {ICharacterPositionData|null|undefined} position
-     * @memberof S2CPositionUpdateNotification
-     * @instance
-     */
-    S2CPositionUpdateNotification.prototype.position = null;
+    S2CPositionUpdateNotification.prototype.characterPositions = $util.emptyArray;
 
     /**
      * Creates a new S2CPositionUpdateNotification instance using the specified properties.
@@ -8256,10 +8243,9 @@ $root.S2CPositionUpdateNotification = (function() {
     S2CPositionUpdateNotification.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
-        if (message.position != null && Object.hasOwnProperty.call(message, "position"))
-            $root.CharacterPositionData.encode(message.position, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+        if (message.characterPositions != null && message.characterPositions.length)
+            for (var i = 0; i < message.characterPositions.length; ++i)
+                $root.CharacterPositionData.encode(message.characterPositions[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
         return writer;
     };
 
@@ -8295,11 +8281,9 @@ $root.S2CPositionUpdateNotification = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.userId = reader.string();
-                    break;
-                }
-            case 2: {
-                    message.position = $root.CharacterPositionData.decode(reader, reader.uint32());
+                    if (!(message.characterPositions && message.characterPositions.length))
+                        message.characterPositions = [];
+                    message.characterPositions.push($root.CharacterPositionData.decode(reader, reader.uint32()));
                     break;
                 }
             default:
@@ -8337,13 +8321,14 @@ $root.S2CPositionUpdateNotification = (function() {
     S2CPositionUpdateNotification.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
-        if (message.position != null && message.hasOwnProperty("position")) {
-            var error = $root.CharacterPositionData.verify(message.position);
-            if (error)
-                return "position." + error;
+        if (message.characterPositions != null && message.hasOwnProperty("characterPositions")) {
+            if (!Array.isArray(message.characterPositions))
+                return "characterPositions: array expected";
+            for (var i = 0; i < message.characterPositions.length; ++i) {
+                var error = $root.CharacterPositionData.verify(message.characterPositions[i]);
+                if (error)
+                    return "characterPositions." + error;
+            }
         }
         return null;
     };
@@ -8360,12 +8345,15 @@ $root.S2CPositionUpdateNotification = (function() {
         if (object instanceof $root.S2CPositionUpdateNotification)
             return object;
         var message = new $root.S2CPositionUpdateNotification();
-        if (object.userId != null)
-            message.userId = String(object.userId);
-        if (object.position != null) {
-            if (typeof object.position !== "object")
-                throw TypeError(".S2CPositionUpdateNotification.position: object expected");
-            message.position = $root.CharacterPositionData.fromObject(object.position);
+        if (object.characterPositions) {
+            if (!Array.isArray(object.characterPositions))
+                throw TypeError(".S2CPositionUpdateNotification.characterPositions: array expected");
+            message.characterPositions = [];
+            for (var i = 0; i < object.characterPositions.length; ++i) {
+                if (typeof object.characterPositions[i] !== "object")
+                    throw TypeError(".S2CPositionUpdateNotification.characterPositions: object expected");
+                message.characterPositions[i] = $root.CharacterPositionData.fromObject(object.characterPositions[i]);
+            }
         }
         return message;
     };
@@ -8383,14 +8371,13 @@ $root.S2CPositionUpdateNotification = (function() {
         if (!options)
             options = {};
         var object = {};
-        if (options.defaults) {
-            object.userId = "";
-            object.position = null;
+        if (options.arrays || options.defaults)
+            object.characterPositions = [];
+        if (message.characterPositions && message.characterPositions.length) {
+            object.characterPositions = [];
+            for (var j = 0; j < message.characterPositions.length; ++j)
+                object.characterPositions[j] = $root.CharacterPositionData.toObject(message.characterPositions[j], options);
         }
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
-        if (message.position != null && message.hasOwnProperty("position"))
-            object.position = $root.CharacterPositionData.toObject(message.position, options);
         return object;
     };
 

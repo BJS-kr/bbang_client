@@ -10,8 +10,6 @@ import { S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protob
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/pickRandomCard';
 
-const cardTypes = Object.values(CARD_TYPE);
-
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];
   satelliteTargets: User[] = [];
@@ -28,7 +26,7 @@ export class GameEvents extends EventEmitter {
 
       const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
       this.#room.users.forEach((user, index) => {
-        user.character.position = suhfflePositions[index];
+        user.character.positionInfo.setPosition(suhfflePositions[index]);
         const handCards = user.character.getHandCards();
         const removeCount = handCards.length - user.character.hp;
         if (removeCount > 0) {

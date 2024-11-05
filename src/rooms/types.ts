@@ -4,6 +4,9 @@ import type { User } from '../users/types';
 import { writePayload } from '../protobuf/writePayload';
 import { config } from '../config/config';
 import { GameEvents } from '../game/game.events';
+import { PACKET_TYPE } from '../constants/packetType';
+import { S2CPositionUpdateNotification } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
 
 export enum RoomState {
   WAIT = 0,
@@ -19,6 +22,7 @@ export class Room {
   state: RoomState;
   gameState: GameState;
   gameEvents: GameEvents;
+  positionBroadcastTimer: NodeJS.Timeout | null;
 
   constructor({
     name,
@@ -44,6 +48,7 @@ export class Room {
     this.state = state;
     this.gameState = gameState;
     this.gameEvents = gameEvents;
+    this.positionBroadcastTimer = null;
   }
 
   broadcast(packetType: number, payload: any) {
@@ -65,6 +70,34 @@ export class Room {
 
   getUser(userId: string) {
     return this.users.find((user) => user.id === userId) ?? null;
+  }
+
+  setTimer() {
+    this.gameState.gameStart();
+    this.startPositionBroadcast();
+  }
+
+  resetTimer() {
+    this.gameState.resetTimer();
+    this.stopPositionBroadcast();
+    for (const user of this.users) {
+      user.character.stateInfo.resetTimer();
+    }
+  }
+
+  startPositionBroadcast() {
+    this.positionBroadcastTimer = setInterval(() => {
+      this.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
+        characterPositions: this.users.map((user) => user.character.positionInfo.toPositionData()),
+      } satisfies MessageProps<S2CPositionUpdateNotification>);
+    }, 1000 / 30); // targetFrame 30
+  }
+
+  stopPositionBroadcast() {
+    if (this.positionBroadcastTimer) {
+      clearInterval(this.positionBroadcastTimer);
+      this.positionBroadcastTimer = null;
+    }
   }
 }
 
@@ -162,12 +195,7 @@ export class Rooms {
 
     if (!room) return false;
 
-    room.gameState.resetTimer();
-
-    for (const user of room.users) {
-      user.character.stateInfo.resetTimer();
-    }
-
+    room.resetTimer();
     this.#rooms.delete(roomId);
 
     return true;
