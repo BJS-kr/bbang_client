@@ -93,6 +93,10 @@ export const protoRoutes = {
     requestType: 'C2SPositionUpdateRequest',
     payloadKey: 'positionUpdateRequest',
   },
+  [PACKET_TYPE.POSITION_UPDATE_RESPONSE]: {
+    requestType: 'S2CPositionUpdateResponse',
+    payloadKey: 'positionUpdateResponse',
+  },
   [PACKET_TYPE.POSITION_UPDATE_NOTIFICATION]: {
     requestType: 'S2CPositionUpdateNotification',
     payloadKey: 'positionUpdateNotification',
