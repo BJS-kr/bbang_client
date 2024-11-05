@@ -4162,97 +4162,97 @@ export class C2SDestroyCardRequest implements IC2SDestroyCardRequest {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
-/** Properties of a S2CDestroyCardNotification. */
-export interface IS2CDestroyCardNotification {
+/** Properties of a S2CDestroyCardResponse. */
+export interface IS2CDestroyCardResponse {
 
-    /** S2CDestroyCardNotification handCards */
+    /** S2CDestroyCardResponse handCards */
     handCards?: (ICardData[]|null);
 }
 
-/** Represents a S2CDestroyCardNotification. */
-export class S2CDestroyCardNotification implements IS2CDestroyCardNotification {
+/** Represents a S2CDestroyCardResponse. */
+export class S2CDestroyCardResponse implements IS2CDestroyCardResponse {
 
     /**
-     * Constructs a new S2CDestroyCardNotification.
+     * Constructs a new S2CDestroyCardResponse.
      * @param [properties] Properties to set
      */
-    constructor(properties?: IS2CDestroyCardNotification);
+    constructor(properties?: IS2CDestroyCardResponse);
 
-    /** S2CDestroyCardNotification handCards. */
+    /** S2CDestroyCardResponse handCards. */
     public handCards: ICardData[];
 
     /**
-     * Creates a new S2CDestroyCardNotification instance using the specified properties.
+     * Creates a new S2CDestroyCardResponse instance using the specified properties.
      * @param [properties] Properties to set
-     * @returns S2CDestroyCardNotification instance
+     * @returns S2CDestroyCardResponse instance
      */
-    public static create(properties?: IS2CDestroyCardNotification): S2CDestroyCardNotification;
+    public static create(properties?: IS2CDestroyCardResponse): S2CDestroyCardResponse;
 
     /**
-     * Encodes the specified S2CDestroyCardNotification message. Does not implicitly {@link S2CDestroyCardNotification.verify|verify} messages.
-     * @param message S2CDestroyCardNotification message or plain object to encode
+     * Encodes the specified S2CDestroyCardResponse message. Does not implicitly {@link S2CDestroyCardResponse.verify|verify} messages.
+     * @param message S2CDestroyCardResponse message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encode(message: IS2CDestroyCardNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encode(message: IS2CDestroyCardResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Encodes the specified S2CDestroyCardNotification message, length delimited. Does not implicitly {@link S2CDestroyCardNotification.verify|verify} messages.
-     * @param message S2CDestroyCardNotification message or plain object to encode
+     * Encodes the specified S2CDestroyCardResponse message, length delimited. Does not implicitly {@link S2CDestroyCardResponse.verify|verify} messages.
+     * @param message S2CDestroyCardResponse message or plain object to encode
      * @param [writer] Writer to encode to
      * @returns Writer
      */
-    public static encodeDelimited(message: IS2CDestroyCardNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+    public static encodeDelimited(message: IS2CDestroyCardResponse, writer?: $protobuf.Writer): $protobuf.Writer;
 
     /**
-     * Decodes a S2CDestroyCardNotification message from the specified reader or buffer.
+     * Decodes a S2CDestroyCardResponse message from the specified reader or buffer.
      * @param reader Reader or buffer to decode from
      * @param [length] Message length if known beforehand
-     * @returns S2CDestroyCardNotification
+     * @returns S2CDestroyCardResponse
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CDestroyCardNotification;
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CDestroyCardResponse;
 
     /**
-     * Decodes a S2CDestroyCardNotification message from the specified reader or buffer, length delimited.
+     * Decodes a S2CDestroyCardResponse message from the specified reader or buffer, length delimited.
      * @param reader Reader or buffer to decode from
-     * @returns S2CDestroyCardNotification
+     * @returns S2CDestroyCardResponse
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CDestroyCardNotification;
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CDestroyCardResponse;
 
     /**
-     * Verifies a S2CDestroyCardNotification message.
+     * Verifies a S2CDestroyCardResponse message.
      * @param message Plain object to verify
      * @returns `null` if valid, otherwise the reason why it is not
      */
     public static verify(message: { [k: string]: any }): (string|null);
 
     /**
-     * Creates a S2CDestroyCardNotification message from a plain object. Also converts values to their respective internal types.
+     * Creates a S2CDestroyCardResponse message from a plain object. Also converts values to their respective internal types.
      * @param object Plain object
-     * @returns S2CDestroyCardNotification
+     * @returns S2CDestroyCardResponse
      */
-    public static fromObject(object: { [k: string]: any }): S2CDestroyCardNotification;
+    public static fromObject(object: { [k: string]: any }): S2CDestroyCardResponse;
 
     /**
-     * Creates a plain object from a S2CDestroyCardNotification message. Also converts values to other types if specified.
-     * @param message S2CDestroyCardNotification
+     * Creates a plain object from a S2CDestroyCardResponse message. Also converts values to other types if specified.
+     * @param message S2CDestroyCardResponse
      * @param [options] Conversion options
      * @returns Plain object
      */
-    public static toObject(message: S2CDestroyCardNotification, options?: $protobuf.IConversionOptions): { [k: string]: any };
+    public static toObject(message: S2CDestroyCardResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
     /**
-     * Converts this S2CDestroyCardNotification to JSON.
+     * Converts this S2CDestroyCardResponse to JSON.
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
 
     /**
-     * Gets the default type url for S2CDestroyCardNotification
+     * Gets the default type url for S2CDestroyCardResponse
      * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns The default type url
      */
@@ -4452,8 +4452,8 @@ export interface IGamePacket {
     /** GamePacket destroyCardRequest */
     destroyCardRequest?: (IC2SDestroyCardRequest|null);
 
-    /** GamePacket destroyCardNotification */
-    destroyCardNotification?: (IS2CDestroyCardNotification|null);
+    /** GamePacket destroyCardResponse */
+    destroyCardResponse?: (IS2CDestroyCardResponse|null);
 
     /** GamePacket gameEndNotification */
     gameEndNotification?: (IS2CGameEndNotification|null);
@@ -4567,14 +4567,14 @@ export class GamePacket implements IGamePacket {
     /** GamePacket destroyCardRequest. */
     public destroyCardRequest?: (IC2SDestroyCardRequest|null);
 
-    /** GamePacket destroyCardNotification. */
-    public destroyCardNotification?: (IS2CDestroyCardNotification|null);
+    /** GamePacket destroyCardResponse. */
+    public destroyCardResponse?: (IS2CDestroyCardResponse|null);
 
     /** GamePacket gameEndNotification. */
     public gameEndNotification?: (IS2CGameEndNotification|null);
 
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardNotification"|"gameEndNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.
@@ -4670,5 +4670,6 @@ export enum GlobalFailCode {
     CHARACTER_NO_CARD = 11,
     INVALID_ROOM_STATE = 12,
     NOT_ROOM_OWNER = 13,
-    ALREADY_USED_BBANG = 14
+    ALREADY_USED_BBANG = 14,
+    INVALID_PHASE = 15
 }

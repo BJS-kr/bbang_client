@@ -221,7 +221,7 @@ message C2SDestroyCardRequest {
     repeated CardData destroyCards = 1;
 }
 
-message S2CDestroyCardNotification {
+message S2CDestroyCardResponse {
     repeated CardData handCards = 1;
 }
 
@@ -296,7 +296,7 @@ message GamePacket {
 
         // 턴 종료시 (phaseType 3) 카드 버리기
         C2SDestroyCardRequest destroyCardRequest = 33;
-        S2CDestroyCardNotification destroyCardNotification = 34;
+        S2CDestroyCardResponse destroyCardResponse = 34;
 
         // 게임 종료
         S2CGameEndNotification gameEndNotification = 35;
@@ -322,4 +322,5 @@ enum GlobalFailCode {
     INVALID_ROOM_STATE = 12;
     NOT_ROOM_OWNER = 13;
     ALREADY_USED_BBANG = 14;
+    INVALID_PHASE = 15;
 }

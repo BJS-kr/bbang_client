@@ -124,3 +124,5 @@ export enum CharacterState {
   DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
   DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
 }
+
+export const DAILY_CARD_COUNT = 2;

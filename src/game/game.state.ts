@@ -46,12 +46,14 @@ export class GameState {
   #startEvening() {
     this.phaseType = PHASE_TYPE.EVENING;
     this.nextPhaseAt = Date.now() + EVENING_SECOND * 1000;
+    this.#gameEvents.emit('EVENING');
     this.#startPhaseTimer();
   }
 
   #startEnd() {
     this.phaseType = PHASE_TYPE.END;
     this.nextPhaseAt = Date.now() + END_SECOND * 1000;
+    this.#gameEvents.emit('END');
     this.#startPhaseTimer();
   }
 

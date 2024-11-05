@@ -1,4 +1,4 @@
-import { CARD_TYPE } from '../constants/game';
+import { CARD_TYPE, PHASE_TYPE } from '../constants/game';
 import { CardProps, Character } from '../characters/character';
 import { CharacterState } from '../constants/game';
 import { C2SUseCardRequest, GlobalFailCode, S2CUserUpdateNotification } from '../protobuf/compiled';
@@ -38,6 +38,7 @@ import { SatelliteTarget } from './satellite.target';
 import { HandGun } from './handgun';
 import { AutoRefile } from './autorifle';
 import { DesertEagle } from './deserteagle';
+import { GameState } from '../game/game.state';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -73,6 +74,13 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
     return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.CHARACTER_NO_CARD,
+    } satisfies UseCardResponse);
+  }
+
+  if (room.gameState.phaseType !== PHASE_TYPE.DAY) {
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_PHASE,
     } satisfies UseCardResponse);
   }
 

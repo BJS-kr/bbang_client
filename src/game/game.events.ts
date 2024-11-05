@@ -1,11 +1,16 @@
 import { EventEmitter } from 'node:events';
 import { ContainmentUnit } from '../cards/containment.unit';
-import { CARD_TYPE } from '../constants/game';
+import { CARD_TYPE, DAILY_CARD_COUNT, GAME_INIT_POSITION } from '../constants/game';
 import { SatelliteTarget } from '../cards/satellite.target';
 import { User } from '../users/types';
 import { Room } from '../rooms/types';
 import { PACKET_TYPE } from '../constants/packetType';
 import { error } from '../utils/logger';
+import { S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
+import { pickRandomCardType } from '../cards/pickRandomCard';
+
+const cardTypes = Object.values(CARD_TYPE);
 
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];
@@ -20,6 +25,21 @@ export class GameEvents extends EventEmitter {
       if (!this.#room) {
         return error('room is not set in gameEvents');
       }
+
+      const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
+      this.#room.users.forEach((user, index) => {
+        user.character.position = suhfflePositions[index];
+        const handCards = user.character.getHandCards();
+        const removeCount = handCards.length - user.character.hp;
+        if (removeCount > 0) {
+          user.character.loseRandomCards(removeCount);
+        }
+        for (let i = 0; i < DAILY_CARD_COUNT; i++) {
+          const card = { type: pickRandomCardType(), count: 1 };
+          user.character.acquireCard(card);
+        }
+        user.character.useBBangCount = 0;
+      });
 
       const updatedUsers: User[] = [];
       this.containedUsers.forEach((cu) => {
@@ -54,10 +74,18 @@ export class GameEvents extends EventEmitter {
         updatedUsers.push(bu);
       });
 
+      this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
+        phaseType: this.#room.gameState.phaseType,
+        nextPhaseAt: this.#room.gameState.nextPhaseAt,
+      } satisfies MessageProps<S2CPhaseUpdateNotification>);
+
       this.#room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-        users: updatedUsers.map((u) => u.toUserData(u.id)),
-      });
+        user: this.#room.users.map((u) => u.toUserData(u.id)),
+      } satisfies MessageProps<S2CUserUpdateNotification>);
     });
+
+    this.on('EVENING', () => {});
+    this.on('END', () => {});
   }
 
   setRoom(room: Room) {

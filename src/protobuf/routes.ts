@@ -129,9 +129,9 @@ export const protoRoutes = {
     requestType: 'C2SDestroyCardRequest',
     payloadKey: 'destroyCardRequest',
   },
-  [PACKET_TYPE.DESTROY_CARD_NOTIFICATION]: {
-    requestType: 'S2CDestroyCardNotification',
-    payloadKey: 'destroyCardNotification',
+  [PACKET_TYPE.DESTROY_CARD_RESPONSE]: {
+    requestType: 'S2CDestroyCardResponse',
+    payloadKey: 'destroyCardResponse',
   },
   [PACKET_TYPE.GAME_END_NOTIFICATION]: {
     requestType: 'S2CGameEndNotification',

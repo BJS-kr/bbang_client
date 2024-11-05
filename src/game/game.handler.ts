@@ -19,12 +19,10 @@ import { Context } from '../events/types';
 import { session } from '../users/session';
 import { config } from '../config/config';
 import { createCharacter } from '../characters/createCharacter';
-import { CardProps } from '../characters/character';
+import { pickRandomCardType } from '../cards/pickRandomCard';
 
 // TODO
 const TARGET_CARD_BONUS = 1;
-const DAILY_CARD_COUNT = 2;
-const cardTypes = Object.values(CARD_TYPE);
 
 export const gamePrepareRequestHandler = async (socket, version, sequence, gamePrepareRequest, ctx: Context) => {
   const user = session.getUser(ctx.userId);
@@ -150,7 +148,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     }
 
     for (let i = 0; i < initCardCount; i++) {
-      const card = createRandCard();
+      const card = { type: pickRandomCardType(), count: 1 };
       user.character.acquireCard(card);
     }
   });
@@ -227,54 +225,6 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   } satisfies MessageProps<S2CPositionUpdateNotification>);
 };
 
-const onPhaseChange = (roomId, phaseType, nextPhaseAt) => {
-  console.log(`[onPhaseChange] roomId: ${roomId}, phaseType:${phaseType}`);
-
-  const room = rooms.getRoom(roomId);
-  if (!room) {
-    console.error(`[onPhaseChange] Cannot find room:${roomId}`);
-    return;
-  }
-
-  switch (phaseType) {
-    case PHASE_TYPE.DAY:
-      const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
-      room.users.forEach((user, index) => {
-        user.character.position = suhfflePositions[index];
-        const handCards = user.character.getHandCards();
-        const removeCount = handCards.length - user.character.hp;
-        if (removeCount > 0) {
-          // 1. 초과 카드 대신 버리기
-          user.character.loseRandomCards(removeCount);
-        }
-        // 2. 데일리 카드 주기
-        for (let i = 0; i < DAILY_CARD_COUNT; i++) {
-          const card = createRandCard();
-          user.character.acquireCard(card);
-        }
-        // 3. 빵 카운트 초기화
-        user.character.useBBangCount = 0;
-
-        writePayload(user.socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, config.client.version, 0, {
-          user: [user.toUserData(user.id)],
-        } satisfies MessageProps<S2CUserUpdateNotification>);
-      });
-      break;
-
-    case PHASE_TYPE.EVENING:
-      break;
-
-    case PHASE_TYPE.END:
-      break;
-  }
-
-  const responsePayload: MessageProps<S2CPhaseUpdateNotification> = {
-    phaseType: phaseType,
-    nextPhaseAt: nextPhaseAt,
-  };
-  room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, responsePayload);
-};
-
 function createUserDataView(user, userDatas) {
   const result = userDatas.map((userData) => ({
     id: userData.id,
@@ -282,9 +232,4 @@ function createUserDataView(user, userDatas) {
     character: userData.character.toCharacterData(user.id),
   }));
   return result;
-}
-
-function createRandCard(): CardProps {
-  const type = Math.floor(Math.random() * cardTypes.length);
-  return { type, count: 1 };
 }

@@ -2469,6 +2469,7 @@ $root.S2CRegisterResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -2556,6 +2557,10 @@ $root.S2CRegisterResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -3068,6 +3073,7 @@ $root.S2CLoginResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -3162,6 +3168,10 @@ $root.S2CLoginResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -3644,6 +3654,7 @@ $root.S2CCreateRoomResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -3734,6 +3745,10 @@ $root.S2CCreateRoomResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -4585,6 +4600,7 @@ $root.S2CJoinRoomResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -4675,6 +4691,10 @@ $root.S2CJoinRoomResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -5127,6 +5147,7 @@ $root.S2CJoinRandomRoomResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -5217,6 +5238,10 @@ $root.S2CJoinRandomRoomResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -5829,6 +5854,7 @@ $root.S2CLeaveRoomResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -5914,6 +5940,10 @@ $root.S2CLeaveRoomResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -6518,6 +6548,7 @@ $root.S2CGamePrepareResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -6603,6 +6634,10 @@ $root.S2CGamePrepareResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -7212,6 +7247,7 @@ $root.S2CGameStartResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -7297,6 +7333,10 @@ $root.S2CGameStartResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -8003,6 +8043,7 @@ $root.S2CPositionUpdateResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -8088,6 +8129,10 @@ $root.S2CPositionUpdateResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -8773,6 +8818,7 @@ $root.S2CUseCardResponse = (function() {
             case 12:
             case 13:
             case 14:
+            case 15:
                 break;
             }
         return null;
@@ -8858,6 +8904,10 @@ $root.S2CUseCardResponse = (function() {
         case "ALREADY_USED_BBANG":
         case 14:
             message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
             break;
         }
         return message;
@@ -10332,24 +10382,24 @@ $root.C2SDestroyCardRequest = (function() {
     return C2SDestroyCardRequest;
 })();
 
-$root.S2CDestroyCardNotification = (function() {
+$root.S2CDestroyCardResponse = (function() {
 
     /**
-     * Properties of a S2CDestroyCardNotification.
-     * @exports IS2CDestroyCardNotification
-     * @interface IS2CDestroyCardNotification
-     * @property {Array.<ICardData>|null} [handCards] S2CDestroyCardNotification handCards
+     * Properties of a S2CDestroyCardResponse.
+     * @exports IS2CDestroyCardResponse
+     * @interface IS2CDestroyCardResponse
+     * @property {Array.<ICardData>|null} [handCards] S2CDestroyCardResponse handCards
      */
 
     /**
-     * Constructs a new S2CDestroyCardNotification.
-     * @exports S2CDestroyCardNotification
-     * @classdesc Represents a S2CDestroyCardNotification.
-     * @implements IS2CDestroyCardNotification
+     * Constructs a new S2CDestroyCardResponse.
+     * @exports S2CDestroyCardResponse
+     * @classdesc Represents a S2CDestroyCardResponse.
+     * @implements IS2CDestroyCardResponse
      * @constructor
-     * @param {IS2CDestroyCardNotification=} [properties] Properties to set
+     * @param {IS2CDestroyCardResponse=} [properties] Properties to set
      */
-    function S2CDestroyCardNotification(properties) {
+    function S2CDestroyCardResponse(properties) {
         this.handCards = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -10358,35 +10408,35 @@ $root.S2CDestroyCardNotification = (function() {
     }
 
     /**
-     * S2CDestroyCardNotification handCards.
+     * S2CDestroyCardResponse handCards.
      * @member {Array.<ICardData>} handCards
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @instance
      */
-    S2CDestroyCardNotification.prototype.handCards = $util.emptyArray;
+    S2CDestroyCardResponse.prototype.handCards = $util.emptyArray;
 
     /**
-     * Creates a new S2CDestroyCardNotification instance using the specified properties.
+     * Creates a new S2CDestroyCardResponse instance using the specified properties.
      * @function create
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
-     * @param {IS2CDestroyCardNotification=} [properties] Properties to set
-     * @returns {S2CDestroyCardNotification} S2CDestroyCardNotification instance
+     * @param {IS2CDestroyCardResponse=} [properties] Properties to set
+     * @returns {S2CDestroyCardResponse} S2CDestroyCardResponse instance
      */
-    S2CDestroyCardNotification.create = function create(properties) {
-        return new S2CDestroyCardNotification(properties);
+    S2CDestroyCardResponse.create = function create(properties) {
+        return new S2CDestroyCardResponse(properties);
     };
 
     /**
-     * Encodes the specified S2CDestroyCardNotification message. Does not implicitly {@link S2CDestroyCardNotification.verify|verify} messages.
+     * Encodes the specified S2CDestroyCardResponse message. Does not implicitly {@link S2CDestroyCardResponse.verify|verify} messages.
      * @function encode
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
-     * @param {IS2CDestroyCardNotification} message S2CDestroyCardNotification message or plain object to encode
+     * @param {IS2CDestroyCardResponse} message S2CDestroyCardResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    S2CDestroyCardNotification.encode = function encode(message, writer) {
+    S2CDestroyCardResponse.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
         if (message.handCards != null && message.handCards.length)
@@ -10396,33 +10446,33 @@ $root.S2CDestroyCardNotification = (function() {
     };
 
     /**
-     * Encodes the specified S2CDestroyCardNotification message, length delimited. Does not implicitly {@link S2CDestroyCardNotification.verify|verify} messages.
+     * Encodes the specified S2CDestroyCardResponse message, length delimited. Does not implicitly {@link S2CDestroyCardResponse.verify|verify} messages.
      * @function encodeDelimited
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
-     * @param {IS2CDestroyCardNotification} message S2CDestroyCardNotification message or plain object to encode
+     * @param {IS2CDestroyCardResponse} message S2CDestroyCardResponse message or plain object to encode
      * @param {$protobuf.Writer} [writer] Writer to encode to
      * @returns {$protobuf.Writer} Writer
      */
-    S2CDestroyCardNotification.encodeDelimited = function encodeDelimited(message, writer) {
+    S2CDestroyCardResponse.encodeDelimited = function encodeDelimited(message, writer) {
         return this.encode(message, writer).ldelim();
     };
 
     /**
-     * Decodes a S2CDestroyCardNotification message from the specified reader or buffer.
+     * Decodes a S2CDestroyCardResponse message from the specified reader or buffer.
      * @function decode
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
      * @param {number} [length] Message length if known beforehand
-     * @returns {S2CDestroyCardNotification} S2CDestroyCardNotification
+     * @returns {S2CDestroyCardResponse} S2CDestroyCardResponse
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    S2CDestroyCardNotification.decode = function decode(reader, length) {
+    S2CDestroyCardResponse.decode = function decode(reader, length) {
         if (!(reader instanceof $Reader))
             reader = $Reader.create(reader);
-        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CDestroyCardNotification();
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CDestroyCardResponse();
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
@@ -10441,30 +10491,30 @@ $root.S2CDestroyCardNotification = (function() {
     };
 
     /**
-     * Decodes a S2CDestroyCardNotification message from the specified reader or buffer, length delimited.
+     * Decodes a S2CDestroyCardResponse message from the specified reader or buffer, length delimited.
      * @function decodeDelimited
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
      * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-     * @returns {S2CDestroyCardNotification} S2CDestroyCardNotification
+     * @returns {S2CDestroyCardResponse} S2CDestroyCardResponse
      * @throws {Error} If the payload is not a reader or valid buffer
      * @throws {$protobuf.util.ProtocolError} If required fields are missing
      */
-    S2CDestroyCardNotification.decodeDelimited = function decodeDelimited(reader) {
+    S2CDestroyCardResponse.decodeDelimited = function decodeDelimited(reader) {
         if (!(reader instanceof $Reader))
             reader = new $Reader(reader);
         return this.decode(reader, reader.uint32());
     };
 
     /**
-     * Verifies a S2CDestroyCardNotification message.
+     * Verifies a S2CDestroyCardResponse message.
      * @function verify
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
      * @param {Object.<string,*>} message Plain object to verify
      * @returns {string|null} `null` if valid, otherwise the reason why it is not
      */
-    S2CDestroyCardNotification.verify = function verify(message) {
+    S2CDestroyCardResponse.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.handCards != null && message.hasOwnProperty("handCards")) {
@@ -10480,24 +10530,24 @@ $root.S2CDestroyCardNotification = (function() {
     };
 
     /**
-     * Creates a S2CDestroyCardNotification message from a plain object. Also converts values to their respective internal types.
+     * Creates a S2CDestroyCardResponse message from a plain object. Also converts values to their respective internal types.
      * @function fromObject
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
      * @param {Object.<string,*>} object Plain object
-     * @returns {S2CDestroyCardNotification} S2CDestroyCardNotification
+     * @returns {S2CDestroyCardResponse} S2CDestroyCardResponse
      */
-    S2CDestroyCardNotification.fromObject = function fromObject(object) {
-        if (object instanceof $root.S2CDestroyCardNotification)
+    S2CDestroyCardResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CDestroyCardResponse)
             return object;
-        var message = new $root.S2CDestroyCardNotification();
+        var message = new $root.S2CDestroyCardResponse();
         if (object.handCards) {
             if (!Array.isArray(object.handCards))
-                throw TypeError(".S2CDestroyCardNotification.handCards: array expected");
+                throw TypeError(".S2CDestroyCardResponse.handCards: array expected");
             message.handCards = [];
             for (var i = 0; i < object.handCards.length; ++i) {
                 if (typeof object.handCards[i] !== "object")
-                    throw TypeError(".S2CDestroyCardNotification.handCards: object expected");
+                    throw TypeError(".S2CDestroyCardResponse.handCards: object expected");
                 message.handCards[i] = $root.CardData.fromObject(object.handCards[i]);
             }
         }
@@ -10505,15 +10555,15 @@ $root.S2CDestroyCardNotification = (function() {
     };
 
     /**
-     * Creates a plain object from a S2CDestroyCardNotification message. Also converts values to other types if specified.
+     * Creates a plain object from a S2CDestroyCardResponse message. Also converts values to other types if specified.
      * @function toObject
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
-     * @param {S2CDestroyCardNotification} message S2CDestroyCardNotification
+     * @param {S2CDestroyCardResponse} message S2CDestroyCardResponse
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    S2CDestroyCardNotification.toObject = function toObject(message, options) {
+    S2CDestroyCardResponse.toObject = function toObject(message, options) {
         if (!options)
             options = {};
         var object = {};
@@ -10528,32 +10578,32 @@ $root.S2CDestroyCardNotification = (function() {
     };
 
     /**
-     * Converts this S2CDestroyCardNotification to JSON.
+     * Converts this S2CDestroyCardResponse to JSON.
      * @function toJSON
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @instance
      * @returns {Object.<string,*>} JSON object
      */
-    S2CDestroyCardNotification.prototype.toJSON = function toJSON() {
+    S2CDestroyCardResponse.prototype.toJSON = function toJSON() {
         return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
     };
 
     /**
-     * Gets the default type url for S2CDestroyCardNotification
+     * Gets the default type url for S2CDestroyCardResponse
      * @function getTypeUrl
-     * @memberof S2CDestroyCardNotification
+     * @memberof S2CDestroyCardResponse
      * @static
      * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
      * @returns {string} The default type url
      */
-    S2CDestroyCardNotification.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+    S2CDestroyCardResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
         if (typeUrlPrefix === undefined) {
             typeUrlPrefix = "type.googleapis.com";
         }
-        return typeUrlPrefix + "/S2CDestroyCardNotification";
+        return typeUrlPrefix + "/S2CDestroyCardResponse";
     };
 
-    return S2CDestroyCardNotification;
+    return S2CDestroyCardResponse;
 })();
 
 $root.S2CGameEndNotification = (function() {
@@ -10770,7 +10820,7 @@ $root.GamePacket = (function() {
      * @property {IS2CUserUpdateNotification|null} [userUpdateNotification] GamePacket userUpdateNotification
      * @property {IS2CPhaseUpdateNotification|null} [phaseUpdateNotification] GamePacket phaseUpdateNotification
      * @property {IC2SDestroyCardRequest|null} [destroyCardRequest] GamePacket destroyCardRequest
-     * @property {IS2CDestroyCardNotification|null} [destroyCardNotification] GamePacket destroyCardNotification
+     * @property {IS2CDestroyCardResponse|null} [destroyCardResponse] GamePacket destroyCardResponse
      * @property {IS2CGameEndNotification|null} [gameEndNotification] GamePacket gameEndNotification
      */
 
@@ -11054,12 +11104,12 @@ $root.GamePacket = (function() {
     GamePacket.prototype.destroyCardRequest = null;
 
     /**
-     * GamePacket destroyCardNotification.
-     * @member {IS2CDestroyCardNotification|null|undefined} destroyCardNotification
+     * GamePacket destroyCardResponse.
+     * @member {IS2CDestroyCardResponse|null|undefined} destroyCardResponse
      * @memberof GamePacket
      * @instance
      */
-    GamePacket.prototype.destroyCardNotification = null;
+    GamePacket.prototype.destroyCardResponse = null;
 
     /**
      * GamePacket gameEndNotification.
@@ -11074,12 +11124,12 @@ $root.GamePacket = (function() {
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardNotification"|"gameEndNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "userUpdateNotification", "phaseUpdateNotification", "destroyCardRequest", "destroyCardNotification", "gameEndNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "userUpdateNotification", "phaseUpdateNotification", "destroyCardRequest", "destroyCardResponse", "gameEndNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -11173,8 +11223,8 @@ $root.GamePacket = (function() {
             $root.S2CPhaseUpdateNotification.encode(message.phaseUpdateNotification, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
         if (message.destroyCardRequest != null && Object.hasOwnProperty.call(message, "destroyCardRequest"))
             $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
-        if (message.destroyCardNotification != null && Object.hasOwnProperty.call(message, "destroyCardNotification"))
-            $root.S2CDestroyCardNotification.encode(message.destroyCardNotification, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
+        if (message.destroyCardResponse != null && Object.hasOwnProperty.call(message, "destroyCardResponse"))
+            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
         if (message.gameEndNotification != null && Object.hasOwnProperty.call(message, "gameEndNotification"))
             $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
         return writer;
@@ -11344,7 +11394,7 @@ $root.GamePacket = (function() {
                     break;
                 }
             case 34: {
-                    message.destroyCardNotification = $root.S2CDestroyCardNotification.decode(reader, reader.uint32());
+                    message.destroyCardResponse = $root.S2CDestroyCardResponse.decode(reader, reader.uint32());
                     break;
                 }
             case 35: {
@@ -11715,14 +11765,14 @@ $root.GamePacket = (function() {
                     return "destroyCardRequest." + error;
             }
         }
-        if (message.destroyCardNotification != null && message.hasOwnProperty("destroyCardNotification")) {
+        if (message.destroyCardResponse != null && message.hasOwnProperty("destroyCardResponse")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
             properties.payload = 1;
             {
-                var error = $root.S2CDestroyCardNotification.verify(message.destroyCardNotification);
+                var error = $root.S2CDestroyCardResponse.verify(message.destroyCardResponse);
                 if (error)
-                    return "destroyCardNotification." + error;
+                    return "destroyCardResponse." + error;
             }
         }
         if (message.gameEndNotification != null && message.hasOwnProperty("gameEndNotification")) {
@@ -11915,10 +11965,10 @@ $root.GamePacket = (function() {
                 throw TypeError(".GamePacket.destroyCardRequest: object expected");
             message.destroyCardRequest = $root.C2SDestroyCardRequest.fromObject(object.destroyCardRequest);
         }
-        if (object.destroyCardNotification != null) {
-            if (typeof object.destroyCardNotification !== "object")
-                throw TypeError(".GamePacket.destroyCardNotification: object expected");
-            message.destroyCardNotification = $root.S2CDestroyCardNotification.fromObject(object.destroyCardNotification);
+        if (object.destroyCardResponse != null) {
+            if (typeof object.destroyCardResponse !== "object")
+                throw TypeError(".GamePacket.destroyCardResponse: object expected");
+            message.destroyCardResponse = $root.S2CDestroyCardResponse.fromObject(object.destroyCardResponse);
         }
         if (object.gameEndNotification != null) {
             if (typeof object.gameEndNotification !== "object")
@@ -12106,10 +12156,10 @@ $root.GamePacket = (function() {
             if (options.oneofs)
                 object.payload = "destroyCardRequest";
         }
-        if (message.destroyCardNotification != null && message.hasOwnProperty("destroyCardNotification")) {
-            object.destroyCardNotification = $root.S2CDestroyCardNotification.toObject(message.destroyCardNotification, options);
+        if (message.destroyCardResponse != null && message.hasOwnProperty("destroyCardResponse")) {
+            object.destroyCardResponse = $root.S2CDestroyCardResponse.toObject(message.destroyCardResponse, options);
             if (options.oneofs)
-                object.payload = "destroyCardNotification";
+                object.payload = "destroyCardResponse";
         }
         if (message.gameEndNotification != null && message.hasOwnProperty("gameEndNotification")) {
             object.gameEndNotification = $root.S2CGameEndNotification.toObject(message.gameEndNotification, options);
@@ -12167,6 +12217,7 @@ $root.GamePacket = (function() {
  * @property {number} INVALID_ROOM_STATE=12 INVALID_ROOM_STATE value
  * @property {number} NOT_ROOM_OWNER=13 NOT_ROOM_OWNER value
  * @property {number} ALREADY_USED_BBANG=14 ALREADY_USED_BBANG value
+ * @property {number} INVALID_PHASE=15 INVALID_PHASE value
  */
 $root.GlobalFailCode = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -12185,6 +12236,7 @@ $root.GlobalFailCode = (function() {
     values[valuesById[12] = "INVALID_ROOM_STATE"] = 12;
     values[valuesById[13] = "NOT_ROOM_OWNER"] = 13;
     values[valuesById[14] = "ALREADY_USED_BBANG"] = 14;
+    values[valuesById[15] = "INVALID_PHASE"] = 15;
     return values;
 })();
 
