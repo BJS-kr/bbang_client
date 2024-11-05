@@ -38,7 +38,6 @@ import { SatelliteTarget } from './satellite.target';
 import { HandGun } from './handgun';
 import { AutoRefile } from './autorifle';
 import { DesertEagle } from './deserteagle';
-import { GameState } from '../game/game.state';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
