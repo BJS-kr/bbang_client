@@ -2,11 +2,11 @@ import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE 
 import { Character } from './character';
 
 export class Dinosaur extends Character {
-  constructor() {
+  constructor({ userId, roleType, hp }: { userId: string; roleType: ROLE_TYPE; hp?: number }) {
     super({
-      userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.DINOSAUR],
-      roleType: ROLE_TYPE.NONE,
+      userId,
+      hp: hp ?? CHARACTER_HP[CHARACTER_TYPE.DINOSAUR],
+      roleType,
       characterType: CHARACTER_TYPE.DINOSAUR,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.DINOSAUR],
     });

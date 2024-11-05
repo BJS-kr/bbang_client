@@ -3,12 +3,12 @@ import { CARD_TYPE, CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE,
 import { Character } from './character';
 
 export class Pink extends Character {
-  constructor() {
+  constructor({ userId, roleType, hp }: { userId: string; roleType: ROLE_TYPE; hp?: number }) {
     super({
-      userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.PINK],
+      userId,
+      hp: hp ?? CHARACTER_HP[CHARACTER_TYPE.PINK],
       characterType: CHARACTER_TYPE.PINK,
-      roleType: ROLE_TYPE.NONE,
+      roleType,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.PINK],
     });
 

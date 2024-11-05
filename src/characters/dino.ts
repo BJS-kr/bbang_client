@@ -2,13 +2,13 @@ import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE 
 import { CardProps, Character } from './character';
 
 export class Dino extends Character {
-  constructor() {
+  constructor({ userId, roleType, hp }: { userId: string; roleType: ROLE_TYPE; hp?: number }) {
     super({
-      userId: '',
-      hp: CHARACTER_HP[CHARACTER_TYPE.DINO],
+      userId,
+      hp: hp ?? CHARACTER_HP[CHARACTER_TYPE.DINO],
       characterType: CHARACTER_TYPE.DINO,
       baseDefenseChance: CHARACTER_BASE_DEFENSE_CHANCE[CHARACTER_TYPE.DINO],
-      roleType: ROLE_TYPE.NONE,
+      roleType,
     });
   }
 

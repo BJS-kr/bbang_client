@@ -33,6 +33,9 @@ const CHARACTER_CLASS_MAP = {
 
 export const createCharacter = ({ userId, characterType, roleType }) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
+  if (CharacterClass === Character) {
+    throw new Error('CharacterClass is not defined');
+  }
 
   switch (roleType) {
     case ROLE_TYPE.TARGET:
