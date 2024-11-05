@@ -26,7 +26,7 @@ export class GameEvents extends EventEmitter {
 
       const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
       this.#room.users.forEach((user, index) => {
-        user.character.positionInfo.setPosition(suhfflePositions[index]);
+        user.character.setPosition(suhfflePositions[index]);
         const handCards = user.character.getHandCards();
         const removeCount = handCards.length - user.character.hp;
         if (removeCount > 0) {
