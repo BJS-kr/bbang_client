@@ -7,17 +7,14 @@ import {
   S2CGamePrepareResponse,
   S2CGameStartNotification,
   S2CGameStartResponse,
-  S2CPhaseUpdateNotification,
   S2CPositionUpdateNotification,
   S2CPositionUpdateResponse,
-  S2CUserUpdateNotification,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../protobuf/writePayload';
 import { rooms } from '../rooms/rooms';
 import { Context } from '../events/types';
 import { session } from '../users/session';
-import { config } from '../config/config';
 import { createCharacter } from '../characters/createCharacter';
 import { pickRandomCardType } from '../cards/pickRandomCard';
 
@@ -214,10 +211,10 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   }
 
   roomUser.character.position = { x, y };
-  writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies MessageProps<S2CPositionUpdateResponse>);
+  // writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
+  //   success: true,
+  //   failCode: GlobalFailCode.NONE,
+  // } satisfies MessageProps<S2CPositionUpdateResponse>);
 
   room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
     userId: ctx.userId,
