@@ -104,8 +104,6 @@ export class Character extends EventEmitter {
   }
 
   drawCard(card: CardProps): Result<Card> {
-    if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
-
     const err = this.loseCard(card);
 
     if (err instanceof Error) return err;
