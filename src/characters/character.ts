@@ -80,6 +80,7 @@ export class Character extends EventEmitter {
       equips: Array.from(this.equips),
       debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
+      handCardsCount: this.getTotalHandCardCount(),
     };
   }
 
@@ -117,6 +118,10 @@ export class Character extends EventEmitter {
 
   getHandCards(): CardProps[] {
     return Array.from(this.handCards.entries()).map(([type, count]) => ({ type, count }));
+  }
+
+  getTotalHandCardCount(): number {
+    return Array.from(this.handCards.values()).reduce((sum, count) => sum + count, 0);
   }
 
   takeDamage(amount: number) {

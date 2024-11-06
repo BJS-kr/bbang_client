@@ -262,6 +262,9 @@ export interface ICharacterData {
 
     /** CharacterData handCards */
     handCards?: (ICardData[]|null);
+
+    /** CharacterData handCardsCount */
+    handCardsCount?: (number|null);
 }
 
 /** Represents a CharacterData. */
@@ -296,6 +299,9 @@ export class CharacterData implements ICharacterData {
 
     /** CharacterData handCards. */
     public handCards: ICardData[];
+
+    /** CharacterData handCardsCount. */
+    public handCardsCount: number;
 
     /**
      * Creates a new CharacterData instance using the specified properties.
