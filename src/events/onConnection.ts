@@ -11,7 +11,16 @@ export const onConnection = (socket: net.Socket) => {
   const buf = Buffer.alloc(0);
   const ctx: Context = { userId: '', roomId: 0 };
 
-  socket.on('data', onData(socket, ctx, buf));
+  socket.on('data', (data: Buffer) => {
+    log('data received');
+    onData(
+      socket,
+      ctx,
+      buf,
+    )(data).catch((err) => {
+      console.error('Error handling data:', err);
+    });
+  });
   socket.on('end', onEnd(socket, ctx));
   socket.on('error', onError(socket, ctx));
 };
