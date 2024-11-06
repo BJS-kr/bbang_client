@@ -6,6 +6,7 @@ import { EventEmitter } from 'node:events';
 import { CharacterStateInfo, OnStateTimeout } from './character.state';
 import { CharacterPositionInfo } from './character.position';
 import { Result } from '../db/types';
+import { log } from '../utils/logger';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
@@ -69,7 +70,7 @@ export class Character extends EventEmitter {
 
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {
     const roleType = viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : ROLE_TYPE.NONE;
-
+    log(`createUserDataView viewUserId: ${viewUserId} this.userId: ${this.userId}`);
     return {
       characterType: Number(this.characterType),
       roleType,
