@@ -16,6 +16,12 @@ import { LaserPointer } from './laser.pointer';
 import { Bomb } from './bomb';
 import { SatelliteTarget } from './satellite.target';
 import { ContainmentUnit } from './containment.unit';
+import { DesertEagle } from './deserteagle';
+import { HandGun } from './handgun';
+import { SniperGun } from './snipergun';
+import { StealthSuit } from './stealth.suit';
+import { Radar } from './radar';
+import { AutoRifle } from './autorifle';
 
 export const cards = {
   [CARD_TYPE.BBANG]: new BBang(),
@@ -35,4 +41,10 @@ export const cards = {
   [CARD_TYPE.BOMB]: new Bomb(),
   [CARD_TYPE.SATELLITE_TARGET]: new SatelliteTarget(),
   [CARD_TYPE.CONTAINMENT_UNIT]: new ContainmentUnit(),
+  [CARD_TYPE.DESERT_EAGLE]: new DesertEagle(),
+  [CARD_TYPE.HAND_GUN]: new HandGun(),
+  [CARD_TYPE.AUTO_RIFLE]: new AutoRifle(),
+  [CARD_TYPE.SNIPER_GUN]: new SniperGun(),
+  [CARD_TYPE.STEALTH_SUIT]: new StealthSuit(),
+  [CARD_TYPE.RADAR]: new Radar(),
 };

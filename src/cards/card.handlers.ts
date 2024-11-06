@@ -36,8 +36,8 @@ import { ContainmentUnit } from './containment.unit';
 import { Bomb } from './bomb';
 import { SatelliteTarget } from './satellite.target';
 import { HandGun } from './handgun';
-import { AutoRefile } from './autorifle';
 import { DesertEagle } from './deserteagle';
+import { AutoRifle } from './autorifle';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -141,8 +141,8 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       log('handleUseCard: DesertEagle');
       handleDesertEagle(base, room, user);
       break;
-    case card instanceof AutoRefile:
-      log('handleUseCard: AutoRefile');
+    case card instanceof AutoRifle:
+      log('handleUseCard: AutoRifle');
       handleAutoRifle(base, room, user);
       break;
     case card instanceof WinLottery:
