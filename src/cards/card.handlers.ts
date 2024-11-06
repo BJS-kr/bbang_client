@@ -68,7 +68,7 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
   const card = user.character.drawCard(cardProps);
 
   if (card instanceof Error) {
-    error('handleUseCard: character no card');
+    error(card.message);
 
     return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
       success: false,

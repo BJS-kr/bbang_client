@@ -7,6 +7,7 @@ import { CharacterStateInfo, OnStateTimeout } from './character.state';
 import { CharacterPositionInfo } from './character.position';
 import { Result } from '../db/types';
 import { log } from '../utils/logger';
+import { cards } from '../cards/card.instance.index';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
@@ -105,11 +106,11 @@ export class Character extends EventEmitter {
   drawCard(card: CardProps): Result<Card> {
     if (!this.handCards.get(card.type)) return new Error(`character has no card type of ${card.type}`);
 
-    const lostCard = this.loseCard(card);
+    const err = this.loseCard(card);
 
-    if (lostCard instanceof Error) return lostCard;
+    if (err instanceof Error) return err;
 
-    const cardInstance = card[card.type];
+    const cardInstance = cards[card.type];
 
     if (!cardInstance) return new Error(`card type of ${card.type} is not found`);
 
