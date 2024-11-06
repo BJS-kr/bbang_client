@@ -333,7 +333,7 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
 function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   const damage = user.character.getBBangDamage();
   room.users.forEach((targetUser) => {
-    targetUser.character.takeDamage(damage);
+    user.id !== targetUser.id && targetUser.character.takeDamage(damage);
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user);
