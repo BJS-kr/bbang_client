@@ -14,7 +14,6 @@ export const onConnection = (socket: net.Socket) => {
   const ctx: Context = { userId: '', roomId: 0 };
 
   socket.on('data', (data: Buffer) => {
-    log('data received');
     onData(
       socket,
       ctx,

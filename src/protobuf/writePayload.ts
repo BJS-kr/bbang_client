@@ -11,7 +11,7 @@ export function writePayload(socket, packetType: number, version: string, sequen
   }
 
   if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION) {
-    log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
+    // log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
   }
 
   const packet = createPacket(packetType, version, sequence, encodedPayload);
