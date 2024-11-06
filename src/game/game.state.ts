@@ -62,18 +62,21 @@ export class GameState {
       clearTimeout(this.#phaseTimer);
     }
 
-    this.#phaseTimer = setTimeout(() => {
-      switch (this.phaseType) {
-        case PHASE_TYPE.DAY:
-          this.#startEvening();
-          break;
-        case PHASE_TYPE.EVENING:
-          this.#startEnd();
-          break;
-        case PHASE_TYPE.END:
-          this.#startDay();
-          break;
-      }
-    }, this.nextPhaseAt - Date.now());
+    this.#phaseTimer = setTimeout(
+      () => {
+        switch (this.phaseType) {
+          case PHASE_TYPE.DAY:
+            this.#startEvening();
+            break;
+          case PHASE_TYPE.EVENING:
+            this.#startEnd();
+            break;
+          case PHASE_TYPE.END:
+            this.#startDay();
+            break;
+        }
+      },
+      Math.max(0, this.nextPhaseAt - Date.now()),
+    );
   }
 }
