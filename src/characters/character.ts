@@ -169,11 +169,13 @@ export class Character extends EventEmitter {
     let remainingCount = count;
     while (remainingCount > 0) {
       const randomIndex = Math.floor(Math.random() * cardTypes.length);
-      const randomCardType = cardTypes[Math.floor(Math.random() * cardTypes.length)];
+      const randomCardType = cardTypes[randomIndex];
       const cardCount = this.handCards.get(randomCardType) || 0;
 
       if (cardCount === 1) {
+        this.loseCard({ type: randomCardType, count: 1 });
         cardTypes.splice(randomIndex, 1);
+        remainingCount -= 1;
         continue;
       }
 
