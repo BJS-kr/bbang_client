@@ -133,7 +133,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
 
       case PACKET_TYPE.POSITION_UPDATE_REQUEST:
         const positionUpdateRequest = decodePayload(packetType, payloadBuffer);
-        log(`positionUpdateRequest: ${JSON.stringify(positionUpdateRequest)}`);
+        // log(`positionUpdateRequest: ${JSON.stringify(positionUpdateRequest)}`);
         await positionUpdateRequestHandler(socket, version, sequence, positionUpdateRequest, ctx);
 
         break;
