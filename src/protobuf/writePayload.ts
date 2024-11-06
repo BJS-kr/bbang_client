@@ -1,6 +1,7 @@
 import { error, log } from '../utils/logger';
 import { createPacket, decodePayload, encodePayload } from './packet';
 import { PACKET_TYPE_LENGTH, PACKET_VERSION_LENGTH, SEQUENCE_LENGTH, PAYLOAD_LENGTH } from '../constants/header';
+import { PACKET_TYPE } from '../constants/packetType';
 
 export function writePayload(socket, packetType: number, version: string, sequence: number, payload) {
   // log(`writePayload: ${JSON.stringify(payload, (key, value) => (key === 'socket' ? undefined : value))}`);
@@ -9,7 +10,9 @@ export function writePayload(socket, packetType: number, version: string, sequen
     return error(encodedPayload);
   }
 
-  log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
+  if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION) {
+    log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
+  }
 
   const packet = createPacket(packetType, version, sequence, encodedPayload);
   const expectedSize = PACKET_TYPE_LENGTH + PACKET_VERSION_LENGTH + version.length + SEQUENCE_LENGTH + PAYLOAD_LENGTH + encodedPayload.length;
