@@ -255,17 +255,6 @@ function isDeathMatchBBang(user: User, targetUser: User) {
 }
 
 function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  const bbang = user.character.drawCard({ type: CARD_TYPE.BBANG, count: 1 });
-
-  if (bbang instanceof Error) {
-    error('handleBBang: character no bbang card. it could have been insufficient amount of card');
-
-    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.CHARACTER_NO_CARD,
-    } satisfies UseCardResponse);
-  }
-
   user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
@@ -274,16 +263,18 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
-  const countToShield = user.character instanceof Shark || user.character.equips.has(CARD_TYPE.LASER_POINTER) ? 2 : 1;
-  const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: countToShield });
+  if (user.character instanceof Shark || user.character.equips.has(CARD_TYPE.LASER_POINTER)) {
+    const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
+    if (shield instanceof Error) {
+      error('handleShield: character have no sufficient amount of shield card');
+      // handler에 진입하기 위해 draw했던 카드 반환
+      user.character.acquireCard({ type: CARD_TYPE.SHIELD, count: 1 });
 
-  if (shield instanceof Error) {
-    error('handleShield: character no shield card. it could have been insufficient amount of card');
-
-    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.CHARACTER_NO_CARD,
-    } satisfies UseCardResponse);
+      return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+        success: false,
+        failCode: GlobalFailCode.CHARACTER_NO_CARD,
+      } satisfies UseCardResponse);
+    }
   }
 
   user.character.stateInfo.setState(CharacterState.NONE, null);
