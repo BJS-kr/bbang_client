@@ -9,6 +9,7 @@ import {
   S2CGameStartResponse,
   S2CPositionUpdateNotification,
   S2CPositionUpdateResponse,
+  S2CReactionResponse,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../protobuf/writePayload';
@@ -17,7 +18,7 @@ import { Context } from '../events/types';
 import { session } from '../users/session';
 import { createCharacter } from '../characters/createCharacter';
 import { pickRandomCardType } from '../cards/pickRandomCard';
-import { log } from '../utils/logger';
+import { log, error } from '../utils/logger';
 
 // TODO
 const TARGET_CARD_BONUS = 1;
@@ -229,6 +230,39 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
     characterPositions: room.users.map((user) => user.character.positionInfo.toPositionData()),
   } satisfies MessageProps<S2CPositionUpdateNotification>);
+};
+
+export const reactionHandler = async (socket, version, sequence, reactionRequest, ctx: Context) => {
+  const room = rooms.getRoom(ctx.roomId);
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.ROOM_NOT_FOUND,
+    } satisfies MessageProps<S2CReactionResponse>);
+  }
+
+  const user = room.getUser(ctx.userId);
+  if (!user) {
+    return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies MessageProps<S2CReactionResponse>);
+  }
+
+  // TODO 리액션 종류 추가되면 그때 분기처리...
+
+  if (user.character.stateInfo.state === CharacterState.NONE) {
+    return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
+    } satisfies MessageProps<S2CReactionResponse>);
+  }
+
+  user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+  return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE,
+  } satisfies MessageProps<S2CReactionResponse>);
 };
 
 function createUserDataView(user, userDatas) {

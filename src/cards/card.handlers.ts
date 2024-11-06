@@ -215,15 +215,15 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   }
 
   user.character.acquireBBangCount();
-  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
+  user.character.stateInfo.setState(targetUser.id, CharacterState.BBANG_SHOOTER, null);
 
   const damage = user.character.getBBangDamage();
-  targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
+  targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
-    targetUser.character.stateInfo.setState(CharacterState.NONE, null);
+    targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -235,7 +235,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (isAutoShieldExists && autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
-    shielded && targetUser.character.stateInfo.setState(CharacterState.NONE, null);
+    shielded && targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,
@@ -255,8 +255,8 @@ function isDeathMatchBBang(user: User, targetUser: User) {
 }
 
 function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
-  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
+  user.character.stateInfo.setState(targetUser.id, CharacterState.DEATH_MATCH, null);
+  targetUser.character.stateInfo.setState(user.id, CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user], room, user);
 }
@@ -277,7 +277,7 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     }
   }
 
-  user.character.stateInfo.setState(CharacterState.NONE, null);
+  user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
 
   responseSuccess(socket, version, sequence, CARD_TYPE.SHIELD, [user], room, user);
 }
@@ -294,18 +294,18 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
     } satisfies UseCardResponse);
   }
 
-  user.character.stateInfo.setState(CharacterState.DEATH_MATCH, null);
-  targetUser.character.stateInfo.setState(CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
+  user.character.stateInfo.setState(targetUser.id, CharacterState.DEATH_MATCH, null);
+  targetUser.character.stateInfo.setState(user.id, CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
   responseSuccess(socket, version, sequence, CARD_TYPE.DEATH_MATCH, [user, targetUser], room, user);
 }
 
 function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
-  user.character.stateInfo.setState(CharacterState.BBANG_SHOOTER, null);
+  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, null);
 
   const damage = user.character.getBBangDamage();
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
+    targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
     handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 

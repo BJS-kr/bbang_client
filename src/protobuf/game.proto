@@ -53,6 +53,7 @@ message CharacterStateInfoData {
     int32 state = 1;
     int32 nextState = 2;
     int64 nextStateAt = 3; // state가 nextState로 풀리는 밀리초 타임스탬프. state가 NONE이면 0
+    string stateTargetUserId = 4; // state에 target이 있을 경우
 }
 
 /* 
@@ -218,6 +219,15 @@ message S2CPhaseUpdateNotification {
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
 }
 
+message C2SReactionRequest {
+    int32 reactionType = 1; // NOT_USE_CARD = 1
+}
+
+message S2CReactionResponse {
+    bool success = 1;
+    GlobalFailCode failCode = 2;
+}
+
 message C2SDestroyCardRequest {
     repeated CardData destroyCards = 1;
 }
@@ -295,12 +305,16 @@ message GamePacket {
         // 페이즈 업데이트
         S2CPhaseUpdateNotification phaseUpdateNotification = 32;
 
+        // 리액션
+        C2SReactionRequest reactionRequest = 33;
+        S2CReactionResponse reactionResponse = 34;
+
         // 턴 종료시 (phaseType 3) 카드 버리기
-        C2SDestroyCardRequest destroyCardRequest = 33;
-        S2CDestroyCardResponse destroyCardResponse = 34;
+        C2SDestroyCardRequest destroyCardRequest = 35;
+        S2CDestroyCardResponse destroyCardResponse = 36;
 
         // 게임 종료
-        S2CGameEndNotification gameEndNotification = 35;
+        S2CGameEndNotification gameEndNotification = 37;
     }
 }
 

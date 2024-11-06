@@ -8,6 +8,7 @@ export class CharacterStateInfo {
   state;
   nextState;
   nextStateAt;
+  stateTargetUserId;
   #stateTimer;
   #onStateTimeout: OnStateTimeout | null = null;
 
@@ -15,10 +16,18 @@ export class CharacterStateInfo {
     this.state = CharacterState.NONE;
     this.nextState = CharacterState.NONE;
     this.nextStateAt = 0;
+    this.stateTargetUserId = '';
   }
 
-  setState(state: CharacterState, onStateTimeout: OnStateTimeout | null) {
+  setState(targetUserId, state: CharacterState, onStateTimeout: OnStateTimeout | null) {
+    const prevState = this.state;
+    // 상태 변경 전에 이전 상태에 대한 timeout 처리
+    if (this.#onStateTimeout && state === CharacterState.NONE) {
+      this.#onStateTimeout(prevState, CharacterState.NONE);
+    }
+
     this.state = state;
+    this.stateTargetUserId = targetUserId;
     this.#onStateTimeout = onStateTimeout;
 
     switch (this.state) {

@@ -125,6 +125,14 @@ export const protoRoutes = {
     requestType: 'S2CUserUpdateNotification',
     payloadKey: 'userUpdateNotification',
   },
+  [PACKET_TYPE.REACTION_REQUEST]: {
+    requestType: 'C2SReactionRequest',
+    payloadKey: 'reactionRequest',
+  },
+  [PACKET_TYPE.REACTION_RESPONSE]: {
+    requestType: 'S2CReactionResponse',
+    payloadKey: 'reactionResponse',
+  },
   [PACKET_TYPE.PHASE_UPDATE_NOTIFICATION]: {
     requestType: 'S2CPhaseUpdateNotification',
     payloadKey: 'phaseUpdateNotification',

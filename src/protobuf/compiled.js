@@ -1796,6 +1796,7 @@ $root.CharacterStateInfoData = (function() {
      * @property {number|null} [state] CharacterStateInfoData state
      * @property {number|null} [nextState] CharacterStateInfoData nextState
      * @property {number|Long|null} [nextStateAt] CharacterStateInfoData nextStateAt
+     * @property {string|null} [stateTargetUserId] CharacterStateInfoData stateTargetUserId
      */
 
     /**
@@ -1838,6 +1839,14 @@ $root.CharacterStateInfoData = (function() {
     CharacterStateInfoData.prototype.nextStateAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
+     * CharacterStateInfoData stateTargetUserId.
+     * @member {string} stateTargetUserId
+     * @memberof CharacterStateInfoData
+     * @instance
+     */
+    CharacterStateInfoData.prototype.stateTargetUserId = "";
+
+    /**
      * Creates a new CharacterStateInfoData instance using the specified properties.
      * @function create
      * @memberof CharacterStateInfoData
@@ -1867,6 +1876,8 @@ $root.CharacterStateInfoData = (function() {
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.nextState);
         if (message.nextStateAt != null && Object.hasOwnProperty.call(message, "nextStateAt"))
             writer.uint32(/* id 3, wireType 0 =*/24).int64(message.nextStateAt);
+        if (message.stateTargetUserId != null && Object.hasOwnProperty.call(message, "stateTargetUserId"))
+            writer.uint32(/* id 4, wireType 2 =*/34).string(message.stateTargetUserId);
         return writer;
     };
 
@@ -1913,6 +1924,10 @@ $root.CharacterStateInfoData = (function() {
                     message.nextStateAt = reader.int64();
                     break;
                 }
+            case 4: {
+                    message.stateTargetUserId = reader.string();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -1957,6 +1972,9 @@ $root.CharacterStateInfoData = (function() {
         if (message.nextStateAt != null && message.hasOwnProperty("nextStateAt"))
             if (!$util.isInteger(message.nextStateAt) && !(message.nextStateAt && $util.isInteger(message.nextStateAt.low) && $util.isInteger(message.nextStateAt.high)))
                 return "nextStateAt: integer|Long expected";
+        if (message.stateTargetUserId != null && message.hasOwnProperty("stateTargetUserId"))
+            if (!$util.isString(message.stateTargetUserId))
+                return "stateTargetUserId: string expected";
         return null;
     };
 
@@ -1985,6 +2003,8 @@ $root.CharacterStateInfoData = (function() {
                 message.nextStateAt = object.nextStateAt;
             else if (typeof object.nextStateAt === "object")
                 message.nextStateAt = new $util.LongBits(object.nextStateAt.low >>> 0, object.nextStateAt.high >>> 0).toNumber();
+        if (object.stateTargetUserId != null)
+            message.stateTargetUserId = String(object.stateTargetUserId);
         return message;
     };
 
@@ -2009,6 +2029,7 @@ $root.CharacterStateInfoData = (function() {
                 object.nextStateAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.nextStateAt = options.longs === String ? "0" : 0;
+            object.stateTargetUserId = "";
         }
         if (message.state != null && message.hasOwnProperty("state"))
             object.state = message.state;
@@ -2019,6 +2040,8 @@ $root.CharacterStateInfoData = (function() {
                 object.nextStateAt = options.longs === String ? String(message.nextStateAt) : message.nextStateAt;
             else
                 object.nextStateAt = options.longs === String ? $util.Long.prototype.toString.call(message.nextStateAt) : options.longs === Number ? new $util.LongBits(message.nextStateAt.low >>> 0, message.nextStateAt.high >>> 0).toNumber() : message.nextStateAt;
+        if (message.stateTargetUserId != null && message.hasOwnProperty("stateTargetUserId"))
+            object.stateTargetUserId = message.stateTargetUserId;
         return object;
     };
 
@@ -10213,6 +10236,525 @@ $root.S2CPhaseUpdateNotification = (function() {
     return S2CPhaseUpdateNotification;
 })();
 
+$root.C2SReactionRequest = (function() {
+
+    /**
+     * Properties of a C2SReactionRequest.
+     * @exports IC2SReactionRequest
+     * @interface IC2SReactionRequest
+     * @property {number|null} [reactionType] C2SReactionRequest reactionType
+     */
+
+    /**
+     * Constructs a new C2SReactionRequest.
+     * @exports C2SReactionRequest
+     * @classdesc Represents a C2SReactionRequest.
+     * @implements IC2SReactionRequest
+     * @constructor
+     * @param {IC2SReactionRequest=} [properties] Properties to set
+     */
+    function C2SReactionRequest(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * C2SReactionRequest reactionType.
+     * @member {number} reactionType
+     * @memberof C2SReactionRequest
+     * @instance
+     */
+    C2SReactionRequest.prototype.reactionType = 0;
+
+    /**
+     * Creates a new C2SReactionRequest instance using the specified properties.
+     * @function create
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {IC2SReactionRequest=} [properties] Properties to set
+     * @returns {C2SReactionRequest} C2SReactionRequest instance
+     */
+    C2SReactionRequest.create = function create(properties) {
+        return new C2SReactionRequest(properties);
+    };
+
+    /**
+     * Encodes the specified C2SReactionRequest message. Does not implicitly {@link C2SReactionRequest.verify|verify} messages.
+     * @function encode
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {IC2SReactionRequest} message C2SReactionRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SReactionRequest.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.reactionType != null && Object.hasOwnProperty.call(message, "reactionType"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.reactionType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified C2SReactionRequest message, length delimited. Does not implicitly {@link C2SReactionRequest.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {IC2SReactionRequest} message C2SReactionRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SReactionRequest.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a C2SReactionRequest message from the specified reader or buffer.
+     * @function decode
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {C2SReactionRequest} C2SReactionRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SReactionRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.C2SReactionRequest();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.reactionType = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a C2SReactionRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {C2SReactionRequest} C2SReactionRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SReactionRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a C2SReactionRequest message.
+     * @function verify
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    C2SReactionRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.reactionType != null && message.hasOwnProperty("reactionType"))
+            if (!$util.isInteger(message.reactionType))
+                return "reactionType: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a C2SReactionRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {C2SReactionRequest} C2SReactionRequest
+     */
+    C2SReactionRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.C2SReactionRequest)
+            return object;
+        var message = new $root.C2SReactionRequest();
+        if (object.reactionType != null)
+            message.reactionType = object.reactionType | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a C2SReactionRequest message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {C2SReactionRequest} message C2SReactionRequest
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    C2SReactionRequest.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.reactionType = 0;
+        if (message.reactionType != null && message.hasOwnProperty("reactionType"))
+            object.reactionType = message.reactionType;
+        return object;
+    };
+
+    /**
+     * Converts this C2SReactionRequest to JSON.
+     * @function toJSON
+     * @memberof C2SReactionRequest
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    C2SReactionRequest.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for C2SReactionRequest
+     * @function getTypeUrl
+     * @memberof C2SReactionRequest
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    C2SReactionRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/C2SReactionRequest";
+    };
+
+    return C2SReactionRequest;
+})();
+
+$root.S2CReactionResponse = (function() {
+
+    /**
+     * Properties of a S2CReactionResponse.
+     * @exports IS2CReactionResponse
+     * @interface IS2CReactionResponse
+     * @property {boolean|null} [success] S2CReactionResponse success
+     * @property {GlobalFailCode|null} [failCode] S2CReactionResponse failCode
+     */
+
+    /**
+     * Constructs a new S2CReactionResponse.
+     * @exports S2CReactionResponse
+     * @classdesc Represents a S2CReactionResponse.
+     * @implements IS2CReactionResponse
+     * @constructor
+     * @param {IS2CReactionResponse=} [properties] Properties to set
+     */
+    function S2CReactionResponse(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CReactionResponse success.
+     * @member {boolean} success
+     * @memberof S2CReactionResponse
+     * @instance
+     */
+    S2CReactionResponse.prototype.success = false;
+
+    /**
+     * S2CReactionResponse failCode.
+     * @member {GlobalFailCode} failCode
+     * @memberof S2CReactionResponse
+     * @instance
+     */
+    S2CReactionResponse.prototype.failCode = 0;
+
+    /**
+     * Creates a new S2CReactionResponse instance using the specified properties.
+     * @function create
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {IS2CReactionResponse=} [properties] Properties to set
+     * @returns {S2CReactionResponse} S2CReactionResponse instance
+     */
+    S2CReactionResponse.create = function create(properties) {
+        return new S2CReactionResponse(properties);
+    };
+
+    /**
+     * Encodes the specified S2CReactionResponse message. Does not implicitly {@link S2CReactionResponse.verify|verify} messages.
+     * @function encode
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {IS2CReactionResponse} message S2CReactionResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CReactionResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+        if (message.failCode != null && Object.hasOwnProperty.call(message, "failCode"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.failCode);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CReactionResponse message, length delimited. Does not implicitly {@link S2CReactionResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {IS2CReactionResponse} message S2CReactionResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CReactionResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CReactionResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CReactionResponse} S2CReactionResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CReactionResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CReactionResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.success = reader.bool();
+                    break;
+                }
+            case 2: {
+                    message.failCode = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CReactionResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CReactionResponse} S2CReactionResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CReactionResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CReactionResponse message.
+     * @function verify
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CReactionResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.success != null && message.hasOwnProperty("success"))
+            if (typeof message.success !== "boolean")
+                return "success: boolean expected";
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            switch (message.failCode) {
+            default:
+                return "failCode: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a S2CReactionResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CReactionResponse} S2CReactionResponse
+     */
+    S2CReactionResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CReactionResponse)
+            return object;
+        var message = new $root.S2CReactionResponse();
+        if (object.success != null)
+            message.success = Boolean(object.success);
+        switch (object.failCode) {
+        default:
+            if (typeof object.failCode === "number") {
+                message.failCode = object.failCode;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.failCode = 0;
+            break;
+        case "UNKNOWN_ERROR":
+        case 1:
+            message.failCode = 1;
+            break;
+        case "INVALID_REQUEST":
+        case 2:
+            message.failCode = 2;
+            break;
+        case "AUTHENTICATION_FAILED":
+        case 3:
+            message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
+            break;
+        case "REGISTER_FAILED":
+        case 7:
+            message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
+            break;
+        case "INVALID_ROOM_STATE":
+        case 12:
+            message.failCode = 12;
+            break;
+        case "NOT_ROOM_OWNER":
+        case 13:
+            message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CReactionResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {S2CReactionResponse} message S2CReactionResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CReactionResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.success = false;
+            object.failCode = options.enums === String ? "NONE" : 0;
+        }
+        if (message.success != null && message.hasOwnProperty("success"))
+            object.success = message.success;
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
+        return object;
+    };
+
+    /**
+     * Converts this S2CReactionResponse to JSON.
+     * @function toJSON
+     * @memberof S2CReactionResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CReactionResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CReactionResponse
+     * @function getTypeUrl
+     * @memberof S2CReactionResponse
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CReactionResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CReactionResponse";
+    };
+
+    return S2CReactionResponse;
+})();
+
 $root.C2SDestroyCardRequest = (function() {
 
     /**
@@ -10874,6 +11416,8 @@ $root.GamePacket = (function() {
      * @property {IS2CCardEffectNotification|null} [cardEffectNotification] GamePacket cardEffectNotification
      * @property {IS2CUserUpdateNotification|null} [userUpdateNotification] GamePacket userUpdateNotification
      * @property {IS2CPhaseUpdateNotification|null} [phaseUpdateNotification] GamePacket phaseUpdateNotification
+     * @property {IC2SReactionRequest|null} [reactionRequest] GamePacket reactionRequest
+     * @property {IS2CReactionResponse|null} [reactionResponse] GamePacket reactionResponse
      * @property {IC2SDestroyCardRequest|null} [destroyCardRequest] GamePacket destroyCardRequest
      * @property {IS2CDestroyCardResponse|null} [destroyCardResponse] GamePacket destroyCardResponse
      * @property {IS2CGameEndNotification|null} [gameEndNotification] GamePacket gameEndNotification
@@ -11151,6 +11695,22 @@ $root.GamePacket = (function() {
     GamePacket.prototype.phaseUpdateNotification = null;
 
     /**
+     * GamePacket reactionRequest.
+     * @member {IC2SReactionRequest|null|undefined} reactionRequest
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.reactionRequest = null;
+
+    /**
+     * GamePacket reactionResponse.
+     * @member {IS2CReactionResponse|null|undefined} reactionResponse
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.reactionResponse = null;
+
+    /**
      * GamePacket destroyCardRequest.
      * @member {IC2SDestroyCardRequest|null|undefined} destroyCardRequest
      * @memberof GamePacket
@@ -11179,12 +11739,12 @@ $root.GamePacket = (function() {
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "userUpdateNotification", "phaseUpdateNotification", "destroyCardRequest", "destroyCardResponse", "gameEndNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -11276,12 +11836,16 @@ $root.GamePacket = (function() {
             $root.S2CUserUpdateNotification.encode(message.userUpdateNotification, writer.uint32(/* id 31, wireType 2 =*/250).fork()).ldelim();
         if (message.phaseUpdateNotification != null && Object.hasOwnProperty.call(message, "phaseUpdateNotification"))
             $root.S2CPhaseUpdateNotification.encode(message.phaseUpdateNotification, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
+        if (message.reactionRequest != null && Object.hasOwnProperty.call(message, "reactionRequest"))
+            $root.C2SReactionRequest.encode(message.reactionRequest, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
+        if (message.reactionResponse != null && Object.hasOwnProperty.call(message, "reactionResponse"))
+            $root.S2CReactionResponse.encode(message.reactionResponse, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
         if (message.destroyCardRequest != null && Object.hasOwnProperty.call(message, "destroyCardRequest"))
-            $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
+            $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
         if (message.destroyCardResponse != null && Object.hasOwnProperty.call(message, "destroyCardResponse"))
-            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
+            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 36, wireType 2 =*/290).fork()).ldelim();
         if (message.gameEndNotification != null && Object.hasOwnProperty.call(message, "gameEndNotification"))
-            $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
+            $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 37, wireType 2 =*/298).fork()).ldelim();
         return writer;
     };
 
@@ -11445,14 +12009,22 @@ $root.GamePacket = (function() {
                     break;
                 }
             case 33: {
-                    message.destroyCardRequest = $root.C2SDestroyCardRequest.decode(reader, reader.uint32());
+                    message.reactionRequest = $root.C2SReactionRequest.decode(reader, reader.uint32());
                     break;
                 }
             case 34: {
-                    message.destroyCardResponse = $root.S2CDestroyCardResponse.decode(reader, reader.uint32());
+                    message.reactionResponse = $root.S2CReactionResponse.decode(reader, reader.uint32());
                     break;
                 }
             case 35: {
+                    message.destroyCardRequest = $root.C2SDestroyCardRequest.decode(reader, reader.uint32());
+                    break;
+                }
+            case 36: {
+                    message.destroyCardResponse = $root.S2CDestroyCardResponse.decode(reader, reader.uint32());
+                    break;
+                }
+            case 37: {
                     message.gameEndNotification = $root.S2CGameEndNotification.decode(reader, reader.uint32());
                     break;
                 }
@@ -11810,6 +12382,26 @@ $root.GamePacket = (function() {
                     return "phaseUpdateNotification." + error;
             }
         }
+        if (message.reactionRequest != null && message.hasOwnProperty("reactionRequest")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.C2SReactionRequest.verify(message.reactionRequest);
+                if (error)
+                    return "reactionRequest." + error;
+            }
+        }
+        if (message.reactionResponse != null && message.hasOwnProperty("reactionResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CReactionResponse.verify(message.reactionResponse);
+                if (error)
+                    return "reactionResponse." + error;
+            }
+        }
         if (message.destroyCardRequest != null && message.hasOwnProperty("destroyCardRequest")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
@@ -12015,6 +12607,16 @@ $root.GamePacket = (function() {
                 throw TypeError(".GamePacket.phaseUpdateNotification: object expected");
             message.phaseUpdateNotification = $root.S2CPhaseUpdateNotification.fromObject(object.phaseUpdateNotification);
         }
+        if (object.reactionRequest != null) {
+            if (typeof object.reactionRequest !== "object")
+                throw TypeError(".GamePacket.reactionRequest: object expected");
+            message.reactionRequest = $root.C2SReactionRequest.fromObject(object.reactionRequest);
+        }
+        if (object.reactionResponse != null) {
+            if (typeof object.reactionResponse !== "object")
+                throw TypeError(".GamePacket.reactionResponse: object expected");
+            message.reactionResponse = $root.S2CReactionResponse.fromObject(object.reactionResponse);
+        }
         if (object.destroyCardRequest != null) {
             if (typeof object.destroyCardRequest !== "object")
                 throw TypeError(".GamePacket.destroyCardRequest: object expected");
@@ -12205,6 +12807,16 @@ $root.GamePacket = (function() {
             object.phaseUpdateNotification = $root.S2CPhaseUpdateNotification.toObject(message.phaseUpdateNotification, options);
             if (options.oneofs)
                 object.payload = "phaseUpdateNotification";
+        }
+        if (message.reactionRequest != null && message.hasOwnProperty("reactionRequest")) {
+            object.reactionRequest = $root.C2SReactionRequest.toObject(message.reactionRequest, options);
+            if (options.oneofs)
+                object.payload = "reactionRequest";
+        }
+        if (message.reactionResponse != null && message.hasOwnProperty("reactionResponse")) {
+            object.reactionResponse = $root.S2CReactionResponse.toObject(message.reactionResponse, options);
+            if (options.oneofs)
+                object.payload = "reactionResponse";
         }
         if (message.destroyCardRequest != null && message.hasOwnProperty("destroyCardRequest")) {
             object.destroyCardRequest = $root.C2SDestroyCardRequest.toObject(message.destroyCardRequest, options);

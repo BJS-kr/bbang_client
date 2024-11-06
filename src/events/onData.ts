@@ -12,7 +12,7 @@ import {
   joinRoomRequestHandler,
   leaveRoomRequestHandler,
 } from '../rooms/roomHandler';
-import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateRequestHandler } from '../game/game.handler';
+import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateRequestHandler, reactionHandler } from '../game/game.handler';
 import { handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
@@ -143,6 +143,12 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         log(`useCardRequest: ${JSON.stringify(useCardRequest)}`);
         await handleUseCard({ socket, version, sequence, ctx }, useCardRequest);
 
+        break;
+
+      case PACKET_TYPE.REACTION_REQUEST:
+        const reactionRequest = decodePayload(packetType, payloadBuffer);
+        log(`reactionRequest: ${JSON.stringify(reactionRequest)}`);
+        await reactionHandler(socket, version, sequence, ctx, reactionRequest);
         break;
 
       default:

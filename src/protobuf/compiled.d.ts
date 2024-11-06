@@ -707,6 +707,9 @@ export interface ICharacterStateInfoData {
 
     /** CharacterStateInfoData nextStateAt */
     nextStateAt?: (number|Long|null);
+
+    /** CharacterStateInfoData stateTargetUserId */
+    stateTargetUserId?: (string|null);
 }
 
 /** Represents a CharacterStateInfoData. */
@@ -726,6 +729,9 @@ export class CharacterStateInfoData implements ICharacterStateInfoData {
 
     /** CharacterStateInfoData nextStateAt. */
     public nextStateAt: (number|Long);
+
+    /** CharacterStateInfoData stateTargetUserId. */
+    public stateTargetUserId: string;
 
     /**
      * Creates a new CharacterStateInfoData instance using the specified properties.
@@ -4071,6 +4077,206 @@ export class S2CPhaseUpdateNotification implements IS2CPhaseUpdateNotification {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a C2SReactionRequest. */
+export interface IC2SReactionRequest {
+
+    /** C2SReactionRequest reactionType */
+    reactionType?: (number|null);
+}
+
+/** Represents a C2SReactionRequest. */
+export class C2SReactionRequest implements IC2SReactionRequest {
+
+    /**
+     * Constructs a new C2SReactionRequest.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IC2SReactionRequest);
+
+    /** C2SReactionRequest reactionType. */
+    public reactionType: number;
+
+    /**
+     * Creates a new C2SReactionRequest instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns C2SReactionRequest instance
+     */
+    public static create(properties?: IC2SReactionRequest): C2SReactionRequest;
+
+    /**
+     * Encodes the specified C2SReactionRequest message. Does not implicitly {@link C2SReactionRequest.verify|verify} messages.
+     * @param message C2SReactionRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IC2SReactionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified C2SReactionRequest message, length delimited. Does not implicitly {@link C2SReactionRequest.verify|verify} messages.
+     * @param message C2SReactionRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IC2SReactionRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a C2SReactionRequest message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns C2SReactionRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): C2SReactionRequest;
+
+    /**
+     * Decodes a C2SReactionRequest message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns C2SReactionRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): C2SReactionRequest;
+
+    /**
+     * Verifies a C2SReactionRequest message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a C2SReactionRequest message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns C2SReactionRequest
+     */
+    public static fromObject(object: { [k: string]: any }): C2SReactionRequest;
+
+    /**
+     * Creates a plain object from a C2SReactionRequest message. Also converts values to other types if specified.
+     * @param message C2SReactionRequest
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: C2SReactionRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this C2SReactionRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for C2SReactionRequest
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+/** Properties of a S2CReactionResponse. */
+export interface IS2CReactionResponse {
+
+    /** S2CReactionResponse success */
+    success?: (boolean|null);
+
+    /** S2CReactionResponse failCode */
+    failCode?: (GlobalFailCode|null);
+}
+
+/** Represents a S2CReactionResponse. */
+export class S2CReactionResponse implements IS2CReactionResponse {
+
+    /**
+     * Constructs a new S2CReactionResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CReactionResponse);
+
+    /** S2CReactionResponse success. */
+    public success: boolean;
+
+    /** S2CReactionResponse failCode. */
+    public failCode: GlobalFailCode;
+
+    /**
+     * Creates a new S2CReactionResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CReactionResponse instance
+     */
+    public static create(properties?: IS2CReactionResponse): S2CReactionResponse;
+
+    /**
+     * Encodes the specified S2CReactionResponse message. Does not implicitly {@link S2CReactionResponse.verify|verify} messages.
+     * @param message S2CReactionResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CReactionResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CReactionResponse message, length delimited. Does not implicitly {@link S2CReactionResponse.verify|verify} messages.
+     * @param message S2CReactionResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CReactionResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CReactionResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CReactionResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CReactionResponse;
+
+    /**
+     * Decodes a S2CReactionResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CReactionResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CReactionResponse;
+
+    /**
+     * Verifies a S2CReactionResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CReactionResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CReactionResponse
+     */
+    public static fromObject(object: { [k: string]: any }): S2CReactionResponse;
+
+    /**
+     * Creates a plain object from a S2CReactionResponse message. Also converts values to other types if specified.
+     * @param message S2CReactionResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CReactionResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CReactionResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CReactionResponse
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a C2SDestroyCardRequest. */
 export interface IC2SDestroyCardRequest {
 
@@ -4455,6 +4661,12 @@ export interface IGamePacket {
     /** GamePacket phaseUpdateNotification */
     phaseUpdateNotification?: (IS2CPhaseUpdateNotification|null);
 
+    /** GamePacket reactionRequest */
+    reactionRequest?: (IC2SReactionRequest|null);
+
+    /** GamePacket reactionResponse */
+    reactionResponse?: (IS2CReactionResponse|null);
+
     /** GamePacket destroyCardRequest */
     destroyCardRequest?: (IC2SDestroyCardRequest|null);
 
@@ -4570,6 +4782,12 @@ export class GamePacket implements IGamePacket {
     /** GamePacket phaseUpdateNotification. */
     public phaseUpdateNotification?: (IS2CPhaseUpdateNotification|null);
 
+    /** GamePacket reactionRequest. */
+    public reactionRequest?: (IC2SReactionRequest|null);
+
+    /** GamePacket reactionResponse. */
+    public reactionResponse?: (IS2CReactionResponse|null);
+
     /** GamePacket destroyCardRequest. */
     public destroyCardRequest?: (IC2SDestroyCardRequest|null);
 
@@ -4580,7 +4798,7 @@ export class GamePacket implements IGamePacket {
     public gameEndNotification?: (IS2CGameEndNotification|null);
 
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.
