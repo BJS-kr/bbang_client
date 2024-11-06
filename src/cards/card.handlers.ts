@@ -305,7 +305,7 @@ function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: R
 
   const damage = user.character.getBBangDamage();
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
+    user.id !== targetUser.id && targetUser.character.stateInfo.setState(CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
     handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 
