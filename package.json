@@ -7,7 +7,8 @@
     "dev": "nodemon src/server.ts",
     "migrate": "drizzle-kit generate --config ./src/db/drizzle.config.ts && drizzle-kit migrate --config ./src/db/drizzle.config.ts",
     "push": "drizzle-kit push --config ./src/db/drizzle.config.ts",
-    "generate:types": "pbjs -t static-module -w commonjs -o src/protobuf/compiled.js src/protobuf/game.proto && pbts -o src/protobuf/compiled.d.ts src/protobuf/compiled.js"
+    "generate:types": "pbjs -t static-module -w commonjs -o src/protobuf/compiled.js src/protobuf/game.proto && pbts -o src/protobuf/compiled.d.ts src/protobuf/compiled.js",
+    "start:prod": "npx tsc && cp src/protobuf/compiled.js dist/protobuf/ && node dist/server.js"
   },
   "keywords": [],
   "author": "",
