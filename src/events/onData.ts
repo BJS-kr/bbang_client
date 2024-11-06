@@ -16,7 +16,6 @@ import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateReque
 import { handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
-  log('data received');
   buf = Buffer.concat([buf, data]);
 
   let offset = 0;

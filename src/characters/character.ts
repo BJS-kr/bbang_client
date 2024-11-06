@@ -6,6 +6,7 @@ import { EventEmitter } from 'node:events';
 import { CharacterStateInfo, OnStateTimeout } from './character.state';
 import { CharacterPositionInfo } from './character.position';
 import { Result } from '../db/types';
+import { log } from '../utils/logger';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
@@ -69,7 +70,7 @@ export class Character extends EventEmitter {
 
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {
     const roleType = viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : ROLE_TYPE.NONE;
-
+    log(`createUserDataView viewUserId: ${viewUserId} this.userId: ${this.userId}`);
     return {
       characterType: Number(this.characterType),
       roleType,
@@ -79,6 +80,7 @@ export class Character extends EventEmitter {
       equips: Array.from(this.equips),
       debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
+      handCardsCount: this.getTotalHandCardCount(),
     };
   }
 
@@ -116,6 +118,10 @@ export class Character extends EventEmitter {
 
   getHandCards(): CardProps[] {
     return Array.from(this.handCards.entries()).map(([type, count]) => ({ type, count }));
+  }
+
+  getTotalHandCardCount(): number {
+    return Array.from(this.handCards.values()).reduce((sum, count) => sum + count, 0);
   }
 
   takeDamage(amount: number) {

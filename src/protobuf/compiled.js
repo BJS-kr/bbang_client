@@ -619,6 +619,7 @@ $root.CharacterData = (function() {
      * @property {Array.<number>|null} [equips] CharacterData equips
      * @property {Array.<number>|null} [debuffs] CharacterData debuffs
      * @property {Array.<ICardData>|null} [handCards] CharacterData handCards
+     * @property {number|null} [handCardsCount] CharacterData handCardsCount
      */
 
     /**
@@ -704,6 +705,14 @@ $root.CharacterData = (function() {
     CharacterData.prototype.handCards = $util.emptyArray;
 
     /**
+     * CharacterData handCardsCount.
+     * @member {number} handCardsCount
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.handCardsCount = 0;
+
+    /**
      * Creates a new CharacterData instance using the specified properties.
      * @function create
      * @memberof CharacterData
@@ -752,6 +761,8 @@ $root.CharacterData = (function() {
         if (message.handCards != null && message.handCards.length)
             for (var i = 0; i < message.handCards.length; ++i)
                 $root.CardData.encode(message.handCards[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.handCardsCount != null && Object.hasOwnProperty.call(message, "handCardsCount"))
+            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.handCardsCount);
         return writer;
     };
 
@@ -834,6 +845,10 @@ $root.CharacterData = (function() {
                     message.handCards.push($root.CardData.decode(reader, reader.uint32()));
                     break;
                 }
+            case 9: {
+                    message.handCardsCount = reader.int32();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -909,6 +924,9 @@ $root.CharacterData = (function() {
                     return "handCards." + error;
             }
         }
+        if (message.handCardsCount != null && message.hasOwnProperty("handCardsCount"))
+            if (!$util.isInteger(message.handCardsCount))
+                return "handCardsCount: integer expected";
         return null;
     };
 
@@ -961,6 +979,8 @@ $root.CharacterData = (function() {
                 message.handCards[i] = $root.CardData.fromObject(object.handCards[i]);
             }
         }
+        if (object.handCardsCount != null)
+            message.handCardsCount = object.handCardsCount | 0;
         return message;
     };
 
@@ -988,6 +1008,7 @@ $root.CharacterData = (function() {
             object.hp = 0;
             object.weapon = 0;
             object.stateInfo = null;
+            object.handCardsCount = 0;
         }
         if (message.characterType != null && message.hasOwnProperty("characterType"))
             object.characterType = message.characterType;
@@ -1014,6 +1035,8 @@ $root.CharacterData = (function() {
             for (var j = 0; j < message.handCards.length; ++j)
                 object.handCards[j] = $root.CardData.toObject(message.handCards[j], options);
         }
+        if (message.handCardsCount != null && message.hasOwnProperty("handCardsCount"))
+            object.handCardsCount = message.handCardsCount;
         return object;
     };
 

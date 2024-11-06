@@ -17,6 +17,7 @@ import { Context } from '../events/types';
 import { session } from '../users/session';
 import { createCharacter } from '../characters/createCharacter';
 import { pickRandomCardType } from '../cards/pickRandomCard';
+import { log } from '../utils/logger';
 
 // TODO
 const TARGET_CARD_BONUS = 1;
@@ -231,6 +232,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
 };
 
 function createUserDataView(user, userDatas) {
+  log(`createUserDataView userId: ${user.id}`);
   const result = userDatas.map((userData) => ({
     id: userData.id,
     nickname: userData.nickname,
