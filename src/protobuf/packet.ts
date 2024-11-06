@@ -3,7 +3,7 @@ import CustomError from '../utils/customError';
 import { config } from '../config/config';
 import { ERROR_CODES } from '../constants/error';
 import { protoRoutes } from './routes';
-
+import { PACKET_TYPE } from '../constants/packetType';
 const protoRoot = protobuf.loadSync('./src/protobuf/game.proto');
 const GamePacket = protoRoot.lookupType('GamePacket');
 
@@ -57,8 +57,9 @@ export const encodePayload = (packetType, payload) => {
   return GamePacket.encode(response).finish();
 };
 
-export const decodePayload = (packetType, payloadBuffer) => {
+export const decodePayload = (packetType: number, payloadBuffer: Uint8Array) => {
   const packetInfo = protoRoutes[packetType];
+
   if (!packetInfo) {
     throw new CustomError(ERROR_CODES.INVALID_PACKET, `Unknown packet type: ${packetType}`);
   }

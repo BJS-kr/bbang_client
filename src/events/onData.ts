@@ -16,6 +16,7 @@ import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateReque
 import { handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
+  log('data received');
   buf = Buffer.concat([buf, data]);
 
   let offset = 0;
@@ -57,7 +58,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
       break;
     }
 
-    const payloadBuffer = buf.slice(offset, offset + payloadLength);
+    const payloadBuffer = buf.subarray(offset, offset + payloadLength);
     offset += payloadLength;
 
     // 읽은 부분 제거 및 오프셋 초기화
