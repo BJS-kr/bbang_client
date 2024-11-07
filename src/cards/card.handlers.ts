@@ -22,7 +22,14 @@ import { User } from '../users/types';
 import { Shark } from '../characters/shark';
 import { DeathMatch } from './deathmatch';
 import { BigBBang } from './big.bbang';
-import { onBBangTimeoutShooter, onBBangTimeoutTarget, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout, onGuerillaTargetTimeout } from './onTimeout';
+import {
+  onBBangTimeoutShooter,
+  onBBangTimeoutTarget,
+  onDeathMatchTurnTimeout,
+  onFleaMarketTurnTimeout,
+  onGuerillaShooterTimeout,
+  onGuerillaTargetTimeout,
+} from './onTimeout';
 import { Vaccine } from './vaccine';
 import { Call119 } from './call119';
 import { Guerrilla } from './guerrilla';
@@ -207,12 +214,26 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
     } satisfies UseCardResponse);
   }
 
-  // 데스매치 타겟이 된 사용자가 빵 리퀘스트를 보냈으므로 user가 DEATH_MATCH_TURN, targetUser가 DEATH_MATCH 상태임
-  if (isDeathMatchBBang(user, targetUser)) {
+  if (isGuerrillaTargetBBang(user)) {
+    // 게릴라 타겟이 된 경우 빵으로 자신을 방어할 수 있다.
+    return handleGuerrillaTargetBBang({ socket, version, sequence, ctx }, user, targetUser, room);
+  } else if (isDeathMatchBBang(user, targetUser)) {
+    // 데스매치 타겟이 된 사용자가 빵 리퀘스트를 보냈으므로 user가 DEATH_MATCH_TURN, targetUser가 DEATH_MATCH 상태임
     return handleDeathMatchBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   }
 
   return handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
+}
+
+function isGuerrillaTargetBBang(user: User) {
+  return user.character.stateInfo.state === CharacterState.GUERRILLA_TARGET;
+}
+
+function handleGuerrillaTargetBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
+  user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+    user: [user.toUserData(user.id)],
+  } satisfies MessageProps<S2CUserUpdateNotification>);
 }
 
 function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
@@ -351,7 +372,7 @@ function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room,
   room.users.forEach((targetUser) => {
     user.id !== targetUser.id
       ? targetUser.character.stateInfo.setState(user.id, CharacterState.GUERRILLA_TARGET, onGuerillaTargetTimeout(targetUser, room))
-      : user.character.stateInfo.setState(user.id, CharacterState.GUERRILLA_SHOOTER, null);
+      : user.character.stateInfo.setState(user.id, CharacterState.GUERRILLA_SHOOTER, onGuerillaShooterTimeout(user, room));
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user);
