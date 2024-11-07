@@ -344,7 +344,8 @@ function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, 
   user.character.stateInfo.setState(user.id, CharacterState.BIG_BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(user.id, CharacterState.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
+    user.id !== targetUser.id &&
+      targetUser.character.stateInfo.setState(user.id, CharacterState.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user);
