@@ -169,7 +169,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     const testHandCards = new Map();
 
     testHandCards.set(CARD_TYPE.BBANG, 10);
-    testHandCards.set(CARD_TYPE.SHIELD, 10);
+    testHandCards.set(CARD_TYPE.SHIELD, 1);
     testHandCards.set(CARD_TYPE.DEATH_MATCH, 10);
     testHandCards.set(CARD_TYPE.GUERRILLA, 10);
     testHandCards.set(CARD_TYPE.BIG_BBANG, 10);
