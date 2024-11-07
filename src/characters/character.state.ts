@@ -54,11 +54,11 @@ export class CharacterStateInfo {
         break;
 
       case CharacterState.BBANG_SHOOTER:
-        this.nextState = CharacterState.NONE;
-        this.nextStateAt = Date.now() + BBANG_SECOND * 1000;
-        break;
-
       case CharacterState.BBANG_TARGET:
+      case CharacterState.BIG_BBANG_SHOOTER:
+      case CharacterState.BIG_BBANG_TARGET:
+      case CharacterState.GUERRILLA_SHOOTER:
+      case CharacterState.GUERRILLA_TARGET:
         this.nextState = CharacterState.NONE;
         this.nextStateAt = Date.now() + BBANG_SECOND * 1000;
         break;
