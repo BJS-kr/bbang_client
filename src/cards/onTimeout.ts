@@ -25,6 +25,7 @@ export function onBBangTimeoutTarget(damage, targetUser: User, room: Room) {
 
 export function onDeathMatchTurnTimeout(user: User, targetUser: User, room: Room) {
   return () => {
+    targetUser.character.takeDamage(1);
     user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
     targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
 
