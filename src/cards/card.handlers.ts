@@ -264,8 +264,6 @@ function isDeathMatchBBang(user: User, targetUser: User) {
 }
 
 function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  const damage = user.character.getBBangDamage();
-  targetUser.character.takeDamage(damage);
   user.character.stateInfo.setState(targetUser.id, CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(user.id, CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
