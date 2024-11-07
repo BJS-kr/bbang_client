@@ -21,7 +21,7 @@ import { AutoShield } from './shield.auto';
 import { User } from '../users/types';
 import { Shark } from '../characters/shark';
 import { DeathMatch } from './deathmatch';
-import { BigBBang } from './massacre';
+import { BigBBang } from './big.bbang';
 import { onBBangTimeoutShooter, onBBangTimeoutTarget, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout } from './onTimeout';
 import { Vaccine } from './vaccine';
 import { Call119 } from './call119';
@@ -320,7 +320,7 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
 }
 
 function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
-  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, null);
+  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   room.users.forEach((targetUser) => {
     user.id !== targetUser.id && handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);

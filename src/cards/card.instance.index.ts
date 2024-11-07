@@ -1,7 +1,7 @@
 import { CARD_TYPE } from '../constants/game';
 import { BBang } from './bbang';
 import { DeathMatch } from './deathmatch';
-import { BigBBang } from './massacre';
+import { BigBBang } from './big.bbang';
 import { Shield } from './shield';
 import { AutoShield } from './shield.auto';
 import { Vaccine } from './vaccine';
