@@ -5,7 +5,15 @@ import { MessageProps } from '../protobuf/props';
 import { Room } from '../rooms/types';
 import { User } from '../users/types';
 
-export function onBBangTimeout(damage, targetUser: User, room: Room) {
+export function onBBangTimeoutShooter(user: User, room: Room) {
+  return () => {
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [user.toUserData(user.id)],
+    } satisfies MessageProps<S2CUserUpdateNotification>);
+  };
+}
+
+export function onBBangTimeoutTarget(damage, targetUser: User, room: Room) {
   return () => {
     targetUser.character.takeDamage(damage);
 

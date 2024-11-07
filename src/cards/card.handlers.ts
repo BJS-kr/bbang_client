@@ -22,7 +22,7 @@ import { User } from '../users/types';
 import { Shark } from '../characters/shark';
 import { DeathMatch } from './deathmatch';
 import { BigBBang } from './massacre';
-import { onBBangTimeout, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout } from './onTimeout';
+import { onBBangTimeoutShooter, onBBangTimeoutTarget, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout } from './onTimeout';
 import { Vaccine } from './vaccine';
 import { Call119 } from './call119';
 import { Guerrilla } from './guerrilla';
@@ -224,10 +224,10 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   }
 
   user.character.acquireBBangCount();
-  user.character.stateInfo.setState(targetUser.id, CharacterState.BBANG_SHOOTER, null);
+  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   const damage = user.character.getBBangDamage();
-  targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
+  targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeoutTarget(damage, targetUser, room));
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
