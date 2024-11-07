@@ -29,9 +29,6 @@ export class CharacterStateInfo {
 
     switch (this.state) {
       case CharacterState.NONE:
-        if (prevOnStateTimeout) {
-          prevOnStateTimeout(prevState, state);
-        }
         this.nextState = CharacterState.NONE;
         this.nextStateAt = 0;
         this.resetTimer();
@@ -39,6 +36,9 @@ export class CharacterStateInfo {
 
       case CharacterState.FLEA_MARKET_TURN:
       case CharacterState.FLEA_MARKET_WAIT:
+        if (prevOnStateTimeout) {
+          prevOnStateTimeout(prevState, state);
+        }
         break;
 
       case CharacterState.BBANG_SHOOTER:
