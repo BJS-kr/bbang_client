@@ -297,7 +297,7 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
       break;
 
     default:
-      user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+      user.character.stateInfo.react(CharacterState.NONE);
       break;
   }
 

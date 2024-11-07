@@ -19,7 +19,19 @@ export class CharacterStateInfo {
     this.stateTargetUserId = '';
   }
 
-  setState(targetUserId, state: CharacterState, onStateTimeout: OnStateTimeout | null) {
+  react(state: CharacterState) {
+    const prevState = this.state;
+    this.state = state;
+    this.nextState = CharacterState.NONE;
+    this.nextStateAt = 0;
+    this.stateTargetUserId = '';
+
+    if (this.#onStateTimeout) {
+      this.#onStateTimeout(prevState, this.state);
+    }
+  }
+
+  setState(targetUserId: string, state: CharacterState, onStateTimeout: OnStateTimeout | null) {
     const prevState = this.state;
     const prevOnStateTimeout = this.#onStateTimeout;
 
