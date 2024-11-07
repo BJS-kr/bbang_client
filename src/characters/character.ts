@@ -124,8 +124,6 @@ export class Character extends EventEmitter {
   }
 
   takeDamage(amount: number) {
-    if (this.isDefended()) return 0;
-
     this.hp = Math.max(HP_MIN, this.hp - amount);
 
     return amount;
