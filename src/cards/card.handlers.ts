@@ -287,8 +287,18 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
   }
 
   user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+  const shooter = room.getUser(user.character.stateInfo.stateTargetUserId);
+  if (!shooter) {
+    error('handleShield: shooter not found');
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.SHIELD, [user], room, user);
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  shooter.character.stateInfo.setState(shooter.id, CharacterState.NONE, null);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SHIELD, [user, shooter], room, user);
 }
 
 function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {

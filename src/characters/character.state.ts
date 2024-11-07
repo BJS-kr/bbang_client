@@ -95,7 +95,7 @@ export class CharacterStateInfo {
       clearTimeout(this.#stateTimer);
     }
 
-    if (this.state === CharacterState.NONE || CharacterState.FLEA_MARKET_TURN || CharacterState.FLEA_MARKET_WAIT) {
+    if (this.state === CharacterState.NONE) {
       return;
     }
 
