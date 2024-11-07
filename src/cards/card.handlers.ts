@@ -1,7 +1,14 @@
 import { CARD_TYPE, PHASE_TYPE } from '../constants/game';
 import { CardProps, Character } from '../characters/character';
 import { CharacterState } from '../constants/game';
-import { C2SUseCardRequest, GlobalFailCode, S2CUserUpdateNotification } from '../protobuf/compiled';
+import {
+  C2SDestroyCardRequest,
+  C2SUseCardRequest,
+  CardData,
+  GlobalFailCode,
+  S2CDestroyCardResponse,
+  S2CUserUpdateNotification,
+} from '../protobuf/compiled';
 import { rooms } from '../rooms/rooms';
 import { writePayload } from '../protobuf/writePayload';
 import { MessageProps } from '../protobuf/props';
@@ -38,6 +45,8 @@ import { SatelliteTarget } from './satellite.target';
 import { HandGun } from './handgun';
 import { DesertEagle } from './deserteagle';
 import { AutoRifle } from './autorifle';
+import { Context } from '../events/types';
+import { Socket } from 'node:net';
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -478,4 +487,35 @@ function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user
   user.character.debuffs.add(CARD_TYPE.BOMB);
   room.gameEvents.bombUsers.push(user);
   responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user);
+}
+
+export function handleDestroyCard(socket: Socket, version: string, sequence: number, cardDestroyRequest: C2SDestroyCardRequest, ctx: Context) {
+  if (!ctx.roomId || !ctx.userId) {
+    error('handleDestroyCard: roomId or userId not found');
+    return;
+  }
+  const room = rooms.getRoom(ctx.roomId);
+
+  if (!room) {
+    error('handleDestroyCard: room not found');
+    return;
+  }
+
+  const user = room.getUser(ctx.userId);
+
+  if (!user) {
+    error('handleDestroyCard: user not found');
+    return;
+  }
+
+  for (const card of cardDestroyRequest.destroyCards) {
+    if (!card.type || !card.count) {
+      continue;
+    }
+    user.character.loseCard({ type: card.type, count: card.count });
+  }
+
+  writePayload(socket, PACKET_TYPE.DESTROY_CARD_RESPONSE, version, sequence, {
+    handCards: Array.from(user.character.handCards.entries()).map(([type, count]) => ({ type, count })),
+  } satisfies MessageProps<S2CDestroyCardResponse>);
 }
