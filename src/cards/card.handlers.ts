@@ -312,11 +312,8 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
 function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, null);
 
-  const damage = user.character.getBBangDamage();
   room.users.forEach((targetUser) => {
-    user.id !== targetUser.id &&
-      targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeout(damage, targetUser, room));
-    handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
+    user.id !== targetUser.id && handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user);
