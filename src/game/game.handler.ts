@@ -12,6 +12,7 @@ import {
   S2CPositionUpdateNotification,
   S2CPositionUpdateResponse,
   S2CReactionResponse,
+  S2CUserUpdateNotification,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../protobuf/writePayload';
@@ -259,13 +260,40 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
     } satisfies MessageProps<S2CReactionResponse>);
   }
 
-  // TODO 리액션 종류 더.. 추가되면 그때 분기처리...
-  const nextState = user.character.stateInfo.state === CharacterState.FLEA_MARKET_TURN ? CharacterState.FLEA_MARKET_WAIT : CharacterState.NONE;
-  user.character.stateInfo.setState(user.id, nextState, null);
-  return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
+  switch (user.character.stateInfo.state) {
+    case CharacterState.FLEA_MARKET_TURN:
+      const remainCardTypes = room.fleaMarketCards.map((_, index) => index).filter((index) => !room.pickFleaMarketIndex.includes(index));
+      if (remainCardTypes.length <= 0) {
+        return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
+          success: false,
+          failCode: GlobalFailCode.INVALID_REQUEST,
+        } satisfies MessageProps<S2CReactionResponse>);
+      }
+
+      const randomIndex = remainCardTypes[Math.floor(Math.random() * remainCardTypes.length)];
+      user.character.acquireCard({ type: room.fleaMarketCards[randomIndex], count: 1 });
+      room.pickFleaMarketIndex.push(randomIndex);
+
+      room.broadcast(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, {
+        cardTypes: room.fleaMarketCards,
+        pickIndex: room.pickFleaMarketIndex,
+      } satisfies MessageProps<S2CFleaMarketNotification>);
+      user.character.stateInfo.setState(user.id, CharacterState.FLEA_MARKET_WAIT, null);
+      break;
+
+    default:
+      user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+      break;
+  }
+
+  writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE,
   } satisfies MessageProps<S2CReactionResponse>);
+
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+    user: room.users.map((user) => user.toUserData(user.id)),
+  } satisfies MessageProps<S2CUserUpdateNotification>);
 };
 
 export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarketPickRequest, ctx: Context) => {
