@@ -10,7 +10,7 @@ export function writePayload(socket, packetType: number, version: string, sequen
     return error(encodedPayload);
   }
 
-  if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION) {
+  if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION && packetType !== PACKET_TYPE.POSITION_UPDATE_RESPONSE) {
     log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
   }
 
