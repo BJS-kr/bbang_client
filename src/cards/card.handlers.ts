@@ -289,7 +289,7 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
   user.character.stateInfo.setState(targetUser.id, CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(user.id, CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
 }
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
