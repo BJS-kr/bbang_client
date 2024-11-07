@@ -148,7 +148,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
       case PACKET_TYPE.REACTION_REQUEST:
         const reactionRequest = decodePayload(packetType, payloadBuffer);
         log(`reactionRequest: ${JSON.stringify(reactionRequest)}`);
-        await reactionHandler(socket, version, sequence, ctx, reactionRequest);
+        await reactionHandler(socket, version, sequence, reactionRequest, ctx);
         break;
 
       case PACKET_TYPE.FLEA_MARKET_PICK_REQUEST:
