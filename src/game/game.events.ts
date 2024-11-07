@@ -29,9 +29,11 @@ export class GameEvents extends EventEmitter {
         user.character.setPosition(suhfflePositions[index]);
         const handCardCount = user.character.getTotalHandCardCount();
         const removeCount = handCardCount - user.character.hp;
-        if (removeCount > 0) {
-          user.character.loseRandomCards(removeCount);
-        }
+        // TODO 테스트를 위해 주석화 했으므로 다시 살려야 함!!!!!!
+        // if (removeCount > 0) {
+        //   user.character.loseRandomCards(removeCount);
+        // }
+        // TODO 여기까지 다시 살려야 함!!!!!!
         for (let i = 0; i < DAILY_CARD_COUNT; i++) {
           const card = { type: pickRandomCardType(), count: 1 };
           user.character.acquireCard(card);
