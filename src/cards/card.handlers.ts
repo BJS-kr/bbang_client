@@ -214,6 +214,7 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
     } satisfies UseCardResponse);
   }
 
+  log(`[handleBBang] user: ${JSON.stringify(user.character, null, 2)} | targetUser: ${JSON.stringify(targetUser.character, null, 2)}`);
   if (isGuerrillaTargetBBang(user)) {
     // 게릴라 타겟이 된 경우 빵으로 자신을 방어할 수 있다.
     return handleGuerrillaTargetBBang({ socket, version, sequence, ctx }, user, targetUser, room);
