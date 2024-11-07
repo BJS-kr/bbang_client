@@ -24,7 +24,16 @@ export class CharacterStateInfo {
 
     // 상태 변경 전에 이전 상태에 대한 timeout 처리
     if (this.#onStateTimeout) {
-      this.#onStateTimeout(prevState, state);
+      switch (state) {
+        case CharacterState.NONE:
+        case CharacterState.FLEA_MARKET_WAIT:
+        case CharacterState.FLEA_MARKET_TURN:
+          this.#onStateTimeout(prevState, state);
+          break;
+
+        default:
+          break;
+      }
     }
 
     this.state = state;
