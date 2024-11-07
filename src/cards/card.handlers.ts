@@ -319,11 +319,11 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
   responseSuccess(socket, version, sequence, CARD_TYPE.DEATH_MATCH, [user, targetUser], room, user);
 }
 
-function handleBigBBang({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
+function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   room.users.forEach((targetUser) => {
-    user.id !== targetUser.id && handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
+    targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user);
