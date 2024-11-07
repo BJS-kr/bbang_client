@@ -151,6 +151,12 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         await reactionHandler(socket, version, sequence, ctx, reactionRequest);
         break;
 
+      case PACKET_TYPE.FLEA_MARKET_PICK_REQUEST:
+        const fleaMarketPickRequest = decodePayload(packetType, payloadBuffer);
+        log(`fleaMarketPickRequest ${JSON.stringify(fleaMarketPickRequest)}`);
+        await fleaMarketPickRequest(socket, version, sequence, ctx, fleaMarketPickRequest);
+        break;
+
       default:
         error(`Unhandled packet type: ${packetType}`);
     }
