@@ -87,7 +87,8 @@ export class CharacterStateInfo {
     if (this.#stateTimer) {
       clearTimeout(this.#stateTimer);
     }
-    this.#onStateTimeout = () => {};
+    this.#stateTimer = null;
+    this.#onStateTimeout = null;
   }
 
   #startStateTimer() {
