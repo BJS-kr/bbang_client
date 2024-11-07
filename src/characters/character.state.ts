@@ -21,24 +21,16 @@ export class CharacterStateInfo {
 
   setState(targetUserId, state: CharacterState, onStateTimeout: OnStateTimeout | null) {
     const prevState = this.state;
-
-    // 상태 변경 전에 이전 상태에 대한 timeout 처리
-    if (this.#onStateTimeout) {
-      switch (state) {
-        case CharacterState.NONE:
-        case CharacterState.FLEA_MARKET_WAIT:
-        case CharacterState.FLEA_MARKET_TURN:
-          this.#onStateTimeout(prevState, state);
-          break;
-
-        default:
-          break;
-      }
-    }
+    const prevOnStateTimeout = this.#onStateTimeout;
 
     this.state = state;
     this.stateTargetUserId = targetUserId;
     this.#onStateTimeout = onStateTimeout;
+
+    // 상태 변경 전에 이전 상태에 대한 timeout 처리
+    if (prevOnStateTimeout && !onStateTimeout) {
+      prevOnStateTimeout(prevState, state);
+    }
 
     switch (this.state) {
       case CharacterState.NONE:
