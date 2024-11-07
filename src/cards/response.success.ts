@@ -5,10 +5,19 @@ import { Room } from '../rooms/types';
 import { UseCardNotification, UseCardResponse, UserUpdateNotification } from './types';
 import { PACKET_TYPE } from '../constants/packetType';
 import { CARD_TYPE } from '../constants/game';
+
 import { writePayload } from '../protobuf/writePayload';
 import { Socket } from 'node:net';
 
-export function responseSuccess(socket: Socket, version: string, sequence: number, cardType: CARD_TYPE, targetUsers: User[], room: Room, user: User) {
+export function responseSuccess(
+  socket: Socket,
+  version: string,
+  sequence: number,
+  cardType: CARD_TYPE | (typeof PACKET_TYPE)[keyof typeof PACKET_TYPE],
+  targetUsers: User[],
+  room: Room,
+  user: User,
+) {
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE,

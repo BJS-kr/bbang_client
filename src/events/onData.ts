@@ -13,7 +13,7 @@ import {
   leaveRoomRequestHandler,
 } from '../rooms/roomHandler';
 import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateRequestHandler, reactionHandler } from '../game/game.handler';
-import { handleUseCard } from '../cards/card.handlers';
+import { handleDestroyCard, handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
   buf = Buffer.concat([buf, data]);
@@ -155,6 +155,13 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         const fleaMarketPickRequest = decodePayload(packetType, payloadBuffer);
         log(`fleaMarketPickRequest ${JSON.stringify(fleaMarketPickRequest)}`);
         await fleaMarketPickRequest(socket, version, sequence, ctx, fleaMarketPickRequest);
+        break;
+
+      case PACKET_TYPE.DESTROY_CARD_REQUEST:
+        const destroyCardRequest = decodePayload(packetType, payloadBuffer);
+        log(`destroyCardRequest: ${JSON.stringify(destroyCardRequest)}`);
+        await handleDestroyCard(socket, version, sequence, destroyCardRequest, ctx);
+
         break;
 
       default:
