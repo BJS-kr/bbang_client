@@ -16,5 +16,5 @@ process.on('unhandledRejection', (reason, promise) => {
 const server = net.createServer(onConnection);
 
 server.listen(config.server.port, config.server.host, 10, () => {
-  log(`Server running: ${JSON.stringify(server.address())}`);
+  log(`Server running: ${JSON.stringify(server.address(), null, 2)}`);
 });

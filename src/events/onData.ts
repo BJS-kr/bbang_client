@@ -71,62 +71,62 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
 
       case PACKET_TYPE.REGISTER_REQUEST:
         const registerRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|registerRequest: ${JSON.stringify(registerRequest)}`);
+        log(`${ctx.userId}|registerRequest: ${JSON.stringify(registerRequest, null, 2)}`);
         await registerRequestHandler(socket, version, sequence, registerRequest);
 
         break;
 
       case PACKET_TYPE.LOGIN_REQUEST:
         const loginRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|loginRequest: ${JSON.stringify(loginRequest)}`);
+        log(`${ctx.userId}|loginRequest: ${JSON.stringify(loginRequest, null, 2)}`);
         await loginRequestHandler(socket, version, sequence, loginRequest, ctx);
 
         break;
 
       case PACKET_TYPE.CREATE_ROOM_REQUEST:
         const createRoomRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|createRoomRequest: ${JSON.stringify(createRoomRequest)}`);
+        log(`${ctx.userId}|createRoomRequest: ${JSON.stringify(createRoomRequest, null, 2)}`);
         await createRoomRequestHandler(socket, version, sequence, createRoomRequest, ctx);
 
         break;
 
       case PACKET_TYPE.JOIN_ROOM_REQUEST:
         const joinRoomRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|joinRoomRequest: ${JSON.stringify(joinRoomRequest)}`);
+        log(`${ctx.userId}|joinRoomRequest: ${JSON.stringify(joinRoomRequest, null, 2)}`);
         await joinRoomRequestHandler(socket, version, sequence, joinRoomRequest, ctx);
 
         break;
 
       case PACKET_TYPE.JOIN_RANDOM_ROOM_REQUEST:
         const joinRandomRoomRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|joinRandomRoomRequest: ${JSON.stringify(joinRandomRoomRequest)}`);
+        log(`${ctx.userId}|joinRandomRoomRequest: ${JSON.stringify(joinRandomRoomRequest, null, 2)}`);
         await joinRandomRoomRequestHandler(socket, version, sequence, joinRandomRoomRequest, ctx);
 
         break;
 
       case PACKET_TYPE.LEAVE_ROOM_REQUEST:
         const leaveRoomRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|leaveRoomRequest: ${JSON.stringify(leaveRoomRequest)}`);
+        log(`${ctx.userId}|leaveRoomRequest: ${JSON.stringify(leaveRoomRequest, null, 2)}`);
         await leaveRoomRequestHandler(socket, version, sequence, leaveRoomRequest, ctx);
 
         break;
       case PACKET_TYPE.GET_ROOM_LIST_REQUEST:
         const getRoomListRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|getRoomListRequest: ${JSON.stringify(getRoomListRequest)}`);
+        log(`${ctx.userId}|getRoomListRequest: ${JSON.stringify(getRoomListRequest, null, 2)}`);
         await getRoomListRequestHandler(socket, version, sequence, getRoomListRequest, ctx);
 
         break;
 
       case PACKET_TYPE.GAME_PREPARE_REQUEST:
         const gamePrepareRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|gamePrepareRequest: ${JSON.stringify(gamePrepareRequest)}`);
+        log(`${ctx.userId}|gamePrepareRequest: ${JSON.stringify(gamePrepareRequest, null, 2)}`);
         await gamePrepareRequestHandler(socket, version, sequence, gamePrepareRequest, ctx);
 
         break;
 
       case PACKET_TYPE.GAME_START_REQUEST:
         const gameStartRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|gameStartRequest: ${JSON.stringify(gameStartRequest)}`);
+        log(`${ctx.userId}|gameStartRequest: ${JSON.stringify(gameStartRequest, null, 2)}`);
         await gameStartRequestHandler(socket, version, sequence, gameStartRequest, ctx);
 
         break;
@@ -140,26 +140,26 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
 
       case PACKET_TYPE.USE_CARD_REQUEST:
         const useCardRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|useCardRequest: ${JSON.stringify(useCardRequest)}`);
+        log(`${ctx.userId}|useCardRequest: ${JSON.stringify(useCardRequest, null, 2)}`);
         await handleUseCard({ socket, version, sequence, ctx }, useCardRequest);
 
         break;
 
       case PACKET_TYPE.REACTION_REQUEST:
         const reactionRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|reactionRequest: ${JSON.stringify(reactionRequest)}`);
+        log(`${ctx.userId}|reactionRequest: ${JSON.stringify(reactionRequest, null, 2)}`);
         await reactionHandler(socket, version, sequence, reactionRequest, ctx);
         break;
 
       case PACKET_TYPE.FLEA_MARKET_PICK_REQUEST:
         const fleaMarketPickRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|fleaMarketPickRequest ${JSON.stringify(fleaMarketPickRequest)}`);
+        log(`${ctx.userId}|fleaMarketPickRequest ${JSON.stringify(fleaMarketPickRequest, null, 2)}`);
         await fleaMarketPickRequest(socket, version, sequence, ctx, fleaMarketPickRequest);
         break;
 
       case PACKET_TYPE.DESTROY_CARD_REQUEST:
         const destroyCardRequest = decodePayload(packetType, payloadBuffer);
-        log(`${ctx.userId}|destroyCardRequest: ${JSON.stringify(destroyCardRequest)}`);
+        log(`${ctx.userId}|destroyCardRequest: ${JSON.stringify(destroyCardRequest, null, 2)}`);
         await handleDestroyCard(socket, version, sequence, destroyCardRequest, ctx);
 
         break;

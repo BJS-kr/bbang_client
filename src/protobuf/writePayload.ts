@@ -4,14 +4,13 @@ import { PACKET_TYPE_LENGTH, PACKET_VERSION_LENGTH, SEQUENCE_LENGTH, PAYLOAD_LEN
 import { PACKET_TYPE } from '../constants/packetType';
 
 export function writePayload(socket, packetType: number, version: string, sequence: number, payload) {
-  // log(`writePayload: ${JSON.stringify(payload, (key, value) => (key === 'socket' ? undefined : value))}`);
   const encodedPayload = encodePayload(packetType, payload);
   if (encodedPayload instanceof Error) {
     return error(encodedPayload);
   }
 
   if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION && packetType !== PACKET_TYPE.POSITION_UPDATE_RESPONSE) {
-    log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload))}`);
+    log(`decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload), null, 2)}`);
   }
 
   const packet = createPacket(packetType, version, sequence, encodedPayload);
