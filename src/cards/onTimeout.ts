@@ -65,3 +65,11 @@ export function onGuerillaTargetTimeout(targetUser: User, room: Room) {
     } satisfies MessageProps<S2CUserUpdateNotification>);
   };
 }
+
+export function onGuerillaShooterTimeout(user: User, room: Room) {
+  return () => {
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [user.toUserData(user.id)],
+    } satisfies MessageProps<S2CUserUpdateNotification>);
+  };
+}
