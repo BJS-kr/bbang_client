@@ -27,16 +27,18 @@ export class CharacterStateInfo {
     this.stateTargetUserId = targetUserId;
     this.#onStateTimeout = onStateTimeout;
 
-    // 상태 변경 전에 이전 상태에 대한 timeout 처리
-    if (prevOnStateTimeout) {
-      prevOnStateTimeout(prevState, state);
-    }
-
     switch (this.state) {
       case CharacterState.NONE:
         this.nextState = CharacterState.NONE;
         this.nextStateAt = 0;
         this.resetTimer();
+        break;
+
+      case CharacterState.FLEA_MARKET_TURN:
+      case CharacterState.FLEA_MARKET_WAIT:
+        if (prevOnStateTimeout) {
+          prevOnStateTimeout(prevState, state);
+        }
         break;
 
       case CharacterState.BBANG_SHOOTER:
