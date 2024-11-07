@@ -125,6 +125,10 @@ export enum CharacterState {
   DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
   FLEA_MARKET_TURN = 5, // 플리마켓 자신의 턴
   FLEA_MARKET_WAIT = 6, // 플리마켓 턴 대기 상태
+  GUERRILLA_SHOOTER = 7, // 게릴라 시전자
+  GUERRILLA_TARGET = 8, // 게릴라 대상
+  BIG_BBANG_SHOOTER = 9, // 난사 시전자
+  BIG_BBANG_TARGET = 10, // 난사 대상
 }
 
 export const DAILY_CARD_COUNT = 2;

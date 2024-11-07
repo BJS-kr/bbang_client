@@ -55,3 +55,13 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
     } satisfies MessageProps<S2CUserUpdateNotification>);
   };
 }
+
+export function onGuerillaTargetTimeout(targetUser: User, room: Room) {
+  return () => {
+    targetUser.character.takeDamage(1);
+    targetUser.character.stateInfo.setState('', CharacterState.NONE, null);
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: [targetUser.toUserData(targetUser.id)],
+    } satisfies MessageProps<S2CUserUpdateNotification>);
+  };
+}

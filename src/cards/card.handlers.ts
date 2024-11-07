@@ -22,7 +22,7 @@ import { User } from '../users/types';
 import { Shark } from '../characters/shark';
 import { DeathMatch } from './deathmatch';
 import { BigBBang } from './big.bbang';
-import { onBBangTimeoutShooter, onBBangTimeoutTarget, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout } from './onTimeout';
+import { onBBangTimeoutShooter, onBBangTimeoutTarget, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout, onGuerillaTargetTimeout } from './onTimeout';
 import { Vaccine } from './vaccine';
 import { Call119 } from './call119';
 import { Guerrilla } from './guerrilla';
@@ -320,10 +320,10 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
 }
 
 function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
+  user.character.stateInfo.setState(user.id, CharacterState.BIG_BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   room.users.forEach((targetUser) => {
-    targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
+    targetUser.character.stateInfo.setState(user.id, CharacterState.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user);
@@ -349,7 +349,9 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
 
 function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   room.users.forEach((targetUser) => {
-    user.id !== targetUser.id && targetUser.character.takeDamage(1);
+    user.id !== targetUser.id
+      ? targetUser.character.stateInfo.setState(user.id, CharacterState.GUERRILLA_TARGET, onGuerillaTargetTimeout(targetUser, room))
+      : user.character.stateInfo.setState(user.id, CharacterState.GUERRILLA_SHOOTER, null);
   });
 
   responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user);
