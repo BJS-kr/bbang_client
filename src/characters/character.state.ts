@@ -29,14 +29,16 @@ export class CharacterStateInfo {
 
     switch (this.state) {
       case CharacterState.NONE:
-      case CharacterState.FLEA_MARKET_TURN:
-      case CharacterState.FLEA_MARKET_WAIT:
         if (prevOnStateTimeout) {
           prevOnStateTimeout(prevState, state);
         }
         this.nextState = CharacterState.NONE;
         this.nextStateAt = 0;
         this.resetTimer();
+        break;
+
+      case CharacterState.FLEA_MARKET_TURN:
+      case CharacterState.FLEA_MARKET_WAIT:
         break;
 
       case CharacterState.BBANG_SHOOTER:
@@ -81,7 +83,7 @@ export class CharacterStateInfo {
       clearTimeout(this.#stateTimer);
     }
 
-    if (this.state === CharacterState.NONE) {
+    if (this.state === CharacterState.NONE || CharacterState.FLEA_MARKET_TURN || CharacterState.FLEA_MARKET_WAIT) {
       return;
     }
 

@@ -34,8 +34,11 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
       room.users.forEach((user) => user.character.stateInfo.setState(user.id, CharacterState.NONE, null));
     } else {
       const nextIndex = userIndex + 1;
-      room.users[userIndex].character.stateInfo.setState(room.users[userIndex].id, CharacterState.FLEA_MARKET_WAIT, null);
-      room.users[nextIndex].character.stateInfo.setState(room.users[nextIndex].id, CharacterState.FLEA_MARKET_TURN, null);
+      room.users[nextIndex].character.stateInfo.setState(
+        room.users[nextIndex].id,
+        CharacterState.FLEA_MARKET_TURN,
+        onFleaMarketTurnTimeout(user, room),
+      );
     }
 
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {

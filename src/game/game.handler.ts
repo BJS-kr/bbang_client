@@ -292,6 +292,7 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
         cardTypes: room.fleaMarketCards,
         pickIndex: room.pickFleaMarketIndex,
       } satisfies MessageProps<S2CFleaMarketNotification>);
+
       user.character.stateInfo.setState(user.id, CharacterState.FLEA_MARKET_WAIT, null);
       break;
 
