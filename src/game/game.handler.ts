@@ -168,11 +168,31 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   room.users.forEach((user) => {
     const testHandCards = new Map();
 
-    testHandCards.set(CARD_TYPE.BBANG, 10);
+    testHandCards.set(CARD_TYPE.BBANG, 1);
+    testHandCards.set(CARD_TYPE.BIG_BBANG, 1);
     testHandCards.set(CARD_TYPE.SHIELD, 1);
-    testHandCards.set(CARD_TYPE.DEATH_MATCH, 10);
-    testHandCards.set(CARD_TYPE.GUERRILLA, 10);
-    testHandCards.set(CARD_TYPE.BIG_BBANG, 10);
+    testHandCards.set(CARD_TYPE.VACCINE, 1);
+    testHandCards.set(CARD_TYPE.CALL_119, 1);
+    testHandCards.set(CARD_TYPE.DEATH_MATCH, 1);
+    testHandCards.set(CARD_TYPE.GUERRILLA, 1);
+    testHandCards.set(CARD_TYPE.DEATH_MATCH, 1);
+    testHandCards.set(CARD_TYPE.GUERRILLA, 1);
+    testHandCards.set(CARD_TYPE.ABSORB, 1);
+    testHandCards.set(CARD_TYPE.HALLUCINATION, 1);
+    testHandCards.set(CARD_TYPE.FLEA_MARKET, 1);
+    testHandCards.set(CARD_TYPE.MATURED_SAVINGS, 1);
+    testHandCards.set(CARD_TYPE.WIN_LOTTERY, 1);
+    testHandCards.set(CARD_TYPE.SNIPER_GUN, 1);
+    testHandCards.set(CARD_TYPE.HAND_GUN, 1);
+    testHandCards.set(CARD_TYPE.DESERT_EAGLE, 1);
+    testHandCards.set(CARD_TYPE.AUTO_RIFLE, 1);
+    testHandCards.set(CARD_TYPE.LASER_POINTER, 1);
+    testHandCards.set(CARD_TYPE.RADAR, 1);
+    testHandCards.set(CARD_TYPE.AUTO_SHIELD, 1);
+    testHandCards.set(CARD_TYPE.STEALTH_SUIT, 1);
+    testHandCards.set(CARD_TYPE.CONTAINMENT_UNIT, 1);
+    testHandCards.set(CARD_TYPE.SATELLITE_TARGET, 1);
+    testHandCards.set(CARD_TYPE.BOMB, 1);
 
     user.character.handCards = testHandCards;
   });
