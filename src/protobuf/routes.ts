@@ -121,9 +121,25 @@ export const protoRoutes = {
     requestType: 'S2CCardEffectNotification',
     payloadKey: 'cardEffectNotification',
   },
+  [PACKET_TYPE.FLEA_MARKET_NOTIFICATION]: {
+    requestType: 'S2CFleaMarketNotification',
+    payloadKey: 'fleaMarketNotification',
+  },
+  [PACKET_TYPE.FLEA_MARKET_PICK_REQUEST]: {
+    requestType: 'C2SFleaMarketPickRequest',
+    payloadKey: 'fleaMarketPickRequest',
+  },
+  [PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE]: {
+    requestType: 'S2CFleaMarketPickResponse',
+    payloadKey: 'fleaMarketPickResponse',
+  },
   [PACKET_TYPE.USER_UPDATE_NOTIFICATION]: {
     requestType: 'S2CUserUpdateNotification',
     payloadKey: 'userUpdateNotification',
+  },
+  [PACKET_TYPE.PHASE_UPDATE_NOTIFICATION]: {
+    requestType: 'S2CPhaseUpdateNotification',
+    payloadKey: 'phaseUpdateNotification',
   },
   [PACKET_TYPE.REACTION_REQUEST]: {
     requestType: 'C2SReactionRequest',
@@ -132,10 +148,6 @@ export const protoRoutes = {
   [PACKET_TYPE.REACTION_RESPONSE]: {
     requestType: 'S2CReactionResponse',
     payloadKey: 'reactionResponse',
-  },
-  [PACKET_TYPE.PHASE_UPDATE_NOTIFICATION]: {
-    requestType: 'S2CPhaseUpdateNotification',
-    payloadKey: 'phaseUpdateNotification',
   },
   [PACKET_TYPE.DESTROY_CARD_REQUEST]: {
     requestType: 'C2SDestroyCardRequest',

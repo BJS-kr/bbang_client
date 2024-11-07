@@ -7,6 +7,7 @@ import { GameEvents } from '../game/game.events';
 import { PACKET_TYPE } from '../constants/packetType';
 import { S2CPositionUpdateNotification } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
+import { pickRandomCardType } from '../cards/pickRandomCard';
 
 export enum RoomState {
   WAIT = 0,
@@ -22,6 +23,8 @@ export class Room {
   state: RoomState;
   gameState: GameState;
   gameEvents: GameEvents;
+  fleaMarketCards: number[];
+  pickFleaMarketIndex: number[];
   positionBroadcastTimer: NodeJS.Timeout | null;
 
   constructor({
@@ -48,6 +51,8 @@ export class Room {
     this.state = state;
     this.gameState = gameState;
     this.gameEvents = gameEvents;
+    this.fleaMarketCards = [];
+    this.pickFleaMarketIndex = [];
     this.positionBroadcastTimer = null;
   }
 
@@ -83,6 +88,14 @@ export class Room {
     for (const user of this.users) {
       user.character.stateInfo.resetTimer();
     }
+  }
+
+  initFleaMarketCards() {
+    for (let i = 0; i < this.users.length; i++) {
+      const randomCardType = pickRandomCardType();
+      this.fleaMarketCards.push(randomCardType);
+    }
+    this.pickFleaMarketIndex = [];
   }
 
   startPositionBroadcast() {

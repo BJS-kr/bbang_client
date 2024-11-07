@@ -123,6 +123,8 @@ export enum CharacterState {
   BBANG_TARGET = 2, // 빵야 대상 (쉴드 사용가능 상태)
   DEATH_MATCH = 3, // 현피 중 자신의 턴이 아닐 때
   DEATH_MATCH_TURN = 4, // 현피 중 자신의 턴
+  FLEA_MARKET_TURN = 5, // 플리마켓 자신의 턴
+  FLEA_MARKET_WAIT = 6, // 플리마켓 턴 대기 상태
 }
 
 export const DAILY_CARD_COUNT = 2;

@@ -9771,6 +9771,800 @@ $root.S2CCardEffectNotification = (function() {
     return S2CCardEffectNotification;
 })();
 
+$root.S2CFleaMarketNotification = (function() {
+
+    /**
+     * Properties of a S2CFleaMarketNotification.
+     * @exports IS2CFleaMarketNotification
+     * @interface IS2CFleaMarketNotification
+     * @property {Array.<number>|null} [cardTypes] S2CFleaMarketNotification cardTypes
+     * @property {Array.<number>|null} [pickIndex] S2CFleaMarketNotification pickIndex
+     */
+
+    /**
+     * Constructs a new S2CFleaMarketNotification.
+     * @exports S2CFleaMarketNotification
+     * @classdesc Represents a S2CFleaMarketNotification.
+     * @implements IS2CFleaMarketNotification
+     * @constructor
+     * @param {IS2CFleaMarketNotification=} [properties] Properties to set
+     */
+    function S2CFleaMarketNotification(properties) {
+        this.cardTypes = [];
+        this.pickIndex = [];
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CFleaMarketNotification cardTypes.
+     * @member {Array.<number>} cardTypes
+     * @memberof S2CFleaMarketNotification
+     * @instance
+     */
+    S2CFleaMarketNotification.prototype.cardTypes = $util.emptyArray;
+
+    /**
+     * S2CFleaMarketNotification pickIndex.
+     * @member {Array.<number>} pickIndex
+     * @memberof S2CFleaMarketNotification
+     * @instance
+     */
+    S2CFleaMarketNotification.prototype.pickIndex = $util.emptyArray;
+
+    /**
+     * Creates a new S2CFleaMarketNotification instance using the specified properties.
+     * @function create
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {IS2CFleaMarketNotification=} [properties] Properties to set
+     * @returns {S2CFleaMarketNotification} S2CFleaMarketNotification instance
+     */
+    S2CFleaMarketNotification.create = function create(properties) {
+        return new S2CFleaMarketNotification(properties);
+    };
+
+    /**
+     * Encodes the specified S2CFleaMarketNotification message. Does not implicitly {@link S2CFleaMarketNotification.verify|verify} messages.
+     * @function encode
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {IS2CFleaMarketNotification} message S2CFleaMarketNotification message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CFleaMarketNotification.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.cardTypes != null && message.cardTypes.length) {
+            writer.uint32(/* id 1, wireType 2 =*/10).fork();
+            for (var i = 0; i < message.cardTypes.length; ++i)
+                writer.int32(message.cardTypes[i]);
+            writer.ldelim();
+        }
+        if (message.pickIndex != null && message.pickIndex.length) {
+            writer.uint32(/* id 2, wireType 2 =*/18).fork();
+            for (var i = 0; i < message.pickIndex.length; ++i)
+                writer.int32(message.pickIndex[i]);
+            writer.ldelim();
+        }
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CFleaMarketNotification message, length delimited. Does not implicitly {@link S2CFleaMarketNotification.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {IS2CFleaMarketNotification} message S2CFleaMarketNotification message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CFleaMarketNotification.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CFleaMarketNotification message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CFleaMarketNotification} S2CFleaMarketNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CFleaMarketNotification.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CFleaMarketNotification();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    if (!(message.cardTypes && message.cardTypes.length))
+                        message.cardTypes = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.cardTypes.push(reader.int32());
+                    } else
+                        message.cardTypes.push(reader.int32());
+                    break;
+                }
+            case 2: {
+                    if (!(message.pickIndex && message.pickIndex.length))
+                        message.pickIndex = [];
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.pickIndex.push(reader.int32());
+                    } else
+                        message.pickIndex.push(reader.int32());
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CFleaMarketNotification message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CFleaMarketNotification} S2CFleaMarketNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CFleaMarketNotification.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CFleaMarketNotification message.
+     * @function verify
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CFleaMarketNotification.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.cardTypes != null && message.hasOwnProperty("cardTypes")) {
+            if (!Array.isArray(message.cardTypes))
+                return "cardTypes: array expected";
+            for (var i = 0; i < message.cardTypes.length; ++i)
+                if (!$util.isInteger(message.cardTypes[i]))
+                    return "cardTypes: integer[] expected";
+        }
+        if (message.pickIndex != null && message.hasOwnProperty("pickIndex")) {
+            if (!Array.isArray(message.pickIndex))
+                return "pickIndex: array expected";
+            for (var i = 0; i < message.pickIndex.length; ++i)
+                if (!$util.isInteger(message.pickIndex[i]))
+                    return "pickIndex: integer[] expected";
+        }
+        return null;
+    };
+
+    /**
+     * Creates a S2CFleaMarketNotification message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CFleaMarketNotification} S2CFleaMarketNotification
+     */
+    S2CFleaMarketNotification.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CFleaMarketNotification)
+            return object;
+        var message = new $root.S2CFleaMarketNotification();
+        if (object.cardTypes) {
+            if (!Array.isArray(object.cardTypes))
+                throw TypeError(".S2CFleaMarketNotification.cardTypes: array expected");
+            message.cardTypes = [];
+            for (var i = 0; i < object.cardTypes.length; ++i)
+                message.cardTypes[i] = object.cardTypes[i] | 0;
+        }
+        if (object.pickIndex) {
+            if (!Array.isArray(object.pickIndex))
+                throw TypeError(".S2CFleaMarketNotification.pickIndex: array expected");
+            message.pickIndex = [];
+            for (var i = 0; i < object.pickIndex.length; ++i)
+                message.pickIndex[i] = object.pickIndex[i] | 0;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CFleaMarketNotification message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {S2CFleaMarketNotification} message S2CFleaMarketNotification
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CFleaMarketNotification.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults) {
+            object.cardTypes = [];
+            object.pickIndex = [];
+        }
+        if (message.cardTypes && message.cardTypes.length) {
+            object.cardTypes = [];
+            for (var j = 0; j < message.cardTypes.length; ++j)
+                object.cardTypes[j] = message.cardTypes[j];
+        }
+        if (message.pickIndex && message.pickIndex.length) {
+            object.pickIndex = [];
+            for (var j = 0; j < message.pickIndex.length; ++j)
+                object.pickIndex[j] = message.pickIndex[j];
+        }
+        return object;
+    };
+
+    /**
+     * Converts this S2CFleaMarketNotification to JSON.
+     * @function toJSON
+     * @memberof S2CFleaMarketNotification
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CFleaMarketNotification.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CFleaMarketNotification
+     * @function getTypeUrl
+     * @memberof S2CFleaMarketNotification
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CFleaMarketNotification.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CFleaMarketNotification";
+    };
+
+    return S2CFleaMarketNotification;
+})();
+
+$root.C2SFleaMarketPickRequest = (function() {
+
+    /**
+     * Properties of a C2SFleaMarketPickRequest.
+     * @exports IC2SFleaMarketPickRequest
+     * @interface IC2SFleaMarketPickRequest
+     * @property {number|null} [pickIndex] C2SFleaMarketPickRequest pickIndex
+     */
+
+    /**
+     * Constructs a new C2SFleaMarketPickRequest.
+     * @exports C2SFleaMarketPickRequest
+     * @classdesc Represents a C2SFleaMarketPickRequest.
+     * @implements IC2SFleaMarketPickRequest
+     * @constructor
+     * @param {IC2SFleaMarketPickRequest=} [properties] Properties to set
+     */
+    function C2SFleaMarketPickRequest(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * C2SFleaMarketPickRequest pickIndex.
+     * @member {number} pickIndex
+     * @memberof C2SFleaMarketPickRequest
+     * @instance
+     */
+    C2SFleaMarketPickRequest.prototype.pickIndex = 0;
+
+    /**
+     * Creates a new C2SFleaMarketPickRequest instance using the specified properties.
+     * @function create
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {IC2SFleaMarketPickRequest=} [properties] Properties to set
+     * @returns {C2SFleaMarketPickRequest} C2SFleaMarketPickRequest instance
+     */
+    C2SFleaMarketPickRequest.create = function create(properties) {
+        return new C2SFleaMarketPickRequest(properties);
+    };
+
+    /**
+     * Encodes the specified C2SFleaMarketPickRequest message. Does not implicitly {@link C2SFleaMarketPickRequest.verify|verify} messages.
+     * @function encode
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {IC2SFleaMarketPickRequest} message C2SFleaMarketPickRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SFleaMarketPickRequest.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.pickIndex != null && Object.hasOwnProperty.call(message, "pickIndex"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.pickIndex);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified C2SFleaMarketPickRequest message, length delimited. Does not implicitly {@link C2SFleaMarketPickRequest.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {IC2SFleaMarketPickRequest} message C2SFleaMarketPickRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SFleaMarketPickRequest.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a C2SFleaMarketPickRequest message from the specified reader or buffer.
+     * @function decode
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {C2SFleaMarketPickRequest} C2SFleaMarketPickRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SFleaMarketPickRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.C2SFleaMarketPickRequest();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.pickIndex = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a C2SFleaMarketPickRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {C2SFleaMarketPickRequest} C2SFleaMarketPickRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SFleaMarketPickRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a C2SFleaMarketPickRequest message.
+     * @function verify
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    C2SFleaMarketPickRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.pickIndex != null && message.hasOwnProperty("pickIndex"))
+            if (!$util.isInteger(message.pickIndex))
+                return "pickIndex: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a C2SFleaMarketPickRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {C2SFleaMarketPickRequest} C2SFleaMarketPickRequest
+     */
+    C2SFleaMarketPickRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.C2SFleaMarketPickRequest)
+            return object;
+        var message = new $root.C2SFleaMarketPickRequest();
+        if (object.pickIndex != null)
+            message.pickIndex = object.pickIndex | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a C2SFleaMarketPickRequest message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {C2SFleaMarketPickRequest} message C2SFleaMarketPickRequest
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    C2SFleaMarketPickRequest.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.pickIndex = 0;
+        if (message.pickIndex != null && message.hasOwnProperty("pickIndex"))
+            object.pickIndex = message.pickIndex;
+        return object;
+    };
+
+    /**
+     * Converts this C2SFleaMarketPickRequest to JSON.
+     * @function toJSON
+     * @memberof C2SFleaMarketPickRequest
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    C2SFleaMarketPickRequest.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for C2SFleaMarketPickRequest
+     * @function getTypeUrl
+     * @memberof C2SFleaMarketPickRequest
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    C2SFleaMarketPickRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/C2SFleaMarketPickRequest";
+    };
+
+    return C2SFleaMarketPickRequest;
+})();
+
+$root.S2CFleaMarketPickResponse = (function() {
+
+    /**
+     * Properties of a S2CFleaMarketPickResponse.
+     * @exports IS2CFleaMarketPickResponse
+     * @interface IS2CFleaMarketPickResponse
+     * @property {boolean|null} [success] S2CFleaMarketPickResponse success
+     * @property {GlobalFailCode|null} [failCode] S2CFleaMarketPickResponse failCode
+     */
+
+    /**
+     * Constructs a new S2CFleaMarketPickResponse.
+     * @exports S2CFleaMarketPickResponse
+     * @classdesc Represents a S2CFleaMarketPickResponse.
+     * @implements IS2CFleaMarketPickResponse
+     * @constructor
+     * @param {IS2CFleaMarketPickResponse=} [properties] Properties to set
+     */
+    function S2CFleaMarketPickResponse(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CFleaMarketPickResponse success.
+     * @member {boolean} success
+     * @memberof S2CFleaMarketPickResponse
+     * @instance
+     */
+    S2CFleaMarketPickResponse.prototype.success = false;
+
+    /**
+     * S2CFleaMarketPickResponse failCode.
+     * @member {GlobalFailCode} failCode
+     * @memberof S2CFleaMarketPickResponse
+     * @instance
+     */
+    S2CFleaMarketPickResponse.prototype.failCode = 0;
+
+    /**
+     * Creates a new S2CFleaMarketPickResponse instance using the specified properties.
+     * @function create
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {IS2CFleaMarketPickResponse=} [properties] Properties to set
+     * @returns {S2CFleaMarketPickResponse} S2CFleaMarketPickResponse instance
+     */
+    S2CFleaMarketPickResponse.create = function create(properties) {
+        return new S2CFleaMarketPickResponse(properties);
+    };
+
+    /**
+     * Encodes the specified S2CFleaMarketPickResponse message. Does not implicitly {@link S2CFleaMarketPickResponse.verify|verify} messages.
+     * @function encode
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {IS2CFleaMarketPickResponse} message S2CFleaMarketPickResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CFleaMarketPickResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+        if (message.failCode != null && Object.hasOwnProperty.call(message, "failCode"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.failCode);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CFleaMarketPickResponse message, length delimited. Does not implicitly {@link S2CFleaMarketPickResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {IS2CFleaMarketPickResponse} message S2CFleaMarketPickResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CFleaMarketPickResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CFleaMarketPickResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CFleaMarketPickResponse} S2CFleaMarketPickResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CFleaMarketPickResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CFleaMarketPickResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.success = reader.bool();
+                    break;
+                }
+            case 2: {
+                    message.failCode = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CFleaMarketPickResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CFleaMarketPickResponse} S2CFleaMarketPickResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CFleaMarketPickResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CFleaMarketPickResponse message.
+     * @function verify
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CFleaMarketPickResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.success != null && message.hasOwnProperty("success"))
+            if (typeof message.success !== "boolean")
+                return "success: boolean expected";
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            switch (message.failCode) {
+            default:
+                return "failCode: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a S2CFleaMarketPickResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CFleaMarketPickResponse} S2CFleaMarketPickResponse
+     */
+    S2CFleaMarketPickResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CFleaMarketPickResponse)
+            return object;
+        var message = new $root.S2CFleaMarketPickResponse();
+        if (object.success != null)
+            message.success = Boolean(object.success);
+        switch (object.failCode) {
+        default:
+            if (typeof object.failCode === "number") {
+                message.failCode = object.failCode;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.failCode = 0;
+            break;
+        case "UNKNOWN_ERROR":
+        case 1:
+            message.failCode = 1;
+            break;
+        case "INVALID_REQUEST":
+        case 2:
+            message.failCode = 2;
+            break;
+        case "AUTHENTICATION_FAILED":
+        case 3:
+            message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
+            break;
+        case "REGISTER_FAILED":
+        case 7:
+            message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
+            break;
+        case "INVALID_ROOM_STATE":
+        case 12:
+            message.failCode = 12;
+            break;
+        case "NOT_ROOM_OWNER":
+        case 13:
+            message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CFleaMarketPickResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {S2CFleaMarketPickResponse} message S2CFleaMarketPickResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CFleaMarketPickResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.success = false;
+            object.failCode = options.enums === String ? "NONE" : 0;
+        }
+        if (message.success != null && message.hasOwnProperty("success"))
+            object.success = message.success;
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
+        return object;
+    };
+
+    /**
+     * Converts this S2CFleaMarketPickResponse to JSON.
+     * @function toJSON
+     * @memberof S2CFleaMarketPickResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CFleaMarketPickResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CFleaMarketPickResponse
+     * @function getTypeUrl
+     * @memberof S2CFleaMarketPickResponse
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CFleaMarketPickResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CFleaMarketPickResponse";
+    };
+
+    return S2CFleaMarketPickResponse;
+})();
+
 $root.S2CUserUpdateNotification = (function() {
 
     /**
@@ -11414,6 +12208,9 @@ $root.GamePacket = (function() {
      * @property {IS2CUseCardNotification|null} [useCardNotification] GamePacket useCardNotification
      * @property {IS2CEquipCardNotification|null} [equipCardNotification] GamePacket equipCardNotification
      * @property {IS2CCardEffectNotification|null} [cardEffectNotification] GamePacket cardEffectNotification
+     * @property {IS2CFleaMarketNotification|null} [fleaMarketNotification] GamePacket fleaMarketNotification
+     * @property {IC2SFleaMarketPickRequest|null} [fleaMarketPickRequest] GamePacket fleaMarketPickRequest
+     * @property {IS2CFleaMarketPickResponse|null} [fleaMarketPickResponse] GamePacket fleaMarketPickResponse
      * @property {IS2CUserUpdateNotification|null} [userUpdateNotification] GamePacket userUpdateNotification
      * @property {IS2CPhaseUpdateNotification|null} [phaseUpdateNotification] GamePacket phaseUpdateNotification
      * @property {IC2SReactionRequest|null} [reactionRequest] GamePacket reactionRequest
@@ -11679,6 +12476,30 @@ $root.GamePacket = (function() {
     GamePacket.prototype.cardEffectNotification = null;
 
     /**
+     * GamePacket fleaMarketNotification.
+     * @member {IS2CFleaMarketNotification|null|undefined} fleaMarketNotification
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.fleaMarketNotification = null;
+
+    /**
+     * GamePacket fleaMarketPickRequest.
+     * @member {IC2SFleaMarketPickRequest|null|undefined} fleaMarketPickRequest
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.fleaMarketPickRequest = null;
+
+    /**
+     * GamePacket fleaMarketPickResponse.
+     * @member {IS2CFleaMarketPickResponse|null|undefined} fleaMarketPickResponse
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.fleaMarketPickResponse = null;
+
+    /**
      * GamePacket userUpdateNotification.
      * @member {IS2CUserUpdateNotification|null|undefined} userUpdateNotification
      * @memberof GamePacket
@@ -11739,12 +12560,12 @@ $root.GamePacket = (function() {
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -11832,20 +12653,26 @@ $root.GamePacket = (function() {
             $root.S2CEquipCardNotification.encode(message.equipCardNotification, writer.uint32(/* id 29, wireType 2 =*/234).fork()).ldelim();
         if (message.cardEffectNotification != null && Object.hasOwnProperty.call(message, "cardEffectNotification"))
             $root.S2CCardEffectNotification.encode(message.cardEffectNotification, writer.uint32(/* id 30, wireType 2 =*/242).fork()).ldelim();
+        if (message.fleaMarketNotification != null && Object.hasOwnProperty.call(message, "fleaMarketNotification"))
+            $root.S2CFleaMarketNotification.encode(message.fleaMarketNotification, writer.uint32(/* id 31, wireType 2 =*/250).fork()).ldelim();
+        if (message.fleaMarketPickRequest != null && Object.hasOwnProperty.call(message, "fleaMarketPickRequest"))
+            $root.C2SFleaMarketPickRequest.encode(message.fleaMarketPickRequest, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
+        if (message.fleaMarketPickResponse != null && Object.hasOwnProperty.call(message, "fleaMarketPickResponse"))
+            $root.S2CFleaMarketPickResponse.encode(message.fleaMarketPickResponse, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
         if (message.userUpdateNotification != null && Object.hasOwnProperty.call(message, "userUpdateNotification"))
-            $root.S2CUserUpdateNotification.encode(message.userUpdateNotification, writer.uint32(/* id 31, wireType 2 =*/250).fork()).ldelim();
+            $root.S2CUserUpdateNotification.encode(message.userUpdateNotification, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
         if (message.phaseUpdateNotification != null && Object.hasOwnProperty.call(message, "phaseUpdateNotification"))
-            $root.S2CPhaseUpdateNotification.encode(message.phaseUpdateNotification, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
+            $root.S2CPhaseUpdateNotification.encode(message.phaseUpdateNotification, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
         if (message.reactionRequest != null && Object.hasOwnProperty.call(message, "reactionRequest"))
-            $root.C2SReactionRequest.encode(message.reactionRequest, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
+            $root.C2SReactionRequest.encode(message.reactionRequest, writer.uint32(/* id 36, wireType 2 =*/290).fork()).ldelim();
         if (message.reactionResponse != null && Object.hasOwnProperty.call(message, "reactionResponse"))
-            $root.S2CReactionResponse.encode(message.reactionResponse, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
+            $root.S2CReactionResponse.encode(message.reactionResponse, writer.uint32(/* id 37, wireType 2 =*/298).fork()).ldelim();
         if (message.destroyCardRequest != null && Object.hasOwnProperty.call(message, "destroyCardRequest"))
-            $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
+            $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 38, wireType 2 =*/306).fork()).ldelim();
         if (message.destroyCardResponse != null && Object.hasOwnProperty.call(message, "destroyCardResponse"))
-            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 36, wireType 2 =*/290).fork()).ldelim();
+            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 39, wireType 2 =*/314).fork()).ldelim();
         if (message.gameEndNotification != null && Object.hasOwnProperty.call(message, "gameEndNotification"))
-            $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 37, wireType 2 =*/298).fork()).ldelim();
+            $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 40, wireType 2 =*/322).fork()).ldelim();
         return writer;
     };
 
@@ -12001,30 +12828,42 @@ $root.GamePacket = (function() {
                     break;
                 }
             case 31: {
-                    message.userUpdateNotification = $root.S2CUserUpdateNotification.decode(reader, reader.uint32());
+                    message.fleaMarketNotification = $root.S2CFleaMarketNotification.decode(reader, reader.uint32());
                     break;
                 }
             case 32: {
-                    message.phaseUpdateNotification = $root.S2CPhaseUpdateNotification.decode(reader, reader.uint32());
+                    message.fleaMarketPickRequest = $root.C2SFleaMarketPickRequest.decode(reader, reader.uint32());
                     break;
                 }
             case 33: {
-                    message.reactionRequest = $root.C2SReactionRequest.decode(reader, reader.uint32());
+                    message.fleaMarketPickResponse = $root.S2CFleaMarketPickResponse.decode(reader, reader.uint32());
                     break;
                 }
             case 34: {
-                    message.reactionResponse = $root.S2CReactionResponse.decode(reader, reader.uint32());
+                    message.userUpdateNotification = $root.S2CUserUpdateNotification.decode(reader, reader.uint32());
                     break;
                 }
             case 35: {
-                    message.destroyCardRequest = $root.C2SDestroyCardRequest.decode(reader, reader.uint32());
+                    message.phaseUpdateNotification = $root.S2CPhaseUpdateNotification.decode(reader, reader.uint32());
                     break;
                 }
             case 36: {
-                    message.destroyCardResponse = $root.S2CDestroyCardResponse.decode(reader, reader.uint32());
+                    message.reactionRequest = $root.C2SReactionRequest.decode(reader, reader.uint32());
                     break;
                 }
             case 37: {
+                    message.reactionResponse = $root.S2CReactionResponse.decode(reader, reader.uint32());
+                    break;
+                }
+            case 38: {
+                    message.destroyCardRequest = $root.C2SDestroyCardRequest.decode(reader, reader.uint32());
+                    break;
+                }
+            case 39: {
+                    message.destroyCardResponse = $root.S2CDestroyCardResponse.decode(reader, reader.uint32());
+                    break;
+                }
+            case 40: {
                     message.gameEndNotification = $root.S2CGameEndNotification.decode(reader, reader.uint32());
                     break;
                 }
@@ -12362,6 +13201,36 @@ $root.GamePacket = (function() {
                     return "cardEffectNotification." + error;
             }
         }
+        if (message.fleaMarketNotification != null && message.hasOwnProperty("fleaMarketNotification")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CFleaMarketNotification.verify(message.fleaMarketNotification);
+                if (error)
+                    return "fleaMarketNotification." + error;
+            }
+        }
+        if (message.fleaMarketPickRequest != null && message.hasOwnProperty("fleaMarketPickRequest")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.C2SFleaMarketPickRequest.verify(message.fleaMarketPickRequest);
+                if (error)
+                    return "fleaMarketPickRequest." + error;
+            }
+        }
+        if (message.fleaMarketPickResponse != null && message.hasOwnProperty("fleaMarketPickResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CFleaMarketPickResponse.verify(message.fleaMarketPickResponse);
+                if (error)
+                    return "fleaMarketPickResponse." + error;
+            }
+        }
         if (message.userUpdateNotification != null && message.hasOwnProperty("userUpdateNotification")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
@@ -12597,6 +13466,21 @@ $root.GamePacket = (function() {
                 throw TypeError(".GamePacket.cardEffectNotification: object expected");
             message.cardEffectNotification = $root.S2CCardEffectNotification.fromObject(object.cardEffectNotification);
         }
+        if (object.fleaMarketNotification != null) {
+            if (typeof object.fleaMarketNotification !== "object")
+                throw TypeError(".GamePacket.fleaMarketNotification: object expected");
+            message.fleaMarketNotification = $root.S2CFleaMarketNotification.fromObject(object.fleaMarketNotification);
+        }
+        if (object.fleaMarketPickRequest != null) {
+            if (typeof object.fleaMarketPickRequest !== "object")
+                throw TypeError(".GamePacket.fleaMarketPickRequest: object expected");
+            message.fleaMarketPickRequest = $root.C2SFleaMarketPickRequest.fromObject(object.fleaMarketPickRequest);
+        }
+        if (object.fleaMarketPickResponse != null) {
+            if (typeof object.fleaMarketPickResponse !== "object")
+                throw TypeError(".GamePacket.fleaMarketPickResponse: object expected");
+            message.fleaMarketPickResponse = $root.S2CFleaMarketPickResponse.fromObject(object.fleaMarketPickResponse);
+        }
         if (object.userUpdateNotification != null) {
             if (typeof object.userUpdateNotification !== "object")
                 throw TypeError(".GamePacket.userUpdateNotification: object expected");
@@ -12797,6 +13681,21 @@ $root.GamePacket = (function() {
             object.cardEffectNotification = $root.S2CCardEffectNotification.toObject(message.cardEffectNotification, options);
             if (options.oneofs)
                 object.payload = "cardEffectNotification";
+        }
+        if (message.fleaMarketNotification != null && message.hasOwnProperty("fleaMarketNotification")) {
+            object.fleaMarketNotification = $root.S2CFleaMarketNotification.toObject(message.fleaMarketNotification, options);
+            if (options.oneofs)
+                object.payload = "fleaMarketNotification";
+        }
+        if (message.fleaMarketPickRequest != null && message.hasOwnProperty("fleaMarketPickRequest")) {
+            object.fleaMarketPickRequest = $root.C2SFleaMarketPickRequest.toObject(message.fleaMarketPickRequest, options);
+            if (options.oneofs)
+                object.payload = "fleaMarketPickRequest";
+        }
+        if (message.fleaMarketPickResponse != null && message.hasOwnProperty("fleaMarketPickResponse")) {
+            object.fleaMarketPickResponse = $root.S2CFleaMarketPickResponse.toObject(message.fleaMarketPickResponse, options);
+            if (options.oneofs)
+                object.payload = "fleaMarketPickResponse";
         }
         if (message.userUpdateNotification != null && message.hasOwnProperty("userUpdateNotification")) {
             object.userUpdateNotification = $root.S2CUserUpdateNotification.toObject(message.userUpdateNotification, options);

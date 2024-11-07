@@ -25,3 +25,21 @@ export function onDeathMatchTurnTimeout(user: User, targetUser: User, room: Room
     } satisfies MessageProps<S2CUserUpdateNotification>);
   };
 }
+
+export function onFleaMarketTurnTimeout(user: User, room: Room) {
+  return () => {
+    const userIndex = room.users.findIndex((u) => u.id === user.id);
+    const isEnd = userIndex === room.users.length - 1;
+    if (isEnd) {
+      room.users.forEach((user) => user.character.stateInfo.setState(user.id, CharacterState.NONE, null));
+    } else {
+      const nextIndex = userIndex + 1;
+      room.users[userIndex].character.stateInfo.setState(room.users[userIndex].id, CharacterState.FLEA_MARKET_WAIT, null);
+      room.users[nextIndex].character.stateInfo.setState(room.users[nextIndex].id, CharacterState.FLEA_MARKET_TURN, null);
+    }
+
+    room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+      user: room.users.map((user) => user.toUserData(user.id)),
+    } satisfies MessageProps<S2CUserUpdateNotification>);
+  };
+}

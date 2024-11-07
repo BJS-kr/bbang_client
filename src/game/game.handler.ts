@@ -3,6 +3,8 @@ import { CARD_TYPE, CHARACTER_TYPE, CharacterState, GAME_INIT_POSITION, PHASE_TY
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
+  S2CFleaMarketNotification,
+  S2CFleaMarketPickResponse,
   S2CGamePrepareNotification,
   S2CGamePrepareResponse,
   S2CGameStartNotification,
@@ -19,6 +21,7 @@ import { session } from '../users/session';
 import { createCharacter } from '../characters/createCharacter';
 import { pickRandomCardType } from '../cards/pickRandomCard';
 import { log, error } from '../utils/logger';
+import { UserUpdateNotification } from '../cards/types';
 
 // TODO
 const TARGET_CARD_BONUS = 1;
@@ -249,8 +252,6 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
     } satisfies MessageProps<S2CReactionResponse>);
   }
 
-  // TODO 리액션 종류 추가되면 그때 분기처리...
-
   if (user.character.stateInfo.state === CharacterState.NONE) {
     return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
       success: false,
@@ -258,11 +259,64 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
     } satisfies MessageProps<S2CReactionResponse>);
   }
 
-  user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+  // TODO 리액션 종류 더.. 추가되면 그때 분기처리...
+  const nextState = user.character.stateInfo.state === CharacterState.FLEA_MARKET_TURN ? CharacterState.FLEA_MARKET_WAIT : CharacterState.NONE;
+  user.character.stateInfo.setState(user.id, nextState, null);
   return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE,
   } satisfies MessageProps<S2CReactionResponse>);
+};
+
+export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarketPickRequest, ctx: Context) => {
+  const room = rooms.getRoom(ctx.roomId);
+  if (!room) {
+    return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.ROOM_NOT_FOUND,
+    } satisfies MessageProps<S2CFleaMarketPickResponse>);
+  }
+
+  const user = room.getUser(ctx.userId);
+  if (!user) {
+    return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies MessageProps<S2CFleaMarketPickResponse>);
+  }
+
+  if (user.character.stateInfo.state !== CharacterState.FLEA_MARKET_TURN) {
+    return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
+    } satisfies MessageProps<S2CFleaMarketPickResponse>);
+  }
+
+  const { pickIndex } = fleaMarketPickRequest;
+  if (!room.fleaMarketCards[pickIndex] || room.pickFleaMarketIndex.includes(pickIndex)) {
+    return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_REQUEST,
+    } satisfies MessageProps<S2CFleaMarketPickResponse>);
+  }
+
+  user.character.stateInfo.setState(user.id, CharacterState.FLEA_MARKET_WAIT, null);
+  user.character.acquireCard({ type: room.fleaMarketCards[pickIndex], count: 1 });
+  room.pickFleaMarketIndex.push(pickIndex);
+
+  writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE,
+  } satisfies MessageProps<S2CFleaMarketPickResponse>);
+
+  room.broadcast(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, {
+    cardTypes: room.fleaMarketCards,
+    pickIndex: room.pickFleaMarketIndex,
+  } satisfies MessageProps<S2CFleaMarketNotification>);
+
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+    user: room.users.map((user) => user.toUserData(user.id)),
+  } satisfies MessageProps<UserUpdateNotification>);
 };
 
 function createUserDataView(user, userDatas) {

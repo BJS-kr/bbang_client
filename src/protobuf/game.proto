@@ -210,6 +210,20 @@ message S2CCardEffectNotification {
     bool success = 3;
 }
 
+message S2CFleaMarketNotification {
+    repeated int32 cardTypes = 1;
+    repeated int32 pickIndex = 2;
+}
+
+message C2SFleaMarketPickRequest {
+    int32 pickIndex = 1;
+}
+
+message S2CFleaMarketPickResponse {
+    bool success = 1;
+    GlobalFailCode failCode = 2;
+}
+
 message S2CUserUpdateNotification {
     repeated UserData user = 1;
 }
@@ -299,22 +313,27 @@ message GamePacket {
         S2CEquipCardNotification equipCardNotification = 29;
         S2CCardEffectNotification cardEffectNotification = 30;
 
+        // 플리마켓
+        S2CFleaMarketNotification fleaMarketNotification = 31;
+        C2SFleaMarketPickRequest fleaMarketPickRequest = 32;
+        S2CFleaMarketPickResponse fleaMarketPickResponse = 33;
+
         // 카드 사용 등으로 인한 유저 정보 업데이트
-        S2CUserUpdateNotification userUpdateNotification = 31;
+        S2CUserUpdateNotification userUpdateNotification = 34;
         
         // 페이즈 업데이트
-        S2CPhaseUpdateNotification phaseUpdateNotification = 32;
+        S2CPhaseUpdateNotification phaseUpdateNotification = 35;
 
         // 리액션
-        C2SReactionRequest reactionRequest = 33;
-        S2CReactionResponse reactionResponse = 34;
+        C2SReactionRequest reactionRequest = 36;
+        S2CReactionResponse reactionResponse = 37;
 
         // 턴 종료시 (phaseType 3) 카드 버리기
-        C2SDestroyCardRequest destroyCardRequest = 35;
-        S2CDestroyCardResponse destroyCardResponse = 36;
+        C2SDestroyCardRequest destroyCardRequest = 38;
+        S2CDestroyCardResponse destroyCardResponse = 39;
 
         // 게임 종료
-        S2CGameEndNotification gameEndNotification = 37;
+        S2CGameEndNotification gameEndNotification = 40;
     }
 }
 

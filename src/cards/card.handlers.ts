@@ -15,7 +15,7 @@ import { User } from '../users/types';
 import { Shark } from '../characters/shark';
 import { DeathMatch } from './deathmatch';
 import { BigBBang } from './massacre';
-import { onBBangTimeout, onDeathMatchTurnTimeout } from './onTimeout';
+import { onBBangTimeout, onDeathMatchTurnTimeout, onFleaMarketTurnTimeout } from './onTimeout';
 import { Vaccine } from './vaccine';
 import { Call119 } from './call119';
 import { Guerrilla } from './guerrilla';
@@ -395,8 +395,17 @@ function handleHallucination({ socket, version, sequence }: HandlerBase, useCard
   responseSuccess(socket, version, sequence, CARD_TYPE.HALLUCINATION, [user, targetUser], room, user);
 }
 
-// TODO 명세 정해지면 나중에 구현
-function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room, user: User) {}
+function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
+  room.initFleaMarketCards();
+
+  room.users.forEach((user, index) => {
+    const state = index === 0 ? CharacterState.FLEA_MARKET_TURN : CharacterState.FLEA_MARKET_WAIT;
+    const timeout = state === CharacterState.FLEA_MARKET_TURN ? onFleaMarketTurnTimeout(user, room) : null;
+    user.character.stateInfo.setState(user.id, state, timeout);
+  });
+
+  responseSuccess(socket, version, sequence, CARD_TYPE.FLEA_MARKET, room.users, room, user);
+}
 
 function handleMaturedSavings({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });

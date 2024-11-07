@@ -3877,6 +3877,309 @@ export class S2CCardEffectNotification implements IS2CCardEffectNotification {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a S2CFleaMarketNotification. */
+export interface IS2CFleaMarketNotification {
+
+    /** S2CFleaMarketNotification cardTypes */
+    cardTypes?: (number[]|null);
+
+    /** S2CFleaMarketNotification pickIndex */
+    pickIndex?: (number[]|null);
+}
+
+/** Represents a S2CFleaMarketNotification. */
+export class S2CFleaMarketNotification implements IS2CFleaMarketNotification {
+
+    /**
+     * Constructs a new S2CFleaMarketNotification.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CFleaMarketNotification);
+
+    /** S2CFleaMarketNotification cardTypes. */
+    public cardTypes: number[];
+
+    /** S2CFleaMarketNotification pickIndex. */
+    public pickIndex: number[];
+
+    /**
+     * Creates a new S2CFleaMarketNotification instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CFleaMarketNotification instance
+     */
+    public static create(properties?: IS2CFleaMarketNotification): S2CFleaMarketNotification;
+
+    /**
+     * Encodes the specified S2CFleaMarketNotification message. Does not implicitly {@link S2CFleaMarketNotification.verify|verify} messages.
+     * @param message S2CFleaMarketNotification message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CFleaMarketNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CFleaMarketNotification message, length delimited. Does not implicitly {@link S2CFleaMarketNotification.verify|verify} messages.
+     * @param message S2CFleaMarketNotification message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CFleaMarketNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CFleaMarketNotification message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CFleaMarketNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CFleaMarketNotification;
+
+    /**
+     * Decodes a S2CFleaMarketNotification message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CFleaMarketNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CFleaMarketNotification;
+
+    /**
+     * Verifies a S2CFleaMarketNotification message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CFleaMarketNotification message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CFleaMarketNotification
+     */
+    public static fromObject(object: { [k: string]: any }): S2CFleaMarketNotification;
+
+    /**
+     * Creates a plain object from a S2CFleaMarketNotification message. Also converts values to other types if specified.
+     * @param message S2CFleaMarketNotification
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CFleaMarketNotification, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CFleaMarketNotification to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CFleaMarketNotification
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+/** Properties of a C2SFleaMarketPickRequest. */
+export interface IC2SFleaMarketPickRequest {
+
+    /** C2SFleaMarketPickRequest pickIndex */
+    pickIndex?: (number|null);
+}
+
+/** Represents a C2SFleaMarketPickRequest. */
+export class C2SFleaMarketPickRequest implements IC2SFleaMarketPickRequest {
+
+    /**
+     * Constructs a new C2SFleaMarketPickRequest.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IC2SFleaMarketPickRequest);
+
+    /** C2SFleaMarketPickRequest pickIndex. */
+    public pickIndex: number;
+
+    /**
+     * Creates a new C2SFleaMarketPickRequest instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns C2SFleaMarketPickRequest instance
+     */
+    public static create(properties?: IC2SFleaMarketPickRequest): C2SFleaMarketPickRequest;
+
+    /**
+     * Encodes the specified C2SFleaMarketPickRequest message. Does not implicitly {@link C2SFleaMarketPickRequest.verify|verify} messages.
+     * @param message C2SFleaMarketPickRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IC2SFleaMarketPickRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified C2SFleaMarketPickRequest message, length delimited. Does not implicitly {@link C2SFleaMarketPickRequest.verify|verify} messages.
+     * @param message C2SFleaMarketPickRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IC2SFleaMarketPickRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a C2SFleaMarketPickRequest message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns C2SFleaMarketPickRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): C2SFleaMarketPickRequest;
+
+    /**
+     * Decodes a C2SFleaMarketPickRequest message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns C2SFleaMarketPickRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): C2SFleaMarketPickRequest;
+
+    /**
+     * Verifies a C2SFleaMarketPickRequest message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a C2SFleaMarketPickRequest message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns C2SFleaMarketPickRequest
+     */
+    public static fromObject(object: { [k: string]: any }): C2SFleaMarketPickRequest;
+
+    /**
+     * Creates a plain object from a C2SFleaMarketPickRequest message. Also converts values to other types if specified.
+     * @param message C2SFleaMarketPickRequest
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: C2SFleaMarketPickRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this C2SFleaMarketPickRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for C2SFleaMarketPickRequest
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+/** Properties of a S2CFleaMarketPickResponse. */
+export interface IS2CFleaMarketPickResponse {
+
+    /** S2CFleaMarketPickResponse success */
+    success?: (boolean|null);
+
+    /** S2CFleaMarketPickResponse failCode */
+    failCode?: (GlobalFailCode|null);
+}
+
+/** Represents a S2CFleaMarketPickResponse. */
+export class S2CFleaMarketPickResponse implements IS2CFleaMarketPickResponse {
+
+    /**
+     * Constructs a new S2CFleaMarketPickResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CFleaMarketPickResponse);
+
+    /** S2CFleaMarketPickResponse success. */
+    public success: boolean;
+
+    /** S2CFleaMarketPickResponse failCode. */
+    public failCode: GlobalFailCode;
+
+    /**
+     * Creates a new S2CFleaMarketPickResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CFleaMarketPickResponse instance
+     */
+    public static create(properties?: IS2CFleaMarketPickResponse): S2CFleaMarketPickResponse;
+
+    /**
+     * Encodes the specified S2CFleaMarketPickResponse message. Does not implicitly {@link S2CFleaMarketPickResponse.verify|verify} messages.
+     * @param message S2CFleaMarketPickResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CFleaMarketPickResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CFleaMarketPickResponse message, length delimited. Does not implicitly {@link S2CFleaMarketPickResponse.verify|verify} messages.
+     * @param message S2CFleaMarketPickResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CFleaMarketPickResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CFleaMarketPickResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CFleaMarketPickResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CFleaMarketPickResponse;
+
+    /**
+     * Decodes a S2CFleaMarketPickResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CFleaMarketPickResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CFleaMarketPickResponse;
+
+    /**
+     * Verifies a S2CFleaMarketPickResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CFleaMarketPickResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CFleaMarketPickResponse
+     */
+    public static fromObject(object: { [k: string]: any }): S2CFleaMarketPickResponse;
+
+    /**
+     * Creates a plain object from a S2CFleaMarketPickResponse message. Also converts values to other types if specified.
+     * @param message S2CFleaMarketPickResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CFleaMarketPickResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CFleaMarketPickResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CFleaMarketPickResponse
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a S2CUserUpdateNotification. */
 export interface IS2CUserUpdateNotification {
 
@@ -4655,6 +4958,15 @@ export interface IGamePacket {
     /** GamePacket cardEffectNotification */
     cardEffectNotification?: (IS2CCardEffectNotification|null);
 
+    /** GamePacket fleaMarketNotification */
+    fleaMarketNotification?: (IS2CFleaMarketNotification|null);
+
+    /** GamePacket fleaMarketPickRequest */
+    fleaMarketPickRequest?: (IC2SFleaMarketPickRequest|null);
+
+    /** GamePacket fleaMarketPickResponse */
+    fleaMarketPickResponse?: (IS2CFleaMarketPickResponse|null);
+
     /** GamePacket userUpdateNotification */
     userUpdateNotification?: (IS2CUserUpdateNotification|null);
 
@@ -4776,6 +5088,15 @@ export class GamePacket implements IGamePacket {
     /** GamePacket cardEffectNotification. */
     public cardEffectNotification?: (IS2CCardEffectNotification|null);
 
+    /** GamePacket fleaMarketNotification. */
+    public fleaMarketNotification?: (IS2CFleaMarketNotification|null);
+
+    /** GamePacket fleaMarketPickRequest. */
+    public fleaMarketPickRequest?: (IC2SFleaMarketPickRequest|null);
+
+    /** GamePacket fleaMarketPickResponse. */
+    public fleaMarketPickResponse?: (IS2CFleaMarketPickResponse|null);
+
     /** GamePacket userUpdateNotification. */
     public userUpdateNotification?: (IS2CUserUpdateNotification|null);
 
@@ -4798,7 +5119,7 @@ export class GamePacket implements IGamePacket {
     public gameEndNotification?: (IS2CGameEndNotification|null);
 
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.
