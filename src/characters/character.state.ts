@@ -28,6 +28,7 @@ export class CharacterStateInfo {
 
     if (this.#onStateTimeout) {
       this.#onStateTimeout(prevState, this.state);
+      this.resetTimer();
     }
   }
 
