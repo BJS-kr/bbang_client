@@ -164,6 +164,20 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     }
   });
 
+  // TODO 테스트용. 지워야함!!!!!!!!!!!
+  room.users.forEach((user) => {
+    const testHandCards = new Map();
+
+    testHandCards.set(CARD_TYPE.BBANG, 2);
+    testHandCards.set(CARD_TYPE.SHIELD, 1);
+    testHandCards.set(CARD_TYPE.DEATH_MATCH, 1);
+    testHandCards.set(CARD_TYPE.GUERRILLA, 1);
+    testHandCards.set(CARD_TYPE.BIG_BBANG, 1);
+
+    user.character.handCards = testHandCards;
+  });
+  // TODO 테스트용. 여기까지 지워야함!!!!!!!!!!!
+
   room.state = RoomState.IN_GAME;
   room.setTimer();
 
