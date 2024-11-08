@@ -5071,6 +5071,212 @@ export class S2CCardSelectResponse implements IS2CCardSelectResponse {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a C2SPassDebuffRequest. */
+export interface IC2SPassDebuffRequest {
+
+    /** C2SPassDebuffRequest userId */
+    userId?: (string|null);
+
+    /** C2SPassDebuffRequest debuffCardType */
+    debuffCardType?: (number|null);
+}
+
+/** Represents a C2SPassDebuffRequest. */
+export class C2SPassDebuffRequest implements IC2SPassDebuffRequest {
+
+    /**
+     * Constructs a new C2SPassDebuffRequest.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IC2SPassDebuffRequest);
+
+    /** C2SPassDebuffRequest userId. */
+    public userId: string;
+
+    /** C2SPassDebuffRequest debuffCardType. */
+    public debuffCardType: number;
+
+    /**
+     * Creates a new C2SPassDebuffRequest instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns C2SPassDebuffRequest instance
+     */
+    public static create(properties?: IC2SPassDebuffRequest): C2SPassDebuffRequest;
+
+    /**
+     * Encodes the specified C2SPassDebuffRequest message. Does not implicitly {@link C2SPassDebuffRequest.verify|verify} messages.
+     * @param message C2SPassDebuffRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IC2SPassDebuffRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified C2SPassDebuffRequest message, length delimited. Does not implicitly {@link C2SPassDebuffRequest.verify|verify} messages.
+     * @param message C2SPassDebuffRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IC2SPassDebuffRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a C2SPassDebuffRequest message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns C2SPassDebuffRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): C2SPassDebuffRequest;
+
+    /**
+     * Decodes a C2SPassDebuffRequest message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns C2SPassDebuffRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): C2SPassDebuffRequest;
+
+    /**
+     * Verifies a C2SPassDebuffRequest message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a C2SPassDebuffRequest message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns C2SPassDebuffRequest
+     */
+    public static fromObject(object: { [k: string]: any }): C2SPassDebuffRequest;
+
+    /**
+     * Creates a plain object from a C2SPassDebuffRequest message. Also converts values to other types if specified.
+     * @param message C2SPassDebuffRequest
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: C2SPassDebuffRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this C2SPassDebuffRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for C2SPassDebuffRequest
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+/** Properties of a S2CPassDebuffResponse. */
+export interface IS2CPassDebuffResponse {
+
+    /** S2CPassDebuffResponse success */
+    success?: (boolean|null);
+
+    /** S2CPassDebuffResponse failCode */
+    failCode?: (GlobalFailCode|null);
+}
+
+/** Represents a S2CPassDebuffResponse. */
+export class S2CPassDebuffResponse implements IS2CPassDebuffResponse {
+
+    /**
+     * Constructs a new S2CPassDebuffResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CPassDebuffResponse);
+
+    /** S2CPassDebuffResponse success. */
+    public success: boolean;
+
+    /** S2CPassDebuffResponse failCode. */
+    public failCode: GlobalFailCode;
+
+    /**
+     * Creates a new S2CPassDebuffResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CPassDebuffResponse instance
+     */
+    public static create(properties?: IS2CPassDebuffResponse): S2CPassDebuffResponse;
+
+    /**
+     * Encodes the specified S2CPassDebuffResponse message. Does not implicitly {@link S2CPassDebuffResponse.verify|verify} messages.
+     * @param message S2CPassDebuffResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CPassDebuffResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CPassDebuffResponse message, length delimited. Does not implicitly {@link S2CPassDebuffResponse.verify|verify} messages.
+     * @param message S2CPassDebuffResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CPassDebuffResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CPassDebuffResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CPassDebuffResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CPassDebuffResponse;
+
+    /**
+     * Decodes a S2CPassDebuffResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CPassDebuffResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CPassDebuffResponse;
+
+    /**
+     * Verifies a S2CPassDebuffResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CPassDebuffResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CPassDebuffResponse
+     */
+    public static fromObject(object: { [k: string]: any }): S2CPassDebuffResponse;
+
+    /**
+     * Creates a plain object from a S2CPassDebuffResponse message. Also converts values to other types if specified.
+     * @param message S2CPassDebuffResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CPassDebuffResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CPassDebuffResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CPassDebuffResponse
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a GamePacket. */
 export interface IGamePacket {
 
@@ -5199,6 +5405,12 @@ export interface IGamePacket {
 
     /** GamePacket cardSelectResponse */
     cardSelectResponse?: (IS2CCardSelectResponse|null);
+
+    /** GamePacket passDeBuffReuqest */
+    passDeBuffReuqest?: (IC2SPassDebuffRequest|null);
+
+    /** GamePacket passDebuffResponse */
+    passDebuffResponse?: (IS2CPassDebuffResponse|null);
 }
 
 /** Represents a GamePacket. */
@@ -5336,8 +5548,14 @@ export class GamePacket implements IGamePacket {
     /** GamePacket cardSelectResponse. */
     public cardSelectResponse?: (IS2CCardSelectResponse|null);
 
+    /** GamePacket passDeBuffReuqest. */
+    public passDeBuffReuqest?: (IC2SPassDebuffRequest|null);
+
+    /** GamePacket passDebuffResponse. */
+    public passDebuffResponse?: (IS2CPassDebuffResponse|null);
+
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDeBuffReuqest"|"passDebuffResponse");
 
     /**
      * Creates a new GamePacket instance using the specified properties.

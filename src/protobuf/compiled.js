@@ -12715,6 +12715,549 @@ $root.S2CCardSelectResponse = (function() {
     return S2CCardSelectResponse;
 })();
 
+$root.C2SPassDebuffRequest = (function() {
+
+    /**
+     * Properties of a C2SPassDebuffRequest.
+     * @exports IC2SPassDebuffRequest
+     * @interface IC2SPassDebuffRequest
+     * @property {string|null} [userId] C2SPassDebuffRequest userId
+     * @property {number|null} [debuffCardType] C2SPassDebuffRequest debuffCardType
+     */
+
+    /**
+     * Constructs a new C2SPassDebuffRequest.
+     * @exports C2SPassDebuffRequest
+     * @classdesc Represents a C2SPassDebuffRequest.
+     * @implements IC2SPassDebuffRequest
+     * @constructor
+     * @param {IC2SPassDebuffRequest=} [properties] Properties to set
+     */
+    function C2SPassDebuffRequest(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * C2SPassDebuffRequest userId.
+     * @member {string} userId
+     * @memberof C2SPassDebuffRequest
+     * @instance
+     */
+    C2SPassDebuffRequest.prototype.userId = "";
+
+    /**
+     * C2SPassDebuffRequest debuffCardType.
+     * @member {number} debuffCardType
+     * @memberof C2SPassDebuffRequest
+     * @instance
+     */
+    C2SPassDebuffRequest.prototype.debuffCardType = 0;
+
+    /**
+     * Creates a new C2SPassDebuffRequest instance using the specified properties.
+     * @function create
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {IC2SPassDebuffRequest=} [properties] Properties to set
+     * @returns {C2SPassDebuffRequest} C2SPassDebuffRequest instance
+     */
+    C2SPassDebuffRequest.create = function create(properties) {
+        return new C2SPassDebuffRequest(properties);
+    };
+
+    /**
+     * Encodes the specified C2SPassDebuffRequest message. Does not implicitly {@link C2SPassDebuffRequest.verify|verify} messages.
+     * @function encode
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {IC2SPassDebuffRequest} message C2SPassDebuffRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SPassDebuffRequest.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+        if (message.debuffCardType != null && Object.hasOwnProperty.call(message, "debuffCardType"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.debuffCardType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified C2SPassDebuffRequest message, length delimited. Does not implicitly {@link C2SPassDebuffRequest.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {IC2SPassDebuffRequest} message C2SPassDebuffRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SPassDebuffRequest.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a C2SPassDebuffRequest message from the specified reader or buffer.
+     * @function decode
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {C2SPassDebuffRequest} C2SPassDebuffRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SPassDebuffRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.C2SPassDebuffRequest();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.userId = reader.string();
+                    break;
+                }
+            case 2: {
+                    message.debuffCardType = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a C2SPassDebuffRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {C2SPassDebuffRequest} C2SPassDebuffRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SPassDebuffRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a C2SPassDebuffRequest message.
+     * @function verify
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    C2SPassDebuffRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            if (!$util.isString(message.userId))
+                return "userId: string expected";
+        if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
+            if (!$util.isInteger(message.debuffCardType))
+                return "debuffCardType: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a C2SPassDebuffRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {C2SPassDebuffRequest} C2SPassDebuffRequest
+     */
+    C2SPassDebuffRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.C2SPassDebuffRequest)
+            return object;
+        var message = new $root.C2SPassDebuffRequest();
+        if (object.userId != null)
+            message.userId = String(object.userId);
+        if (object.debuffCardType != null)
+            message.debuffCardType = object.debuffCardType | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a C2SPassDebuffRequest message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {C2SPassDebuffRequest} message C2SPassDebuffRequest
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    C2SPassDebuffRequest.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.userId = "";
+            object.debuffCardType = 0;
+        }
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            object.userId = message.userId;
+        if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
+            object.debuffCardType = message.debuffCardType;
+        return object;
+    };
+
+    /**
+     * Converts this C2SPassDebuffRequest to JSON.
+     * @function toJSON
+     * @memberof C2SPassDebuffRequest
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    C2SPassDebuffRequest.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for C2SPassDebuffRequest
+     * @function getTypeUrl
+     * @memberof C2SPassDebuffRequest
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    C2SPassDebuffRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/C2SPassDebuffRequest";
+    };
+
+    return C2SPassDebuffRequest;
+})();
+
+$root.S2CPassDebuffResponse = (function() {
+
+    /**
+     * Properties of a S2CPassDebuffResponse.
+     * @exports IS2CPassDebuffResponse
+     * @interface IS2CPassDebuffResponse
+     * @property {boolean|null} [success] S2CPassDebuffResponse success
+     * @property {GlobalFailCode|null} [failCode] S2CPassDebuffResponse failCode
+     */
+
+    /**
+     * Constructs a new S2CPassDebuffResponse.
+     * @exports S2CPassDebuffResponse
+     * @classdesc Represents a S2CPassDebuffResponse.
+     * @implements IS2CPassDebuffResponse
+     * @constructor
+     * @param {IS2CPassDebuffResponse=} [properties] Properties to set
+     */
+    function S2CPassDebuffResponse(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CPassDebuffResponse success.
+     * @member {boolean} success
+     * @memberof S2CPassDebuffResponse
+     * @instance
+     */
+    S2CPassDebuffResponse.prototype.success = false;
+
+    /**
+     * S2CPassDebuffResponse failCode.
+     * @member {GlobalFailCode} failCode
+     * @memberof S2CPassDebuffResponse
+     * @instance
+     */
+    S2CPassDebuffResponse.prototype.failCode = 0;
+
+    /**
+     * Creates a new S2CPassDebuffResponse instance using the specified properties.
+     * @function create
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {IS2CPassDebuffResponse=} [properties] Properties to set
+     * @returns {S2CPassDebuffResponse} S2CPassDebuffResponse instance
+     */
+    S2CPassDebuffResponse.create = function create(properties) {
+        return new S2CPassDebuffResponse(properties);
+    };
+
+    /**
+     * Encodes the specified S2CPassDebuffResponse message. Does not implicitly {@link S2CPassDebuffResponse.verify|verify} messages.
+     * @function encode
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {IS2CPassDebuffResponse} message S2CPassDebuffResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CPassDebuffResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+        if (message.failCode != null && Object.hasOwnProperty.call(message, "failCode"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.failCode);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CPassDebuffResponse message, length delimited. Does not implicitly {@link S2CPassDebuffResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {IS2CPassDebuffResponse} message S2CPassDebuffResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CPassDebuffResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CPassDebuffResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CPassDebuffResponse} S2CPassDebuffResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CPassDebuffResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CPassDebuffResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.success = reader.bool();
+                    break;
+                }
+            case 2: {
+                    message.failCode = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CPassDebuffResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CPassDebuffResponse} S2CPassDebuffResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CPassDebuffResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CPassDebuffResponse message.
+     * @function verify
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CPassDebuffResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.success != null && message.hasOwnProperty("success"))
+            if (typeof message.success !== "boolean")
+                return "success: boolean expected";
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            switch (message.failCode) {
+            default:
+                return "failCode: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a S2CPassDebuffResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CPassDebuffResponse} S2CPassDebuffResponse
+     */
+    S2CPassDebuffResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CPassDebuffResponse)
+            return object;
+        var message = new $root.S2CPassDebuffResponse();
+        if (object.success != null)
+            message.success = Boolean(object.success);
+        switch (object.failCode) {
+        default:
+            if (typeof object.failCode === "number") {
+                message.failCode = object.failCode;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.failCode = 0;
+            break;
+        case "UNKNOWN_ERROR":
+        case 1:
+            message.failCode = 1;
+            break;
+        case "INVALID_REQUEST":
+        case 2:
+            message.failCode = 2;
+            break;
+        case "AUTHENTICATION_FAILED":
+        case 3:
+            message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
+            break;
+        case "REGISTER_FAILED":
+        case 7:
+            message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
+            break;
+        case "INVALID_ROOM_STATE":
+        case 12:
+            message.failCode = 12;
+            break;
+        case "NOT_ROOM_OWNER":
+        case 13:
+            message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CPassDebuffResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {S2CPassDebuffResponse} message S2CPassDebuffResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CPassDebuffResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.success = false;
+            object.failCode = options.enums === String ? "NONE" : 0;
+        }
+        if (message.success != null && message.hasOwnProperty("success"))
+            object.success = message.success;
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
+        return object;
+    };
+
+    /**
+     * Converts this S2CPassDebuffResponse to JSON.
+     * @function toJSON
+     * @memberof S2CPassDebuffResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CPassDebuffResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CPassDebuffResponse
+     * @function getTypeUrl
+     * @memberof S2CPassDebuffResponse
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CPassDebuffResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CPassDebuffResponse";
+    };
+
+    return S2CPassDebuffResponse;
+})();
+
 $root.GamePacket = (function() {
 
     /**
@@ -12763,6 +13306,8 @@ $root.GamePacket = (function() {
      * @property {IS2CGameEndNotification|null} [gameEndNotification] GamePacket gameEndNotification
      * @property {IC2SCardSelectRequest|null} [cardSelectRequest] GamePacket cardSelectRequest
      * @property {IS2CCardSelectResponse|null} [cardSelectResponse] GamePacket cardSelectResponse
+     * @property {IC2SPassDebuffRequest|null} [passDeBuffReuqest] GamePacket passDeBuffReuqest
+     * @property {IS2CPassDebuffResponse|null} [passDebuffResponse] GamePacket passDebuffResponse
      */
 
     /**
@@ -13116,17 +13661,33 @@ $root.GamePacket = (function() {
      */
     GamePacket.prototype.cardSelectResponse = null;
 
+    /**
+     * GamePacket passDeBuffReuqest.
+     * @member {IC2SPassDebuffRequest|null|undefined} passDeBuffReuqest
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.passDeBuffReuqest = null;
+
+    /**
+     * GamePacket passDebuffResponse.
+     * @member {IS2CPassDebuffResponse|null|undefined} passDebuffResponse
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.passDebuffResponse = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDeBuffReuqest"|"passDebuffResponse"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDeBuffReuqest", "passDebuffResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -13238,6 +13799,10 @@ $root.GamePacket = (function() {
             $root.C2SCardSelectRequest.encode(message.cardSelectRequest, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
         if (message.cardSelectResponse != null && Object.hasOwnProperty.call(message, "cardSelectResponse"))
             $root.S2CCardSelectResponse.encode(message.cardSelectResponse, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
+        if (message.passDeBuffReuqest != null && Object.hasOwnProperty.call(message, "passDeBuffReuqest"))
+            $root.C2SPassDebuffRequest.encode(message.passDeBuffReuqest, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
+        if (message.passDebuffResponse != null && Object.hasOwnProperty.call(message, "passDebuffResponse"))
+            $root.S2CPassDebuffResponse.encode(message.passDebuffResponse, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
         return writer;
     };
 
@@ -13438,6 +14003,14 @@ $root.GamePacket = (function() {
                 }
             case 42: {
                     message.cardSelectResponse = $root.S2CCardSelectResponse.decode(reader, reader.uint32());
+                    break;
+                }
+            case 43: {
+                    message.passDeBuffReuqest = $root.C2SPassDebuffRequest.decode(reader, reader.uint32());
+                    break;
+                }
+            case 44: {
+                    message.passDebuffResponse = $root.S2CPassDebuffResponse.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -13894,6 +14467,26 @@ $root.GamePacket = (function() {
                     return "cardSelectResponse." + error;
             }
         }
+        if (message.passDeBuffReuqest != null && message.hasOwnProperty("passDeBuffReuqest")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.C2SPassDebuffRequest.verify(message.passDeBuffReuqest);
+                if (error)
+                    return "passDeBuffReuqest." + error;
+            }
+        }
+        if (message.passDebuffResponse != null && message.hasOwnProperty("passDebuffResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CPassDebuffResponse.verify(message.passDebuffResponse);
+                if (error)
+                    return "passDebuffResponse." + error;
+            }
+        }
         return null;
     };
 
@@ -14118,6 +14711,16 @@ $root.GamePacket = (function() {
             if (typeof object.cardSelectResponse !== "object")
                 throw TypeError(".GamePacket.cardSelectResponse: object expected");
             message.cardSelectResponse = $root.S2CCardSelectResponse.fromObject(object.cardSelectResponse);
+        }
+        if (object.passDeBuffReuqest != null) {
+            if (typeof object.passDeBuffReuqest !== "object")
+                throw TypeError(".GamePacket.passDeBuffReuqest: object expected");
+            message.passDeBuffReuqest = $root.C2SPassDebuffRequest.fromObject(object.passDeBuffReuqest);
+        }
+        if (object.passDebuffResponse != null) {
+            if (typeof object.passDebuffResponse !== "object")
+                throw TypeError(".GamePacket.passDebuffResponse: object expected");
+            message.passDebuffResponse = $root.S2CPassDebuffResponse.fromObject(object.passDebuffResponse);
         }
         return message;
     };
@@ -14344,6 +14947,16 @@ $root.GamePacket = (function() {
             object.cardSelectResponse = $root.S2CCardSelectResponse.toObject(message.cardSelectResponse, options);
             if (options.oneofs)
                 object.payload = "cardSelectResponse";
+        }
+        if (message.passDeBuffReuqest != null && message.hasOwnProperty("passDeBuffReuqest")) {
+            object.passDeBuffReuqest = $root.C2SPassDebuffRequest.toObject(message.passDeBuffReuqest, options);
+            if (options.oneofs)
+                object.payload = "passDeBuffReuqest";
+        }
+        if (message.passDebuffResponse != null && message.hasOwnProperty("passDebuffResponse")) {
+            object.passDebuffResponse = $root.S2CPassDebuffResponse.toObject(message.passDebuffResponse, options);
+            if (options.oneofs)
+                object.payload = "passDebuffResponse";
         }
         return object;
     };
