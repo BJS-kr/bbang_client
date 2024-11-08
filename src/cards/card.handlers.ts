@@ -4,11 +4,13 @@ import { CharacterState } from '../constants/game';
 import {
   C2SCardSelectRequest,
   C2SDestroyCardRequest,
+  C2SPassDebuffRequest,
   C2SUseCardRequest,
   GlobalFailCode,
   S2CCardSelectResponse,
   S2CDestroyCardResponse,
   S2CFleaMarketNotification,
+  S2CPassDebuffResponse,
   S2CUserUpdateNotification,
 } from '../protobuf/compiled';
 import { rooms } from '../rooms/rooms';
@@ -680,4 +682,56 @@ export function handleDestroyCard(socket: Socket, version: string, sequence: num
   writePayload(socket, PACKET_TYPE.DESTROY_CARD_RESPONSE, version, sequence, {
     handCards: Array.from(user.character.handCards.entries()).map(([type, count]) => ({ type, count })),
   } satisfies MessageProps<S2CDestroyCardResponse>);
+}
+
+export function handlePassDebuff(socket: Socket, version: string, sequence: number, passDebuffRequest: C2SPassDebuffRequest, ctx: Context) {
+  const room = rooms.getRoom(ctx.roomId);
+
+  if (!room) {
+    error('handlePassDebuff: room not found');
+    return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.ROOM_NOT_FOUND,
+    } satisfies MessageProps<S2CPassDebuffResponse>);
+  }
+
+  const user = room.getUser(ctx.userId);
+
+  if (!user) {
+    error('handlePassDebuff: user not found');
+    return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies MessageProps<S2CPassDebuffResponse>);
+  }
+
+  const targetUser = room.getUser(passDebuffRequest.targetUserId);
+
+  if (!targetUser) {
+    error('handlePassDebuff: target user not found');
+    return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies MessageProps<S2CPassDebuffResponse>);
+  }
+
+  if (!user.character.debuffs.has(passDebuffRequest.debuffCardType)) {
+    error('handlePassDebuff: user has no debuff card');
+    return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NO_CARD,
+    } satisfies MessageProps<S2CPassDebuffResponse>);
+  }
+
+  user.character.debuffs.delete(passDebuffRequest.debuffCardType);
+  targetUser.character.debuffs.add(passDebuffRequest.debuffCardType);
+
+  writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE,
+  } satisfies MessageProps<S2CPassDebuffResponse>);
+
+  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
+    user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
+  } satisfies MessageProps<S2CUserUpdateNotification>);
 }
