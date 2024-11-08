@@ -169,4 +169,16 @@ export const protoRoutes = {
     requestType: 'S2CCardSelectResponse',
     payloadKey: 'cardSelectResponse',
   },
+  [PACKET_TYPE.PASS_DEBUFF_REQUEST]: {
+    requestType: 'C2SPassDebuffRequest',
+    payloadKey: 'passDebuffReuqest',
+  },
+  [PACKET_TYPE.PASS_DEBUFF_RESPONSE]: {
+    requestType: 'S2CPassDebuffResponse',
+    payloadKey: 'passDebuffResponse',
+  },
+  [PACKET_TYPE.WARNING_NOTIFICATION]: {
+    requestType: 'S2CWarningNotification',
+    payladKey: 'warningNotification',
+  },
 } as const;

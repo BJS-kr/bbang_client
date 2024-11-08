@@ -274,6 +274,10 @@ message S2CPassDebuffResponse {
     GlobalFailCode failCode = 2;
 }
 
+message S2CWarningNotification {
+    int32 warningType = 1;
+}
+
 // 최상위 GamePacket 메시지
 message GamePacket {
     oneof payload {
@@ -360,8 +364,9 @@ message GamePacket {
         S2CCardSelectResponse cardSelectResponse = 42;
 
         // 디버프 넘기기
-        C2SPassDebuffRequest passDeBuffReuqest = 43;
+        C2SPassDebuffRequest passDebuffReuqest = 43;
         S2CPassDebuffResponse passDebuffResponse = 44;
+        S2CWarningNotification warningNotification = 45;
     }
 }
 
