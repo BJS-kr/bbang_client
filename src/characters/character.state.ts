@@ -36,12 +36,13 @@ export class CharacterStateInfo {
     const prevState = this.state;
     const prevOnStateTimeout = this.#onStateTimeout;
 
+    console.log(`[setState] prevState: ${prevState}, newState: ${state}`);
+
     this.state = state;
     this.stateTargetUserId = targetUserId;
     this.#onStateTimeout = onStateTimeout;
 
     if (prevState === CharacterState.FLEA_MARKET_TURN) {
-      console.log(`[setState] prevState: ${prevState}, newState: ${state}`);
       if (prevOnStateTimeout) {
         prevOnStateTimeout(prevState, state);
       }
