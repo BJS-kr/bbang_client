@@ -46,7 +46,7 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
       room.users[nextIndex].character.stateInfo.setState(
         room.users[nextIndex].id,
         CharacterState.FLEA_MARKET_TURN,
-        onFleaMarketTurnTimeout(user, room),
+        onFleaMarketTurnTimeout(user[nextIndex], room),
       );
     }
 
