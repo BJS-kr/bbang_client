@@ -9,6 +9,7 @@ import {
   GlobalFailCode,
   S2CCardSelectResponse,
   S2CDestroyCardResponse,
+  S2CFleaMarketNotification,
   S2CUserUpdateNotification,
 } from '../protobuf/compiled';
 import { rooms } from '../rooms/rooms';
@@ -534,6 +535,11 @@ function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room
     const timeout = state === CharacterState.FLEA_MARKET_TURN ? onFleaMarketTurnTimeout(user, room) : null;
     user.character.stateInfo.setState(user.id, state, timeout);
   });
+
+  room.broadcast(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, {
+    cardTypes: room.fleaMarketCards,
+    pickIndex: room.pickFleaMarketIndex,
+  } satisfies MessageProps<S2CFleaMarketNotification>);
 
   responseSuccess(socket, version, sequence, CARD_TYPE.FLEA_MARKET, room.users, room, user, '');
 }
