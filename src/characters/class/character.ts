@@ -1,5 +1,5 @@
 import { Card } from '../../cards/class/card';
-import { CARD_TYPE, CharacterState, ROLE_TYPE } from '../../constants/game';
+import { CARD_TYPE, CHARACTER_TYPE, CharacterState, ROLE_TYPE } from '../../constants/game';
 import { CardData, CharacterData, CharacterPositionData } from '../../protobuf/compiled';
 import { MessageProps } from '../../protobuf/props';
 import { EventEmitter } from 'node:events';
@@ -92,7 +92,25 @@ export class Character extends EventEmitter {
   }
 
   getMaxBBangCount() {
-    return this.weapon === CARD_TYPE.SNIPER_GUN ? 2 : this.weapon === CARD_TYPE.HAND_GUN ? Infinity : 1;
+    switch (true) {
+      case this.weapon === CARD_TYPE.SNIPER_GUN:
+        return 2;
+      case this.weapon === CARD_TYPE.HAND_GUN:
+      case this.characterType === CHARACTER_TYPE.RED:
+        return Infinity;
+    }
+
+    return 1;
+  }
+
+  getShieldAmount() {
+    switch (true) {
+      case this.equips.has(CARD_TYPE.LASER_POINTER):
+      case this.characterType === CHARACTER_TYPE.SHARK:
+        return 2;
+    }
+
+    return 1;
   }
 
   increaseBBangCount() {

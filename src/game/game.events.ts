@@ -1,6 +1,6 @@
 import { EventEmitter } from 'node:events';
 import { ContainmentUnit } from '../cards/class/containment.unit';
-import { CARD_TYPE, DAILY_CARD_COUNT, GAME_INIT_POSITION } from '../constants/game';
+import { CARD_TYPE, CharacterState, DAILY_CARD_COUNT, GAME_INIT_POSITION } from '../constants/game';
 import { SatelliteTarget } from '../cards/class/satellite.target';
 import { User } from '../users/types';
 import { Room } from '../rooms/types';
@@ -46,8 +46,12 @@ export class GameEvents extends EventEmitter {
         if (ContainmentUnit.canEscape()) {
           cu.character.debuffs.delete(CARD_TYPE.CONTAINMENT_UNIT);
           this.containedUsers = this.containedUsers.filter((cu) => cu !== cu);
-          updatedUsers.push(cu);
+          cu.character.stateInfo.setState(cu.id, CharacterState.NONE, null);
+        } else {
+          cu.character.stateInfo.setState(cu.id, CharacterState.CONTAINED, null);
         }
+
+        updatedUsers.push(cu);
       });
 
       this.satelliteTargets.forEach((st) => {
