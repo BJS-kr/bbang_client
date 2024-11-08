@@ -57,6 +57,7 @@ export class CharacterStateInfo {
 
       case CharacterState.FLEA_MARKET_TURN:
       case CharacterState.FLEA_MARKET_WAIT:
+        this.nextState = this.state;
         this.nextStateAt = 0;
         this.resetTimer();
         break;
