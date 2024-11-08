@@ -93,6 +93,15 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
     } satisfies MessageProps<S2CCardSelectResponse>);
   }
 
+  if (user.character.stateInfo.state === CharacterState.CONTAINED) {
+    error('handleCardSelect: user is contained');
+
+    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_CONTAINED,
+    } satisfies UseCardResponse);
+  }
+
   const targetUser = room.getUser(user.character.stateInfo.stateTargetUserId);
 
   if (!targetUser) {

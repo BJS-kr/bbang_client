@@ -2511,6 +2511,7 @@ $root.S2CRegisterResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -2602,6 +2603,10 @@ $root.S2CRegisterResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -3115,6 +3120,7 @@ $root.S2CLoginResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -3213,6 +3219,10 @@ $root.S2CLoginResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -3696,6 +3706,7 @@ $root.S2CCreateRoomResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -3790,6 +3801,10 @@ $root.S2CCreateRoomResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -4642,6 +4657,7 @@ $root.S2CJoinRoomResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -4736,6 +4752,10 @@ $root.S2CJoinRoomResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -5189,6 +5209,7 @@ $root.S2CJoinRandomRoomResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -5283,6 +5304,10 @@ $root.S2CJoinRandomRoomResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -5896,6 +5921,7 @@ $root.S2CLeaveRoomResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -5985,6 +6011,10 @@ $root.S2CLeaveRoomResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -6590,6 +6620,7 @@ $root.S2CGamePrepareResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -6679,6 +6710,10 @@ $root.S2CGamePrepareResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -7289,6 +7324,7 @@ $root.S2CGameStartResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -7378,6 +7414,10 @@ $root.S2CGameStartResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -8130,6 +8170,7 @@ $root.S2CPositionUpdateResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -8219,6 +8260,10 @@ $root.S2CPositionUpdateResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -8897,6 +8942,7 @@ $root.S2CUseCardResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -8986,6 +9032,10 @@ $root.S2CUseCardResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -10418,6 +10468,7 @@ $root.S2CFleaMarketPickResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -10507,6 +10558,10 @@ $root.S2CFleaMarketPickResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -11402,6 +11457,7 @@ $root.S2CReactionResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -11491,6 +11547,10 @@ $root.S2CReactionResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -12568,6 +12628,7 @@ $root.S2CCardSelectResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -12657,6 +12718,10 @@ $root.S2CCardSelectResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -13111,6 +13176,7 @@ $root.S2CPassDebuffResponse = (function() {
             case 13:
             case 14:
             case 15:
+            case 16:
                 break;
             }
         return null;
@@ -13200,6 +13266,10 @@ $root.S2CPassDebuffResponse = (function() {
         case "INVALID_PHASE":
         case 15:
             message.failCode = 15;
+            break;
+        case "CHARACTER_CONTAINED":
+        case 16:
+            message.failCode = 16;
             break;
         }
         return message;
@@ -15305,6 +15375,7 @@ $root.GamePacket = (function() {
  * @property {number} NOT_ROOM_OWNER=13 NOT_ROOM_OWNER value
  * @property {number} ALREADY_USED_BBANG=14 ALREADY_USED_BBANG value
  * @property {number} INVALID_PHASE=15 INVALID_PHASE value
+ * @property {number} CHARACTER_CONTAINED=16 CHARACTER_CONTAINED value
  */
 $root.GlobalFailCode = (function() {
     var valuesById = {}, values = Object.create(valuesById);
@@ -15324,6 +15395,7 @@ $root.GlobalFailCode = (function() {
     values[valuesById[13] = "NOT_ROOM_OWNER"] = 13;
     values[valuesById[14] = "ALREADY_USED_BBANG"] = 14;
     values[valuesById[15] = "INVALID_PHASE"] = 15;
+    values[valuesById[16] = "CHARACTER_CONTAINED"] = 16;
     return values;
 })();
 
