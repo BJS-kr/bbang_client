@@ -660,6 +660,7 @@ function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: 
   }
 
   targetUser.character.debuffs.add(CARD_TYPE.BOMB);
+  room.bombStates.push({ userId: targetUser.id, expectedAt: Date.now() + 30 * 1000 }); // TODO
   responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user, '');
 }
 
@@ -735,6 +736,16 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
 
   user.character.debuffs.delete(passDebuffRequest.debuffCardType);
   targetUser.character.debuffs.add(passDebuffRequest.debuffCardType);
+
+  const bombIndex = room.bombStates.findIndex((bombStat) => bombStat.userId === targetUser.id);
+  if (bombIndex < 0) {
+    return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
+    } satisfies MessageProps<S2CPassDebuffResponse>);
+  }
+
+  room.bombStates[bombIndex].userId = targetUser.id;
 
   writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
     success: true,

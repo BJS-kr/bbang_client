@@ -5,15 +5,22 @@ import { writePayload } from '../protobuf/writePayload';
 import { config } from '../config/config';
 import { GameEvents } from '../game/game.events';
 import { PACKET_TYPE } from '../constants/packetType';
-import { S2CPositionUpdateNotification } from '../protobuf/compiled';
+import { S2CPositionUpdateNotification, S2CUserUpdateNotification, S2CWarningNotification, WarningType } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
+import { Sequence } from 'mysql2/typings/mysql/lib/protocol/sequences/Sequence';
+import { rooms } from './rooms';
 
 export enum RoomState {
   WAIT = 0,
   PREPARE = 1,
   IN_GAME = 2,
 }
+
+export type BombState = {
+  userId: string;
+  expectedAt: number;
+};
 
 export class Room {
   name: string;
@@ -25,7 +32,8 @@ export class Room {
   gameEvents: GameEvents;
   fleaMarketCards: number[];
   pickFleaMarketIndex: number[];
-  positionBroadcastTimer: NodeJS.Timeout | null;
+  bombStates: BombState[];
+  infomationBroadcastTimer: NodeJS.Timeout | null;
 
   constructor({
     name,
@@ -53,7 +61,8 @@ export class Room {
     this.gameEvents = gameEvents;
     this.fleaMarketCards = [];
     this.pickFleaMarketIndex = [];
-    this.positionBroadcastTimer = null;
+    this.bombStates = [];
+    this.infomationBroadcastTimer = null;
   }
 
   broadcast(packetType: number, payload: any) {
@@ -100,7 +109,48 @@ export class Room {
   }
 
   startPositionBroadcast() {
-    this.positionBroadcastTimer = setInterval(() => {
+    this.infomationBroadcastTimer = setInterval(() => {
+      const now = Date.now();
+
+      // 폭탄 경고 대상
+      const bombWarningStates = this.bombStates.filter((bombStat) => {
+        const timeUntilExplosion = bombStat.expectedAt - now;
+        return timeUntilExplosion <= 5000 && timeUntilExplosion > 0; // TODO
+      });
+
+      // 경고 대상한테 노티
+      bombWarningStates.forEach((bombState) => {
+        const user = this.getUser(bombState.userId);
+        if (!user) {
+          return;
+        }
+        writePayload(user.socket, PACKET_TYPE.WARNING_NOTIFICATION, '', 0, {
+          warningType: WarningType.BOMB,
+          expectedAt: bombState.expectedAt,
+        } satisfies MessageProps<S2CWarningNotification>);
+      });
+
+      // 폭탄 실행 대상
+      const bombTargetStates = this.bombStates.filter((bombState) => {
+        const user = this.getUser(bombState.userId);
+        return bombState.expectedAt <= now;
+      });
+
+      bombTargetStates.forEach((bombState) => {
+        const user = this.getUser(bombState.userId);
+        if (!user) {
+          return;
+        }
+        user?.character.takeDamage(2);
+        this.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+          user: [user.toUserData(user.id)],
+        } satisfies MessageProps<S2CUserUpdateNotification>);
+      });
+
+      this.bombStates = this.bombStates.filter(
+        (stat) => !bombTargetStates.some((warningState) => warningState.userId === stat.userId && warningState.expectedAt === stat.expectedAt),
+      );
+
       this.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
         characterPositions: this.users.map((user) => user.character.positionInfo.toPositionData()),
       } satisfies MessageProps<S2CPositionUpdateNotification>);
@@ -108,9 +158,9 @@ export class Room {
   }
 
   stopPositionBroadcast() {
-    if (this.positionBroadcastTimer) {
-      clearInterval(this.positionBroadcastTimer);
-      this.positionBroadcastTimer = null;
+    if (this.infomationBroadcastTimer) {
+      clearInterval(this.infomationBroadcastTimer);
+      this.infomationBroadcastTimer = null;
     }
   }
 }
