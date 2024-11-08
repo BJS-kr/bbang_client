@@ -19,7 +19,7 @@ import {
   positionUpdateRequestHandler,
   reactionHandler,
 } from '../game/game.handler';
-import { handleCardSelect, handleDestroyCard, handleUseCard } from '../cards/card.handlers';
+import { handleCardSelect, handleDestroyCard, handlePassDebuff, handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
   buf = Buffer.concat([buf, data]);
@@ -174,6 +174,11 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         log(`${ctx.userId}|cardSelectRequest: ${JSON.stringify(cardSelectRequest, null, 2)}`);
         await handleCardSelect({ socket, version, sequence, ctx }, cardSelectRequest);
 
+        break;
+      case PACKET_TYPE.PASS_DEBUFF_REQUEST:
+        const passDebuffRequest = decodePayload(packetType, payloadBuffer);
+        log(`${ctx.userId}|passDebuffRequest: ${JSON.stringify(passDebuffRequest, null, 2)}`);
+        await handlePassDebuff(socket, version, sequence, passDebuffRequest, ctx);
         break;
       default:
         error(`Unhandled packet type: ${packetType}`);
