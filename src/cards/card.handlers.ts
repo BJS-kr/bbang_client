@@ -660,7 +660,7 @@ function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: 
   }
 
   targetUser.character.debuffs.add(CARD_TYPE.BOMB);
-  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user, targetUser], room, user, targetUser.id);
 }
 
 export function handleDestroyCard(socket: Socket, version: string, sequence: number, cardDestroyRequest: C2SDestroyCardRequest, ctx: Context) {
