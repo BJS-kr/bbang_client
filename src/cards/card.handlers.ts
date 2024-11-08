@@ -350,7 +350,7 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 }
 
 function handleGuerrillaTargetBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+  user.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
     user: [user.toUserData(user.id)],
   } satisfies MessageProps<S2CUserUpdateNotification>);
@@ -365,7 +365,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   }
 
   user.character.acquireBBangCount();
-  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
+  user.character.stateInfo.setState(targetUser.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   const damage = user.character.getBBangDamage();
   targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeoutTarget(damage, targetUser, room));
@@ -373,7 +373,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user, targetUser.id);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
-    targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
+    targetUser.character.stateInfo.setState('', CharacterState.NONE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -385,7 +385,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (isAutoShieldExists && autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
-    shielded && targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
+    shielded && targetUser.character.stateInfo.setState('', CharacterState.NONE, null);
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,
@@ -409,7 +409,18 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
-  if (user.character instanceof Shark || user.character.equips.has(CARD_TYPE.LASER_POINTER)) {
+  const targetUser = room.getUser(user.character.stateInfo.stateTargetUserId);
+
+  if (!targetUser) {
+    error('handleShield: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  if (user.character instanceof Shark || targetUser.character.equips.has(CARD_TYPE.LASER_POINTER)) {
     const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
     if (shield instanceof Error) {
       error('handleShield: character have no sufficient amount of shield card');
@@ -478,7 +489,7 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
     Character.recover(1, user.character);
   } else {
     room.users.forEach((targetUser) => {
-      Character.recover(1, targetUser.character);
+      targetUser.id !== user.id && Character.recover(1, targetUser.character);
     });
   }
 
