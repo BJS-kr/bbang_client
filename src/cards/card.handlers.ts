@@ -5,7 +5,6 @@ import {
   C2SCardSelectRequest,
   C2SDestroyCardRequest,
   C2SUseCardRequest,
-  CardData,
   GlobalFailCode,
   S2CCardSelectResponse,
   S2CDestroyCardResponse,
@@ -41,10 +40,8 @@ import { Hallucination } from './class/hallucination';
 import { FleaMarket } from './class/fleamarket';
 import { MaturedSavings } from './class/matured.savings';
 import { SniperGun } from './class/snipergun';
-
 import { WinLottery } from './class/win.lottery';
 import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './utils/types';
-
 import { LaserPointer } from './class/laser.pointer';
 import { Radar } from './class/radar';
 import { cards } from './card.instance.index';
@@ -306,11 +303,11 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof ContainmentUnit:
       log('handleUseCard: ContainmentUnit');
-      handleContainmentUnit(base, room, user);
+      handleContainmentUnit(base, useCardRequest, room, user);
       break;
     case card instanceof SatelliteTarget:
       log('handleUseCard: SatelliteTarget');
-      handleSatelliteTarget(base, room, user);
+      handleSatelliteTarget(base, useCardRequest, room, user);
       break;
     case card instanceof Bomb:
       log('handleUseCard: Bomb');
@@ -614,16 +611,38 @@ function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Roo
   responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user, '');
 }
 
-function handleContainmentUnit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
-  room.gameEvents.containedUsers.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user, '');
+function handleContainmentUnit({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
+  const targetUser = room.getUser(useCardRequest.targetUserId);
+
+  if (!targetUser) {
+    error('handleContainmentUnit: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  targetUser.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
+  room.gameEvents.containedUsers.push(targetUser);
+  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user, targetUser], room, user, targetUser.id);
 }
 
-function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
-  room.gameEvents.satelliteTargets.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user, '');
+function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
+  const targetUser = room.getUser(useCardRequest.targetUserId);
+
+  if (!targetUser) {
+    error('handleSatelliteTarget: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  targetUser.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
+  room.gameEvents.satelliteTargets.push(targetUser);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user, targetUser], room, user, targetUser.id);
 }
 
 function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
