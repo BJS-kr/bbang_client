@@ -115,7 +115,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareNotification>);
   });
 
-  console.log(`[GamePrepare] roomId: ${ctx.roomId}`);
+  log(`[GamePrepare] roomId: ${ctx.roomId}`);
 };
 
 export const gameStartRequestHandler = async (socket, version, sequence, gameStartRequest, ctx: Context) => {
@@ -215,7 +215,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     } satisfies MessageProps<S2CGameStartNotification>);
   });
 
-  console.log(`[GameStart] roomId: ${ctx.roomId}`);
+  log(`[GameStart] roomId: ${ctx.roomId}`);
 };
 
 export const positionUpdateRequestHandler = async (socket, version, sequence, positionUpdateRequest, ctx: Context) => {
@@ -346,8 +346,6 @@ export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarke
       failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
     } satisfies MessageProps<S2CFleaMarketPickResponse>);
   }
-
-  console.log(`state: ${user.character.stateInfo.state}`);
 
   if (user.character.stateInfo.state !== CharacterState.FLEA_MARKET_TURN) {
     return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
