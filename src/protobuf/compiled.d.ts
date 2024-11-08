@@ -5074,8 +5074,8 @@ export class S2CCardSelectResponse implements IS2CCardSelectResponse {
 /** Properties of a C2SPassDebuffRequest. */
 export interface IC2SPassDebuffRequest {
 
-    /** C2SPassDebuffRequest userId */
-    userId?: (string|null);
+    /** C2SPassDebuffRequest targetUserId */
+    targetUserId?: (string|null);
 
     /** C2SPassDebuffRequest debuffCardType */
     debuffCardType?: (number|null);
@@ -5090,8 +5090,8 @@ export class C2SPassDebuffRequest implements IC2SPassDebuffRequest {
      */
     constructor(properties?: IC2SPassDebuffRequest);
 
-    /** C2SPassDebuffRequest userId. */
-    public userId: string;
+    /** C2SPassDebuffRequest targetUserId. */
+    public targetUserId: string;
 
     /** C2SPassDebuffRequest debuffCardType. */
     public debuffCardType: number;
@@ -5277,6 +5277,109 @@ export class S2CPassDebuffResponse implements IS2CPassDebuffResponse {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a S2CWarningNotification. */
+export interface IS2CWarningNotification {
+
+    /** S2CWarningNotification warningType */
+    warningType?: (WarningType|null);
+
+    /** S2CWarningNotification expectedAt */
+    expectedAt?: (number|Long|null);
+}
+
+/** Represents a S2CWarningNotification. */
+export class S2CWarningNotification implements IS2CWarningNotification {
+
+    /**
+     * Constructs a new S2CWarningNotification.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CWarningNotification);
+
+    /** S2CWarningNotification warningType. */
+    public warningType: WarningType;
+
+    /** S2CWarningNotification expectedAt. */
+    public expectedAt: (number|Long);
+
+    /**
+     * Creates a new S2CWarningNotification instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CWarningNotification instance
+     */
+    public static create(properties?: IS2CWarningNotification): S2CWarningNotification;
+
+    /**
+     * Encodes the specified S2CWarningNotification message. Does not implicitly {@link S2CWarningNotification.verify|verify} messages.
+     * @param message S2CWarningNotification message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CWarningNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CWarningNotification message, length delimited. Does not implicitly {@link S2CWarningNotification.verify|verify} messages.
+     * @param message S2CWarningNotification message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CWarningNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CWarningNotification message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CWarningNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CWarningNotification;
+
+    /**
+     * Decodes a S2CWarningNotification message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CWarningNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CWarningNotification;
+
+    /**
+     * Verifies a S2CWarningNotification message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CWarningNotification message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CWarningNotification
+     */
+    public static fromObject(object: { [k: string]: any }): S2CWarningNotification;
+
+    /**
+     * Creates a plain object from a S2CWarningNotification message. Also converts values to other types if specified.
+     * @param message S2CWarningNotification
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CWarningNotification, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CWarningNotification to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CWarningNotification
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a GamePacket. */
 export interface IGamePacket {
 
@@ -5406,11 +5509,14 @@ export interface IGamePacket {
     /** GamePacket cardSelectResponse */
     cardSelectResponse?: (IS2CCardSelectResponse|null);
 
-    /** GamePacket passDeBuffReuqest */
-    passDeBuffReuqest?: (IC2SPassDebuffRequest|null);
+    /** GamePacket passDebuffReuqest */
+    passDebuffReuqest?: (IC2SPassDebuffRequest|null);
 
     /** GamePacket passDebuffResponse */
     passDebuffResponse?: (IS2CPassDebuffResponse|null);
+
+    /** GamePacket warningNotification */
+    warningNotification?: (IS2CWarningNotification|null);
 }
 
 /** Represents a GamePacket. */
@@ -5548,14 +5654,17 @@ export class GamePacket implements IGamePacket {
     /** GamePacket cardSelectResponse. */
     public cardSelectResponse?: (IS2CCardSelectResponse|null);
 
-    /** GamePacket passDeBuffReuqest. */
-    public passDeBuffReuqest?: (IC2SPassDebuffRequest|null);
+    /** GamePacket passDebuffReuqest. */
+    public passDebuffReuqest?: (IC2SPassDebuffRequest|null);
 
     /** GamePacket passDebuffResponse. */
     public passDebuffResponse?: (IS2CPassDebuffResponse|null);
 
+    /** GamePacket warningNotification. */
+    public warningNotification?: (IS2CWarningNotification|null);
+
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDeBuffReuqest"|"passDebuffResponse");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffReuqest"|"passDebuffResponse"|"warningNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.
@@ -5653,4 +5762,10 @@ export enum GlobalFailCode {
     NOT_ROOM_OWNER = 13,
     ALREADY_USED_BBANG = 14,
     INVALID_PHASE = 15
+}
+
+/** WarningType enum. */
+export enum WarningType {
+    NO_WARNING = 0,
+    BOMB = 1
 }

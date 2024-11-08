@@ -265,7 +265,7 @@ message S2CCardSelectResponse {
 }
 
 message C2SPassDebuffRequest {
-    string userId = 1;
+    string targetUserId = 1;
     int32 debuffCardType = 2;
 }
 
@@ -275,7 +275,8 @@ message S2CPassDebuffResponse {
 }
 
 message S2CWarningNotification {
-    int32 warningType = 1;
+    WarningType warningType = 1;
+    int64 expectedAt = 2; // 밀리초 타임스탬프
 }
 
 // 최상위 GamePacket 메시지
@@ -390,4 +391,9 @@ enum GlobalFailCode {
     NOT_ROOM_OWNER = 13;
     ALREADY_USED_BBANG = 14;
     INVALID_PHASE = 15;
+}
+
+enum WarningType {
+    NO_WARNING = 0;
+    BOMB = 1;
 }

@@ -12721,7 +12721,7 @@ $root.C2SPassDebuffRequest = (function() {
      * Properties of a C2SPassDebuffRequest.
      * @exports IC2SPassDebuffRequest
      * @interface IC2SPassDebuffRequest
-     * @property {string|null} [userId] C2SPassDebuffRequest userId
+     * @property {string|null} [targetUserId] C2SPassDebuffRequest targetUserId
      * @property {number|null} [debuffCardType] C2SPassDebuffRequest debuffCardType
      */
 
@@ -12741,12 +12741,12 @@ $root.C2SPassDebuffRequest = (function() {
     }
 
     /**
-     * C2SPassDebuffRequest userId.
-     * @member {string} userId
+     * C2SPassDebuffRequest targetUserId.
+     * @member {string} targetUserId
      * @memberof C2SPassDebuffRequest
      * @instance
      */
-    C2SPassDebuffRequest.prototype.userId = "";
+    C2SPassDebuffRequest.prototype.targetUserId = "";
 
     /**
      * C2SPassDebuffRequest debuffCardType.
@@ -12780,8 +12780,8 @@ $root.C2SPassDebuffRequest = (function() {
     C2SPassDebuffRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+        if (message.targetUserId != null && Object.hasOwnProperty.call(message, "targetUserId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.targetUserId);
         if (message.debuffCardType != null && Object.hasOwnProperty.call(message, "debuffCardType"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.debuffCardType);
         return writer;
@@ -12819,7 +12819,7 @@ $root.C2SPassDebuffRequest = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.userId = reader.string();
+                    message.targetUserId = reader.string();
                     break;
                 }
             case 2: {
@@ -12861,9 +12861,9 @@ $root.C2SPassDebuffRequest = (function() {
     C2SPassDebuffRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+        if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
+            if (!$util.isString(message.targetUserId))
+                return "targetUserId: string expected";
         if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
             if (!$util.isInteger(message.debuffCardType))
                 return "debuffCardType: integer expected";
@@ -12882,8 +12882,8 @@ $root.C2SPassDebuffRequest = (function() {
         if (object instanceof $root.C2SPassDebuffRequest)
             return object;
         var message = new $root.C2SPassDebuffRequest();
-        if (object.userId != null)
-            message.userId = String(object.userId);
+        if (object.targetUserId != null)
+            message.targetUserId = String(object.targetUserId);
         if (object.debuffCardType != null)
             message.debuffCardType = object.debuffCardType | 0;
         return message;
@@ -12903,11 +12903,11 @@ $root.C2SPassDebuffRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.userId = "";
+            object.targetUserId = "";
             object.debuffCardType = 0;
         }
-        if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+        if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
+            object.targetUserId = message.targetUserId;
         if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
             object.debuffCardType = message.debuffCardType;
         return object;
@@ -13258,6 +13258,266 @@ $root.S2CPassDebuffResponse = (function() {
     return S2CPassDebuffResponse;
 })();
 
+$root.S2CWarningNotification = (function() {
+
+    /**
+     * Properties of a S2CWarningNotification.
+     * @exports IS2CWarningNotification
+     * @interface IS2CWarningNotification
+     * @property {WarningType|null} [warningType] S2CWarningNotification warningType
+     * @property {number|Long|null} [expectedAt] S2CWarningNotification expectedAt
+     */
+
+    /**
+     * Constructs a new S2CWarningNotification.
+     * @exports S2CWarningNotification
+     * @classdesc Represents a S2CWarningNotification.
+     * @implements IS2CWarningNotification
+     * @constructor
+     * @param {IS2CWarningNotification=} [properties] Properties to set
+     */
+    function S2CWarningNotification(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CWarningNotification warningType.
+     * @member {WarningType} warningType
+     * @memberof S2CWarningNotification
+     * @instance
+     */
+    S2CWarningNotification.prototype.warningType = 0;
+
+    /**
+     * S2CWarningNotification expectedAt.
+     * @member {number|Long} expectedAt
+     * @memberof S2CWarningNotification
+     * @instance
+     */
+    S2CWarningNotification.prototype.expectedAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * Creates a new S2CWarningNotification instance using the specified properties.
+     * @function create
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {IS2CWarningNotification=} [properties] Properties to set
+     * @returns {S2CWarningNotification} S2CWarningNotification instance
+     */
+    S2CWarningNotification.create = function create(properties) {
+        return new S2CWarningNotification(properties);
+    };
+
+    /**
+     * Encodes the specified S2CWarningNotification message. Does not implicitly {@link S2CWarningNotification.verify|verify} messages.
+     * @function encode
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {IS2CWarningNotification} message S2CWarningNotification message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CWarningNotification.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.warningType != null && Object.hasOwnProperty.call(message, "warningType"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.warningType);
+        if (message.expectedAt != null && Object.hasOwnProperty.call(message, "expectedAt"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.expectedAt);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CWarningNotification message, length delimited. Does not implicitly {@link S2CWarningNotification.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {IS2CWarningNotification} message S2CWarningNotification message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CWarningNotification.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CWarningNotification message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CWarningNotification} S2CWarningNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CWarningNotification.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CWarningNotification();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.warningType = reader.int32();
+                    break;
+                }
+            case 2: {
+                    message.expectedAt = reader.int64();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CWarningNotification message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CWarningNotification} S2CWarningNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CWarningNotification.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CWarningNotification message.
+     * @function verify
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CWarningNotification.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.warningType != null && message.hasOwnProperty("warningType"))
+            switch (message.warningType) {
+            default:
+                return "warningType: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
+        if (message.expectedAt != null && message.hasOwnProperty("expectedAt"))
+            if (!$util.isInteger(message.expectedAt) && !(message.expectedAt && $util.isInteger(message.expectedAt.low) && $util.isInteger(message.expectedAt.high)))
+                return "expectedAt: integer|Long expected";
+        return null;
+    };
+
+    /**
+     * Creates a S2CWarningNotification message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CWarningNotification} S2CWarningNotification
+     */
+    S2CWarningNotification.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CWarningNotification)
+            return object;
+        var message = new $root.S2CWarningNotification();
+        switch (object.warningType) {
+        default:
+            if (typeof object.warningType === "number") {
+                message.warningType = object.warningType;
+                break;
+            }
+            break;
+        case "NO_WARNING":
+        case 0:
+            message.warningType = 0;
+            break;
+        case "BOMB":
+        case 1:
+            message.warningType = 1;
+            break;
+        }
+        if (object.expectedAt != null)
+            if ($util.Long)
+                (message.expectedAt = $util.Long.fromValue(object.expectedAt)).unsigned = false;
+            else if (typeof object.expectedAt === "string")
+                message.expectedAt = parseInt(object.expectedAt, 10);
+            else if (typeof object.expectedAt === "number")
+                message.expectedAt = object.expectedAt;
+            else if (typeof object.expectedAt === "object")
+                message.expectedAt = new $util.LongBits(object.expectedAt.low >>> 0, object.expectedAt.high >>> 0).toNumber();
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CWarningNotification message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {S2CWarningNotification} message S2CWarningNotification
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CWarningNotification.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.warningType = options.enums === String ? "NO_WARNING" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.expectedAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.expectedAt = options.longs === String ? "0" : 0;
+        }
+        if (message.warningType != null && message.hasOwnProperty("warningType"))
+            object.warningType = options.enums === String ? $root.WarningType[message.warningType] === undefined ? message.warningType : $root.WarningType[message.warningType] : message.warningType;
+        if (message.expectedAt != null && message.hasOwnProperty("expectedAt"))
+            if (typeof message.expectedAt === "number")
+                object.expectedAt = options.longs === String ? String(message.expectedAt) : message.expectedAt;
+            else
+                object.expectedAt = options.longs === String ? $util.Long.prototype.toString.call(message.expectedAt) : options.longs === Number ? new $util.LongBits(message.expectedAt.low >>> 0, message.expectedAt.high >>> 0).toNumber() : message.expectedAt;
+        return object;
+    };
+
+    /**
+     * Converts this S2CWarningNotification to JSON.
+     * @function toJSON
+     * @memberof S2CWarningNotification
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CWarningNotification.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CWarningNotification
+     * @function getTypeUrl
+     * @memberof S2CWarningNotification
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CWarningNotification.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CWarningNotification";
+    };
+
+    return S2CWarningNotification;
+})();
+
 $root.GamePacket = (function() {
 
     /**
@@ -13306,8 +13566,9 @@ $root.GamePacket = (function() {
      * @property {IS2CGameEndNotification|null} [gameEndNotification] GamePacket gameEndNotification
      * @property {IC2SCardSelectRequest|null} [cardSelectRequest] GamePacket cardSelectRequest
      * @property {IS2CCardSelectResponse|null} [cardSelectResponse] GamePacket cardSelectResponse
-     * @property {IC2SPassDebuffRequest|null} [passDeBuffReuqest] GamePacket passDeBuffReuqest
+     * @property {IC2SPassDebuffRequest|null} [passDebuffReuqest] GamePacket passDebuffReuqest
      * @property {IS2CPassDebuffResponse|null} [passDebuffResponse] GamePacket passDebuffResponse
+     * @property {IS2CWarningNotification|null} [warningNotification] GamePacket warningNotification
      */
 
     /**
@@ -13662,12 +13923,12 @@ $root.GamePacket = (function() {
     GamePacket.prototype.cardSelectResponse = null;
 
     /**
-     * GamePacket passDeBuffReuqest.
-     * @member {IC2SPassDebuffRequest|null|undefined} passDeBuffReuqest
+     * GamePacket passDebuffReuqest.
+     * @member {IC2SPassDebuffRequest|null|undefined} passDebuffReuqest
      * @memberof GamePacket
      * @instance
      */
-    GamePacket.prototype.passDeBuffReuqest = null;
+    GamePacket.prototype.passDebuffReuqest = null;
 
     /**
      * GamePacket passDebuffResponse.
@@ -13677,17 +13938,25 @@ $root.GamePacket = (function() {
      */
     GamePacket.prototype.passDebuffResponse = null;
 
+    /**
+     * GamePacket warningNotification.
+     * @member {IS2CWarningNotification|null|undefined} warningNotification
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.warningNotification = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDeBuffReuqest"|"passDebuffResponse"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffReuqest"|"passDebuffResponse"|"warningNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDeBuffReuqest", "passDebuffResponse"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffReuqest", "passDebuffResponse", "warningNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -13799,10 +14068,12 @@ $root.GamePacket = (function() {
             $root.C2SCardSelectRequest.encode(message.cardSelectRequest, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
         if (message.cardSelectResponse != null && Object.hasOwnProperty.call(message, "cardSelectResponse"))
             $root.S2CCardSelectResponse.encode(message.cardSelectResponse, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
-        if (message.passDeBuffReuqest != null && Object.hasOwnProperty.call(message, "passDeBuffReuqest"))
-            $root.C2SPassDebuffRequest.encode(message.passDeBuffReuqest, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
+        if (message.passDebuffReuqest != null && Object.hasOwnProperty.call(message, "passDebuffReuqest"))
+            $root.C2SPassDebuffRequest.encode(message.passDebuffReuqest, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
         if (message.passDebuffResponse != null && Object.hasOwnProperty.call(message, "passDebuffResponse"))
             $root.S2CPassDebuffResponse.encode(message.passDebuffResponse, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
+        if (message.warningNotification != null && Object.hasOwnProperty.call(message, "warningNotification"))
+            $root.S2CWarningNotification.encode(message.warningNotification, writer.uint32(/* id 45, wireType 2 =*/362).fork()).ldelim();
         return writer;
     };
 
@@ -14006,11 +14277,15 @@ $root.GamePacket = (function() {
                     break;
                 }
             case 43: {
-                    message.passDeBuffReuqest = $root.C2SPassDebuffRequest.decode(reader, reader.uint32());
+                    message.passDebuffReuqest = $root.C2SPassDebuffRequest.decode(reader, reader.uint32());
                     break;
                 }
             case 44: {
                     message.passDebuffResponse = $root.S2CPassDebuffResponse.decode(reader, reader.uint32());
+                    break;
+                }
+            case 45: {
+                    message.warningNotification = $root.S2CWarningNotification.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -14467,14 +14742,14 @@ $root.GamePacket = (function() {
                     return "cardSelectResponse." + error;
             }
         }
-        if (message.passDeBuffReuqest != null && message.hasOwnProperty("passDeBuffReuqest")) {
+        if (message.passDebuffReuqest != null && message.hasOwnProperty("passDebuffReuqest")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
             properties.payload = 1;
             {
-                var error = $root.C2SPassDebuffRequest.verify(message.passDeBuffReuqest);
+                var error = $root.C2SPassDebuffRequest.verify(message.passDebuffReuqest);
                 if (error)
-                    return "passDeBuffReuqest." + error;
+                    return "passDebuffReuqest." + error;
             }
         }
         if (message.passDebuffResponse != null && message.hasOwnProperty("passDebuffResponse")) {
@@ -14485,6 +14760,16 @@ $root.GamePacket = (function() {
                 var error = $root.S2CPassDebuffResponse.verify(message.passDebuffResponse);
                 if (error)
                     return "passDebuffResponse." + error;
+            }
+        }
+        if (message.warningNotification != null && message.hasOwnProperty("warningNotification")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CWarningNotification.verify(message.warningNotification);
+                if (error)
+                    return "warningNotification." + error;
             }
         }
         return null;
@@ -14712,15 +14997,20 @@ $root.GamePacket = (function() {
                 throw TypeError(".GamePacket.cardSelectResponse: object expected");
             message.cardSelectResponse = $root.S2CCardSelectResponse.fromObject(object.cardSelectResponse);
         }
-        if (object.passDeBuffReuqest != null) {
-            if (typeof object.passDeBuffReuqest !== "object")
-                throw TypeError(".GamePacket.passDeBuffReuqest: object expected");
-            message.passDeBuffReuqest = $root.C2SPassDebuffRequest.fromObject(object.passDeBuffReuqest);
+        if (object.passDebuffReuqest != null) {
+            if (typeof object.passDebuffReuqest !== "object")
+                throw TypeError(".GamePacket.passDebuffReuqest: object expected");
+            message.passDebuffReuqest = $root.C2SPassDebuffRequest.fromObject(object.passDebuffReuqest);
         }
         if (object.passDebuffResponse != null) {
             if (typeof object.passDebuffResponse !== "object")
                 throw TypeError(".GamePacket.passDebuffResponse: object expected");
             message.passDebuffResponse = $root.S2CPassDebuffResponse.fromObject(object.passDebuffResponse);
+        }
+        if (object.warningNotification != null) {
+            if (typeof object.warningNotification !== "object")
+                throw TypeError(".GamePacket.warningNotification: object expected");
+            message.warningNotification = $root.S2CWarningNotification.fromObject(object.warningNotification);
         }
         return message;
     };
@@ -14948,15 +15238,20 @@ $root.GamePacket = (function() {
             if (options.oneofs)
                 object.payload = "cardSelectResponse";
         }
-        if (message.passDeBuffReuqest != null && message.hasOwnProperty("passDeBuffReuqest")) {
-            object.passDeBuffReuqest = $root.C2SPassDebuffRequest.toObject(message.passDeBuffReuqest, options);
+        if (message.passDebuffReuqest != null && message.hasOwnProperty("passDebuffReuqest")) {
+            object.passDebuffReuqest = $root.C2SPassDebuffRequest.toObject(message.passDebuffReuqest, options);
             if (options.oneofs)
-                object.payload = "passDeBuffReuqest";
+                object.payload = "passDebuffReuqest";
         }
         if (message.passDebuffResponse != null && message.hasOwnProperty("passDebuffResponse")) {
             object.passDebuffResponse = $root.S2CPassDebuffResponse.toObject(message.passDebuffResponse, options);
             if (options.oneofs)
                 object.payload = "passDebuffResponse";
+        }
+        if (message.warningNotification != null && message.hasOwnProperty("warningNotification")) {
+            object.warningNotification = $root.S2CWarningNotification.toObject(message.warningNotification, options);
+            if (options.oneofs)
+                object.payload = "warningNotification";
         }
         return object;
     };
@@ -15029,6 +15324,20 @@ $root.GlobalFailCode = (function() {
     values[valuesById[13] = "NOT_ROOM_OWNER"] = 13;
     values[valuesById[14] = "ALREADY_USED_BBANG"] = 14;
     values[valuesById[15] = "INVALID_PHASE"] = 15;
+    return values;
+})();
+
+/**
+ * WarningType enum.
+ * @exports WarningType
+ * @enum {number}
+ * @property {number} NO_WARNING=0 NO_WARNING value
+ * @property {number} BOMB=1 BOMB value
+ */
+$root.WarningType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NO_WARNING"] = 0;
+    values[valuesById[1] = "BOMB"] = 1;
     return values;
 })();
 
