@@ -93,6 +93,15 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
     } satisfies MessageProps<S2CCardSelectResponse>);
   }
 
+  if (user.character.stateInfo.state === CharacterState.CONTAINED) {
+    error('handleCardSelect: user is contained');
+
+    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_CONTAINED,
+    } satisfies UseCardResponse);
+  }
+
   const targetUser = room.getUser(user.character.stateInfo.stateTargetUserId);
 
   if (!targetUser) {
@@ -363,7 +372,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
     } satisfies UseCardResponse);
   }
 
-  user.character.acquireBBangCount();
+  user.character.increaseBBangCount();
   user.character.stateInfo.setState(targetUser.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   const damage = user.character.getBBangDamage();
@@ -419,7 +428,8 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     } satisfies UseCardResponse);
   }
 
-  if (user.character instanceof Shark || targetUser.character.equips.has(CARD_TYPE.LASER_POINTER)) {
+  if (user.character.getShieldAmount() > 1) {
+    // 두번 째 쉴드 draw. 첫 번째 쉴드는 카드 타입으로 인해 handleUseCard에서 이미 뽑았음
     const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
     if (shield instanceof Error) {
       error('handleShield: character have no sufficient amount of shield card');
@@ -661,7 +671,7 @@ function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: 
 
   targetUser.character.debuffs.add(CARD_TYPE.BOMB);
   room.bombStates.push({ userId: targetUser.id, expectedAt: Date.now() + 30 * 1000 }); // TODO
-  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user, targetUser], room, user, targetUser.id);
 }
 
 export function handleDestroyCard(socket: Socket, version: string, sequence: number, cardDestroyRequest: C2SDestroyCardRequest, ctx: Context) {
@@ -752,7 +762,7 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
     failCode: GlobalFailCode.NONE,
   } satisfies MessageProps<S2CPassDebuffResponse>);
 
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
     user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
   } satisfies MessageProps<S2CUserUpdateNotification>);
 }

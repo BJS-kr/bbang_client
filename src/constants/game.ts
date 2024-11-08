@@ -133,11 +133,7 @@ export enum CharacterState {
   ABSORB_TARGET = 12, // 흡수 대상
   HALLUCINATING = 13, // 신기루 중
   HALLUCINATION_TARGET = 14, // 신기루 대상
+  CONTAINED = 15, // 감금 중
 }
 
 export const DAILY_CARD_COUNT = 2;
-
-export enum WarningType {
-  NO_WARNING = 0,
-  BOMB = 1,
-}

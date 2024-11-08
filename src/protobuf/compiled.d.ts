@@ -5761,7 +5761,8 @@ export enum GlobalFailCode {
     INVALID_ROOM_STATE = 12,
     NOT_ROOM_OWNER = 13,
     ALREADY_USED_BBANG = 14,
-    INVALID_PHASE = 15
+    INVALID_PHASE = 15,
+    CHARACTER_CONTAINED = 16
 }
 
 /** WarningType enum. */
