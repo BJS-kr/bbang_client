@@ -1,9 +1,9 @@
 import { Card } from '../../cards/class/card';
-import { CARD_TYPE, CHARACTER_TYPE, CharacterState, ROLE_TYPE } from '../../constants/game';
+import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../../constants/game';
 import { CardData, CharacterData, CharacterPositionData } from '../../protobuf/compiled';
 import { MessageProps } from '../../protobuf/props';
 import { EventEmitter } from 'node:events';
-import { CharacterStateInfo, OnStateTimeout } from '../character.state';
+import { CharacterStateInfo } from '../character.state';
 import { CharacterPositionInfo } from '../character.position';
 import { Result } from '../../db/types';
 import { log } from '../../utils/logger';

@@ -87,6 +87,9 @@ export class CharacterStateInfo {
         this.nextStateAt = Date.now() + CARD_SELECT_SECOND * 1000;
         break;
 
+      case CharacterState.CONTAINED:
+        break;
+
       // 플리마켓 타이밍은 클라이언트 리액션으로 핸들링
 
       default:
