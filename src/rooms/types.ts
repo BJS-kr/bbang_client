@@ -21,6 +21,7 @@ export enum RoomState {
 export type BombState = {
   userId: string;
   expectedAt: number;
+  isWarningSend: boolean;
 };
 
 export class Room {
@@ -114,9 +115,9 @@ export class Room {
       const now = Date.now();
 
       // 폭탄 경고 대상
-      const bombWarningStates = this.bombStates.filter((bombStat) => {
-        const timeUntilExplosion = bombStat.expectedAt - now;
-        return timeUntilExplosion <= 5000 && timeUntilExplosion > 0; // TODO
+      const bombWarningStates = this.bombStates.filter((bombState) => {
+        const timeUntilExplosion = bombState.expectedAt - now;
+        return timeUntilExplosion <= 5000 && timeUntilExplosion > 0 && !bombState.isWarningSend; // TODO
       });
 
       // 경고 대상한테 노티
@@ -125,6 +126,7 @@ export class Room {
         if (!user) {
           return;
         }
+        bombState.isWarningSend = true;
         writePayload(user.socket, PACKET_TYPE.WARNING_NOTIFICATION, '', 0, {
           warningType: WarningType.BOMB,
           expectedAt: bombState.expectedAt,

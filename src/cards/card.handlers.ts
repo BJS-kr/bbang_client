@@ -670,7 +670,7 @@ function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: 
   }
 
   targetUser.character.debuffs.add(CARD_TYPE.BOMB);
-  room.bombStates.push({ userId: targetUser.id, expectedAt: Date.now() + 30 * 1000 }); // TODO
+  room.bombStates.push({ userId: targetUser.id, expectedAt: Date.now() + 30 * 1000, isWarningSend: false }); // TODO
   responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user, targetUser], room, user, targetUser.id);
 }
 
