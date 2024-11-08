@@ -747,22 +747,33 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
   user.character.debuffs.delete(passDebuffRequest.debuffCardType);
   targetUser.character.debuffs.add(passDebuffRequest.debuffCardType);
 
-  const bombIndex = room.bombStates.findIndex((bombStat) => bombStat.userId === targetUser.id);
-  if (bombIndex < 0) {
-    return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
-    } satisfies MessageProps<S2CPassDebuffResponse>);
+  switch (passDebuffRequest.debuffCardType) {
+    case CARD_TYPE.BOMB:
+      const bombIndex = room.bombStates.findIndex((bombStat) => bombStat.userId === targetUser.id);
+      if (bombIndex < 0) {
+        return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+          success: false,
+          failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
+        } satisfies MessageProps<S2CPassDebuffResponse>);
+      }
+
+      room.bombStates[bombIndex].userId = targetUser.id;
+
+      writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+        success: true,
+        failCode: GlobalFailCode.NONE,
+      } satisfies MessageProps<S2CPassDebuffResponse>);
+
+      room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+        user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
+      } satisfies MessageProps<S2CUserUpdateNotification>);
+      break;
+
+    default:
+      error('handlePassDebuff: invalid debuff type');
+      return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
+        success: false,
+        failCode: GlobalFailCode.INVALID_REQUEST,
+      } satisfies MessageProps<S2CPassDebuffResponse>);
   }
-
-  room.bombStates[bombIndex].userId = targetUser.id;
-
-  writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies MessageProps<S2CPassDebuffResponse>);
-
-  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-    user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
-  } satisfies MessageProps<S2CUserUpdateNotification>);
 }

@@ -88,7 +88,7 @@ export class Room {
 
   setTimer() {
     this.gameState.gameStart();
-    this.startPositionBroadcast();
+    this.startInfomationBroadcastTimer();
   }
 
   resetTimer() {
@@ -108,7 +108,7 @@ export class Room {
     }
   }
 
-  startPositionBroadcast() {
+  startInfomationBroadcastTimer() {
     this.infomationBroadcastTimer = setInterval(() => {
       const now = Date.now();
 
@@ -151,6 +151,7 @@ export class Room {
         (stat) => !bombTargetStates.some((warningState) => warningState.userId === stat.userId && warningState.expectedAt === stat.expectedAt),
       );
 
+      // 위치값 전송
       this.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
         characterPositions: this.users.map((user) => user.character.positionInfo.toPositionData()),
       } satisfies MessageProps<S2CPositionUpdateNotification>);
