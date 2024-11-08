@@ -97,6 +97,8 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
     return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NOT_FOUND, [user]);
   }
 
+  log(`handleCardSelect: user: ${JSON.stringify(user.character, null, 2)} | targetUser: ${JSON.stringify(targetUser.character, null, 2)}`);
+
   if (!isAbsorb(user, targetUser) && !isHallucination(user, targetUser)) {
     error('handleCardSelect: unknown state');
     return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.UNKNOWN_ERROR, [user, targetUser]);
