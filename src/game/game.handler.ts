@@ -115,7 +115,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareNotification>);
   });
 
-  console.log(`[GamePrepare] roomId: ${ctx.roomId}`);
+  log(`[GamePrepare] roomId: ${ctx.roomId}`);
 };
 
 export const gameStartRequestHandler = async (socket, version, sequence, gameStartRequest, ctx: Context) => {
@@ -215,7 +215,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     } satisfies MessageProps<S2CGameStartNotification>);
   });
 
-  console.log(`[GameStart] roomId: ${ctx.roomId}`);
+  log(`[GameStart] roomId: ${ctx.roomId}`);
 };
 
 export const positionUpdateRequestHandler = async (socket, version, sequence, positionUpdateRequest, ctx: Context) => {

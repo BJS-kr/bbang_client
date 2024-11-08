@@ -160,7 +160,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
       case PACKET_TYPE.FLEA_MARKET_PICK_REQUEST:
         const fleaMarketPickRequest = decodePayload(packetType, payloadBuffer);
         log(`${ctx.userId}|fleaMarketPickRequest ${JSON.stringify(fleaMarketPickRequest, null, 2)}`);
-        await fleaMarketPickHandler(socket, version, sequence, ctx, fleaMarketPickRequest);
+        await fleaMarketPickHandler(socket, version, sequence, fleaMarketPickRequest, ctx);
         break;
 
       case PACKET_TYPE.DESTROY_CARD_REQUEST:

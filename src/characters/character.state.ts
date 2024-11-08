@@ -40,6 +40,12 @@ export class CharacterStateInfo {
     this.stateTargetUserId = targetUserId;
     this.#onStateTimeout = onStateTimeout;
 
+    if (prevState === CharacterState.FLEA_MARKET_TURN) {
+      if (prevOnStateTimeout) {
+        prevOnStateTimeout(prevState, state);
+      }
+    }
+
     switch (this.state) {
       case CharacterState.NONE:
         this.nextState = CharacterState.NONE;
@@ -48,12 +54,11 @@ export class CharacterStateInfo {
         break;
 
       case CharacterState.FLEA_MARKET_TURN:
-        if (prevOnStateTimeout) {
-          prevOnStateTimeout(prevState, state);
-        }
+      case CharacterState.FLEA_MARKET_WAIT:
+        this.nextState = this.state;
+        this.nextStateAt = 0;
         break;
 
-      case CharacterState.FLEA_MARKET_WAIT:
       case CharacterState.BBANG_SHOOTER:
       case CharacterState.BBANG_TARGET:
       case CharacterState.BIG_BBANG_SHOOTER:
@@ -73,6 +78,7 @@ export class CharacterStateInfo {
         this.nextState = CharacterState.DEATH_MATCH;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
         break;
+
       case CharacterState.ABSORBING:
       case CharacterState.ABSORB_TARGET:
       case CharacterState.HALLUCINATING:
@@ -104,7 +110,7 @@ export class CharacterStateInfo {
       clearTimeout(this.#stateTimer);
     }
 
-    if (this.state === CharacterState.NONE) {
+    if (this.state === CharacterState.NONE || this.state === CharacterState.FLEA_MARKET_TURN || this.state === CharacterState.FLEA_MARKET_WAIT) {
       return;
     }
 
