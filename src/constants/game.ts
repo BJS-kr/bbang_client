@@ -137,8 +137,3 @@ export enum CharacterState {
 }
 
 export const DAILY_CARD_COUNT = 2;
-
-export enum WarningType {
-  NO_WARNING = 0,
-  BOMB = 1,
-}
