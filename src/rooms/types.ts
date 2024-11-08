@@ -132,7 +132,6 @@ export class Room {
 
       // 폭탄 실행 대상
       const bombTargetStates = this.bombStates.filter((bombState) => {
-        const user = this.getUser(bombState.userId);
         return bombState.expectedAt <= now;
       });
 

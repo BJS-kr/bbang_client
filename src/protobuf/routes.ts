@@ -179,6 +179,6 @@ export const protoRoutes = {
   },
   [PACKET_TYPE.WARNING_NOTIFICATION]: {
     requestType: 'S2CWarningNotification',
-    payladKey: 'warningNotification',
+    payloadKey: 'warningNotification',
   },
 } as const;
