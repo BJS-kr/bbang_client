@@ -10,6 +10,7 @@ import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
 import { Sequence } from 'mysql2/typings/mysql/lib/protocol/sequences/Sequence';
 import { rooms } from './rooms';
+import { CARD_TYPE } from '../constants/game';
 
 export enum RoomState {
   WAIT = 0,
@@ -141,6 +142,7 @@ export class Room {
           return;
         }
         user?.character.takeDamage(2);
+        user?.character.debuffs.delete(CARD_TYPE.BOMB);
         this.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
           user: [user.toUserData(user.id)],
         } satisfies MessageProps<S2CUserUpdateNotification>);
