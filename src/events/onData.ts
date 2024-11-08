@@ -13,7 +13,7 @@ import {
   leaveRoomRequestHandler,
 } from '../rooms/roomHandler';
 import { gamePrepareRequestHandler, gameStartRequestHandler, positionUpdateRequestHandler, reactionHandler } from '../game/game.handler';
-import { handleDestroyCard, handleUseCard } from '../cards/card.handlers';
+import { handleCardSelect, handleDestroyCard, handleUseCard } from '../cards/card.handlers';
 
 export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (data: Buffer) => {
   buf = Buffer.concat([buf, data]);
@@ -163,7 +163,12 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
         await handleDestroyCard(socket, version, sequence, destroyCardRequest, ctx);
 
         break;
+      case PACKET_TYPE.CARD_SELECT_REQUEST:
+        const cardSelectRequest = decodePayload(packetType, payloadBuffer);
+        log(`${ctx.userId}|cardSelectRequest: ${JSON.stringify(cardSelectRequest, null, 2)}`);
+        await handleCardSelect({ socket, version, sequence, ctx }, cardSelectRequest);
 
+        break;
       default:
         error(`Unhandled packet type: ${packetType}`);
     }

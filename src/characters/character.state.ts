@@ -2,7 +2,7 @@ import { CharacterState } from '../constants/game';
 
 const BBANG_SECOND = 5; // 5초
 const DEATH_MATCH_SECOND = 5; // 5초
-
+const CARD_SELECT_SECOND = 10; // 10초
 export type OnStateTimeout = (from: CharacterState, to: CharacterState) => void;
 export class CharacterStateInfo {
   state;
@@ -72,6 +72,13 @@ export class CharacterStateInfo {
       case CharacterState.DEATH_MATCH_TURN:
         this.nextState = CharacterState.DEATH_MATCH;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
+        break;
+      case CharacterState.ABSORBING:
+      case CharacterState.ABSORB_TARGET:
+      case CharacterState.HALLUCINATING:
+      case CharacterState.HALLUCINATION_TARGET:
+        this.nextState = CharacterState.NONE;
+        this.nextStateAt = Date.now() + CARD_SELECT_SECOND * 1000;
         break;
 
       // 플리마켓 타이밍은 클라이언트 리액션으로 핸들링

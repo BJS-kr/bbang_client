@@ -2,10 +2,12 @@ import { CARD_TYPE, PHASE_TYPE } from '../constants/game';
 import { CardProps, Character } from '../characters/character';
 import { CharacterState } from '../constants/game';
 import {
+  C2SCardSelectRequest,
   C2SDestroyCardRequest,
   C2SUseCardRequest,
   CardData,
   GlobalFailCode,
+  S2CCardSelectResponse,
   S2CDestroyCardResponse,
   S2CUserUpdateNotification,
 } from '../protobuf/compiled';
@@ -54,6 +56,159 @@ import { DesertEagle } from './deserteagle';
 import { AutoRifle } from './autorifle';
 import { Context } from '../events/types';
 import { Socket } from 'node:net';
+
+export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
+  const room = rooms.getRoom(ctx.roomId);
+
+  if (!room) {
+    error('handleCardSelect: room not found');
+
+    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.ROOM_NOT_FOUND,
+    } satisfies MessageProps<S2CCardSelectResponse>);
+  }
+
+  const user = room.getUser(ctx.userId);
+
+  if (!user) {
+    error('handleCardSelect: user not found');
+
+    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies MessageProps<S2CCardSelectResponse>);
+  }
+
+  const targetUser = room.getUser(user.character.stateInfo.stateTargetUserId);
+
+  if (!targetUser) {
+    error('handleCardSelect: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies MessageProps<S2CCardSelectResponse>);
+  }
+
+  if (user.character.stateInfo.state === CharacterState.ABSORBING && targetUser.character.stateInfo.state === CharacterState.ABSORB_TARGET) {
+    switch (cardSelectRequest.selectType) {
+      case 0:
+        const targetUserCard = targetUser.character.getRandomCard();
+
+        if (!targetUserCard) {
+          error('handleCardSelect: target user has no card');
+
+          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+            success: false,
+            failCode: GlobalFailCode.UNKNOWN_ERROR,
+          } satisfies MessageProps<S2CCardSelectResponse>);
+        }
+
+        user.character.acquireCard(targetUserCard);
+        break;
+      case 1:
+        const isExists = targetUser.character.equips.has(cardSelectRequest.selectCardType);
+        if (!isExists) {
+          error('handleCardSelect: target user has no card');
+
+          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+            success: false,
+            failCode: GlobalFailCode.UNKNOWN_ERROR,
+          } satisfies MessageProps<S2CCardSelectResponse>);
+        }
+
+        user.character.equips.add(cardSelectRequest.selectCardType);
+        targetUser.character.equips.delete(cardSelectRequest.selectCardType);
+        break;
+      default:
+        error('handleCardSelect: unknown select type');
+
+        return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+          success: false,
+          failCode: GlobalFailCode.UNKNOWN_ERROR,
+        } satisfies MessageProps<S2CCardSelectResponse>);
+    }
+  } else if (
+    user.character.stateInfo.state === CharacterState.HALLUCINATING &&
+    targetUser.character.stateInfo.state === CharacterState.HALLUCINATION_TARGET
+  ) {
+    switch (cardSelectRequest.selectType) {
+      case 0:
+        if (!targetUser.character.loseRandomCards(1)) {
+          error('handleCardSelect: target user has no card');
+
+          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+            success: false,
+            failCode: GlobalFailCode.UNKNOWN_ERROR,
+          } satisfies MessageProps<S2CCardSelectResponse>);
+        }
+        break;
+      case 1:
+        const isExists = targetUser.character.equips.has(cardSelectRequest.selectCardType);
+        if (!isExists) {
+          error('handleCardSelect: target user has no card');
+
+          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+            success: false,
+            failCode: GlobalFailCode.UNKNOWN_ERROR,
+          } satisfies MessageProps<S2CCardSelectResponse>);
+        }
+
+        targetUser.character.equips.delete(cardSelectRequest.selectCardType);
+        break;
+      case 2:
+        if (!user.character.weapon) {
+          error('handleCardSelect: user has no weapon');
+
+          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+            success: false,
+            failCode: GlobalFailCode.UNKNOWN_ERROR,
+          } satisfies MessageProps<S2CCardSelectResponse>);
+        }
+
+        user.character.weapon = 0;
+        break;
+      case 3: {
+        const isExists = user.character.debuffs.has(cardSelectRequest.selectCardType);
+        if (!isExists) {
+          error('handleCardSelect: user has no card');
+
+          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+            success: false,
+            failCode: GlobalFailCode.UNKNOWN_ERROR,
+          } satisfies MessageProps<S2CCardSelectResponse>);
+        }
+
+        user.character.debuffs.delete(cardSelectRequest.selectCardType);
+        break;
+      }
+      default:
+        error('handleCardSelect: unknown select type');
+
+        return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+          success: false,
+          failCode: GlobalFailCode.UNKNOWN_ERROR,
+        } satisfies MessageProps<S2CCardSelectResponse>);
+    }
+  } else {
+    error('handleCardSelect: unknown state');
+
+    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.UNKNOWN_ERROR,
+    } satisfies MessageProps<S2CCardSelectResponse>);
+  }
+
+  writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE,
+  } satisfies MessageProps<S2CCardSelectResponse>);
+
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+    user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
+  } satisfies MessageProps<S2CUserUpdateNotification>);
+}
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
   log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
@@ -251,7 +406,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   const damage = user.character.getBBangDamage();
   targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeoutTarget(damage, targetUser, room));
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user, targetUser.id);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
     targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
@@ -289,7 +444,7 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
   user.character.stateInfo.setState(targetUser.id, CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(user.id, CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user, targetUser.id);
 }
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
@@ -320,7 +475,7 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
   }
 
   shooter.character.stateInfo.setState(shooter.id, CharacterState.NONE, null);
-  responseSuccess(socket, version, sequence, CARD_TYPE.SHIELD, [user, shooter], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SHIELD, [user, shooter], room, user, shooter.id);
 }
 
 function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -338,7 +493,7 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
   user.character.stateInfo.setState(targetUser.id, CharacterState.DEATH_MATCH, null);
   targetUser.character.stateInfo.setState(user.id, CharacterState.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.DEATH_MATCH, [user, targetUser], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.DEATH_MATCH, [user, targetUser], room, user, targetUser.id);
 }
 
 function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -349,13 +504,13 @@ function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, 
       targetUser.character.stateInfo.setState(user.id, CharacterState.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
   });
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BIG_BBANG, room.users, room, user, '');
 }
 
 function handleVaccine({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   Character.recover(1, user.character);
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.VACCINE, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.VACCINE, [user], room, user, '');
 }
 
 function handleCall119({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -367,7 +522,7 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
     });
   }
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.CALL_119, room.users, room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.CALL_119, room.users, room, user, '');
 }
 
 function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -377,7 +532,7 @@ function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room,
       : user.character.stateInfo.setState(user.id, CharacterState.GUERRILLA_SHOOTER, onGuerillaShooterTimeout(user, room));
   });
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.GUERRILLA, room.users, room, user, '');
 }
 
 function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -392,21 +547,10 @@ function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest
     } satisfies UseCardResponse);
   }
 
-  const randomCard = targetUser.character.getRandomCard();
+  user.character.stateInfo.setState(useCardRequest.targetUserId, CharacterState.ABSORBING, null);
+  targetUser.character.stateInfo.setState(user.id, CharacterState.ABSORB_TARGET, null);
 
-  // TODO 카드 한장도 없으면 false 맞는지 클라랑 상의
-  if (!randomCard) {
-    error('handleAbsorb: target user has no card');
-
-    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.UNKNOWN_ERROR,
-    } satisfies UseCardResponse);
-  }
-
-  user.character.acquireCard(randomCard);
-
-  responseSuccess(socket, version, sequence, CARD_TYPE.ABSORB, [user, targetUser], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.ABSORB, [user, targetUser], room, user, targetUser.id);
 }
 
 function handleHallucination({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
@@ -421,18 +565,10 @@ function handleHallucination({ socket, version, sequence }: HandlerBase, useCard
     } satisfies UseCardResponse);
   }
 
-  const randomCard = targetUser.character.getRandomCard();
+  user.character.stateInfo.setState(useCardRequest.targetUserId, CharacterState.HALLUCINATING, null);
+  targetUser.character.stateInfo.setState(user.id, CharacterState.HALLUCINATION_TARGET, null);
 
-  if (!randomCard) {
-    error('handleHallucination: target user has no card');
-
-    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.UNKNOWN_ERROR,
-    } satisfies UseCardResponse);
-  }
-
-  responseSuccess(socket, version, sequence, CARD_TYPE.HALLUCINATION, [user, targetUser], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.HALLUCINATION, [user, targetUser], room, user, targetUser.id);
 }
 
 function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -444,34 +580,34 @@ function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room
     user.character.stateInfo.setState(user.id, state, timeout);
   });
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.FLEA_MARKET, room.users, room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.FLEA_MARKET, room.users, room, user, '');
 }
 
 function handleMaturedSavings({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.MATURED_SAVINGS, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.MATURED_SAVINGS, [user], room, user, '');
 }
 
 function handleSniperGun({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CARD_TYPE.SNIPER_GUN;
-  responseSuccess(socket, version, sequence, CARD_TYPE.SNIPER_GUN, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SNIPER_GUN, [user], room, user, '');
 }
 
 function handleHandGun({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CARD_TYPE.HAND_GUN;
-  responseSuccess(socket, version, sequence, CARD_TYPE.HAND_GUN, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.HAND_GUN, [user], room, user, '');
 }
 
 function handleDesertEagle({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CARD_TYPE.DESERT_EAGLE;
-  responseSuccess(socket, version, sequence, CARD_TYPE.DESERT_EAGLE, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.DESERT_EAGLE, [user], room, user, '');
 }
 
 function handleAutoRifle({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CARD_TYPE.AUTO_RIFLE;
-  responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_RIFLE, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_RIFLE, [user], room, user, '');
 }
 
 function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -479,45 +615,45 @@ function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
   user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
 
-  responseSuccess(socket, version, sequence, CARD_TYPE.WIN_LOTTERY, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.WIN_LOTTERY, [user], room, user, '');
 }
 
 function handleLaserPointer({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CARD_TYPE.LASER_POINTER);
-  responseSuccess(socket, version, sequence, CARD_TYPE.LASER_POINTER, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.LASER_POINTER, [user], room, user, '');
 }
 
 function handleRadar({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CARD_TYPE.RADAR);
-  responseSuccess(socket, version, sequence, CARD_TYPE.RADAR, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.RADAR, [user], room, user, '');
 }
 
 function handleAutoShield({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CARD_TYPE.AUTO_SHIELD);
-  responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_SHIELD, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.AUTO_SHIELD, [user], room, user, '');
 }
 
 function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CARD_TYPE.STEALTH_SUIT);
-  responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user, '');
 }
 
 function handleContainmentUnit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
   room.gameEvents.containedUsers.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user, '');
 }
 
 function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
   room.gameEvents.satelliteTargets.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user, '');
 }
 
 function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.debuffs.add(CARD_TYPE.BOMB);
   room.gameEvents.bombUsers.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user);
+  responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user, '');
 }
 
 export function handleDestroyCard(socket: Socket, version: string, sequence: number, cardDestroyRequest: C2SDestroyCardRequest, ctx: Context) {

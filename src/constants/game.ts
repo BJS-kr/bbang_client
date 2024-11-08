@@ -129,6 +129,10 @@ export enum CharacterState {
   GUERRILLA_TARGET = 8, // 게릴라 대상
   BIG_BBANG_SHOOTER = 9, // 난사 시전자
   BIG_BBANG_TARGET = 10, // 난사 대상
+  ABSORBING = 11, // 흡수 중
+  ABSORB_TARGET = 12, // 흡수 대상
+  HALLUCINATING = 13, // 신기루 중
+  HALLUCINATION_TARGET = 14, // 신기루 대상
 }
 
 export const DAILY_CARD_COUNT = 2;

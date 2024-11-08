@@ -17,6 +17,7 @@ export function responseSuccess(
   targetUsers: User[],
   room: Room,
   user: User,
+  targetUser: string,
 ) {
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,

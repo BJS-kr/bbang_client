@@ -180,6 +180,8 @@ export class Character extends EventEmitter {
       this.loseCard({ type: randomCardType, count: loseCount });
       remainingCount -= loseCount;
     }
+
+    return true;
   }
 
   getRandomCard(): CardProps | null {

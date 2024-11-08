@@ -4865,6 +4865,212 @@ export class S2CGameEndNotification implements IS2CGameEndNotification {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a C2SCardSelectRequest. */
+export interface IC2SCardSelectRequest {
+
+    /** C2SCardSelectRequest selectType */
+    selectType?: (number|null);
+
+    /** C2SCardSelectRequest selectCardType */
+    selectCardType?: (number|null);
+}
+
+/** Represents a C2SCardSelectRequest. */
+export class C2SCardSelectRequest implements IC2SCardSelectRequest {
+
+    /**
+     * Constructs a new C2SCardSelectRequest.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IC2SCardSelectRequest);
+
+    /** C2SCardSelectRequest selectType. */
+    public selectType: number;
+
+    /** C2SCardSelectRequest selectCardType. */
+    public selectCardType: number;
+
+    /**
+     * Creates a new C2SCardSelectRequest instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns C2SCardSelectRequest instance
+     */
+    public static create(properties?: IC2SCardSelectRequest): C2SCardSelectRequest;
+
+    /**
+     * Encodes the specified C2SCardSelectRequest message. Does not implicitly {@link C2SCardSelectRequest.verify|verify} messages.
+     * @param message C2SCardSelectRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IC2SCardSelectRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified C2SCardSelectRequest message, length delimited. Does not implicitly {@link C2SCardSelectRequest.verify|verify} messages.
+     * @param message C2SCardSelectRequest message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IC2SCardSelectRequest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a C2SCardSelectRequest message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns C2SCardSelectRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): C2SCardSelectRequest;
+
+    /**
+     * Decodes a C2SCardSelectRequest message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns C2SCardSelectRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): C2SCardSelectRequest;
+
+    /**
+     * Verifies a C2SCardSelectRequest message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a C2SCardSelectRequest message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns C2SCardSelectRequest
+     */
+    public static fromObject(object: { [k: string]: any }): C2SCardSelectRequest;
+
+    /**
+     * Creates a plain object from a C2SCardSelectRequest message. Also converts values to other types if specified.
+     * @param message C2SCardSelectRequest
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: C2SCardSelectRequest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this C2SCardSelectRequest to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for C2SCardSelectRequest
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
+/** Properties of a S2CCardSelectResponse. */
+export interface IS2CCardSelectResponse {
+
+    /** S2CCardSelectResponse success */
+    success?: (boolean|null);
+
+    /** S2CCardSelectResponse failCode */
+    failCode?: (GlobalFailCode|null);
+}
+
+/** Represents a S2CCardSelectResponse. */
+export class S2CCardSelectResponse implements IS2CCardSelectResponse {
+
+    /**
+     * Constructs a new S2CCardSelectResponse.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CCardSelectResponse);
+
+    /** S2CCardSelectResponse success. */
+    public success: boolean;
+
+    /** S2CCardSelectResponse failCode. */
+    public failCode: GlobalFailCode;
+
+    /**
+     * Creates a new S2CCardSelectResponse instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CCardSelectResponse instance
+     */
+    public static create(properties?: IS2CCardSelectResponse): S2CCardSelectResponse;
+
+    /**
+     * Encodes the specified S2CCardSelectResponse message. Does not implicitly {@link S2CCardSelectResponse.verify|verify} messages.
+     * @param message S2CCardSelectResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CCardSelectResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CCardSelectResponse message, length delimited. Does not implicitly {@link S2CCardSelectResponse.verify|verify} messages.
+     * @param message S2CCardSelectResponse message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CCardSelectResponse, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CCardSelectResponse message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CCardSelectResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CCardSelectResponse;
+
+    /**
+     * Decodes a S2CCardSelectResponse message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CCardSelectResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CCardSelectResponse;
+
+    /**
+     * Verifies a S2CCardSelectResponse message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CCardSelectResponse message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CCardSelectResponse
+     */
+    public static fromObject(object: { [k: string]: any }): S2CCardSelectResponse;
+
+    /**
+     * Creates a plain object from a S2CCardSelectResponse message. Also converts values to other types if specified.
+     * @param message S2CCardSelectResponse
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CCardSelectResponse, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CCardSelectResponse to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CCardSelectResponse
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a GamePacket. */
 export interface IGamePacket {
 
@@ -4987,6 +5193,12 @@ export interface IGamePacket {
 
     /** GamePacket gameEndNotification */
     gameEndNotification?: (IS2CGameEndNotification|null);
+
+    /** GamePacket cardSelectRequest */
+    cardSelectRequest?: (IC2SCardSelectRequest|null);
+
+    /** GamePacket cardSelectResponse */
+    cardSelectResponse?: (IS2CCardSelectResponse|null);
 }
 
 /** Represents a GamePacket. */
@@ -5118,8 +5330,14 @@ export class GamePacket implements IGamePacket {
     /** GamePacket gameEndNotification. */
     public gameEndNotification?: (IS2CGameEndNotification|null);
 
+    /** GamePacket cardSelectRequest. */
+    public cardSelectRequest?: (IC2SCardSelectRequest|null);
+
+    /** GamePacket cardSelectResponse. */
+    public cardSelectResponse?: (IS2CCardSelectResponse|null);
+
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse");
 
     /**
      * Creates a new GamePacket instance using the specified properties.

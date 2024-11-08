@@ -254,6 +254,16 @@ message S2CGameEndNotification {
     // TODO
 }
 
+message C2SCardSelectRequest {
+    int32 selectType = 1; // 0: 핸드, 1: 장비, 2: 무기, 3: 디버프
+    int32 selectCardType = 2; // selectType이  0일 경우 0, / 1, 2, 3일 경우 원하는 장비의 cardType
+}
+
+message S2CCardSelectResponse {
+    bool success = 1;
+    GlobalFailCode failCode = 2;
+}
+
 // 최상위 GamePacket 메시지
 message GamePacket {
     oneof payload {
@@ -334,6 +344,10 @@ message GamePacket {
 
         // 게임 종료
         S2CGameEndNotification gameEndNotification = 40;
+
+        // 카드 선택
+        C2SCardSelectRequest cardSelectRequest = 41;
+        S2CCardSelectResponse cardSelectResponse = 42;
     }
 }
 

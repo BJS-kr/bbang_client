@@ -12172,6 +12172,549 @@ $root.S2CGameEndNotification = (function() {
     return S2CGameEndNotification;
 })();
 
+$root.C2SCardSelectRequest = (function() {
+
+    /**
+     * Properties of a C2SCardSelectRequest.
+     * @exports IC2SCardSelectRequest
+     * @interface IC2SCardSelectRequest
+     * @property {number|null} [selectType] C2SCardSelectRequest selectType
+     * @property {number|null} [selectCardType] C2SCardSelectRequest selectCardType
+     */
+
+    /**
+     * Constructs a new C2SCardSelectRequest.
+     * @exports C2SCardSelectRequest
+     * @classdesc Represents a C2SCardSelectRequest.
+     * @implements IC2SCardSelectRequest
+     * @constructor
+     * @param {IC2SCardSelectRequest=} [properties] Properties to set
+     */
+    function C2SCardSelectRequest(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * C2SCardSelectRequest selectType.
+     * @member {number} selectType
+     * @memberof C2SCardSelectRequest
+     * @instance
+     */
+    C2SCardSelectRequest.prototype.selectType = 0;
+
+    /**
+     * C2SCardSelectRequest selectCardType.
+     * @member {number} selectCardType
+     * @memberof C2SCardSelectRequest
+     * @instance
+     */
+    C2SCardSelectRequest.prototype.selectCardType = 0;
+
+    /**
+     * Creates a new C2SCardSelectRequest instance using the specified properties.
+     * @function create
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {IC2SCardSelectRequest=} [properties] Properties to set
+     * @returns {C2SCardSelectRequest} C2SCardSelectRequest instance
+     */
+    C2SCardSelectRequest.create = function create(properties) {
+        return new C2SCardSelectRequest(properties);
+    };
+
+    /**
+     * Encodes the specified C2SCardSelectRequest message. Does not implicitly {@link C2SCardSelectRequest.verify|verify} messages.
+     * @function encode
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {IC2SCardSelectRequest} message C2SCardSelectRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SCardSelectRequest.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.selectType != null && Object.hasOwnProperty.call(message, "selectType"))
+            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.selectType);
+        if (message.selectCardType != null && Object.hasOwnProperty.call(message, "selectCardType"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.selectCardType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified C2SCardSelectRequest message, length delimited. Does not implicitly {@link C2SCardSelectRequest.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {IC2SCardSelectRequest} message C2SCardSelectRequest message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    C2SCardSelectRequest.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a C2SCardSelectRequest message from the specified reader or buffer.
+     * @function decode
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {C2SCardSelectRequest} C2SCardSelectRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SCardSelectRequest.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.C2SCardSelectRequest();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.selectType = reader.int32();
+                    break;
+                }
+            case 2: {
+                    message.selectCardType = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a C2SCardSelectRequest message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {C2SCardSelectRequest} C2SCardSelectRequest
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    C2SCardSelectRequest.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a C2SCardSelectRequest message.
+     * @function verify
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    C2SCardSelectRequest.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.selectType != null && message.hasOwnProperty("selectType"))
+            if (!$util.isInteger(message.selectType))
+                return "selectType: integer expected";
+        if (message.selectCardType != null && message.hasOwnProperty("selectCardType"))
+            if (!$util.isInteger(message.selectCardType))
+                return "selectCardType: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates a C2SCardSelectRequest message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {C2SCardSelectRequest} C2SCardSelectRequest
+     */
+    C2SCardSelectRequest.fromObject = function fromObject(object) {
+        if (object instanceof $root.C2SCardSelectRequest)
+            return object;
+        var message = new $root.C2SCardSelectRequest();
+        if (object.selectType != null)
+            message.selectType = object.selectType | 0;
+        if (object.selectCardType != null)
+            message.selectCardType = object.selectCardType | 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a C2SCardSelectRequest message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {C2SCardSelectRequest} message C2SCardSelectRequest
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    C2SCardSelectRequest.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.selectType = 0;
+            object.selectCardType = 0;
+        }
+        if (message.selectType != null && message.hasOwnProperty("selectType"))
+            object.selectType = message.selectType;
+        if (message.selectCardType != null && message.hasOwnProperty("selectCardType"))
+            object.selectCardType = message.selectCardType;
+        return object;
+    };
+
+    /**
+     * Converts this C2SCardSelectRequest to JSON.
+     * @function toJSON
+     * @memberof C2SCardSelectRequest
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    C2SCardSelectRequest.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for C2SCardSelectRequest
+     * @function getTypeUrl
+     * @memberof C2SCardSelectRequest
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    C2SCardSelectRequest.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/C2SCardSelectRequest";
+    };
+
+    return C2SCardSelectRequest;
+})();
+
+$root.S2CCardSelectResponse = (function() {
+
+    /**
+     * Properties of a S2CCardSelectResponse.
+     * @exports IS2CCardSelectResponse
+     * @interface IS2CCardSelectResponse
+     * @property {boolean|null} [success] S2CCardSelectResponse success
+     * @property {GlobalFailCode|null} [failCode] S2CCardSelectResponse failCode
+     */
+
+    /**
+     * Constructs a new S2CCardSelectResponse.
+     * @exports S2CCardSelectResponse
+     * @classdesc Represents a S2CCardSelectResponse.
+     * @implements IS2CCardSelectResponse
+     * @constructor
+     * @param {IS2CCardSelectResponse=} [properties] Properties to set
+     */
+    function S2CCardSelectResponse(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CCardSelectResponse success.
+     * @member {boolean} success
+     * @memberof S2CCardSelectResponse
+     * @instance
+     */
+    S2CCardSelectResponse.prototype.success = false;
+
+    /**
+     * S2CCardSelectResponse failCode.
+     * @member {GlobalFailCode} failCode
+     * @memberof S2CCardSelectResponse
+     * @instance
+     */
+    S2CCardSelectResponse.prototype.failCode = 0;
+
+    /**
+     * Creates a new S2CCardSelectResponse instance using the specified properties.
+     * @function create
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {IS2CCardSelectResponse=} [properties] Properties to set
+     * @returns {S2CCardSelectResponse} S2CCardSelectResponse instance
+     */
+    S2CCardSelectResponse.create = function create(properties) {
+        return new S2CCardSelectResponse(properties);
+    };
+
+    /**
+     * Encodes the specified S2CCardSelectResponse message. Does not implicitly {@link S2CCardSelectResponse.verify|verify} messages.
+     * @function encode
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {IS2CCardSelectResponse} message S2CCardSelectResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CCardSelectResponse.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+            writer.uint32(/* id 1, wireType 0 =*/8).bool(message.success);
+        if (message.failCode != null && Object.hasOwnProperty.call(message, "failCode"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.failCode);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CCardSelectResponse message, length delimited. Does not implicitly {@link S2CCardSelectResponse.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {IS2CCardSelectResponse} message S2CCardSelectResponse message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CCardSelectResponse.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CCardSelectResponse message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CCardSelectResponse} S2CCardSelectResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CCardSelectResponse.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CCardSelectResponse();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.success = reader.bool();
+                    break;
+                }
+            case 2: {
+                    message.failCode = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CCardSelectResponse message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CCardSelectResponse} S2CCardSelectResponse
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CCardSelectResponse.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CCardSelectResponse message.
+     * @function verify
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CCardSelectResponse.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.success != null && message.hasOwnProperty("success"))
+            if (typeof message.success !== "boolean")
+                return "success: boolean expected";
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            switch (message.failCode) {
+            default:
+                return "failCode: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a S2CCardSelectResponse message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CCardSelectResponse} S2CCardSelectResponse
+     */
+    S2CCardSelectResponse.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CCardSelectResponse)
+            return object;
+        var message = new $root.S2CCardSelectResponse();
+        if (object.success != null)
+            message.success = Boolean(object.success);
+        switch (object.failCode) {
+        default:
+            if (typeof object.failCode === "number") {
+                message.failCode = object.failCode;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.failCode = 0;
+            break;
+        case "UNKNOWN_ERROR":
+        case 1:
+            message.failCode = 1;
+            break;
+        case "INVALID_REQUEST":
+        case 2:
+            message.failCode = 2;
+            break;
+        case "AUTHENTICATION_FAILED":
+        case 3:
+            message.failCode = 3;
+            break;
+        case "CREATE_ROOM_FAILED":
+        case 4:
+            message.failCode = 4;
+            break;
+        case "JOIN_ROOM_FAILED":
+        case 5:
+            message.failCode = 5;
+            break;
+        case "LEAVE_ROOM_FAILED":
+        case 6:
+            message.failCode = 6;
+            break;
+        case "REGISTER_FAILED":
+        case 7:
+            message.failCode = 7;
+            break;
+        case "ROOM_NOT_FOUND":
+        case 8:
+            message.failCode = 8;
+            break;
+        case "CHARACTER_NOT_FOUND":
+        case 9:
+            message.failCode = 9;
+            break;
+        case "CHARACTER_STATE_ERROR":
+        case 10:
+            message.failCode = 10;
+            break;
+        case "CHARACTER_NO_CARD":
+        case 11:
+            message.failCode = 11;
+            break;
+        case "INVALID_ROOM_STATE":
+        case 12:
+            message.failCode = 12;
+            break;
+        case "NOT_ROOM_OWNER":
+        case 13:
+            message.failCode = 13;
+            break;
+        case "ALREADY_USED_BBANG":
+        case 14:
+            message.failCode = 14;
+            break;
+        case "INVALID_PHASE":
+        case 15:
+            message.failCode = 15;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CCardSelectResponse message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {S2CCardSelectResponse} message S2CCardSelectResponse
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CCardSelectResponse.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.success = false;
+            object.failCode = options.enums === String ? "NONE" : 0;
+        }
+        if (message.success != null && message.hasOwnProperty("success"))
+            object.success = message.success;
+        if (message.failCode != null && message.hasOwnProperty("failCode"))
+            object.failCode = options.enums === String ? $root.GlobalFailCode[message.failCode] === undefined ? message.failCode : $root.GlobalFailCode[message.failCode] : message.failCode;
+        return object;
+    };
+
+    /**
+     * Converts this S2CCardSelectResponse to JSON.
+     * @function toJSON
+     * @memberof S2CCardSelectResponse
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CCardSelectResponse.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CCardSelectResponse
+     * @function getTypeUrl
+     * @memberof S2CCardSelectResponse
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CCardSelectResponse.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CCardSelectResponse";
+    };
+
+    return S2CCardSelectResponse;
+})();
+
 $root.GamePacket = (function() {
 
     /**
@@ -12218,6 +12761,8 @@ $root.GamePacket = (function() {
      * @property {IC2SDestroyCardRequest|null} [destroyCardRequest] GamePacket destroyCardRequest
      * @property {IS2CDestroyCardResponse|null} [destroyCardResponse] GamePacket destroyCardResponse
      * @property {IS2CGameEndNotification|null} [gameEndNotification] GamePacket gameEndNotification
+     * @property {IC2SCardSelectRequest|null} [cardSelectRequest] GamePacket cardSelectRequest
+     * @property {IS2CCardSelectResponse|null} [cardSelectResponse] GamePacket cardSelectResponse
      */
 
     /**
@@ -12555,17 +13100,33 @@ $root.GamePacket = (function() {
      */
     GamePacket.prototype.gameEndNotification = null;
 
+    /**
+     * GamePacket cardSelectRequest.
+     * @member {IC2SCardSelectRequest|null|undefined} cardSelectRequest
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.cardSelectRequest = null;
+
+    /**
+     * GamePacket cardSelectResponse.
+     * @member {IS2CCardSelectResponse|null|undefined} cardSelectResponse
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.cardSelectResponse = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -12673,6 +13234,10 @@ $root.GamePacket = (function() {
             $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 39, wireType 2 =*/314).fork()).ldelim();
         if (message.gameEndNotification != null && Object.hasOwnProperty.call(message, "gameEndNotification"))
             $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 40, wireType 2 =*/322).fork()).ldelim();
+        if (message.cardSelectRequest != null && Object.hasOwnProperty.call(message, "cardSelectRequest"))
+            $root.C2SCardSelectRequest.encode(message.cardSelectRequest, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
+        if (message.cardSelectResponse != null && Object.hasOwnProperty.call(message, "cardSelectResponse"))
+            $root.S2CCardSelectResponse.encode(message.cardSelectResponse, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
         return writer;
     };
 
@@ -12865,6 +13430,14 @@ $root.GamePacket = (function() {
                 }
             case 40: {
                     message.gameEndNotification = $root.S2CGameEndNotification.decode(reader, reader.uint32());
+                    break;
+                }
+            case 41: {
+                    message.cardSelectRequest = $root.C2SCardSelectRequest.decode(reader, reader.uint32());
+                    break;
+                }
+            case 42: {
+                    message.cardSelectResponse = $root.S2CCardSelectResponse.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -13301,6 +13874,26 @@ $root.GamePacket = (function() {
                     return "gameEndNotification." + error;
             }
         }
+        if (message.cardSelectRequest != null && message.hasOwnProperty("cardSelectRequest")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.C2SCardSelectRequest.verify(message.cardSelectRequest);
+                if (error)
+                    return "cardSelectRequest." + error;
+            }
+        }
+        if (message.cardSelectResponse != null && message.hasOwnProperty("cardSelectResponse")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CCardSelectResponse.verify(message.cardSelectResponse);
+                if (error)
+                    return "cardSelectResponse." + error;
+            }
+        }
         return null;
     };
 
@@ -13515,6 +14108,16 @@ $root.GamePacket = (function() {
             if (typeof object.gameEndNotification !== "object")
                 throw TypeError(".GamePacket.gameEndNotification: object expected");
             message.gameEndNotification = $root.S2CGameEndNotification.fromObject(object.gameEndNotification);
+        }
+        if (object.cardSelectRequest != null) {
+            if (typeof object.cardSelectRequest !== "object")
+                throw TypeError(".GamePacket.cardSelectRequest: object expected");
+            message.cardSelectRequest = $root.C2SCardSelectRequest.fromObject(object.cardSelectRequest);
+        }
+        if (object.cardSelectResponse != null) {
+            if (typeof object.cardSelectResponse !== "object")
+                throw TypeError(".GamePacket.cardSelectResponse: object expected");
+            message.cardSelectResponse = $root.S2CCardSelectResponse.fromObject(object.cardSelectResponse);
         }
         return message;
     };
@@ -13731,6 +14334,16 @@ $root.GamePacket = (function() {
             object.gameEndNotification = $root.S2CGameEndNotification.toObject(message.gameEndNotification, options);
             if (options.oneofs)
                 object.payload = "gameEndNotification";
+        }
+        if (message.cardSelectRequest != null && message.hasOwnProperty("cardSelectRequest")) {
+            object.cardSelectRequest = $root.C2SCardSelectRequest.toObject(message.cardSelectRequest, options);
+            if (options.oneofs)
+                object.payload = "cardSelectRequest";
+        }
+        if (message.cardSelectResponse != null && message.hasOwnProperty("cardSelectResponse")) {
+            object.cardSelectResponse = $root.S2CCardSelectResponse.toObject(message.cardSelectResponse, options);
+            if (options.oneofs)
+                object.payload = "cardSelectResponse";
         }
         return object;
     };
