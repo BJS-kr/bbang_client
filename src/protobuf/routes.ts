@@ -161,4 +161,12 @@ export const protoRoutes = {
     requestType: 'S2CGameEndNotification',
     payloadKey: 'gameEndNotification',
   },
+  [PACKET_TYPE.CARD_SELECT_REQUEST]: {
+    requestType: 'C2SCardSelectRequest',
+    payloadKey: 'cardSelectRequest',
+  },
+  [PACKET_TYPE.CARD_SELECT_RESPONSE]: {
+    requestType: 'S2CCardSelectResponse',
+    payloadKey: 'cardSelectResponse',
+  },
 } as const;
