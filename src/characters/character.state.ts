@@ -40,6 +40,12 @@ export class CharacterStateInfo {
     this.stateTargetUserId = targetUserId;
     this.#onStateTimeout = onStateTimeout;
 
+    if (prevState === CharacterState.FLEA_MARKET_TURN) {
+      if (prevOnStateTimeout) {
+        prevOnStateTimeout(prevState, state);
+      }
+    }
+
     switch (this.state) {
       case CharacterState.NONE:
         this.nextState = CharacterState.NONE;
@@ -48,11 +54,6 @@ export class CharacterStateInfo {
         break;
 
       case CharacterState.FLEA_MARKET_TURN:
-        if (prevOnStateTimeout) {
-          prevOnStateTimeout(prevState, state);
-        }
-        break;
-
       case CharacterState.FLEA_MARKET_WAIT:
         break;
 
