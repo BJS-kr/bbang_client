@@ -4,12 +4,12 @@ import { onConnection } from './events/onConnection';
 import { error, log } from './utils/logger';
 
 process.on('uncaughtException', (err) => {
-  error('Uncaught Exception:', err);
+  error('Uncaught Exception:', JSON.stringify(err, null, 2));
   process.exit(1);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  error('Unhandled Rejection at:', promise, 'reason:', reason);
+  error('Unhandled Rejection at:', JSON.stringify(promise, null, 2), 'reason:', JSON.stringify(reason, null, 2));
   process.exit(1);
 });
 
