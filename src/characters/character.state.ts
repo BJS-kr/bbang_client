@@ -51,14 +51,12 @@ export class CharacterStateInfo {
         this.nextState = CharacterState.NONE;
         this.nextStateAt = 0;
         this.resetTimer();
-        this.#onStateTimeout = null;
         break;
 
       case CharacterState.FLEA_MARKET_TURN:
       case CharacterState.FLEA_MARKET_WAIT:
         this.nextState = this.state;
         this.nextStateAt = 0;
-        this.resetTimer();
         break;
 
       case CharacterState.BBANG_SHOOTER:
@@ -104,6 +102,7 @@ export class CharacterStateInfo {
       clearTimeout(this.#stateTimer);
     }
     this.#stateTimer = null;
+    this.#onStateTimeout = null;
   }
 
   #startStateTimer() {
@@ -111,7 +110,7 @@ export class CharacterStateInfo {
       clearTimeout(this.#stateTimer);
     }
 
-    if (this.state === CharacterState.NONE) {
+    if (this.state === CharacterState.NONE || this.state === CharacterState.FLEA_MARKET_TURN || this.state === CharacterState.FLEA_MARKET_WAIT) {
       return;
     }
 
