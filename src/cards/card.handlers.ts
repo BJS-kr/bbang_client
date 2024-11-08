@@ -313,7 +313,7 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof Bomb:
       log('handleUseCard: Bomb');
-      handleBomb(base, room, user);
+      handleBomb(base, useCardRequest, room, user);
       break;
     default:
       error(`handleUseCard: unknown card. card type: ${card.type}`);
@@ -647,29 +647,39 @@ function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, useCa
   responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user, targetUser], room, user, targetUser.id);
 }
 
-function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.add(CARD_TYPE.BOMB);
-  room.gameEvents.bombUsers.push(user);
+function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
+  const targetUser = room.getUser(useCardRequest.targetUserId);
+
+  if (!targetUser) {
+    error('handleBomb: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  targetUser.character.debuffs.add(CARD_TYPE.BOMB);
   responseSuccess(socket, version, sequence, CARD_TYPE.BOMB, [user], room, user, '');
 }
 
 export function handleDestroyCard(socket: Socket, version: string, sequence: number, cardDestroyRequest: C2SDestroyCardRequest, ctx: Context) {
-  if (!ctx.roomId || !ctx.userId) {
-    error('handleDestroyCard: roomId or userId not found');
-    return;
-  }
   const room = rooms.getRoom(ctx.roomId);
 
   if (!room) {
     error('handleDestroyCard: room not found');
-    return;
+    return writePayload(socket, PACKET_TYPE.DESTROY_CARD_RESPONSE, version, sequence, {
+      handCards: [],
+    } satisfies MessageProps<S2CDestroyCardResponse>);
   }
 
   const user = room.getUser(ctx.userId);
 
   if (!user) {
     error('handleDestroyCard: user not found');
-    return;
+    return writePayload(socket, PACKET_TYPE.DESTROY_CARD_RESPONSE, version, sequence, {
+      handCards: [],
+    } satisfies MessageProps<S2CDestroyCardResponse>);
   }
 
   for (const card of cardDestroyRequest.destroyCards) {

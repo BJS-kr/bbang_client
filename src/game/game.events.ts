@@ -13,7 +13,7 @@ import { pickRandomCardType } from '../cards/utils/helpers';
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];
   satelliteTargets: User[] = [];
-  bombUsers: User[] = [];
+
   #room: Room;
 
   constructor() {
@@ -65,13 +65,6 @@ export class GameEvents extends EventEmitter {
 
           updatedUsers.push(st, nextUser);
         }
-      });
-
-      // TODO bomb넘기는건 어떻게 처리함...?
-      this.bombUsers.forEach((bu) => {
-        bu.character.takeDamage(2);
-        this.bombUsers = this.bombUsers.filter((bu) => bu !== bu);
-        updatedUsers.push(bu);
       });
 
       this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
