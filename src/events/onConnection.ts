@@ -21,7 +21,7 @@ export const onConnection = (socket: net.Socket) => {
     )(data).catch((err) => {
       session.quit(ctx.userId);
       rooms.quit(ctx.roomId, ctx.userId, ctx);
-      error('Error handling data:', err);
+      error(`Error handling data: ${err}`);
     });
   });
   socket.on('end', onEnd(socket, ctx));

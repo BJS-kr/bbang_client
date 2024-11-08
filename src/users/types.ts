@@ -1,4 +1,4 @@
-import { Character } from '../characters/character';
+import { Character } from '../characters/class/character';
 import { ROLE_TYPE, CHARACTER_TYPE } from '../constants/game';
 import net from 'node:net';
 

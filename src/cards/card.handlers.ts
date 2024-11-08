@@ -1,5 +1,5 @@
 import { CARD_TYPE, PHASE_TYPE } from '../constants/game';
-import { CardProps, Character } from '../characters/character';
+import { CardProps, Character } from '../characters/class/character';
 import { CharacterState } from '../constants/game';
 import {
   C2SCardSelectRequest,
@@ -16,14 +16,14 @@ import { writePayload } from '../protobuf/writePayload';
 import { MessageProps } from '../protobuf/props';
 import { PACKET_TYPE } from '../constants/packetType';
 import { error, log } from '../utils/logger';
-import { BBang } from './bbang';
+import { BBang } from './class/bbang';
 import { Room } from '../rooms/types';
-import { Shield } from './shield';
-import { AutoShield } from './shield.auto';
+import { Shield } from './class/shield';
+import { AutoShield } from './class/shield.auto';
 import { User } from '../users/types';
-import { Shark } from '../characters/shark';
-import { DeathMatch } from './deathmatch';
-import { BigBBang } from './big.bbang';
+import { Shark } from '../characters/class/shark';
+import { DeathMatch } from './class/deathmatch';
+import { BigBBang } from './class/big.bbang';
 import {
   onBBangTimeoutShooter,
   onBBangTimeoutTarget,
@@ -31,31 +31,40 @@ import {
   onFleaMarketTurnTimeout,
   onGuerillaShooterTimeout,
   onGuerillaTargetTimeout,
-} from './onTimeout';
-import { Vaccine } from './vaccine';
-import { Call119 } from './call119';
-import { Guerrilla } from './guerrilla';
-import { Absorb } from './absorb';
-import { Hallucination } from './hallucination';
-import { FleaMarket } from './fleamarket';
-import { MaturedSavings } from './matured.savings';
-import { SniperGun } from './snipergun';
-import { pickRandomCardType } from './pickRandomCard';
-import { WinLottery } from './win.lottery';
-import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './types';
-import { responseSuccess } from './response.success';
-import { LaserPointer } from './laser.pointer';
-import { Radar } from './radar';
+} from './utils/onTimeout';
+import { Vaccine } from './class/vaccine';
+import { Call119 } from './class/call119';
+import { Guerrilla } from './class/guerrilla';
+import { Absorb } from './class/absorb';
+import { Hallucination } from './class/hallucination';
+import { FleaMarket } from './class/fleamarket';
+import { MaturedSavings } from './class/matured.savings';
+import { SniperGun } from './class/snipergun';
+
+import { WinLottery } from './class/win.lottery';
+import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './utils/types';
+
+import { LaserPointer } from './class/laser.pointer';
+import { Radar } from './class/radar';
 import { cards } from './card.instance.index';
-import { StealthSuit } from './stealth.suit';
-import { ContainmentUnit } from './containment.unit';
-import { Bomb } from './bomb';
-import { SatelliteTarget } from './satellite.target';
-import { HandGun } from './handgun';
-import { DesertEagle } from './deserteagle';
-import { AutoRifle } from './autorifle';
+import { StealthSuit } from './class/stealth.suit';
+import { ContainmentUnit } from './class/containment.unit';
+import { Bomb } from './class/bomb';
+import { SatelliteTarget } from './class/satellite.target';
+import { HandGun } from './class/handgun';
+import { DesertEagle } from './class/deserteagle';
+import { AutoRifle } from './class/autorifle';
 import { Context } from '../events/types';
 import { Socket } from 'node:net';
+import {
+  isAbsorb,
+  isDeathMatchBBang,
+  isGuerrillaTargetBBang,
+  isHallucination,
+  pickRandomCardType,
+  responseCardSelect,
+  responseSuccess,
+} from './utils/helpers';
 
 export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
   const room = rooms.getRoom(ctx.roomId);
@@ -84,25 +93,22 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
 
   if (!targetUser) {
     error('handleCardSelect: target user not found');
-
-    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
-    } satisfies MessageProps<S2CCardSelectResponse>);
+    return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NOT_FOUND, [user]);
   }
 
-  if (user.character.stateInfo.state === CharacterState.ABSORBING && targetUser.character.stateInfo.state === CharacterState.ABSORB_TARGET) {
+  if (!isAbsorb(user, targetUser) && !isHallucination(user, targetUser)) {
+    error('handleCardSelect: unknown state');
+    return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.UNKNOWN_ERROR, [user, targetUser]);
+  }
+
+  if (isAbsorb(user, targetUser)) {
     switch (cardSelectRequest.selectType) {
       case 0:
         const targetUserCard = targetUser.character.getRandomCard();
 
         if (!targetUserCard) {
           error('handleCardSelect: target user has no card');
-
-          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-            success: false,
-            failCode: GlobalFailCode.UNKNOWN_ERROR,
-          } satisfies MessageProps<S2CCardSelectResponse>);
+          return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NO_CARD, [user, targetUser]);
         }
 
         user.character.acquireCard(targetUserCard);
@@ -111,48 +117,29 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
         const isExists = targetUser.character.equips.has(cardSelectRequest.selectCardType);
         if (!isExists) {
           error('handleCardSelect: target user has no card');
-
-          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-            success: false,
-            failCode: GlobalFailCode.UNKNOWN_ERROR,
-          } satisfies MessageProps<S2CCardSelectResponse>);
+          return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NO_CARD, [user, targetUser]);
         }
 
-        user.character.equips.add(cardSelectRequest.selectCardType);
         targetUser.character.equips.delete(cardSelectRequest.selectCardType);
+        user.character.acquireCard({ type: cardSelectRequest.selectCardType, count: 1 });
         break;
       default:
         error('handleCardSelect: unknown select type');
-
-        return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-          success: false,
-          failCode: GlobalFailCode.UNKNOWN_ERROR,
-        } satisfies MessageProps<S2CCardSelectResponse>);
+        return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.UNKNOWN_ERROR, [user, targetUser]);
     }
-  } else if (
-    user.character.stateInfo.state === CharacterState.HALLUCINATING &&
-    targetUser.character.stateInfo.state === CharacterState.HALLUCINATION_TARGET
-  ) {
+  } else if (isHallucination(user, targetUser)) {
     switch (cardSelectRequest.selectType) {
       case 0:
         if (!targetUser.character.loseRandomCards(1)) {
           error('handleCardSelect: target user has no card');
-
-          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-            success: false,
-            failCode: GlobalFailCode.UNKNOWN_ERROR,
-          } satisfies MessageProps<S2CCardSelectResponse>);
+          return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NO_CARD, [user, targetUser]);
         }
         break;
       case 1:
         const isExists = targetUser.character.equips.has(cardSelectRequest.selectCardType);
         if (!isExists) {
           error('handleCardSelect: target user has no card');
-
-          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-            success: false,
-            failCode: GlobalFailCode.UNKNOWN_ERROR,
-          } satisfies MessageProps<S2CCardSelectResponse>);
+          return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NO_CARD, [user, targetUser]);
         }
 
         targetUser.character.equips.delete(cardSelectRequest.selectCardType);
@@ -160,11 +147,7 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
       case 2:
         if (!user.character.weapon) {
           error('handleCardSelect: user has no weapon');
-
-          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-            success: false,
-            failCode: GlobalFailCode.UNKNOWN_ERROR,
-          } satisfies MessageProps<S2CCardSelectResponse>);
+          return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NO_CARD, [user, targetUser]);
         }
 
         user.character.weapon = 0;
@@ -173,11 +156,7 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
         const isExists = user.character.debuffs.has(cardSelectRequest.selectCardType);
         if (!isExists) {
           error('handleCardSelect: user has no card');
-
-          return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-            success: false,
-            failCode: GlobalFailCode.UNKNOWN_ERROR,
-          } satisfies MessageProps<S2CCardSelectResponse>);
+          return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NO_CARD, [user, targetUser]);
         }
 
         user.character.debuffs.delete(cardSelectRequest.selectCardType);
@@ -185,29 +164,11 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
       }
       default:
         error('handleCardSelect: unknown select type');
-
-        return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-          success: false,
-          failCode: GlobalFailCode.UNKNOWN_ERROR,
-        } satisfies MessageProps<S2CCardSelectResponse>);
+        return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.UNKNOWN_ERROR, [user, targetUser]);
     }
-  } else {
-    error('handleCardSelect: unknown state');
-
-    return writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.UNKNOWN_ERROR,
-    } satisfies MessageProps<S2CCardSelectResponse>);
   }
 
-  writePayload(socket, PACKET_TYPE.CARD_SELECT_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE,
-  } satisfies MessageProps<S2CCardSelectResponse>);
-
-  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
-    user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
-  } satisfies MessageProps<S2CUserUpdateNotification>);
+  return responseCardSelect(socket, version, sequence, room, true, GlobalFailCode.NONE, [user, targetUser]);
 }
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
@@ -381,10 +342,6 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
   return handleNormalBBang({ socket, version, sequence, ctx }, user, targetUser, room);
 }
 
-function isGuerrillaTargetBBang(user: User) {
-  return user.character.stateInfo.state === CharacterState.GUERRILLA_TARGET;
-}
-
 function handleGuerrillaTargetBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
   user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
@@ -434,10 +391,6 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
         user: [targetUser.toUserData(targetUser.id)],
       } satisfies MessageProps<S2CUserUpdateNotification>);
   }
-}
-
-function isDeathMatchBBang(user: User, targetUser: User) {
-  return user.character.stateInfo.state === CharacterState.DEATH_MATCH_TURN && targetUser.character.stateInfo.state === CharacterState.DEATH_MATCH;
 }
 
 function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {

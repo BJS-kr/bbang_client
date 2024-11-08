@@ -20,10 +20,9 @@ import { rooms } from '../rooms/rooms';
 import { Context } from '../events/types';
 import { session } from '../users/session';
 import { createCharacter } from '../characters/createCharacter';
-import { pickRandomCardType } from '../cards/pickRandomCard';
 import { log, error } from '../utils/logger';
-import { UserUpdateNotification } from '../cards/types';
-
+import { UserUpdateNotification } from '../cards/utils/types';
+import { pickRandomCardType } from '../cards/utils/helpers';
 // TODO
 const TARGET_CARD_BONUS = 1;
 

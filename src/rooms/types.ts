@@ -7,7 +7,7 @@ import { GameEvents } from '../game/game.events';
 import { PACKET_TYPE } from '../constants/packetType';
 import { S2CPositionUpdateNotification } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { pickRandomCardType } from '../cards/pickRandomCard';
+import { pickRandomCardType } from '../cards/utils/helpers';
 
 export enum RoomState {
   WAIT = 0,

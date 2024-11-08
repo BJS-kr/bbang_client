@@ -6,7 +6,7 @@ import { MessageProps } from '../protobuf/props';
 import { session } from './session';
 import { Context } from '../events/types';
 import net from 'node:net';
-import { Character } from '../characters/character';
+import { Character } from '../characters/class/character';
 import { CHARACTER_TYPE } from '../constants/game';
 import { ROLE_TYPE } from '../constants/game';
 

@@ -1,14 +1,14 @@
 import { EventEmitter } from 'node:events';
-import { ContainmentUnit } from '../cards/containment.unit';
+import { ContainmentUnit } from '../cards/class/containment.unit';
 import { CARD_TYPE, DAILY_CARD_COUNT, GAME_INIT_POSITION } from '../constants/game';
-import { SatelliteTarget } from '../cards/satellite.target';
+import { SatelliteTarget } from '../cards/class/satellite.target';
 import { User } from '../users/types';
 import { Room } from '../rooms/types';
 import { PACKET_TYPE } from '../constants/packetType';
 import { error } from '../utils/logger';
 import { S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { pickRandomCardType } from '../cards/pickRandomCard';
+import { pickRandomCardType } from '../cards/utils/helpers';
 
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];

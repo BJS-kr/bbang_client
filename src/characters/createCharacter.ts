@@ -1,18 +1,18 @@
 import { CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
-import { Character } from './character';
-import { Blue } from './blue';
-import { Red } from './red';
-import { Shark } from './shark';
-import { Knight } from './knight';
-import { Malang } from './malang';
-import { Dino } from './dino';
-import { Froggy } from './froggy';
-import { Pink } from './pink';
-import { SwimGlasses } from './swimGlasses';
-import { Mask } from './mask';
-import { Slime } from './slime';
-import { Dinosaur } from './dinosaur';
-import { PinkSlime } from './pinkSlime';
+import { Character } from './class/character';
+import { Blue } from './class/blue';
+import { Red } from './class/red';
+import { Shark } from './class/shark';
+import { Knight } from './class/knight';
+import { Malang } from './class/malang';
+import { Dino } from './class/dino';
+import { Froggy } from './class/froggy';
+import { Pink } from './class/pink';
+import { SwimGlasses } from './class/swimGlasses';
+import { Mask } from './class/mask';
+import { Slime } from './class/slime';
+import { Dinosaur } from './class/dinosaur';
+import { PinkSlime } from './class/pinkSlime';
 
 const TARGET_HP_BONUS = 1;
 const CHARACTER_CLASS_MAP = {
