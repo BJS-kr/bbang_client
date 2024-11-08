@@ -4776,6 +4776,12 @@ export class S2CDestroyCardResponse implements IS2CDestroyCardResponse {
 
 /** Properties of a S2CGameEndNotification. */
 export interface IS2CGameEndNotification {
+
+    /** S2CGameEndNotification winners */
+    winners?: (string[]|null);
+
+    /** S2CGameEndNotification winType */
+    winType?: (WinType|null);
 }
 
 /** Represents a S2CGameEndNotification. */
@@ -4786,6 +4792,12 @@ export class S2CGameEndNotification implements IS2CGameEndNotification {
      * @param [properties] Properties to set
      */
     constructor(properties?: IS2CGameEndNotification);
+
+    /** S2CGameEndNotification winners. */
+    public winners: string[];
+
+    /** S2CGameEndNotification winType. */
+    public winType: WinType;
 
     /**
      * Creates a new S2CGameEndNotification instance using the specified properties.
@@ -5769,4 +5781,11 @@ export enum GlobalFailCode {
 export enum WarningType {
     NO_WARNING = 0,
     BOMB = 1
+}
+
+/** WinType enum. */
+export enum WinType {
+    TARGET_AND_BODYGUARD = 0,
+    HITMAN = 1,
+    PSYCHOPATH = 2
 }

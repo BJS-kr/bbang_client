@@ -1,10 +1,11 @@
-import { RoomState } from '../rooms/types';
+import { Room, RoomState } from '../rooms/types';
 import { CARD_TYPE, CHARACTER_TYPE, CharacterState, GAME_INIT_POSITION, PHASE_TYPE, ROLE_TYPE } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
   S2CFleaMarketNotification,
   S2CFleaMarketPickResponse,
+  S2CGameEndNotification,
   S2CGamePrepareNotification,
   S2CGamePrepareResponse,
   S2CGameStartNotification,
@@ -13,6 +14,7 @@ import {
   S2CPositionUpdateResponse,
   S2CReactionResponse,
   S2CUserUpdateNotification,
+  WinType,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../protobuf/writePayload';
@@ -23,6 +25,7 @@ import { createCharacter } from '../characters/createCharacter';
 import { log, error } from '../utils/logger';
 import { UserUpdateNotification } from '../cards/utils/types';
 import { pickRandomCardType } from '../cards/utils/helpers';
+import { checkWinCondition } from './win.condition';
 // TODO
 const TARGET_CARD_BONUS = 1;
 
@@ -87,7 +90,12 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
       throw new Error('characterType or roleType is not defined');
     }
 
-    room.users[i].character = createCharacter({ userId: room.users[i].id, characterType, roleType });
+    room.users[i].character = createCharacter({
+      userId: room.users[i].id,
+      characterType,
+      roleType,
+      onTakeDamage: checkWinCondition(socket, version, sequence, rooms, ctx.roomId),
+    });
     room.users[i].character.setPosition(suhfflePositions[i]);
   }
 

@@ -13,6 +13,7 @@ import { Mask } from './class/mask';
 import { Slime } from './class/slime';
 import { Dinosaur } from './class/dinosaur';
 import { PinkSlime } from './class/pinkSlime';
+import { Room } from '../rooms/types';
 
 const TARGET_HP_BONUS = 1;
 const CHARACTER_CLASS_MAP = {
@@ -31,7 +32,17 @@ const CHARACTER_CLASS_MAP = {
   [CHARACTER_TYPE.PINK_SLIME]: PinkSlime,
 };
 
-export const createCharacter = ({ userId, characterType, roleType }: { userId: string; characterType: number; roleType: ROLE_TYPE }) => {
+export const createCharacter = ({
+  userId,
+  characterType,
+  roleType,
+  onTakeDamage,
+}: {
+  userId: string;
+  characterType: number;
+  roleType: ROLE_TYPE;
+  onTakeDamage: () => void;
+}) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
   if (CharacterClass === Character) {
     throw new Error('CharacterClass is not defined');
@@ -39,9 +50,9 @@ export const createCharacter = ({ userId, characterType, roleType }: { userId: s
 
   switch (roleType) {
     case ROLE_TYPE.TARGET:
-      return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType });
+      return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, onTakeDamage });
 
     default:
-      return new CharacterClass({ userId, roleType });
+      return new CharacterClass({ userId, roleType, onTakeDamage });
   }
 };

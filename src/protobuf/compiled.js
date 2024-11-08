@@ -12063,6 +12063,8 @@ $root.S2CGameEndNotification = (function() {
      * Properties of a S2CGameEndNotification.
      * @exports IS2CGameEndNotification
      * @interface IS2CGameEndNotification
+     * @property {Array.<string>|null} [winners] S2CGameEndNotification winners
+     * @property {WinType|null} [winType] S2CGameEndNotification winType
      */
 
     /**
@@ -12074,11 +12076,28 @@ $root.S2CGameEndNotification = (function() {
      * @param {IS2CGameEndNotification=} [properties] Properties to set
      */
     function S2CGameEndNotification(properties) {
+        this.winners = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
+
+    /**
+     * S2CGameEndNotification winners.
+     * @member {Array.<string>} winners
+     * @memberof S2CGameEndNotification
+     * @instance
+     */
+    S2CGameEndNotification.prototype.winners = $util.emptyArray;
+
+    /**
+     * S2CGameEndNotification winType.
+     * @member {WinType} winType
+     * @memberof S2CGameEndNotification
+     * @instance
+     */
+    S2CGameEndNotification.prototype.winType = 0;
 
     /**
      * Creates a new S2CGameEndNotification instance using the specified properties.
@@ -12104,6 +12123,11 @@ $root.S2CGameEndNotification = (function() {
     S2CGameEndNotification.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.winners != null && message.winners.length)
+            for (var i = 0; i < message.winners.length; ++i)
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.winners[i]);
+        if (message.winType != null && Object.hasOwnProperty.call(message, "winType"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.winType);
         return writer;
     };
 
@@ -12138,6 +12162,16 @@ $root.S2CGameEndNotification = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
+            case 1: {
+                    if (!(message.winners && message.winners.length))
+                        message.winners = [];
+                    message.winners.push(reader.string());
+                    break;
+                }
+            case 2: {
+                    message.winType = reader.int32();
+                    break;
+                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -12173,6 +12207,22 @@ $root.S2CGameEndNotification = (function() {
     S2CGameEndNotification.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
+        if (message.winners != null && message.hasOwnProperty("winners")) {
+            if (!Array.isArray(message.winners))
+                return "winners: array expected";
+            for (var i = 0; i < message.winners.length; ++i)
+                if (!$util.isString(message.winners[i]))
+                    return "winners: string[] expected";
+        }
+        if (message.winType != null && message.hasOwnProperty("winType"))
+            switch (message.winType) {
+            default:
+                return "winType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+                break;
+            }
         return null;
     };
 
@@ -12187,7 +12237,35 @@ $root.S2CGameEndNotification = (function() {
     S2CGameEndNotification.fromObject = function fromObject(object) {
         if (object instanceof $root.S2CGameEndNotification)
             return object;
-        return new $root.S2CGameEndNotification();
+        var message = new $root.S2CGameEndNotification();
+        if (object.winners) {
+            if (!Array.isArray(object.winners))
+                throw TypeError(".S2CGameEndNotification.winners: array expected");
+            message.winners = [];
+            for (var i = 0; i < object.winners.length; ++i)
+                message.winners[i] = String(object.winners[i]);
+        }
+        switch (object.winType) {
+        default:
+            if (typeof object.winType === "number") {
+                message.winType = object.winType;
+                break;
+            }
+            break;
+        case "TARGET_AND_BODYGUARD":
+        case 0:
+            message.winType = 0;
+            break;
+        case "HITMAN":
+        case 1:
+            message.winType = 1;
+            break;
+        case "PSYCHOPATH":
+        case 2:
+            message.winType = 2;
+            break;
+        }
+        return message;
     };
 
     /**
@@ -12199,8 +12277,22 @@ $root.S2CGameEndNotification = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    S2CGameEndNotification.toObject = function toObject() {
-        return {};
+    S2CGameEndNotification.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.arrays || options.defaults)
+            object.winners = [];
+        if (options.defaults)
+            object.winType = options.enums === String ? "TARGET_AND_BODYGUARD" : 0;
+        if (message.winners && message.winners.length) {
+            object.winners = [];
+            for (var j = 0; j < message.winners.length; ++j)
+                object.winners[j] = message.winners[j];
+        }
+        if (message.winType != null && message.hasOwnProperty("winType"))
+            object.winType = options.enums === String ? $root.WinType[message.winType] === undefined ? message.winType : $root.WinType[message.winType] : message.winType;
+        return object;
     };
 
     /**
@@ -15410,6 +15502,22 @@ $root.WarningType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NO_WARNING"] = 0;
     values[valuesById[1] = "BOMB"] = 1;
+    return values;
+})();
+
+/**
+ * WinType enum.
+ * @exports WinType
+ * @enum {number}
+ * @property {number} TARGET_AND_BODYGUARD=0 TARGET_AND_BODYGUARD value
+ * @property {number} HITMAN=1 HITMAN value
+ * @property {number} PSYCHOPATH=2 PSYCHOPATH value
+ */
+$root.WinType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "TARGET_AND_BODYGUARD"] = 0;
+    values[valuesById[1] = "HITMAN"] = 1;
+    values[valuesById[2] = "PSYCHOPATH"] = 2;
     return values;
 })();
 

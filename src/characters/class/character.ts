@@ -43,6 +43,7 @@ export class Character extends EventEmitter {
   weapon: number = 0;
   equips = new Set<CARD_TYPE>();
   debuffs = new Set<CARD_TYPE>();
+  onTakeDamage: () => void;
 
   constructor({
     userId,
@@ -50,12 +51,14 @@ export class Character extends EventEmitter {
     roleType,
     characterType,
     baseDefenseChance,
+    onTakeDamage,
   }: {
     userId: string;
     hp: number;
     roleType: number;
     characterType: number;
     baseDefenseChance: number;
+    onTakeDamage: () => void;
   }) {
     super();
 
@@ -65,6 +68,7 @@ export class Character extends EventEmitter {
     this.roleType = roleType;
     this.baseDefenseChance = baseDefenseChance;
     this.positionInfo = new CharacterPositionInfo(userId);
+    this.onTakeDamage = onTakeDamage;
 
     return new Proxy(this, handler);
   }
@@ -143,6 +147,7 @@ export class Character extends EventEmitter {
 
   takeDamage(amount: number) {
     this.hp = Math.max(HP_MIN, this.hp - amount);
+    this.onTakeDamage();
 
     return amount;
   }

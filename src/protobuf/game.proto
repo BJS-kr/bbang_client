@@ -251,7 +251,8 @@ message S2CDestroyCardResponse {
 }
 
 message S2CGameEndNotification {
-    // TODO
+    repeated string winners = 1;
+    WinType winType=2;
 }
 
 message C2SCardSelectRequest {
@@ -398,3 +399,10 @@ enum WarningType {
     NO_WARNING = 0;
     BOMB = 1;
 }
+
+enum WinType {
+    TARGET_AND_BODYGUARD = 0;
+    HITMAN= 1;
+    PSYCHOPATH = 2;
+}
+
