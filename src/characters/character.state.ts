@@ -48,12 +48,12 @@ export class CharacterStateInfo {
         break;
 
       case CharacterState.FLEA_MARKET_TURN:
-      case CharacterState.FLEA_MARKET_WAIT:
         if (prevOnStateTimeout) {
           prevOnStateTimeout(prevState, state);
         }
         break;
 
+      case CharacterState.FLEA_MARKET_WAIT:
       case CharacterState.BBANG_SHOOTER:
       case CharacterState.BBANG_TARGET:
       case CharacterState.BIG_BBANG_SHOOTER:
