@@ -54,6 +54,8 @@ export class CharacterStateInfo {
         break;
 
       case CharacterState.FLEA_MARKET_WAIT:
+        break;
+
       case CharacterState.BBANG_SHOOTER:
       case CharacterState.BBANG_TARGET:
       case CharacterState.BIG_BBANG_SHOOTER:
