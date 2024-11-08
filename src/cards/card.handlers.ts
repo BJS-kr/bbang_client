@@ -5,7 +5,6 @@ import {
   C2SCardSelectRequest,
   C2SDestroyCardRequest,
   C2SUseCardRequest,
-  CardData,
   GlobalFailCode,
   S2CCardSelectResponse,
   S2CDestroyCardResponse,
@@ -41,10 +40,8 @@ import { Hallucination } from './class/hallucination';
 import { FleaMarket } from './class/fleamarket';
 import { MaturedSavings } from './class/matured.savings';
 import { SniperGun } from './class/snipergun';
-
 import { WinLottery } from './class/win.lottery';
 import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './utils/types';
-
 import { LaserPointer } from './class/laser.pointer';
 import { Radar } from './class/radar';
 import { cards } from './card.instance.index';
@@ -306,11 +303,11 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof ContainmentUnit:
       log('handleUseCard: ContainmentUnit');
-      handleContainmentUnit(base, room, user);
+      handleContainmentUnit(base, useCardRequest, room, user);
       break;
     case card instanceof SatelliteTarget:
       log('handleUseCard: SatelliteTarget');
-      handleSatelliteTarget(base, room, user);
+      handleSatelliteTarget(base, useCardRequest, room, user);
       break;
     case card instanceof Bomb:
       log('handleUseCard: Bomb');
@@ -350,7 +347,7 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 }
 
 function handleGuerrillaTargetBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  user.character.stateInfo.setState(user.id, CharacterState.NONE, null);
+  user.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
     user: [user.toUserData(user.id)],
   } satisfies MessageProps<S2CUserUpdateNotification>);
@@ -365,7 +362,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   }
 
   user.character.acquireBBangCount();
-  user.character.stateInfo.setState(user.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
+  user.character.stateInfo.setState(targetUser.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   const damage = user.character.getBBangDamage();
   targetUser.character.stateInfo.setState(user.id, CharacterState.BBANG_TARGET, onBBangTimeoutTarget(damage, targetUser, room));
@@ -373,7 +370,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   responseSuccess(socket, version, sequence, CARD_TYPE.BBANG, [user, targetUser], room, user, targetUser.id);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
-    targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
+    targetUser.character.stateInfo.setState('', CharacterState.NONE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -385,7 +382,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (isAutoShieldExists && autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
-    shielded && targetUser.character.stateInfo.setState(targetUser.id, CharacterState.NONE, null);
+    shielded && targetUser.character.stateInfo.setState('', CharacterState.NONE, null);
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,
@@ -409,7 +406,18 @@ function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user:
 
 function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Room, user: User) {
   // TODO 나중에 아이템에 의해 필요한 애들도 핸들 할 수 있도록 일관성 있게 고치자..
-  if (user.character instanceof Shark || user.character.equips.has(CARD_TYPE.LASER_POINTER)) {
+  const targetUser = room.getUser(user.character.stateInfo.stateTargetUserId);
+
+  if (!targetUser) {
+    error('handleShield: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  if (user.character instanceof Shark || targetUser.character.equips.has(CARD_TYPE.LASER_POINTER)) {
     const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
     if (shield instanceof Error) {
       error('handleShield: character have no sufficient amount of shield card');
@@ -478,7 +486,7 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
     Character.recover(1, user.character);
   } else {
     room.users.forEach((targetUser) => {
-      Character.recover(1, targetUser.character);
+      targetUser.id !== user.id && Character.recover(1, targetUser.character);
     });
   }
 
@@ -603,16 +611,38 @@ function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Roo
   responseSuccess(socket, version, sequence, CARD_TYPE.STEALTH_SUIT, [user], room, user, '');
 }
 
-function handleContainmentUnit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
-  room.gameEvents.containedUsers.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user], room, user, '');
+function handleContainmentUnit({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
+  const targetUser = room.getUser(useCardRequest.targetUserId);
+
+  if (!targetUser) {
+    error('handleContainmentUnit: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  targetUser.character.debuffs.add(CARD_TYPE.CONTAINMENT_UNIT);
+  room.gameEvents.containedUsers.push(targetUser);
+  responseSuccess(socket, version, sequence, CARD_TYPE.CONTAINMENT_UNIT, [user, targetUser], room, user, targetUser.id);
 }
 
-function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
-  room.gameEvents.satelliteTargets.push(user);
-  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user], room, user, '');
+function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
+  const targetUser = room.getUser(useCardRequest.targetUserId);
+
+  if (!targetUser) {
+    error('handleSatelliteTarget: target user not found');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
+    } satisfies UseCardResponse);
+  }
+
+  targetUser.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
+  room.gameEvents.satelliteTargets.push(targetUser);
+  responseSuccess(socket, version, sequence, CARD_TYPE.SATELLITE_TARGET, [user, targetUser], room, user, targetUser.id);
 }
 
 function handleBomb({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
