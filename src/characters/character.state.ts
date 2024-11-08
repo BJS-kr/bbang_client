@@ -41,6 +41,7 @@ export class CharacterStateInfo {
     this.#onStateTimeout = onStateTimeout;
 
     if (prevState === CharacterState.FLEA_MARKET_TURN) {
+      console.log(`[setState] prevState: ${prevState}, newState: ${state}`);
       if (prevOnStateTimeout) {
         prevOnStateTimeout(prevState, state);
       }
@@ -76,6 +77,7 @@ export class CharacterStateInfo {
         this.nextState = CharacterState.DEATH_MATCH;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
         break;
+
       case CharacterState.ABSORBING:
       case CharacterState.ABSORB_TARGET:
       case CharacterState.HALLUCINATING:
