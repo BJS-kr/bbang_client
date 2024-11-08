@@ -91,11 +91,12 @@ export class Room {
   }
 
   initFleaMarketCards() {
+    this.fleaMarketCards = [];
+    this.pickFleaMarketIndex = [];
     for (let i = 0; i < this.users.length; i++) {
       const randomCardType = pickRandomCardType();
       this.fleaMarketCards.push(randomCardType);
     }
-    this.pickFleaMarketIndex = [];
   }
 
   startPositionBroadcast() {
