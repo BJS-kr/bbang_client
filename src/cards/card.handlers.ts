@@ -363,7 +363,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
     } satisfies UseCardResponse);
   }
 
-  user.character.acquireBBangCount();
+  user.character.increaseBBangCount();
   user.character.stateInfo.setState(targetUser.id, CharacterState.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   const damage = user.character.getBBangDamage();
@@ -741,7 +741,7 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
     failCode: GlobalFailCode.NONE,
   } satisfies MessageProps<S2CPassDebuffResponse>);
 
-  writePayload(socket, PACKET_TYPE.USER_UPDATE_NOTIFICATION, version, sequence, {
+  room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
     user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
   } satisfies MessageProps<S2CUserUpdateNotification>);
 }

@@ -95,7 +95,7 @@ export class Character extends EventEmitter {
     return this.weapon === CARD_TYPE.SNIPER_GUN ? 2 : this.weapon === CARD_TYPE.HAND_GUN ? Infinity : 1;
   }
 
-  acquireBBangCount() {
+  increaseBBangCount() {
     this.useBBangCount++;
   }
 
