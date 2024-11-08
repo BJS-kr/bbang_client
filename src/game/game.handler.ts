@@ -347,6 +347,8 @@ export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarke
     } satisfies MessageProps<S2CFleaMarketPickResponse>);
   }
 
+  console.log(`state: ${user.character.stateInfo.state}`);
+
   if (user.character.stateInfo.state !== CharacterState.FLEA_MARKET_TURN) {
     return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
       success: false,
