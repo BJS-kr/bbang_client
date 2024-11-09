@@ -66,7 +66,7 @@ export class GameEvents extends EventEmitter {
 
       this.satelliteTargets.forEach((st) => {
         if (SatelliteTarget.isHit()) {
-          st.character.takeDamage(3, null);
+          st.character.takeDamage(3, 'SYSTEM');
 
           this.#room.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
             userId: st.id,

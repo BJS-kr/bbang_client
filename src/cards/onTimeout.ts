@@ -58,7 +58,7 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
 
 export function onGuerillaTargetTimeout(targetUser: User, room: Room) {
   return () => {
-    targetUser.character.takeDamage(1, null);
+    targetUser.character.takeDamage(1, 'SYSTEM');
     targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],

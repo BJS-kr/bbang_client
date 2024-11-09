@@ -151,7 +151,7 @@ export class Room {
           return;
         }
 
-        user.character.takeDamage(2, null);
+        user.character.takeDamage(2, 'SYSTEM');
         user.character.debuffs.delete(CardType.BOMB);
 
         this.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {

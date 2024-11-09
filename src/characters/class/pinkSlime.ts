@@ -15,7 +15,7 @@ export class PinkSlime extends Character {
     });
 
     this.on('takeDamage', ({ attacker }: TakeDamageEvent) => {
-      if (!attacker) return;
+      if (attacker === 'SYSTEM') return;
 
       this.acquireCardFromOtherCharacter(attacker.character);
       this.gameEvents.emit('update', this.userId, attacker.id);

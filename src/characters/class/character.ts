@@ -12,7 +12,7 @@ import { User } from '../../users/types';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
-export type TakeDamageEvent = { attacker: User | null; damage: number };
+export type TakeDamageEvent = { attacker: User | 'SYSTEM'; damage: number };
 const HP_MIN = 0;
 const handler = {
   get: function (target: Character, key: string) {
@@ -153,7 +153,7 @@ export class Character extends EventEmitter {
     return Array.from(this.handCards.values()).reduce((sum, count) => sum + count, 0);
   }
 
-  takeDamage(amount: number, attacker: User | null): TakeDamageEvent {
+  takeDamage(amount: number, attacker: User | 'SYSTEM'): TakeDamageEvent {
     this.hp = Math.max(HP_MIN, this.hp - amount);
 
     if (this.isDead()) {
