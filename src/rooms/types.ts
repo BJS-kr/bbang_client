@@ -5,7 +5,14 @@ import { writePayload } from '../protobuf/writePayload';
 import { config } from '../config/config';
 import { GameEvents } from '../game/game.events';
 import { PACKET_TYPE } from '../constants/packetType';
-import { CardType, S2CPositionUpdateNotification, S2CUserUpdateNotification, S2CWarningNotification, WarningType } from '../protobuf/compiled';
+import {
+  CardType,
+  RoomStateType,
+  S2CPositionUpdateNotification,
+  S2CUserUpdateNotification,
+  S2CWarningNotification,
+  WarningType,
+} from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
 
@@ -26,7 +33,7 @@ export class Room {
   ownerId: string;
   maxUserNum: number;
   users: User[];
-  state: RoomState;
+  state: RoomStateType;
   gameState: GameState;
   gameEvents: GameEvents;
   fleaMarketCards: number[];
@@ -47,7 +54,7 @@ export class Room {
     ownerId: string;
     maxUserNum: number;
     users: User[];
-    state: RoomState;
+    state: RoomStateType;
     gameState: GameState;
     gameEvents: GameEvents;
   }) {
@@ -178,7 +185,7 @@ export class Rooms {
       ownerId,
       maxUserNum,
       users: [],
-      state: RoomState.WAIT,
+      state: RoomStateType.WAIT,
       gameState: new GameState(gameEvents),
       gameEvents,
     });

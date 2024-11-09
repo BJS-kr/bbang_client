@@ -19,7 +19,7 @@ $root.RoomData = (function() {
      * @property {string|null} [ownerId] RoomData ownerId
      * @property {string|null} [name] RoomData name
      * @property {number|null} [maxUserNum] RoomData maxUserNum
-     * @property {number|null} [state] RoomData state
+     * @property {RoomStateType|null} [state] RoomData state
      * @property {Array.<IUserData>|null} [users] RoomData users
      */
 
@@ -73,7 +73,7 @@ $root.RoomData = (function() {
 
     /**
      * RoomData state.
-     * @member {number} state
+     * @member {RoomStateType} state
      * @memberof RoomData
      * @instance
      */
@@ -232,8 +232,14 @@ $root.RoomData = (function() {
             if (!$util.isInteger(message.maxUserNum))
                 return "maxUserNum: integer expected";
         if (message.state != null && message.hasOwnProperty("state"))
-            if (!$util.isInteger(message.state))
-                return "state: integer expected";
+            switch (message.state) {
+            default:
+                return "state: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+                break;
+            }
         if (message.users != null && message.hasOwnProperty("users")) {
             if (!Array.isArray(message.users))
                 return "users: array expected";
@@ -266,8 +272,26 @@ $root.RoomData = (function() {
             message.name = String(object.name);
         if (object.maxUserNum != null)
             message.maxUserNum = object.maxUserNum | 0;
-        if (object.state != null)
-            message.state = object.state | 0;
+        switch (object.state) {
+        default:
+            if (typeof object.state === "number") {
+                message.state = object.state;
+                break;
+            }
+            break;
+        case "WAIT":
+        case 0:
+            message.state = 0;
+            break;
+        case "PREPARE":
+        case 1:
+            message.state = 1;
+            break;
+        case "INGAME":
+        case 2:
+            message.state = 2;
+            break;
+        }
         if (object.users) {
             if (!Array.isArray(object.users))
                 throw TypeError(".RoomData.users: array expected");
@@ -301,7 +325,7 @@ $root.RoomData = (function() {
             object.ownerId = "";
             object.name = "";
             object.maxUserNum = 0;
-            object.state = 0;
+            object.state = options.enums === String ? "WAIT" : 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
@@ -312,7 +336,7 @@ $root.RoomData = (function() {
         if (message.maxUserNum != null && message.hasOwnProperty("maxUserNum"))
             object.maxUserNum = message.maxUserNum;
         if (message.state != null && message.hasOwnProperty("state"))
-            object.state = message.state;
+            object.state = options.enums === String ? $root.RoomStateType[message.state] === undefined ? message.state : $root.RoomStateType[message.state] : message.state;
         if (message.users && message.users.length) {
             object.users = [];
             for (var j = 0; j < message.users.length; ++j)
@@ -1438,7 +1462,7 @@ $root.CardData = (function() {
      * Properties of a CardData.
      * @exports ICardData
      * @interface ICardData
-     * @property {number|null} [type] CardData type
+     * @property {CardType|null} [type] CardData type
      * @property {number|null} [count] CardData count
      */
 
@@ -1459,7 +1483,7 @@ $root.CardData = (function() {
 
     /**
      * CardData type.
-     * @member {number} type
+     * @member {CardType} type
      * @memberof CardData
      * @instance
      */
@@ -1579,8 +1603,35 @@ $root.CardData = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.type != null && message.hasOwnProperty("type"))
-            if (!$util.isInteger(message.type))
-                return "type: integer expected";
+            switch (message.type) {
+            default:
+                return "type: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         if (message.count != null && message.hasOwnProperty("count"))
             if (!$util.isInteger(message.count))
                 return "count: integer expected";
@@ -1599,8 +1650,110 @@ $root.CardData = (function() {
         if (object instanceof $root.CardData)
             return object;
         var message = new $root.CardData();
-        if (object.type != null)
-            message.type = object.type | 0;
+        switch (object.type) {
+        default:
+            if (typeof object.type === "number") {
+                message.type = object.type;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.type = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.type = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.type = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.type = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.type = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.type = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.type = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.type = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.type = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.type = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.type = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.type = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.type = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.type = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.type = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.type = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.type = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.type = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.type = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.type = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.type = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.type = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.type = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.type = 23;
+            break;
+        }
         if (object.count != null)
             message.count = object.count | 0;
         return message;
@@ -1620,11 +1773,11 @@ $root.CardData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.type = 0;
+            object.type = options.enums === String ? "NONE" : 0;
             object.count = 0;
         }
         if (message.type != null && message.hasOwnProperty("type"))
-            object.type = message.type;
+            object.type = options.enums === String ? $root.CardType[message.type] === undefined ? message.type : $root.CardType[message.type] : message.type;
         if (message.count != null && message.hasOwnProperty("count"))
             object.count = message.count;
         return object;
@@ -1665,7 +1818,7 @@ $root.GameStateData = (function() {
      * Properties of a GameStateData.
      * @exports IGameStateData
      * @interface IGameStateData
-     * @property {number|null} [phaseType] GameStateData phaseType
+     * @property {PhaseType|null} [phaseType] GameStateData phaseType
      * @property {number|Long|null} [nextPhaseAt] GameStateData nextPhaseAt
      */
 
@@ -1686,7 +1839,7 @@ $root.GameStateData = (function() {
 
     /**
      * GameStateData phaseType.
-     * @member {number} phaseType
+     * @member {PhaseType} phaseType
      * @memberof GameStateData
      * @instance
      */
@@ -1806,8 +1959,15 @@ $root.GameStateData = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.phaseType != null && message.hasOwnProperty("phaseType"))
-            if (!$util.isInteger(message.phaseType))
-                return "phaseType: integer expected";
+            switch (message.phaseType) {
+            default:
+                return "phaseType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+            }
         if (message.nextPhaseAt != null && message.hasOwnProperty("nextPhaseAt"))
             if (!$util.isInteger(message.nextPhaseAt) && !(message.nextPhaseAt && $util.isInteger(message.nextPhaseAt.low) && $util.isInteger(message.nextPhaseAt.high)))
                 return "nextPhaseAt: integer|Long expected";
@@ -1826,8 +1986,30 @@ $root.GameStateData = (function() {
         if (object instanceof $root.GameStateData)
             return object;
         var message = new $root.GameStateData();
-        if (object.phaseType != null)
-            message.phaseType = object.phaseType | 0;
+        switch (object.phaseType) {
+        default:
+            if (typeof object.phaseType === "number") {
+                message.phaseType = object.phaseType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.phaseType = 0;
+            break;
+        case "DAY":
+        case 1:
+            message.phaseType = 1;
+            break;
+        case "EVENING":
+        case 2:
+            message.phaseType = 2;
+            break;
+        case "END":
+        case 3:
+            message.phaseType = 3;
+            break;
+        }
         if (object.nextPhaseAt != null)
             if ($util.Long)
                 (message.nextPhaseAt = $util.Long.fromValue(object.nextPhaseAt)).unsigned = false;
@@ -1854,7 +2036,7 @@ $root.GameStateData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.phaseType = 0;
+            object.phaseType = options.enums === String ? "NONE" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.nextPhaseAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -1862,7 +2044,7 @@ $root.GameStateData = (function() {
                 object.nextPhaseAt = options.longs === String ? "0" : 0;
         }
         if (message.phaseType != null && message.hasOwnProperty("phaseType"))
-            object.phaseType = message.phaseType;
+            object.phaseType = options.enums === String ? $root.PhaseType[message.phaseType] === undefined ? message.phaseType : $root.PhaseType[message.phaseType] : message.phaseType;
         if (message.nextPhaseAt != null && message.hasOwnProperty("nextPhaseAt"))
             if (typeof message.nextPhaseAt === "number")
                 object.nextPhaseAt = options.longs === String ? String(message.nextPhaseAt) : message.nextPhaseAt;
@@ -1906,8 +2088,8 @@ $root.CharacterStateInfoData = (function() {
      * Properties of a CharacterStateInfoData.
      * @exports ICharacterStateInfoData
      * @interface ICharacterStateInfoData
-     * @property {number|null} [state] CharacterStateInfoData state
-     * @property {number|null} [nextState] CharacterStateInfoData nextState
+     * @property {CharacterStateType|null} [state] CharacterStateInfoData state
+     * @property {CharacterStateType|null} [nextState] CharacterStateInfoData nextState
      * @property {number|Long|null} [nextStateAt] CharacterStateInfoData nextStateAt
      * @property {string|null} [stateTargetUserId] CharacterStateInfoData stateTargetUserId
      */
@@ -1929,7 +2111,7 @@ $root.CharacterStateInfoData = (function() {
 
     /**
      * CharacterStateInfoData state.
-     * @member {number} state
+     * @member {CharacterStateType} state
      * @memberof CharacterStateInfoData
      * @instance
      */
@@ -1937,7 +2119,7 @@ $root.CharacterStateInfoData = (function() {
 
     /**
      * CharacterStateInfoData nextState.
-     * @member {number} nextState
+     * @member {CharacterStateType} nextState
      * @memberof CharacterStateInfoData
      * @instance
      */
@@ -2077,11 +2259,49 @@ $root.CharacterStateInfoData = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.state != null && message.hasOwnProperty("state"))
-            if (!$util.isInteger(message.state))
-                return "state: integer expected";
+            switch (message.state) {
+            default:
+                return "state: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            }
         if (message.nextState != null && message.hasOwnProperty("nextState"))
-            if (!$util.isInteger(message.nextState))
-                return "nextState: integer expected";
+            switch (message.nextState) {
+            default:
+                return "nextState: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                break;
+            }
         if (message.nextStateAt != null && message.hasOwnProperty("nextStateAt"))
             if (!$util.isInteger(message.nextStateAt) && !(message.nextStateAt && $util.isInteger(message.nextStateAt.low) && $util.isInteger(message.nextStateAt.high)))
                 return "nextStateAt: integer|Long expected";
@@ -2103,10 +2323,150 @@ $root.CharacterStateInfoData = (function() {
         if (object instanceof $root.CharacterStateInfoData)
             return object;
         var message = new $root.CharacterStateInfoData();
-        if (object.state != null)
-            message.state = object.state | 0;
-        if (object.nextState != null)
-            message.nextState = object.nextState | 0;
+        switch (object.state) {
+        default:
+            if (typeof object.state === "number") {
+                message.state = object.state;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.state = 0;
+            break;
+        case "BBANG_SHOOTER":
+        case 1:
+            message.state = 1;
+            break;
+        case "BBANG_TARGET":
+        case 2:
+            message.state = 2;
+            break;
+        case "DEATH_MATCH":
+        case 3:
+            message.state = 3;
+            break;
+        case "DEATH_MATCH_TURN":
+        case 4:
+            message.state = 4;
+            break;
+        case "FLEA_MARKET_TURN":
+        case 5:
+            message.state = 5;
+            break;
+        case "FLEA_MARKET_WAIT":
+        case 6:
+            message.state = 6;
+            break;
+        case "GUERRILLA_SHOOTER":
+        case 7:
+            message.state = 7;
+            break;
+        case "GUERRILLA_TARGET":
+        case 8:
+            message.state = 8;
+            break;
+        case "BIG_BBANG_SHOOTER":
+        case 9:
+            message.state = 9;
+            break;
+        case "BIG_BBANG_TARGET":
+        case 10:
+            message.state = 10;
+            break;
+        case "ABSORBING":
+        case 11:
+            message.state = 11;
+            break;
+        case "ABSORB_TARGET":
+        case 12:
+            message.state = 12;
+            break;
+        case "HALLUCINATING":
+        case 13:
+            message.state = 13;
+            break;
+        case "HALLUCINATION_TARGET":
+        case 14:
+            message.state = 14;
+            break;
+        case "CONTAINED":
+        case 15:
+            message.state = 15;
+            break;
+        }
+        switch (object.nextState) {
+        default:
+            if (typeof object.nextState === "number") {
+                message.nextState = object.nextState;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.nextState = 0;
+            break;
+        case "BBANG_SHOOTER":
+        case 1:
+            message.nextState = 1;
+            break;
+        case "BBANG_TARGET":
+        case 2:
+            message.nextState = 2;
+            break;
+        case "DEATH_MATCH":
+        case 3:
+            message.nextState = 3;
+            break;
+        case "DEATH_MATCH_TURN":
+        case 4:
+            message.nextState = 4;
+            break;
+        case "FLEA_MARKET_TURN":
+        case 5:
+            message.nextState = 5;
+            break;
+        case "FLEA_MARKET_WAIT":
+        case 6:
+            message.nextState = 6;
+            break;
+        case "GUERRILLA_SHOOTER":
+        case 7:
+            message.nextState = 7;
+            break;
+        case "GUERRILLA_TARGET":
+        case 8:
+            message.nextState = 8;
+            break;
+        case "BIG_BBANG_SHOOTER":
+        case 9:
+            message.nextState = 9;
+            break;
+        case "BIG_BBANG_TARGET":
+        case 10:
+            message.nextState = 10;
+            break;
+        case "ABSORBING":
+        case 11:
+            message.nextState = 11;
+            break;
+        case "ABSORB_TARGET":
+        case 12:
+            message.nextState = 12;
+            break;
+        case "HALLUCINATING":
+        case 13:
+            message.nextState = 13;
+            break;
+        case "HALLUCINATION_TARGET":
+        case 14:
+            message.nextState = 14;
+            break;
+        case "CONTAINED":
+        case 15:
+            message.nextState = 15;
+            break;
+        }
         if (object.nextStateAt != null)
             if ($util.Long)
                 (message.nextStateAt = $util.Long.fromValue(object.nextStateAt)).unsigned = false;
@@ -2135,8 +2495,8 @@ $root.CharacterStateInfoData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.state = 0;
-            object.nextState = 0;
+            object.state = options.enums === String ? "NONE" : 0;
+            object.nextState = options.enums === String ? "NONE" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.nextStateAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -2145,9 +2505,9 @@ $root.CharacterStateInfoData = (function() {
             object.stateTargetUserId = "";
         }
         if (message.state != null && message.hasOwnProperty("state"))
-            object.state = message.state;
+            object.state = options.enums === String ? $root.CharacterStateType[message.state] === undefined ? message.state : $root.CharacterStateType[message.state] : message.state;
         if (message.nextState != null && message.hasOwnProperty("nextState"))
-            object.nextState = message.nextState;
+            object.nextState = options.enums === String ? $root.CharacterStateType[message.nextState] === undefined ? message.nextState : $root.CharacterStateType[message.nextState] : message.nextState;
         if (message.nextStateAt != null && message.hasOwnProperty("nextStateAt"))
             if (typeof message.nextStateAt === "number")
                 object.nextStateAt = options.longs === String ? String(message.nextStateAt) : message.nextStateAt;
@@ -8665,7 +9025,7 @@ $root.C2SUseCardRequest = (function() {
      * Properties of a C2SUseCardRequest.
      * @exports IC2SUseCardRequest
      * @interface IC2SUseCardRequest
-     * @property {number|null} [cardType] C2SUseCardRequest cardType
+     * @property {CardType|null} [cardType] C2SUseCardRequest cardType
      * @property {string|null} [targetUserId] C2SUseCardRequest targetUserId
      */
 
@@ -8686,7 +9046,7 @@ $root.C2SUseCardRequest = (function() {
 
     /**
      * C2SUseCardRequest cardType.
-     * @member {number} cardType
+     * @member {CardType} cardType
      * @memberof C2SUseCardRequest
      * @instance
      */
@@ -8806,8 +9166,35 @@ $root.C2SUseCardRequest = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            if (!$util.isInteger(message.cardType))
-                return "cardType: integer expected";
+            switch (message.cardType) {
+            default:
+                return "cardType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
             if (!$util.isString(message.targetUserId))
                 return "targetUserId: string expected";
@@ -8826,8 +9213,110 @@ $root.C2SUseCardRequest = (function() {
         if (object instanceof $root.C2SUseCardRequest)
             return object;
         var message = new $root.C2SUseCardRequest();
-        if (object.cardType != null)
-            message.cardType = object.cardType | 0;
+        switch (object.cardType) {
+        default:
+            if (typeof object.cardType === "number") {
+                message.cardType = object.cardType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.cardType = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.cardType = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.cardType = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.cardType = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.cardType = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.cardType = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.cardType = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.cardType = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.cardType = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.cardType = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.cardType = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.cardType = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.cardType = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.cardType = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.cardType = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.cardType = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.cardType = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.cardType = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.cardType = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.cardType = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.cardType = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.cardType = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.cardType = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.cardType = 23;
+            break;
+        }
         if (object.targetUserId != null)
             message.targetUserId = String(object.targetUserId);
         return message;
@@ -8847,11 +9336,11 @@ $root.C2SUseCardRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.cardType = 0;
+            object.cardType = options.enums === String ? "NONE" : 0;
             object.targetUserId = "";
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            object.cardType = message.cardType;
+            object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
             object.targetUserId = message.targetUserId;
         return object;
@@ -9213,7 +9702,7 @@ $root.S2CUseCardNotification = (function() {
      * Properties of a S2CUseCardNotification.
      * @exports IS2CUseCardNotification
      * @interface IS2CUseCardNotification
-     * @property {number|null} [cardType] S2CUseCardNotification cardType
+     * @property {CardType|null} [cardType] S2CUseCardNotification cardType
      * @property {string|null} [userId] S2CUseCardNotification userId
      * @property {string|null} [targetUserId] S2CUseCardNotification targetUserId
      */
@@ -9235,7 +9724,7 @@ $root.S2CUseCardNotification = (function() {
 
     /**
      * S2CUseCardNotification cardType.
-     * @member {number} cardType
+     * @member {CardType} cardType
      * @memberof S2CUseCardNotification
      * @instance
      */
@@ -9369,8 +9858,35 @@ $root.S2CUseCardNotification = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            if (!$util.isInteger(message.cardType))
-                return "cardType: integer expected";
+            switch (message.cardType) {
+            default:
+                return "cardType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         if (message.userId != null && message.hasOwnProperty("userId"))
             if (!$util.isString(message.userId))
                 return "userId: string expected";
@@ -9392,8 +9908,110 @@ $root.S2CUseCardNotification = (function() {
         if (object instanceof $root.S2CUseCardNotification)
             return object;
         var message = new $root.S2CUseCardNotification();
-        if (object.cardType != null)
-            message.cardType = object.cardType | 0;
+        switch (object.cardType) {
+        default:
+            if (typeof object.cardType === "number") {
+                message.cardType = object.cardType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.cardType = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.cardType = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.cardType = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.cardType = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.cardType = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.cardType = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.cardType = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.cardType = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.cardType = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.cardType = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.cardType = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.cardType = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.cardType = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.cardType = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.cardType = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.cardType = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.cardType = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.cardType = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.cardType = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.cardType = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.cardType = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.cardType = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.cardType = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.cardType = 23;
+            break;
+        }
         if (object.userId != null)
             message.userId = String(object.userId);
         if (object.targetUserId != null)
@@ -9415,12 +10033,12 @@ $root.S2CUseCardNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.cardType = 0;
+            object.cardType = options.enums === String ? "NONE" : 0;
             object.userId = "";
             object.targetUserId = "";
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            object.cardType = message.cardType;
+            object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.userId != null && message.hasOwnProperty("userId"))
             object.userId = message.userId;
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
@@ -9463,7 +10081,7 @@ $root.S2CEquipCardNotification = (function() {
      * Properties of a S2CEquipCardNotification.
      * @exports IS2CEquipCardNotification
      * @interface IS2CEquipCardNotification
-     * @property {number|null} [cardType] S2CEquipCardNotification cardType
+     * @property {CardType|null} [cardType] S2CEquipCardNotification cardType
      * @property {string|null} [userId] S2CEquipCardNotification userId
      */
 
@@ -9484,7 +10102,7 @@ $root.S2CEquipCardNotification = (function() {
 
     /**
      * S2CEquipCardNotification cardType.
-     * @member {number} cardType
+     * @member {CardType} cardType
      * @memberof S2CEquipCardNotification
      * @instance
      */
@@ -9604,8 +10222,35 @@ $root.S2CEquipCardNotification = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            if (!$util.isInteger(message.cardType))
-                return "cardType: integer expected";
+            switch (message.cardType) {
+            default:
+                return "cardType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         if (message.userId != null && message.hasOwnProperty("userId"))
             if (!$util.isString(message.userId))
                 return "userId: string expected";
@@ -9624,8 +10269,110 @@ $root.S2CEquipCardNotification = (function() {
         if (object instanceof $root.S2CEquipCardNotification)
             return object;
         var message = new $root.S2CEquipCardNotification();
-        if (object.cardType != null)
-            message.cardType = object.cardType | 0;
+        switch (object.cardType) {
+        default:
+            if (typeof object.cardType === "number") {
+                message.cardType = object.cardType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.cardType = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.cardType = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.cardType = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.cardType = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.cardType = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.cardType = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.cardType = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.cardType = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.cardType = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.cardType = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.cardType = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.cardType = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.cardType = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.cardType = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.cardType = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.cardType = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.cardType = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.cardType = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.cardType = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.cardType = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.cardType = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.cardType = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.cardType = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.cardType = 23;
+            break;
+        }
         if (object.userId != null)
             message.userId = String(object.userId);
         return message;
@@ -9645,11 +10392,11 @@ $root.S2CEquipCardNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.cardType = 0;
+            object.cardType = options.enums === String ? "NONE" : 0;
             object.userId = "";
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            object.cardType = message.cardType;
+            object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.userId != null && message.hasOwnProperty("userId"))
             object.userId = message.userId;
         return object;
@@ -9690,7 +10437,7 @@ $root.S2CCardEffectNotification = (function() {
      * Properties of a S2CCardEffectNotification.
      * @exports IS2CCardEffectNotification
      * @interface IS2CCardEffectNotification
-     * @property {number|null} [cardType] S2CCardEffectNotification cardType
+     * @property {CardType|null} [cardType] S2CCardEffectNotification cardType
      * @property {string|null} [userId] S2CCardEffectNotification userId
      * @property {boolean|null} [success] S2CCardEffectNotification success
      */
@@ -9712,7 +10459,7 @@ $root.S2CCardEffectNotification = (function() {
 
     /**
      * S2CCardEffectNotification cardType.
-     * @member {number} cardType
+     * @member {CardType} cardType
      * @memberof S2CCardEffectNotification
      * @instance
      */
@@ -9846,8 +10593,35 @@ $root.S2CCardEffectNotification = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            if (!$util.isInteger(message.cardType))
-                return "cardType: integer expected";
+            switch (message.cardType) {
+            default:
+                return "cardType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         if (message.userId != null && message.hasOwnProperty("userId"))
             if (!$util.isString(message.userId))
                 return "userId: string expected";
@@ -9869,8 +10643,110 @@ $root.S2CCardEffectNotification = (function() {
         if (object instanceof $root.S2CCardEffectNotification)
             return object;
         var message = new $root.S2CCardEffectNotification();
-        if (object.cardType != null)
-            message.cardType = object.cardType | 0;
+        switch (object.cardType) {
+        default:
+            if (typeof object.cardType === "number") {
+                message.cardType = object.cardType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.cardType = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.cardType = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.cardType = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.cardType = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.cardType = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.cardType = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.cardType = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.cardType = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.cardType = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.cardType = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.cardType = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.cardType = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.cardType = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.cardType = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.cardType = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.cardType = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.cardType = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.cardType = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.cardType = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.cardType = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.cardType = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.cardType = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.cardType = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.cardType = 23;
+            break;
+        }
         if (object.userId != null)
             message.userId = String(object.userId);
         if (object.success != null)
@@ -9892,12 +10768,12 @@ $root.S2CCardEffectNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.cardType = 0;
+            object.cardType = options.enums === String ? "NONE" : 0;
             object.userId = "";
             object.success = false;
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
-            object.cardType = message.cardType;
+            object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.userId != null && message.hasOwnProperty("userId"))
             object.userId = message.userId;
         if (message.success != null && message.hasOwnProperty("success"))
@@ -9940,7 +10816,7 @@ $root.S2CFleaMarketNotification = (function() {
      * Properties of a S2CFleaMarketNotification.
      * @exports IS2CFleaMarketNotification
      * @interface IS2CFleaMarketNotification
-     * @property {Array.<number>|null} [cardTypes] S2CFleaMarketNotification cardTypes
+     * @property {Array.<CardType>|null} [cardTypes] S2CFleaMarketNotification cardTypes
      * @property {Array.<number>|null} [pickIndex] S2CFleaMarketNotification pickIndex
      */
 
@@ -9963,7 +10839,7 @@ $root.S2CFleaMarketNotification = (function() {
 
     /**
      * S2CFleaMarketNotification cardTypes.
-     * @member {Array.<number>} cardTypes
+     * @member {Array.<CardType>} cardTypes
      * @memberof S2CFleaMarketNotification
      * @instance
      */
@@ -10108,8 +10984,35 @@ $root.S2CFleaMarketNotification = (function() {
             if (!Array.isArray(message.cardTypes))
                 return "cardTypes: array expected";
             for (var i = 0; i < message.cardTypes.length; ++i)
-                if (!$util.isInteger(message.cardTypes[i]))
-                    return "cardTypes: integer[] expected";
+                switch (message.cardTypes[i]) {
+                default:
+                    return "cardTypes: enum value[] expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                    break;
+                }
         }
         if (message.pickIndex != null && message.hasOwnProperty("pickIndex")) {
             if (!Array.isArray(message.pickIndex))
@@ -10138,7 +11041,109 @@ $root.S2CFleaMarketNotification = (function() {
                 throw TypeError(".S2CFleaMarketNotification.cardTypes: array expected");
             message.cardTypes = [];
             for (var i = 0; i < object.cardTypes.length; ++i)
-                message.cardTypes[i] = object.cardTypes[i] | 0;
+                switch (object.cardTypes[i]) {
+                default:
+                    if (typeof object.cardTypes[i] === "number") {
+                        message.cardTypes[i] = object.cardTypes[i];
+                        break;
+                    }
+                case "NONE":
+                case 0:
+                    message.cardTypes[i] = 0;
+                    break;
+                case "BBANG":
+                case 1:
+                    message.cardTypes[i] = 1;
+                    break;
+                case "BIG_BBANG":
+                case 2:
+                    message.cardTypes[i] = 2;
+                    break;
+                case "SHIELD":
+                case 3:
+                    message.cardTypes[i] = 3;
+                    break;
+                case "VACCINE":
+                case 4:
+                    message.cardTypes[i] = 4;
+                    break;
+                case "CALL_119":
+                case 5:
+                    message.cardTypes[i] = 5;
+                    break;
+                case "DEATH_MATCH":
+                case 6:
+                    message.cardTypes[i] = 6;
+                    break;
+                case "GUERRILLA":
+                case 7:
+                    message.cardTypes[i] = 7;
+                    break;
+                case "ABSORB":
+                case 8:
+                    message.cardTypes[i] = 8;
+                    break;
+                case "HALLUCINATION":
+                case 9:
+                    message.cardTypes[i] = 9;
+                    break;
+                case "FLEA_MARKET":
+                case 10:
+                    message.cardTypes[i] = 10;
+                    break;
+                case "MATURED_SAVINGS":
+                case 11:
+                    message.cardTypes[i] = 11;
+                    break;
+                case "WIN_LOTTERY":
+                case 12:
+                    message.cardTypes[i] = 12;
+                    break;
+                case "SNIPER_GUN":
+                case 13:
+                    message.cardTypes[i] = 13;
+                    break;
+                case "HAND_GUN":
+                case 14:
+                    message.cardTypes[i] = 14;
+                    break;
+                case "DESERT_EAGLE":
+                case 15:
+                    message.cardTypes[i] = 15;
+                    break;
+                case "AUTO_RIFLE":
+                case 16:
+                    message.cardTypes[i] = 16;
+                    break;
+                case "LASER_POINTER":
+                case 17:
+                    message.cardTypes[i] = 17;
+                    break;
+                case "RADAR":
+                case 18:
+                    message.cardTypes[i] = 18;
+                    break;
+                case "AUTO_SHIELD":
+                case 19:
+                    message.cardTypes[i] = 19;
+                    break;
+                case "STEALTH_SUIT":
+                case 20:
+                    message.cardTypes[i] = 20;
+                    break;
+                case "CONTAINMENT_UNIT":
+                case 21:
+                    message.cardTypes[i] = 21;
+                    break;
+                case "SATELLITE_TARGET":
+                case 22:
+                    message.cardTypes[i] = 22;
+                    break;
+                case "BOMB":
+                case 23:
+                    message.cardTypes[i] = 23;
+                    break;
+                }
         }
         if (object.pickIndex) {
             if (!Array.isArray(object.pickIndex))
@@ -10170,7 +11175,7 @@ $root.S2CFleaMarketNotification = (function() {
         if (message.cardTypes && message.cardTypes.length) {
             object.cardTypes = [];
             for (var j = 0; j < message.cardTypes.length; ++j)
-                object.cardTypes[j] = message.cardTypes[j];
+                object.cardTypes[j] = options.enums === String ? $root.CardType[message.cardTypes[j]] === undefined ? message.cardTypes[j] : $root.CardType[message.cardTypes[j]] : message.cardTypes[j];
         }
         if (message.pickIndex && message.pickIndex.length) {
             object.pickIndex = [];
@@ -10963,7 +11968,7 @@ $root.S2CPhaseUpdateNotification = (function() {
      * Properties of a S2CPhaseUpdateNotification.
      * @exports IS2CPhaseUpdateNotification
      * @interface IS2CPhaseUpdateNotification
-     * @property {number|null} [phaseType] S2CPhaseUpdateNotification phaseType
+     * @property {PhaseType|null} [phaseType] S2CPhaseUpdateNotification phaseType
      * @property {number|Long|null} [nextPhaseAt] S2CPhaseUpdateNotification nextPhaseAt
      */
 
@@ -10984,7 +11989,7 @@ $root.S2CPhaseUpdateNotification = (function() {
 
     /**
      * S2CPhaseUpdateNotification phaseType.
-     * @member {number} phaseType
+     * @member {PhaseType} phaseType
      * @memberof S2CPhaseUpdateNotification
      * @instance
      */
@@ -11104,8 +12109,15 @@ $root.S2CPhaseUpdateNotification = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.phaseType != null && message.hasOwnProperty("phaseType"))
-            if (!$util.isInteger(message.phaseType))
-                return "phaseType: integer expected";
+            switch (message.phaseType) {
+            default:
+                return "phaseType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+            }
         if (message.nextPhaseAt != null && message.hasOwnProperty("nextPhaseAt"))
             if (!$util.isInteger(message.nextPhaseAt) && !(message.nextPhaseAt && $util.isInteger(message.nextPhaseAt.low) && $util.isInteger(message.nextPhaseAt.high)))
                 return "nextPhaseAt: integer|Long expected";
@@ -11124,8 +12136,30 @@ $root.S2CPhaseUpdateNotification = (function() {
         if (object instanceof $root.S2CPhaseUpdateNotification)
             return object;
         var message = new $root.S2CPhaseUpdateNotification();
-        if (object.phaseType != null)
-            message.phaseType = object.phaseType | 0;
+        switch (object.phaseType) {
+        default:
+            if (typeof object.phaseType === "number") {
+                message.phaseType = object.phaseType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.phaseType = 0;
+            break;
+        case "DAY":
+        case 1:
+            message.phaseType = 1;
+            break;
+        case "EVENING":
+        case 2:
+            message.phaseType = 2;
+            break;
+        case "END":
+        case 3:
+            message.phaseType = 3;
+            break;
+        }
         if (object.nextPhaseAt != null)
             if ($util.Long)
                 (message.nextPhaseAt = $util.Long.fromValue(object.nextPhaseAt)).unsigned = false;
@@ -11152,7 +12186,7 @@ $root.S2CPhaseUpdateNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.phaseType = 0;
+            object.phaseType = options.enums === String ? "NONE" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.nextPhaseAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -11160,7 +12194,7 @@ $root.S2CPhaseUpdateNotification = (function() {
                 object.nextPhaseAt = options.longs === String ? "0" : 0;
         }
         if (message.phaseType != null && message.hasOwnProperty("phaseType"))
-            object.phaseType = message.phaseType;
+            object.phaseType = options.enums === String ? $root.PhaseType[message.phaseType] === undefined ? message.phaseType : $root.PhaseType[message.phaseType] : message.phaseType;
         if (message.nextPhaseAt != null && message.hasOwnProperty("nextPhaseAt"))
             if (typeof message.nextPhaseAt === "number")
                 object.nextPhaseAt = options.longs === String ? String(message.nextPhaseAt) : message.nextPhaseAt;
@@ -11204,7 +12238,7 @@ $root.C2SReactionRequest = (function() {
      * Properties of a C2SReactionRequest.
      * @exports IC2SReactionRequest
      * @interface IC2SReactionRequest
-     * @property {number|null} [reactionType] C2SReactionRequest reactionType
+     * @property {ReactionType|null} [reactionType] C2SReactionRequest reactionType
      */
 
     /**
@@ -11224,7 +12258,7 @@ $root.C2SReactionRequest = (function() {
 
     /**
      * C2SReactionRequest reactionType.
-     * @member {number} reactionType
+     * @member {ReactionType} reactionType
      * @memberof C2SReactionRequest
      * @instance
      */
@@ -11330,8 +12364,13 @@ $root.C2SReactionRequest = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.reactionType != null && message.hasOwnProperty("reactionType"))
-            if (!$util.isInteger(message.reactionType))
-                return "reactionType: integer expected";
+            switch (message.reactionType) {
+            default:
+                return "reactionType: enum value expected";
+            case 0:
+            case 1:
+                break;
+            }
         return null;
     };
 
@@ -11347,8 +12386,22 @@ $root.C2SReactionRequest = (function() {
         if (object instanceof $root.C2SReactionRequest)
             return object;
         var message = new $root.C2SReactionRequest();
-        if (object.reactionType != null)
-            message.reactionType = object.reactionType | 0;
+        switch (object.reactionType) {
+        default:
+            if (typeof object.reactionType === "number") {
+                message.reactionType = object.reactionType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.reactionType = 0;
+            break;
+        case "NOT_USE_CARD":
+        case 1:
+            message.reactionType = 1;
+            break;
+        }
         return message;
     };
 
@@ -11366,9 +12419,9 @@ $root.C2SReactionRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults)
-            object.reactionType = 0;
+            object.reactionType = options.enums === String ? "NONE" : 0;
         if (message.reactionType != null && message.hasOwnProperty("reactionType"))
-            object.reactionType = message.reactionType;
+            object.reactionType = options.enums === String ? $root.ReactionType[message.reactionType] === undefined ? message.reactionType : $root.ReactionType[message.reactionType] : message.reactionType;
         return object;
     };
 
@@ -12443,8 +13496,8 @@ $root.C2SCardSelectRequest = (function() {
      * Properties of a C2SCardSelectRequest.
      * @exports IC2SCardSelectRequest
      * @interface IC2SCardSelectRequest
-     * @property {number|null} [selectType] C2SCardSelectRequest selectType
-     * @property {number|null} [selectCardType] C2SCardSelectRequest selectCardType
+     * @property {SelectCardType|null} [selectType] C2SCardSelectRequest selectType
+     * @property {CardType|null} [selectCardType] C2SCardSelectRequest selectCardType
      */
 
     /**
@@ -12464,7 +13517,7 @@ $root.C2SCardSelectRequest = (function() {
 
     /**
      * C2SCardSelectRequest selectType.
-     * @member {number} selectType
+     * @member {SelectCardType} selectType
      * @memberof C2SCardSelectRequest
      * @instance
      */
@@ -12472,7 +13525,7 @@ $root.C2SCardSelectRequest = (function() {
 
     /**
      * C2SCardSelectRequest selectCardType.
-     * @member {number} selectCardType
+     * @member {CardType} selectCardType
      * @memberof C2SCardSelectRequest
      * @instance
      */
@@ -12584,11 +13637,45 @@ $root.C2SCardSelectRequest = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.selectType != null && message.hasOwnProperty("selectType"))
-            if (!$util.isInteger(message.selectType))
-                return "selectType: integer expected";
+            switch (message.selectType) {
+            default:
+                return "selectType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                break;
+            }
         if (message.selectCardType != null && message.hasOwnProperty("selectCardType"))
-            if (!$util.isInteger(message.selectCardType))
-                return "selectCardType: integer expected";
+            switch (message.selectCardType) {
+            default:
+                return "selectCardType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         return null;
     };
 
@@ -12604,10 +13691,134 @@ $root.C2SCardSelectRequest = (function() {
         if (object instanceof $root.C2SCardSelectRequest)
             return object;
         var message = new $root.C2SCardSelectRequest();
-        if (object.selectType != null)
-            message.selectType = object.selectType | 0;
-        if (object.selectCardType != null)
-            message.selectCardType = object.selectCardType | 0;
+        switch (object.selectType) {
+        default:
+            if (typeof object.selectType === "number") {
+                message.selectType = object.selectType;
+                break;
+            }
+            break;
+        case "HAND":
+        case 0:
+            message.selectType = 0;
+            break;
+        case "EQUIP":
+        case 1:
+            message.selectType = 1;
+            break;
+        case "WEAPON":
+        case 2:
+            message.selectType = 2;
+            break;
+        case "DEBUFF":
+        case 3:
+            message.selectType = 3;
+            break;
+        }
+        switch (object.selectCardType) {
+        default:
+            if (typeof object.selectCardType === "number") {
+                message.selectCardType = object.selectCardType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.selectCardType = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.selectCardType = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.selectCardType = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.selectCardType = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.selectCardType = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.selectCardType = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.selectCardType = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.selectCardType = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.selectCardType = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.selectCardType = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.selectCardType = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.selectCardType = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.selectCardType = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.selectCardType = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.selectCardType = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.selectCardType = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.selectCardType = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.selectCardType = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.selectCardType = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.selectCardType = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.selectCardType = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.selectCardType = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.selectCardType = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.selectCardType = 23;
+            break;
+        }
         return message;
     };
 
@@ -12625,13 +13836,13 @@ $root.C2SCardSelectRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.selectType = 0;
-            object.selectCardType = 0;
+            object.selectType = options.enums === String ? "HAND" : 0;
+            object.selectCardType = options.enums === String ? "NONE" : 0;
         }
         if (message.selectType != null && message.hasOwnProperty("selectType"))
-            object.selectType = message.selectType;
+            object.selectType = options.enums === String ? $root.SelectCardType[message.selectType] === undefined ? message.selectType : $root.SelectCardType[message.selectType] : message.selectType;
         if (message.selectCardType != null && message.hasOwnProperty("selectCardType"))
-            object.selectCardType = message.selectCardType;
+            object.selectCardType = options.enums === String ? $root.CardType[message.selectCardType] === undefined ? message.selectCardType : $root.CardType[message.selectCardType] : message.selectCardType;
         return object;
     };
 
@@ -12992,7 +14203,7 @@ $root.C2SPassDebuffRequest = (function() {
      * @exports IC2SPassDebuffRequest
      * @interface IC2SPassDebuffRequest
      * @property {string|null} [targetUserId] C2SPassDebuffRequest targetUserId
-     * @property {number|null} [debuffCardType] C2SPassDebuffRequest debuffCardType
+     * @property {CardType|null} [debuffCardType] C2SPassDebuffRequest debuffCardType
      */
 
     /**
@@ -13020,7 +14231,7 @@ $root.C2SPassDebuffRequest = (function() {
 
     /**
      * C2SPassDebuffRequest debuffCardType.
-     * @member {number} debuffCardType
+     * @member {CardType} debuffCardType
      * @memberof C2SPassDebuffRequest
      * @instance
      */
@@ -13135,8 +14346,35 @@ $root.C2SPassDebuffRequest = (function() {
             if (!$util.isString(message.targetUserId))
                 return "targetUserId: string expected";
         if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
-            if (!$util.isInteger(message.debuffCardType))
-                return "debuffCardType: integer expected";
+            switch (message.debuffCardType) {
+            default:
+                return "debuffCardType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+                break;
+            }
         return null;
     };
 
@@ -13154,8 +14392,110 @@ $root.C2SPassDebuffRequest = (function() {
         var message = new $root.C2SPassDebuffRequest();
         if (object.targetUserId != null)
             message.targetUserId = String(object.targetUserId);
-        if (object.debuffCardType != null)
-            message.debuffCardType = object.debuffCardType | 0;
+        switch (object.debuffCardType) {
+        default:
+            if (typeof object.debuffCardType === "number") {
+                message.debuffCardType = object.debuffCardType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.debuffCardType = 0;
+            break;
+        case "BBANG":
+        case 1:
+            message.debuffCardType = 1;
+            break;
+        case "BIG_BBANG":
+        case 2:
+            message.debuffCardType = 2;
+            break;
+        case "SHIELD":
+        case 3:
+            message.debuffCardType = 3;
+            break;
+        case "VACCINE":
+        case 4:
+            message.debuffCardType = 4;
+            break;
+        case "CALL_119":
+        case 5:
+            message.debuffCardType = 5;
+            break;
+        case "DEATH_MATCH":
+        case 6:
+            message.debuffCardType = 6;
+            break;
+        case "GUERRILLA":
+        case 7:
+            message.debuffCardType = 7;
+            break;
+        case "ABSORB":
+        case 8:
+            message.debuffCardType = 8;
+            break;
+        case "HALLUCINATION":
+        case 9:
+            message.debuffCardType = 9;
+            break;
+        case "FLEA_MARKET":
+        case 10:
+            message.debuffCardType = 10;
+            break;
+        case "MATURED_SAVINGS":
+        case 11:
+            message.debuffCardType = 11;
+            break;
+        case "WIN_LOTTERY":
+        case 12:
+            message.debuffCardType = 12;
+            break;
+        case "SNIPER_GUN":
+        case 13:
+            message.debuffCardType = 13;
+            break;
+        case "HAND_GUN":
+        case 14:
+            message.debuffCardType = 14;
+            break;
+        case "DESERT_EAGLE":
+        case 15:
+            message.debuffCardType = 15;
+            break;
+        case "AUTO_RIFLE":
+        case 16:
+            message.debuffCardType = 16;
+            break;
+        case "LASER_POINTER":
+        case 17:
+            message.debuffCardType = 17;
+            break;
+        case "RADAR":
+        case 18:
+            message.debuffCardType = 18;
+            break;
+        case "AUTO_SHIELD":
+        case 19:
+            message.debuffCardType = 19;
+            break;
+        case "STEALTH_SUIT":
+        case 20:
+            message.debuffCardType = 20;
+            break;
+        case "CONTAINMENT_UNIT":
+        case 21:
+            message.debuffCardType = 21;
+            break;
+        case "SATELLITE_TARGET":
+        case 22:
+            message.debuffCardType = 22;
+            break;
+        case "BOMB":
+        case 23:
+            message.debuffCardType = 23;
+            break;
+        }
         return message;
     };
 
@@ -13174,12 +14514,12 @@ $root.C2SPassDebuffRequest = (function() {
         var object = {};
         if (options.defaults) {
             object.targetUserId = "";
-            object.debuffCardType = 0;
+            object.debuffCardType = options.enums === String ? "NONE" : 0;
         }
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
             object.targetUserId = message.targetUserId;
         if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
-            object.debuffCardType = message.debuffCardType;
+            object.debuffCardType = options.enums === String ? $root.CardType[message.debuffCardType] === undefined ? message.debuffCardType : $root.CardType[message.debuffCardType] : message.debuffCardType;
         return object;
     };
 
@@ -13841,7 +15181,7 @@ $root.GamePacket = (function() {
      * @property {IS2CGameEndNotification|null} [gameEndNotification] GamePacket gameEndNotification
      * @property {IC2SCardSelectRequest|null} [cardSelectRequest] GamePacket cardSelectRequest
      * @property {IS2CCardSelectResponse|null} [cardSelectResponse] GamePacket cardSelectResponse
-     * @property {IC2SPassDebuffRequest|null} [passDebuffReuqest] GamePacket passDebuffReuqest
+     * @property {IC2SPassDebuffRequest|null} [passDebuffRequest] GamePacket passDebuffRequest
      * @property {IS2CPassDebuffResponse|null} [passDebuffResponse] GamePacket passDebuffResponse
      * @property {IS2CWarningNotification|null} [warningNotification] GamePacket warningNotification
      */
@@ -14198,12 +15538,12 @@ $root.GamePacket = (function() {
     GamePacket.prototype.cardSelectResponse = null;
 
     /**
-     * GamePacket passDebuffReuqest.
-     * @member {IC2SPassDebuffRequest|null|undefined} passDebuffReuqest
+     * GamePacket passDebuffRequest.
+     * @member {IC2SPassDebuffRequest|null|undefined} passDebuffRequest
      * @memberof GamePacket
      * @instance
      */
-    GamePacket.prototype.passDebuffReuqest = null;
+    GamePacket.prototype.passDebuffRequest = null;
 
     /**
      * GamePacket passDebuffResponse.
@@ -14226,12 +15566,12 @@ $root.GamePacket = (function() {
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffReuqest"|"passDebuffResponse"|"warningNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffReuqest", "passDebuffResponse", "warningNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffRequest", "passDebuffResponse", "warningNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -14343,8 +15683,8 @@ $root.GamePacket = (function() {
             $root.C2SCardSelectRequest.encode(message.cardSelectRequest, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
         if (message.cardSelectResponse != null && Object.hasOwnProperty.call(message, "cardSelectResponse"))
             $root.S2CCardSelectResponse.encode(message.cardSelectResponse, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
-        if (message.passDebuffReuqest != null && Object.hasOwnProperty.call(message, "passDebuffReuqest"))
-            $root.C2SPassDebuffRequest.encode(message.passDebuffReuqest, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
+        if (message.passDebuffRequest != null && Object.hasOwnProperty.call(message, "passDebuffRequest"))
+            $root.C2SPassDebuffRequest.encode(message.passDebuffRequest, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
         if (message.passDebuffResponse != null && Object.hasOwnProperty.call(message, "passDebuffResponse"))
             $root.S2CPassDebuffResponse.encode(message.passDebuffResponse, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
         if (message.warningNotification != null && Object.hasOwnProperty.call(message, "warningNotification"))
@@ -14552,7 +15892,7 @@ $root.GamePacket = (function() {
                     break;
                 }
             case 43: {
-                    message.passDebuffReuqest = $root.C2SPassDebuffRequest.decode(reader, reader.uint32());
+                    message.passDebuffRequest = $root.C2SPassDebuffRequest.decode(reader, reader.uint32());
                     break;
                 }
             case 44: {
@@ -15017,14 +16357,14 @@ $root.GamePacket = (function() {
                     return "cardSelectResponse." + error;
             }
         }
-        if (message.passDebuffReuqest != null && message.hasOwnProperty("passDebuffReuqest")) {
+        if (message.passDebuffRequest != null && message.hasOwnProperty("passDebuffRequest")) {
             if (properties.payload === 1)
                 return "payload: multiple values";
             properties.payload = 1;
             {
-                var error = $root.C2SPassDebuffRequest.verify(message.passDebuffReuqest);
+                var error = $root.C2SPassDebuffRequest.verify(message.passDebuffRequest);
                 if (error)
-                    return "passDebuffReuqest." + error;
+                    return "passDebuffRequest." + error;
             }
         }
         if (message.passDebuffResponse != null && message.hasOwnProperty("passDebuffResponse")) {
@@ -15272,10 +16612,10 @@ $root.GamePacket = (function() {
                 throw TypeError(".GamePacket.cardSelectResponse: object expected");
             message.cardSelectResponse = $root.S2CCardSelectResponse.fromObject(object.cardSelectResponse);
         }
-        if (object.passDebuffReuqest != null) {
-            if (typeof object.passDebuffReuqest !== "object")
-                throw TypeError(".GamePacket.passDebuffReuqest: object expected");
-            message.passDebuffReuqest = $root.C2SPassDebuffRequest.fromObject(object.passDebuffReuqest);
+        if (object.passDebuffRequest != null) {
+            if (typeof object.passDebuffRequest !== "object")
+                throw TypeError(".GamePacket.passDebuffRequest: object expected");
+            message.passDebuffRequest = $root.C2SPassDebuffRequest.fromObject(object.passDebuffRequest);
         }
         if (object.passDebuffResponse != null) {
             if (typeof object.passDebuffResponse !== "object")
@@ -15513,10 +16853,10 @@ $root.GamePacket = (function() {
             if (options.oneofs)
                 object.payload = "cardSelectResponse";
         }
-        if (message.passDebuffReuqest != null && message.hasOwnProperty("passDebuffReuqest")) {
-            object.passDebuffReuqest = $root.C2SPassDebuffRequest.toObject(message.passDebuffReuqest, options);
+        if (message.passDebuffRequest != null && message.hasOwnProperty("passDebuffRequest")) {
+            object.passDebuffRequest = $root.C2SPassDebuffRequest.toObject(message.passDebuffRequest, options);
             if (options.oneofs)
-                object.payload = "passDebuffReuqest";
+                object.payload = "passDebuffRequest";
         }
         if (message.passDebuffResponse != null && message.hasOwnProperty("passDebuffResponse")) {
             object.passDebuffResponse = $root.S2CPassDebuffResponse.toObject(message.passDebuffResponse, options);
@@ -15718,6 +17058,7 @@ $root.CharacterStateType = (function() {
  * CardType enum.
  * @exports CardType
  * @enum {number}
+ * @property {number} NONE=0 NONE value
  * @property {number} BBANG=1 BBANG value
  * @property {number} BIG_BBANG=2 BIG_BBANG value
  * @property {number} SHIELD=3 SHIELD value
@@ -15744,6 +17085,7 @@ $root.CharacterStateType = (function() {
  */
 $root.CardType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NONE"] = 0;
     values[valuesById[1] = "BBANG"] = 1;
     values[valuesById[2] = "BIG_BBANG"] = 2;
     values[valuesById[3] = "SHIELD"] = 3;
@@ -15821,6 +17163,38 @@ $root.PhaseType = (function() {
     values[valuesById[1] = "DAY"] = 1;
     values[valuesById[2] = "EVENING"] = 2;
     values[valuesById[3] = "END"] = 3;
+    return values;
+})();
+
+/**
+ * ReactionType enum.
+ * @exports ReactionType
+ * @enum {number}
+ * @property {number} NONE=0 NONE value
+ * @property {number} NOT_USE_CARD=1 NOT_USE_CARD value
+ */
+$root.ReactionType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[1] = "NOT_USE_CARD"] = 1;
+    return values;
+})();
+
+/**
+ * SelectCardType enum.
+ * @exports SelectCardType
+ * @enum {number}
+ * @property {number} HAND=0 HAND value
+ * @property {number} EQUIP=1 EQUIP value
+ * @property {number} WEAPON=2 WEAPON value
+ * @property {number} DEBUFF=3 DEBUFF value
+ */
+$root.SelectCardType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "HAND"] = 0;
+    values[valuesById[1] = "EQUIP"] = 1;
+    values[valuesById[2] = "WEAPON"] = 2;
+    values[valuesById[3] = "DEBUFF"] = 3;
     return values;
 })();
 

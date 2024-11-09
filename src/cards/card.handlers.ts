@@ -68,7 +68,7 @@ import {
 
 export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
   cardSelectRequest.selectType ||= 0;
-  cardSelectRequest.selectCardType ||= 0;
+  cardSelectRequest.selectCardType ||= CardType.NONE;
   log(`handleCardSelect: cardSelectRequest: ${JSON.stringify(cardSelectRequest, null, 2)}`);
 
   const room = rooms.getRoom(ctx.roomId);

@@ -7,6 +7,7 @@ import {
   CharacterType,
   GlobalFailCode,
   RoleType,
+  RoomStateType,
   S2CFleaMarketNotification,
   S2CFleaMarketPickResponse,
   S2CGamePrepareNotification,
@@ -48,7 +49,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   }
 
   // TODO || room.users.length < 4
-  if (room.state !== RoomState.WAIT) {
+  if (room.state !== RoomStateType.WAIT) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -104,7 +105,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   }
 
   // 상태 변경
-  room.state = RoomState.PREPARE;
+  room.state = RoomStateType.PREPARE;
 
   // 게임 준비 응답
   const responsePayload: MessageProps<S2CGamePrepareResponse> = {
@@ -147,7 +148,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
-  if (room.state !== RoomState.PREPARE) {
+  if (room.state !== RoomStateType.PREPARE) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_ROOM_STATE,
@@ -209,7 +210,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   });
   // TODO 테스트용. 여기까지 지워야함!!!!!!!!!!!
 
-  room.state = RoomState.IN_GAME;
+  room.state = RoomStateType.INGAME;
   room.setTimer();
 
   // 게임 시작 응답
@@ -248,7 +249,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
     } satisfies MessageProps<S2CPositionUpdateResponse>);
   }
 
-  if (room.state !== RoomState.IN_GAME) {
+  if (room.state !== RoomStateType.INGAME) {
     return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,

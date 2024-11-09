@@ -171,7 +171,7 @@ export const protoRoutes = {
   },
   [PACKET_TYPE.PASS_DEBUFF_REQUEST]: {
     requestType: 'C2SPassDebuffRequest',
-    payloadKey: 'passDebuffReuqest',
+    payloadKey: 'passDebuffRequest',
   },
   [PACKET_TYPE.PASS_DEBUFF_RESPONSE]: {
     requestType: 'S2CPassDebuffResponse',

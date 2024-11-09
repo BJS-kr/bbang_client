@@ -8,7 +8,7 @@ message RoomData {
     string ownerId = 2;
     string name = 3;
     int32 maxUserNum = 4;
-    int32 state = 5; // WAIT 0, PREPARE 1, INAGAME 2
+    RoomStateType state = 5; // WAIT 0, PREPARE 1, INAGAME 2
     repeated UserData users = 6; // 인덱스 기반으로 턴 진행
 }
 
@@ -40,18 +40,18 @@ message CharacterPositionData {
 }
 
 message CardData {
-    int32 type = 1;
+    CardType type = 1;
     int32 count = 2;
 }
 
 message GameStateData {
-    int32 phaseType = 1; // DAY 1, EVENING 2, END 3 (하루 종료시 카드 버리는 턴)
+    PhaseType phaseType = 1; // DAY 1, EVENING 2, END 3 (하루 종료시 카드 버리는 턴)
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
 }
 
 message CharacterStateInfoData {
-    int32 state = 1;
-    int32 nextState = 2;
+    CharacterStateType state = 1;
+    CharacterStateType nextState = 2;
     int64 nextStateAt = 3; // state가 nextState로 풀리는 밀리초 타임스탬프. state가 NONE이면 0
     string stateTargetUserId = 4; // state에 target이 있을 경우
 }
@@ -184,7 +184,7 @@ message S2CPositionUpdateNotification {
 }
 
 message C2SUseCardRequest {
-    int32 cardType = 1;
+    CardType cardType = 1;
     string targetUserId = 2; // 타겟 없으면 빈 값
 }
 
@@ -194,24 +194,24 @@ message S2CUseCardResponse { // 성공 여부만 반환하고 대상 유저 효�
 }
 
 message S2CUseCardNotification {
-    int32 cardType = 1;
+    CardType cardType = 1;
     string userId = 2;
     string targetUserId = 3; // 타겟 없으면 빈 값
 }
 
 message S2CEquipCardNotification {
-    int32 cardType = 1;
+    CardType cardType = 1;
     string userId = 2;
 }
 
 message S2CCardEffectNotification {
-    int32 cardType = 1;
+    CardType cardType = 1;
     string userId = 2;
     bool success = 3;
 }
 
 message S2CFleaMarketNotification {
-    repeated int32 cardTypes = 1;
+    repeated CardType cardTypes = 1;
     repeated int32 pickIndex = 2;
 }
 
@@ -229,12 +229,12 @@ message S2CUserUpdateNotification {
 }
 
 message S2CPhaseUpdateNotification {
-    int32 phaseType = 1; // DAY 1, EVENING 2, END 3
+    PhaseType phaseType = 1; // DAY 1, EVENING 2, END 3
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
 }
 
 message C2SReactionRequest {
-    int32 reactionType = 1; // NOT_USE_CARD = 1
+    ReactionType reactionType = 1; // NOT_USE_CARD = 1
 }
 
 message S2CReactionResponse {
@@ -252,12 +252,12 @@ message S2CDestroyCardResponse {
 
 message S2CGameEndNotification {
     repeated string winners = 1;
-    WinType winType=2;
+    WinType winType = 2;
 }
 
 message C2SCardSelectRequest {
-    int32 selectType = 1; // 0: 핸드, 1: 장비, 2: 무기, 3: 디버프
-    int32 selectCardType = 2; // selectType이  0일 경우 0, / 1, 2, 3일 경우 원하는 장비의 cardType
+    SelectCardType selectType = 1; // 0: 핸드, 1: 장비, 2: 무기, 3: 디버프
+    CardType selectCardType = 2; // selectType이  0일 경우 0, / 1, 2, 3일 경우 원하는 장비의 cardType
 }
 
 message S2CCardSelectResponse {
@@ -267,7 +267,7 @@ message S2CCardSelectResponse {
 
 message C2SPassDebuffRequest {
     string targetUserId = 1;
-    int32 debuffCardType = 2;
+    CardType debuffCardType = 2;
 }
 
 message S2CPassDebuffResponse {
@@ -366,7 +366,7 @@ message GamePacket {
         S2CCardSelectResponse cardSelectResponse = 42;
 
         // 디버프 넘기기
-        C2SPassDebuffRequest passDebuffReuqest = 43;
+        C2SPassDebuffRequest passDebuffRequest = 43;
         S2CPassDebuffResponse passDebuffResponse = 44;
         S2CWarningNotification warningNotification = 45;
     }
@@ -443,6 +443,7 @@ enum CharacterStateType {
 }
 
 enum CardType {
+    NONE = 0;
     BBANG = 1;
     BIG_BBANG = 2;
     SHIELD = 3;
@@ -487,4 +488,16 @@ enum PhaseType {
     DAY = 1;
     EVENING = 2;
     END = 3;
+}
+
+enum ReactionType {
+    NONE = 0;
+    NOT_USE_CARD = 1;
+}
+
+enum SelectCardType {
+    HAND = 0;
+    EQUIP = 1;
+    WEAPON = 2;
+    DEBUFF = 3;
 }

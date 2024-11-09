@@ -55,7 +55,7 @@ export function responseSuccess(
   socket: Socket,
   version: string,
   sequence: number,
-  cardType: CardType | (typeof PACKET_TYPE)[keyof typeof PACKET_TYPE],
+  cardType: CardType,
   targetUsers: User[],
   room: Room,
   user: User,
@@ -70,7 +70,7 @@ export function responseSuccess(
     cardType,
     userId: user.id,
     targetUserId: targetUserId,
-  } satisfies UseCardNotification);
+  } satisfies MessageProps<UseCardNotification>);
 
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
     user: targetUsers.map((user) => user.toUserData(user.id)),

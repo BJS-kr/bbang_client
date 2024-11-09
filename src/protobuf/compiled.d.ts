@@ -16,7 +16,7 @@ export interface IRoomData {
     maxUserNum?: (number|null);
 
     /** RoomData state */
-    state?: (number|null);
+    state?: (RoomStateType|null);
 
     /** RoomData users */
     users?: (IUserData[]|null);
@@ -44,7 +44,7 @@ export class RoomData implements IRoomData {
     public maxUserNum: number;
 
     /** RoomData state. */
-    public state: number;
+    public state: RoomStateType;
 
     /** RoomData users. */
     public users: IUserData[];
@@ -494,7 +494,7 @@ export class CharacterPositionData implements ICharacterPositionData {
 export interface ICardData {
 
     /** CardData type */
-    type?: (number|null);
+    type?: (CardType|null);
 
     /** CardData count */
     count?: (number|null);
@@ -510,7 +510,7 @@ export class CardData implements ICardData {
     constructor(properties?: ICardData);
 
     /** CardData type. */
-    public type: number;
+    public type: CardType;
 
     /** CardData count. */
     public count: number;
@@ -597,7 +597,7 @@ export class CardData implements ICardData {
 export interface IGameStateData {
 
     /** GameStateData phaseType */
-    phaseType?: (number|null);
+    phaseType?: (PhaseType|null);
 
     /** GameStateData nextPhaseAt */
     nextPhaseAt?: (number|Long|null);
@@ -613,7 +613,7 @@ export class GameStateData implements IGameStateData {
     constructor(properties?: IGameStateData);
 
     /** GameStateData phaseType. */
-    public phaseType: number;
+    public phaseType: PhaseType;
 
     /** GameStateData nextPhaseAt. */
     public nextPhaseAt: (number|Long);
@@ -700,10 +700,10 @@ export class GameStateData implements IGameStateData {
 export interface ICharacterStateInfoData {
 
     /** CharacterStateInfoData state */
-    state?: (number|null);
+    state?: (CharacterStateType|null);
 
     /** CharacterStateInfoData nextState */
-    nextState?: (number|null);
+    nextState?: (CharacterStateType|null);
 
     /** CharacterStateInfoData nextStateAt */
     nextStateAt?: (number|Long|null);
@@ -722,10 +722,10 @@ export class CharacterStateInfoData implements ICharacterStateInfoData {
     constructor(properties?: ICharacterStateInfoData);
 
     /** CharacterStateInfoData state. */
-    public state: number;
+    public state: CharacterStateType;
 
     /** CharacterStateInfoData nextState. */
-    public nextState: number;
+    public nextState: CharacterStateType;
 
     /** CharacterStateInfoData nextStateAt. */
     public nextStateAt: (number|Long);
@@ -3354,7 +3354,7 @@ export class S2CPositionUpdateNotification implements IS2CPositionUpdateNotifica
 export interface IC2SUseCardRequest {
 
     /** C2SUseCardRequest cardType */
-    cardType?: (number|null);
+    cardType?: (CardType|null);
 
     /** C2SUseCardRequest targetUserId */
     targetUserId?: (string|null);
@@ -3370,7 +3370,7 @@ export class C2SUseCardRequest implements IC2SUseCardRequest {
     constructor(properties?: IC2SUseCardRequest);
 
     /** C2SUseCardRequest cardType. */
-    public cardType: number;
+    public cardType: CardType;
 
     /** C2SUseCardRequest targetUserId. */
     public targetUserId: string;
@@ -3560,7 +3560,7 @@ export class S2CUseCardResponse implements IS2CUseCardResponse {
 export interface IS2CUseCardNotification {
 
     /** S2CUseCardNotification cardType */
-    cardType?: (number|null);
+    cardType?: (CardType|null);
 
     /** S2CUseCardNotification userId */
     userId?: (string|null);
@@ -3579,7 +3579,7 @@ export class S2CUseCardNotification implements IS2CUseCardNotification {
     constructor(properties?: IS2CUseCardNotification);
 
     /** S2CUseCardNotification cardType. */
-    public cardType: number;
+    public cardType: CardType;
 
     /** S2CUseCardNotification userId. */
     public userId: string;
@@ -3669,7 +3669,7 @@ export class S2CUseCardNotification implements IS2CUseCardNotification {
 export interface IS2CEquipCardNotification {
 
     /** S2CEquipCardNotification cardType */
-    cardType?: (number|null);
+    cardType?: (CardType|null);
 
     /** S2CEquipCardNotification userId */
     userId?: (string|null);
@@ -3685,7 +3685,7 @@ export class S2CEquipCardNotification implements IS2CEquipCardNotification {
     constructor(properties?: IS2CEquipCardNotification);
 
     /** S2CEquipCardNotification cardType. */
-    public cardType: number;
+    public cardType: CardType;
 
     /** S2CEquipCardNotification userId. */
     public userId: string;
@@ -3772,7 +3772,7 @@ export class S2CEquipCardNotification implements IS2CEquipCardNotification {
 export interface IS2CCardEffectNotification {
 
     /** S2CCardEffectNotification cardType */
-    cardType?: (number|null);
+    cardType?: (CardType|null);
 
     /** S2CCardEffectNotification userId */
     userId?: (string|null);
@@ -3791,7 +3791,7 @@ export class S2CCardEffectNotification implements IS2CCardEffectNotification {
     constructor(properties?: IS2CCardEffectNotification);
 
     /** S2CCardEffectNotification cardType. */
-    public cardType: number;
+    public cardType: CardType;
 
     /** S2CCardEffectNotification userId. */
     public userId: string;
@@ -3881,7 +3881,7 @@ export class S2CCardEffectNotification implements IS2CCardEffectNotification {
 export interface IS2CFleaMarketNotification {
 
     /** S2CFleaMarketNotification cardTypes */
-    cardTypes?: (number[]|null);
+    cardTypes?: (CardType[]|null);
 
     /** S2CFleaMarketNotification pickIndex */
     pickIndex?: (number[]|null);
@@ -3897,7 +3897,7 @@ export class S2CFleaMarketNotification implements IS2CFleaMarketNotification {
     constructor(properties?: IS2CFleaMarketNotification);
 
     /** S2CFleaMarketNotification cardTypes. */
-    public cardTypes: number[];
+    public cardTypes: CardType[];
 
     /** S2CFleaMarketNotification pickIndex. */
     public pickIndex: number[];
@@ -4281,7 +4281,7 @@ export class S2CUserUpdateNotification implements IS2CUserUpdateNotification {
 export interface IS2CPhaseUpdateNotification {
 
     /** S2CPhaseUpdateNotification phaseType */
-    phaseType?: (number|null);
+    phaseType?: (PhaseType|null);
 
     /** S2CPhaseUpdateNotification nextPhaseAt */
     nextPhaseAt?: (number|Long|null);
@@ -4297,7 +4297,7 @@ export class S2CPhaseUpdateNotification implements IS2CPhaseUpdateNotification {
     constructor(properties?: IS2CPhaseUpdateNotification);
 
     /** S2CPhaseUpdateNotification phaseType. */
-    public phaseType: number;
+    public phaseType: PhaseType;
 
     /** S2CPhaseUpdateNotification nextPhaseAt. */
     public nextPhaseAt: (number|Long);
@@ -4384,7 +4384,7 @@ export class S2CPhaseUpdateNotification implements IS2CPhaseUpdateNotification {
 export interface IC2SReactionRequest {
 
     /** C2SReactionRequest reactionType */
-    reactionType?: (number|null);
+    reactionType?: (ReactionType|null);
 }
 
 /** Represents a C2SReactionRequest. */
@@ -4397,7 +4397,7 @@ export class C2SReactionRequest implements IC2SReactionRequest {
     constructor(properties?: IC2SReactionRequest);
 
     /** C2SReactionRequest reactionType. */
-    public reactionType: number;
+    public reactionType: ReactionType;
 
     /**
      * Creates a new C2SReactionRequest instance using the specified properties.
@@ -4881,10 +4881,10 @@ export class S2CGameEndNotification implements IS2CGameEndNotification {
 export interface IC2SCardSelectRequest {
 
     /** C2SCardSelectRequest selectType */
-    selectType?: (number|null);
+    selectType?: (SelectCardType|null);
 
     /** C2SCardSelectRequest selectCardType */
-    selectCardType?: (number|null);
+    selectCardType?: (CardType|null);
 }
 
 /** Represents a C2SCardSelectRequest. */
@@ -4897,10 +4897,10 @@ export class C2SCardSelectRequest implements IC2SCardSelectRequest {
     constructor(properties?: IC2SCardSelectRequest);
 
     /** C2SCardSelectRequest selectType. */
-    public selectType: number;
+    public selectType: SelectCardType;
 
     /** C2SCardSelectRequest selectCardType. */
-    public selectCardType: number;
+    public selectCardType: CardType;
 
     /**
      * Creates a new C2SCardSelectRequest instance using the specified properties.
@@ -5090,7 +5090,7 @@ export interface IC2SPassDebuffRequest {
     targetUserId?: (string|null);
 
     /** C2SPassDebuffRequest debuffCardType */
-    debuffCardType?: (number|null);
+    debuffCardType?: (CardType|null);
 }
 
 /** Represents a C2SPassDebuffRequest. */
@@ -5106,7 +5106,7 @@ export class C2SPassDebuffRequest implements IC2SPassDebuffRequest {
     public targetUserId: string;
 
     /** C2SPassDebuffRequest debuffCardType. */
-    public debuffCardType: number;
+    public debuffCardType: CardType;
 
     /**
      * Creates a new C2SPassDebuffRequest instance using the specified properties.
@@ -5521,8 +5521,8 @@ export interface IGamePacket {
     /** GamePacket cardSelectResponse */
     cardSelectResponse?: (IS2CCardSelectResponse|null);
 
-    /** GamePacket passDebuffReuqest */
-    passDebuffReuqest?: (IC2SPassDebuffRequest|null);
+    /** GamePacket passDebuffRequest */
+    passDebuffRequest?: (IC2SPassDebuffRequest|null);
 
     /** GamePacket passDebuffResponse */
     passDebuffResponse?: (IS2CPassDebuffResponse|null);
@@ -5666,8 +5666,8 @@ export class GamePacket implements IGamePacket {
     /** GamePacket cardSelectResponse. */
     public cardSelectResponse?: (IS2CCardSelectResponse|null);
 
-    /** GamePacket passDebuffReuqest. */
-    public passDebuffReuqest?: (IC2SPassDebuffRequest|null);
+    /** GamePacket passDebuffRequest. */
+    public passDebuffRequest?: (IC2SPassDebuffRequest|null);
 
     /** GamePacket passDebuffResponse. */
     public passDebuffResponse?: (IS2CPassDebuffResponse|null);
@@ -5676,7 +5676,7 @@ export class GamePacket implements IGamePacket {
     public warningNotification?: (IS2CWarningNotification|null);
 
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffReuqest"|"passDebuffResponse"|"warningNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.
@@ -5830,6 +5830,7 @@ export enum CharacterStateType {
 
 /** CardType enum. */
 export enum CardType {
+    NONE = 0,
     BBANG = 1,
     BIG_BBANG = 2,
     SHIELD = 3,
@@ -5877,4 +5878,18 @@ export enum PhaseType {
     DAY = 1,
     EVENING = 2,
     END = 3
+}
+
+/** ReactionType enum. */
+export enum ReactionType {
+    NONE = 0,
+    NOT_USE_CARD = 1
+}
+
+/** SelectCardType enum. */
+export enum SelectCardType {
+    HAND = 0,
+    EQUIP = 1,
+    WEAPON = 2,
+    DEBUFF = 3
 }
