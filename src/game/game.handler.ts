@@ -1,5 +1,5 @@
 import { Room, RoomState } from '../rooms/types';
-import { CARD_TYPE, CHARACTER_TYPE, CharacterState, GAME_INIT_POSITION, PHASE_TYPE, ROLE_TYPE } from '../constants/game';
+import { CARD_TYPE, CHARACTER_TYPE, CharacterState, GAME_INIT_POSITION, PHASE_TYPE, ROLE_MEMBERS, ROLE_TYPE } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
@@ -61,20 +61,23 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
-  const roles = [ROLE_TYPE.TARGET, ROLE_TYPE.BODYGUARD, ROLE_TYPE.HITMAN, ROLE_TYPE.PSYCHOPATH];
-  const additionalRoles = [ROLE_TYPE.BODYGUARD, ROLE_TYPE.HITMAN, ROLE_TYPE.PSYCHOPATH];
-  const addRoleCount = room.users.length - roles.length;
-
-  // 인원이 4명 이상일 경우 역할 추가
-  for (let i = 0; i < addRoleCount; i++) {
-    const randNum = Math.floor(Math.random() * additionalRoles.length);
-    roles.push(additionalRoles[randNum]);
+  if (!(room.users.length in ROLE_MEMBERS)) {
+    return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.INVALID_ROOM_STATE,
+    } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
+  const roles: number[] = [];
+  const roleMembers = ROLE_MEMBERS[room.users.length];
+  Object.entries(roleMembers).forEach(([role, count]: [string, number]) => {
+    for (let i = 0; i < count; i++) {
+      roles.push(Number(role));
+    }
+  });
+
   // 역할, 초기 위치, 캐릭터 셔플
-  const shuffleRoles = Object.values(ROLE_TYPE)
-    .filter((type) => typeof type === 'number' && type !== ROLE_TYPE.NONE)
-    .sort(() => Math.random() - 0.5);
+  const shuffleRoles = roles.sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
   const shuffleCharacters = Object.values(CHARACTER_TYPE)
     .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE)

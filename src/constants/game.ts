@@ -137,3 +137,38 @@ export enum CharacterState {
 }
 
 export const DAILY_CARD_COUNT = 2;
+
+export const ROLE_MEMBERS = {
+  2: {
+    [ROLE_TYPE.TARGET]: 1,
+    [ROLE_TYPE.HITMAN]: 1,
+  },
+  3: {
+    [ROLE_TYPE.TARGET]: 1,
+    [ROLE_TYPE.HITMAN]: 1,
+    [ROLE_TYPE.PSYCHOPATH]: 1,
+  },
+  4: {
+    [ROLE_TYPE.TARGET]: 1,
+    [ROLE_TYPE.HITMAN]: 2,
+    [ROLE_TYPE.PSYCHOPATH]: 1,
+  },
+  5: {
+    [ROLE_TYPE.TARGET]: 1,
+    [ROLE_TYPE.HITMAN]: 2,
+    [ROLE_TYPE.BODYGUARD]: 1,
+    [ROLE_TYPE.PSYCHOPATH]: 1,
+  },
+  6: {
+    [ROLE_TYPE.TARGET]: 1,
+    [ROLE_TYPE.HITMAN]: 2,
+    [ROLE_TYPE.BODYGUARD]: 2,
+    [ROLE_TYPE.PSYCHOPATH]: 1,
+  },
+  7: {
+    [ROLE_TYPE.TARGET]: 1,
+    [ROLE_TYPE.HITMAN]: 3,
+    [ROLE_TYPE.BODYGUARD]: 2,
+    [ROLE_TYPE.PSYCHOPATH]: 1,
+  },
+} as const;
