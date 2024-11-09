@@ -111,16 +111,18 @@ export class Character extends EventEmitter {
     return 1;
   }
 
-  getShieldAmount(shooter: Character) {
+  getAdditionalShieldAmount(shooter: Character) {
+    let amount = 0;
+
     if (shooter.equips.has(CardType.LASER_POINTER)) {
-      return 2;
+      amount += 1;
     }
 
     if (this.characterType === CharacterType.SHARK) {
-      return 2;
+      return 1;
     }
 
-    return 1;
+    return amount;
   }
 
   increaseBBangCount() {

@@ -441,10 +441,11 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
       failCode: GlobalFailCode.CHARACTER_NOT_FOUND,
     } satisfies UseCardResponse);
   }
+  const additionalShieldAmount = user.character.getAdditionalShieldAmount(targetUser.character);
 
-  if (user.character.getShieldAmount(targetUser.character) > 1) {
+  if (additionalShieldAmount > 0) {
     // 두번 째 쉴드 draw. 첫 번째 쉴드는 카드 타입으로 인해 handleUseCard에서 이미 뽑았음
-    const shield = user.character.drawCard({ type: CardType.SHIELD, count: 1 });
+    const shield = user.character.drawCard({ type: CardType.SHIELD, count: additionalShieldAmount });
 
     if (shield instanceof Error) {
       error('handleShield: character have no sufficient amount of shield card');
