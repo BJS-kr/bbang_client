@@ -50,7 +50,7 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
   const payload: MessageProps<S2CCreateRoomResponse> = {
     success: true,
     room: room?.toRoomData(roomId),
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   };
 
   return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, payload);
@@ -79,7 +79,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   const payload: MessageProps<S2CJoinRoomResponse> = {
     success: true,
     room: room?.toRoomData(roomId),
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   };
 
   writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, payload);
@@ -115,7 +115,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
   const payload: MessageProps<S2CJoinRandomRoomResponse> = {
     success: true,
     room: room?.toRoomData(roomId),
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   };
 
   writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, payload);
@@ -158,7 +158,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
 
   writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies MessageProps<S2CLeaveRoomResponse>);
 
   const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
