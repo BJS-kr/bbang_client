@@ -240,10 +240,10 @@ export class UserData implements IUserData {
 export interface ICharacterData {
 
     /** CharacterData characterType */
-    characterType?: (number|null);
+    characterType?: (CharacterType|null);
 
     /** CharacterData roleType */
-    roleType?: (number|null);
+    roleType?: (RoleType|null);
 
     /** CharacterData hp */
     hp?: (number|null);
@@ -277,10 +277,10 @@ export class CharacterData implements ICharacterData {
     constructor(properties?: ICharacterData);
 
     /** CharacterData characterType. */
-    public characterType: number;
+    public characterType: CharacterType;
 
     /** CharacterData roleType. */
-    public roleType: number;
+    public roleType: RoleType;
 
     /** CharacterData hp. */
     public hp: number;
@@ -5788,4 +5788,93 @@ export enum WinType {
     TARGET_AND_BODYGUARD = 0,
     HITMAN = 1,
     PSYCHOPATH = 2
+}
+
+/** CharacterType enum. */
+export enum CharacterType {
+    NONE = 0,
+    RED = 1,
+    BLUE = 2,
+    SHARK = 3,
+    KNIGHT = 4,
+    MALANG = 5,
+    DINO = 6,
+    FROGGY = 7,
+    PINK = 8,
+    SWIM_GLASSES = 9,
+    MASK = 10,
+    SLIME = 11,
+    DINOSAUR = 12,
+    PINK_SLIME = 13
+}
+
+/** CharacterStateType enum. */
+export enum CharacterStateType {
+    NONE = 0,
+    BBANG_SHOOTER = 1,
+    BBANG_TARGET = 2,
+    DEATH_MATCH = 3,
+    DEATH_MATCH_TURN = 4,
+    FLEA_MARKET_TURN = 5,
+    FLEA_MARKET_WAIT = 6,
+    GUERRILLA_SHOOTER = 7,
+    GUERRILLA_TARGET = 8,
+    BIG_BBANG_SHOOTER = 9,
+    BIG_BBANG_TARGET = 10,
+    ABSORBING = 11,
+    ABSORB_TARGET = 12,
+    HALLUCINATING = 13,
+    HALLUCINATION_TARGET = 14,
+    CONTAINED = 15
+}
+
+/** CardType enum. */
+export enum CardType {
+    BBANG = 1,
+    BIG_BBANG = 2,
+    SHIELD = 3,
+    VACCINE = 4,
+    CALL_119 = 5,
+    DEATH_MATCH = 6,
+    GUERRILLA = 7,
+    ABSORB = 8,
+    HALLUCINATION = 9,
+    FLEA_MARKET = 10,
+    MATURED_SAVINGS = 11,
+    WIN_LOTTERY = 12,
+    SNIPER_GUN = 13,
+    HAND_GUN = 14,
+    DESERT_EAGLE = 15,
+    AUTO_RIFLE = 16,
+    LASER_POINTER = 17,
+    RADAR = 18,
+    AUTO_SHIELD = 19,
+    STEALTH_SUIT = 20,
+    CONTAINMENT_UNIT = 21,
+    SATELLITE_TARGET = 22,
+    BOMB = 23
+}
+
+/** RoleType enum. */
+export enum RoleType {
+    NONE = 0,
+    TARGET = 1,
+    BODYGUARD = 2,
+    HITMAN = 3,
+    PSYCHOPATH = 4
+}
+
+/** RoomStateType enum. */
+export enum RoomStateType {
+    WAIT = 0,
+    PREPARE = 1,
+    INGAME = 2
+}
+
+/** PhaseType enum. */
+export enum PhaseType {
+    NONE = 0,
+    DAY = 1,
+    EVENING = 2,
+    END = 3
 }

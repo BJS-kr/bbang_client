@@ -1,9 +1,9 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class ContainmentUnit extends Card {
   constructor() {
-    super({ type: CARD_TYPE.CONTAINMENT_UNIT, isDirectUse: false, isTargetSelect: true });
+    super({ type: CardType.CONTAINMENT_UNIT, isDirectUse: false, isTargetSelect: true });
   }
 
   static canEscape(): boolean {

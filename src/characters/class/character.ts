@@ -1,6 +1,5 @@
 import { Card } from '../../cards/class/card';
-import { CARD_TYPE, CHARACTER_TYPE, ROLE_TYPE } from '../../constants/game';
-import { CardData, CharacterData, CharacterPositionData } from '../../protobuf/compiled';
+import { CardData, CardType, CharacterData, CharacterPositionData, CharacterType, RoleType } from '../../protobuf/compiled';
 import { MessageProps } from '../../protobuf/props';
 import { EventEmitter } from 'node:events';
 import { CharacterStateInfo } from '../character.state';
@@ -37,12 +36,12 @@ export class Character extends EventEmitter {
   roleType: number;
   baseDefenseChance: number;
   useBBangCount: number;
-  handCards = new Map<CARD_TYPE, number>();
+  handCards = new Map<CardType, number>();
   stateInfo = new CharacterStateInfo();
   positionInfo: CharacterPositionInfo;
   weapon: number = 0;
-  equips = new Set<CARD_TYPE>();
-  debuffs = new Set<CARD_TYPE>();
+  equips = new Set<CardType>();
+  debuffs = new Set<CardType>();
   onTakeDamage: () => void;
 
   constructor({
@@ -74,7 +73,7 @@ export class Character extends EventEmitter {
   }
 
   toCharacterData(viewUserId: string): MessageProps<CharacterData> {
-    const roleType = viewUserId === this.userId || this.roleType === ROLE_TYPE.TARGET ? this.roleType : ROLE_TYPE.NONE;
+    const roleType = viewUserId === this.userId || this.roleType === RoleType.TARGET ? this.roleType : RoleType.NONE;
     log(`createUserDataView viewUserId: ${viewUserId} this.userId: ${this.userId}`);
     return {
       characterType: Number(this.characterType),
@@ -97,10 +96,10 @@ export class Character extends EventEmitter {
 
   getMaxBBangCount() {
     switch (true) {
-      case this.weapon === CARD_TYPE.HAND_GUN:
+      case this.weapon === CardType.HAND_GUN:
         return 2;
-      case this.weapon === CARD_TYPE.AUTO_RIFLE:
-      case this.characterType === CHARACTER_TYPE.RED:
+      case this.weapon === CardType.AUTO_RIFLE:
+      case this.characterType === CharacterType.RED:
         return Infinity;
     }
 
@@ -108,11 +107,11 @@ export class Character extends EventEmitter {
   }
 
   getShieldAmount(shooter: Character) {
-    if (shooter.equips.has(CARD_TYPE.LASER_POINTER)) {
+    if (shooter.equips.has(CardType.LASER_POINTER)) {
       return 2;
     }
 
-    if (this.characterType === CHARACTER_TYPE.SHARK) {
+    if (this.characterType === CharacterType.SHARK) {
       return 2;
     }
 
@@ -124,7 +123,7 @@ export class Character extends EventEmitter {
   }
 
   getBBangDamage() {
-    return this.weapon === CARD_TYPE.DESERT_EAGLE ? 2 : 1;
+    return this.weapon === CardType.DESERT_EAGLE ? 2 : 1;
   }
 
   drawCard(card: CardProps): Result<Card> {

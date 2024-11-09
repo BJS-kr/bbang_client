@@ -1,8 +1,8 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class Hallucination extends Card {
   constructor() {
-    super({ type: CARD_TYPE.HALLUCINATION, isDirectUse: false, isTargetSelect: true });
+    super({ type: CardType.HALLUCINATION, isDirectUse: false, isTargetSelect: true });
   }
 }

@@ -1,11 +1,11 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 
 export class Card {
-  type: CARD_TYPE;
+  type: CardType;
   isDirectUse: boolean;
   isTargetSelect: boolean;
 
-  constructor({ type, isDirectUse, isTargetSelect }: { type: CARD_TYPE; isDirectUse: boolean; isTargetSelect: boolean }) {
+  constructor({ type, isDirectUse, isTargetSelect }: { type: CardType; isDirectUse: boolean; isTargetSelect: boolean }) {
     this.type = type;
     this.isDirectUse = isDirectUse;
     this.isTargetSelect = isTargetSelect;

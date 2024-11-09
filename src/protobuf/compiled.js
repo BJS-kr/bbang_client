@@ -611,8 +611,8 @@ $root.CharacterData = (function() {
      * Properties of a CharacterData.
      * @exports ICharacterData
      * @interface ICharacterData
-     * @property {number|null} [characterType] CharacterData characterType
-     * @property {number|null} [roleType] CharacterData roleType
+     * @property {CharacterType|null} [characterType] CharacterData characterType
+     * @property {RoleType|null} [roleType] CharacterData roleType
      * @property {number|null} [hp] CharacterData hp
      * @property {number|null} [weapon] CharacterData weapon
      * @property {ICharacterStateInfoData|null} [stateInfo] CharacterData stateInfo
@@ -642,7 +642,7 @@ $root.CharacterData = (function() {
 
     /**
      * CharacterData characterType.
-     * @member {number} characterType
+     * @member {CharacterType} characterType
      * @memberof CharacterData
      * @instance
      */
@@ -650,7 +650,7 @@ $root.CharacterData = (function() {
 
     /**
      * CharacterData roleType.
-     * @member {number} roleType
+     * @member {RoleType} roleType
      * @memberof CharacterData
      * @instance
      */
@@ -885,11 +885,36 @@ $root.CharacterData = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.characterType != null && message.hasOwnProperty("characterType"))
-            if (!$util.isInteger(message.characterType))
-                return "characterType: integer expected";
+            switch (message.characterType) {
+            default:
+                return "characterType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+                break;
+            }
         if (message.roleType != null && message.hasOwnProperty("roleType"))
-            if (!$util.isInteger(message.roleType))
-                return "roleType: integer expected";
+            switch (message.roleType) {
+            default:
+                return "roleType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                break;
+            }
         if (message.hp != null && message.hasOwnProperty("hp"))
             if (!$util.isInteger(message.hp))
                 return "hp: integer expected";
@@ -942,10 +967,98 @@ $root.CharacterData = (function() {
         if (object instanceof $root.CharacterData)
             return object;
         var message = new $root.CharacterData();
-        if (object.characterType != null)
-            message.characterType = object.characterType | 0;
-        if (object.roleType != null)
-            message.roleType = object.roleType | 0;
+        switch (object.characterType) {
+        default:
+            if (typeof object.characterType === "number") {
+                message.characterType = object.characterType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.characterType = 0;
+            break;
+        case "RED":
+        case 1:
+            message.characterType = 1;
+            break;
+        case "BLUE":
+        case 2:
+            message.characterType = 2;
+            break;
+        case "SHARK":
+        case 3:
+            message.characterType = 3;
+            break;
+        case "KNIGHT":
+        case 4:
+            message.characterType = 4;
+            break;
+        case "MALANG":
+        case 5:
+            message.characterType = 5;
+            break;
+        case "DINO":
+        case 6:
+            message.characterType = 6;
+            break;
+        case "FROGGY":
+        case 7:
+            message.characterType = 7;
+            break;
+        case "PINK":
+        case 8:
+            message.characterType = 8;
+            break;
+        case "SWIM_GLASSES":
+        case 9:
+            message.characterType = 9;
+            break;
+        case "MASK":
+        case 10:
+            message.characterType = 10;
+            break;
+        case "SLIME":
+        case 11:
+            message.characterType = 11;
+            break;
+        case "DINOSAUR":
+        case 12:
+            message.characterType = 12;
+            break;
+        case "PINK_SLIME":
+        case 13:
+            message.characterType = 13;
+            break;
+        }
+        switch (object.roleType) {
+        default:
+            if (typeof object.roleType === "number") {
+                message.roleType = object.roleType;
+                break;
+            }
+            break;
+        case "NONE":
+        case 0:
+            message.roleType = 0;
+            break;
+        case "TARGET":
+        case 1:
+            message.roleType = 1;
+            break;
+        case "BODYGUARD":
+        case 2:
+            message.roleType = 2;
+            break;
+        case "HITMAN":
+        case 3:
+            message.roleType = 3;
+            break;
+        case "PSYCHOPATH":
+        case 4:
+            message.roleType = 4;
+            break;
+        }
         if (object.hp != null)
             message.hp = object.hp | 0;
         if (object.weapon != null)
@@ -1003,17 +1116,17 @@ $root.CharacterData = (function() {
             object.handCards = [];
         }
         if (options.defaults) {
-            object.characterType = 0;
-            object.roleType = 0;
+            object.characterType = options.enums === String ? "NONE" : 0;
+            object.roleType = options.enums === String ? "NONE" : 0;
             object.hp = 0;
             object.weapon = 0;
             object.stateInfo = null;
             object.handCardsCount = 0;
         }
         if (message.characterType != null && message.hasOwnProperty("characterType"))
-            object.characterType = message.characterType;
+            object.characterType = options.enums === String ? $root.CharacterType[message.characterType] === undefined ? message.characterType : $root.CharacterType[message.characterType] : message.characterType;
         if (message.roleType != null && message.hasOwnProperty("roleType"))
-            object.roleType = message.roleType;
+            object.roleType = options.enums === String ? $root.RoleType[message.roleType] === undefined ? message.roleType : $root.RoleType[message.roleType] : message.roleType;
         if (message.hp != null && message.hasOwnProperty("hp"))
             object.hp = message.hp;
         if (message.weapon != null && message.hasOwnProperty("weapon"))
@@ -15518,6 +15631,196 @@ $root.WinType = (function() {
     values[valuesById[0] = "TARGET_AND_BODYGUARD"] = 0;
     values[valuesById[1] = "HITMAN"] = 1;
     values[valuesById[2] = "PSYCHOPATH"] = 2;
+    return values;
+})();
+
+/**
+ * CharacterType enum.
+ * @exports CharacterType
+ * @enum {number}
+ * @property {number} NONE=0 NONE value
+ * @property {number} RED=1 RED value
+ * @property {number} BLUE=2 BLUE value
+ * @property {number} SHARK=3 SHARK value
+ * @property {number} KNIGHT=4 KNIGHT value
+ * @property {number} MALANG=5 MALANG value
+ * @property {number} DINO=6 DINO value
+ * @property {number} FROGGY=7 FROGGY value
+ * @property {number} PINK=8 PINK value
+ * @property {number} SWIM_GLASSES=9 SWIM_GLASSES value
+ * @property {number} MASK=10 MASK value
+ * @property {number} SLIME=11 SLIME value
+ * @property {number} DINOSAUR=12 DINOSAUR value
+ * @property {number} PINK_SLIME=13 PINK_SLIME value
+ */
+$root.CharacterType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[1] = "RED"] = 1;
+    values[valuesById[2] = "BLUE"] = 2;
+    values[valuesById[3] = "SHARK"] = 3;
+    values[valuesById[4] = "KNIGHT"] = 4;
+    values[valuesById[5] = "MALANG"] = 5;
+    values[valuesById[6] = "DINO"] = 6;
+    values[valuesById[7] = "FROGGY"] = 7;
+    values[valuesById[8] = "PINK"] = 8;
+    values[valuesById[9] = "SWIM_GLASSES"] = 9;
+    values[valuesById[10] = "MASK"] = 10;
+    values[valuesById[11] = "SLIME"] = 11;
+    values[valuesById[12] = "DINOSAUR"] = 12;
+    values[valuesById[13] = "PINK_SLIME"] = 13;
+    return values;
+})();
+
+/**
+ * CharacterStateType enum.
+ * @exports CharacterStateType
+ * @enum {number}
+ * @property {number} NONE=0 NONE value
+ * @property {number} BBANG_SHOOTER=1 BBANG_SHOOTER value
+ * @property {number} BBANG_TARGET=2 BBANG_TARGET value
+ * @property {number} DEATH_MATCH=3 DEATH_MATCH value
+ * @property {number} DEATH_MATCH_TURN=4 DEATH_MATCH_TURN value
+ * @property {number} FLEA_MARKET_TURN=5 FLEA_MARKET_TURN value
+ * @property {number} FLEA_MARKET_WAIT=6 FLEA_MARKET_WAIT value
+ * @property {number} GUERRILLA_SHOOTER=7 GUERRILLA_SHOOTER value
+ * @property {number} GUERRILLA_TARGET=8 GUERRILLA_TARGET value
+ * @property {number} BIG_BBANG_SHOOTER=9 BIG_BBANG_SHOOTER value
+ * @property {number} BIG_BBANG_TARGET=10 BIG_BBANG_TARGET value
+ * @property {number} ABSORBING=11 ABSORBING value
+ * @property {number} ABSORB_TARGET=12 ABSORB_TARGET value
+ * @property {number} HALLUCINATING=13 HALLUCINATING value
+ * @property {number} HALLUCINATION_TARGET=14 HALLUCINATION_TARGET value
+ * @property {number} CONTAINED=15 CONTAINED value
+ */
+$root.CharacterStateType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[1] = "BBANG_SHOOTER"] = 1;
+    values[valuesById[2] = "BBANG_TARGET"] = 2;
+    values[valuesById[3] = "DEATH_MATCH"] = 3;
+    values[valuesById[4] = "DEATH_MATCH_TURN"] = 4;
+    values[valuesById[5] = "FLEA_MARKET_TURN"] = 5;
+    values[valuesById[6] = "FLEA_MARKET_WAIT"] = 6;
+    values[valuesById[7] = "GUERRILLA_SHOOTER"] = 7;
+    values[valuesById[8] = "GUERRILLA_TARGET"] = 8;
+    values[valuesById[9] = "BIG_BBANG_SHOOTER"] = 9;
+    values[valuesById[10] = "BIG_BBANG_TARGET"] = 10;
+    values[valuesById[11] = "ABSORBING"] = 11;
+    values[valuesById[12] = "ABSORB_TARGET"] = 12;
+    values[valuesById[13] = "HALLUCINATING"] = 13;
+    values[valuesById[14] = "HALLUCINATION_TARGET"] = 14;
+    values[valuesById[15] = "CONTAINED"] = 15;
+    return values;
+})();
+
+/**
+ * CardType enum.
+ * @exports CardType
+ * @enum {number}
+ * @property {number} BBANG=1 BBANG value
+ * @property {number} BIG_BBANG=2 BIG_BBANG value
+ * @property {number} SHIELD=3 SHIELD value
+ * @property {number} VACCINE=4 VACCINE value
+ * @property {number} CALL_119=5 CALL_119 value
+ * @property {number} DEATH_MATCH=6 DEATH_MATCH value
+ * @property {number} GUERRILLA=7 GUERRILLA value
+ * @property {number} ABSORB=8 ABSORB value
+ * @property {number} HALLUCINATION=9 HALLUCINATION value
+ * @property {number} FLEA_MARKET=10 FLEA_MARKET value
+ * @property {number} MATURED_SAVINGS=11 MATURED_SAVINGS value
+ * @property {number} WIN_LOTTERY=12 WIN_LOTTERY value
+ * @property {number} SNIPER_GUN=13 SNIPER_GUN value
+ * @property {number} HAND_GUN=14 HAND_GUN value
+ * @property {number} DESERT_EAGLE=15 DESERT_EAGLE value
+ * @property {number} AUTO_RIFLE=16 AUTO_RIFLE value
+ * @property {number} LASER_POINTER=17 LASER_POINTER value
+ * @property {number} RADAR=18 RADAR value
+ * @property {number} AUTO_SHIELD=19 AUTO_SHIELD value
+ * @property {number} STEALTH_SUIT=20 STEALTH_SUIT value
+ * @property {number} CONTAINMENT_UNIT=21 CONTAINMENT_UNIT value
+ * @property {number} SATELLITE_TARGET=22 SATELLITE_TARGET value
+ * @property {number} BOMB=23 BOMB value
+ */
+$root.CardType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[1] = "BBANG"] = 1;
+    values[valuesById[2] = "BIG_BBANG"] = 2;
+    values[valuesById[3] = "SHIELD"] = 3;
+    values[valuesById[4] = "VACCINE"] = 4;
+    values[valuesById[5] = "CALL_119"] = 5;
+    values[valuesById[6] = "DEATH_MATCH"] = 6;
+    values[valuesById[7] = "GUERRILLA"] = 7;
+    values[valuesById[8] = "ABSORB"] = 8;
+    values[valuesById[9] = "HALLUCINATION"] = 9;
+    values[valuesById[10] = "FLEA_MARKET"] = 10;
+    values[valuesById[11] = "MATURED_SAVINGS"] = 11;
+    values[valuesById[12] = "WIN_LOTTERY"] = 12;
+    values[valuesById[13] = "SNIPER_GUN"] = 13;
+    values[valuesById[14] = "HAND_GUN"] = 14;
+    values[valuesById[15] = "DESERT_EAGLE"] = 15;
+    values[valuesById[16] = "AUTO_RIFLE"] = 16;
+    values[valuesById[17] = "LASER_POINTER"] = 17;
+    values[valuesById[18] = "RADAR"] = 18;
+    values[valuesById[19] = "AUTO_SHIELD"] = 19;
+    values[valuesById[20] = "STEALTH_SUIT"] = 20;
+    values[valuesById[21] = "CONTAINMENT_UNIT"] = 21;
+    values[valuesById[22] = "SATELLITE_TARGET"] = 22;
+    values[valuesById[23] = "BOMB"] = 23;
+    return values;
+})();
+
+/**
+ * RoleType enum.
+ * @exports RoleType
+ * @enum {number}
+ * @property {number} NONE=0 NONE value
+ * @property {number} TARGET=1 TARGET value
+ * @property {number} BODYGUARD=2 BODYGUARD value
+ * @property {number} HITMAN=3 HITMAN value
+ * @property {number} PSYCHOPATH=4 PSYCHOPATH value
+ */
+$root.RoleType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[1] = "TARGET"] = 1;
+    values[valuesById[2] = "BODYGUARD"] = 2;
+    values[valuesById[3] = "HITMAN"] = 3;
+    values[valuesById[4] = "PSYCHOPATH"] = 4;
+    return values;
+})();
+
+/**
+ * RoomStateType enum.
+ * @exports RoomStateType
+ * @enum {number}
+ * @property {number} WAIT=0 WAIT value
+ * @property {number} PREPARE=1 PREPARE value
+ * @property {number} INGAME=2 INGAME value
+ */
+$root.RoomStateType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "WAIT"] = 0;
+    values[valuesById[1] = "PREPARE"] = 1;
+    values[valuesById[2] = "INGAME"] = 2;
+    return values;
+})();
+
+/**
+ * PhaseType enum.
+ * @exports PhaseType
+ * @enum {number}
+ * @property {number} NONE=0 NONE value
+ * @property {number} DAY=1 DAY value
+ * @property {number} EVENING=2 EVENING value
+ * @property {number} END=3 END value
+ */
+$root.PhaseType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[1] = "DAY"] = 1;
+    values[valuesById[2] = "EVENING"] = 2;
+    values[valuesById[3] = "END"] = 3;
     return values;
 })();
 

@@ -1,8 +1,8 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class Radar extends Card {
   constructor() {
-    super({ type: CARD_TYPE.RADAR, isDirectUse: true, isTargetSelect: false });
+    super({ type: CardType.RADAR, isDirectUse: true, isTargetSelect: false });
   }
 }

@@ -22,8 +22,8 @@ message UserData {
 }
 
 message CharacterData {
-    int32 characterType = 1;
-    int32 roleType = 2;
+    CharacterType characterType = 1;
+    RoleType roleType = 2;
     int32 hp = 3;
     int32 weapon = 4;
     CharacterStateInfoData stateInfo = 5;
@@ -406,3 +406,85 @@ enum WinType {
     PSYCHOPATH = 2;
 }
 
+enum CharacterType {
+    NONE = 0;
+    RED = 1; // 빨강이
+    BLUE = 2; // 파랑이
+    SHARK = 3; // 상어군
+    KNIGHT = 4; // 기사군
+    MALANG = 5; // 말랑이
+    DINO = 6; // 다이노
+    FROGGY = 7; // 개굴군
+    PINK = 8; // 핑크군
+    SWIM_GLASSES = 9; // 물안경군
+    MASK = 10; // 가면군
+    SLIME = 11; // 슬라임
+    DINOSAUR = 12; // 공룡이
+    PINK_SLIME = 13; // 핑크슬라임
+}
+
+enum CharacterStateType {
+    NONE = 0;
+    BBANG_SHOOTER = 1; // 빵야 시전자
+    BBANG_TARGET = 2; // 빵야 대상 (쉴드 사용가능 상태)
+    DEATH_MATCH = 3; // 현피 중 자신의 턴이 아닐 때
+    DEATH_MATCH_TURN = 4; // 현피 중 자신의 턴
+    FLEA_MARKET_TURN = 5; // 플리마켓 자신의 턴
+    FLEA_MARKET_WAIT = 6; // 플리마켓 턴 대기 상태
+    GUERRILLA_SHOOTER = 7; // 게릴라 시전자
+    GUERRILLA_TARGET = 8; // 게릴라 대상
+    BIG_BBANG_SHOOTER = 9; // 난사 시전자
+    BIG_BBANG_TARGET = 10; // 난사 대상
+    ABSORBING = 11; // 흡수 중
+    ABSORB_TARGET = 12; // 흡수 대상
+    HALLUCINATING = 13; // 신기루 중
+    HALLUCINATION_TARGET = 14; // 신기루 대상
+    CONTAINED = 15; // 감금 중
+}
+
+enum CardType {
+    BBANG = 1;
+    BIG_BBANG = 2;
+    SHIELD = 3;
+    VACCINE = 4;
+    CALL_119 = 5;
+    DEATH_MATCH = 6;
+    GUERRILLA = 7;
+    ABSORB = 8;
+    HALLUCINATION = 9;
+    FLEA_MARKET = 10;
+    MATURED_SAVINGS = 11;
+    WIN_LOTTERY = 12;
+    SNIPER_GUN = 13;
+    HAND_GUN = 14;
+    DESERT_EAGLE = 15;
+    AUTO_RIFLE = 16;
+    LASER_POINTER = 17;
+    RADAR = 18;
+    AUTO_SHIELD = 19;
+    STEALTH_SUIT = 20;
+    CONTAINMENT_UNIT = 21;
+    SATELLITE_TARGET = 22;
+    BOMB = 23;
+}
+
+enum RoleType {
+    NONE = 0;
+    TARGET = 1;
+    BODYGUARD = 2;
+    HITMAN = 3;
+    PSYCHOPATH = 4;
+}
+
+enum RoomStateType {
+    WAIT = 0;
+    PREPARE = 1;
+    INGAME = 2;
+}
+
+enum PhaseType {
+    NONE = 0;
+    DAY = 1;
+    EVENING = 2;
+    END = 3;
+}

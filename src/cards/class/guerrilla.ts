@@ -1,8 +1,8 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class Guerrilla extends Card {
   constructor() {
-    super({ type: CARD_TYPE.GUERRILLA, isDirectUse: true, isTargetSelect: false });
+    super({ type: CardType.GUERRILLA, isDirectUse: true, isTargetSelect: false });
   }
 }

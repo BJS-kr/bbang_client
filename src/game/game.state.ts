@@ -1,5 +1,4 @@
-import { PHASE_TYPE } from '../constants/game';
-import { GameStateData } from '../protobuf/compiled';
+import { GameStateData, PhaseType } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { GameEvents } from './game.events';
 
@@ -15,7 +14,7 @@ export class GameState {
 
   constructor(gameEvents: GameEvents) {
     this.#gameEvents = gameEvents;
-    this.phaseType = PHASE_TYPE.NONE;
+    this.phaseType = PhaseType.NONE;
     this.nextPhaseAt = 0;
   }
 
@@ -37,21 +36,21 @@ export class GameState {
   }
 
   #startDay() {
-    this.phaseType = PHASE_TYPE.DAY;
+    this.phaseType = PhaseType.DAY;
     this.nextPhaseAt = Date.now() + DAY_SECOND * 1000;
     this.#gameEvents.emit('DAY');
     this.#startPhaseTimer();
   }
 
   #startEvening() {
-    this.phaseType = PHASE_TYPE.EVENING;
+    this.phaseType = PhaseType.EVENING;
     this.nextPhaseAt = Date.now() + EVENING_SECOND * 1000;
     this.#gameEvents.emit('EVENING');
     this.#startPhaseTimer();
   }
 
   #startEnd() {
-    this.phaseType = PHASE_TYPE.END;
+    this.phaseType = PhaseType.END;
     this.nextPhaseAt = Date.now() + END_SECOND * 1000;
     this.#gameEvents.emit('END');
     this.#startPhaseTimer();
@@ -65,10 +64,10 @@ export class GameState {
     this.#phaseTimer = setTimeout(
       () => {
         switch (this.phaseType) {
-          case PHASE_TYPE.DAY:
+          case PhaseType.DAY:
             this.#startEnd();
             break;
-          case PHASE_TYPE.END:
+          case PhaseType.END:
             this.#startDay();
             break;
         }

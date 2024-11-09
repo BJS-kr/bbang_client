@@ -1,12 +1,12 @@
 import { EventEmitter } from 'node:events';
 import { ContainmentUnit } from '../cards/class/containment.unit';
-import { CARD_TYPE, CharacterState, DAILY_CARD_COUNT, GAME_INIT_POSITION } from '../constants/game';
+import { DAILY_CARD_COUNT, GAME_INIT_POSITION } from '../constants/game';
 import { SatelliteTarget } from '../cards/class/satellite.target';
 import { User } from '../users/types';
 import { Room } from '../rooms/types';
 import { PACKET_TYPE } from '../constants/packetType';
 import { error } from '../utils/logger';
-import { S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protobuf/compiled';
+import { CardType, CharacterStateType, S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
 
@@ -44,11 +44,11 @@ export class GameEvents extends EventEmitter {
       const updatedUsers: User[] = [];
       this.containedUsers.forEach((cu) => {
         if (ContainmentUnit.canEscape()) {
-          cu.character.debuffs.delete(CARD_TYPE.CONTAINMENT_UNIT);
+          cu.character.debuffs.delete(CardType.CONTAINMENT_UNIT);
           this.containedUsers = this.containedUsers.filter((cu) => cu !== cu);
-          cu.character.stateInfo.setState(cu.id, CharacterState.NONE, null);
+          cu.character.stateInfo.setState(cu.id, CharacterStateType.NONE, null);
         } else {
-          cu.character.stateInfo.setState(cu.id, CharacterState.CONTAINED, null);
+          cu.character.stateInfo.setState(cu.id, CharacterStateType.CONTAINED, null);
         }
 
         updatedUsers.push(cu);
@@ -58,12 +58,12 @@ export class GameEvents extends EventEmitter {
         if (SatelliteTarget.isHit()) {
           st.character.takeDamage(3);
         } else {
-          st.character.debuffs.delete(CARD_TYPE.SATELLITE_TARGET);
+          st.character.debuffs.delete(CardType.SATELLITE_TARGET);
           const userIndex = this.#room.users.findIndex((u) => u === st);
           const nextIndex = userIndex + 1 === this.#room.users.length ? 0 : userIndex + 1;
           const nextUser = this.#room.users[nextIndex];
 
-          nextUser.character.debuffs.add(CARD_TYPE.SATELLITE_TARGET);
+          nextUser.character.debuffs.add(CardType.SATELLITE_TARGET);
           this.satelliteTargets.push(nextUser);
           this.satelliteTargets = this.satelliteTargets.filter((st) => st !== st);
 

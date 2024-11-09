@@ -1,6 +1,6 @@
 import { Character } from '../characters/class/character';
-import { ROLE_TYPE, CHARACTER_TYPE } from '../constants/game';
 import net from 'node:net';
+import { CharacterType, RoleType } from '../protobuf/compiled';
 
 export class User {
   id: string;
@@ -15,8 +15,8 @@ export class User {
     this.character = new Character({
       userId: this.id,
       hp: 0,
-      roleType: ROLE_TYPE.NONE,
-      characterType: CHARACTER_TYPE.NONE,
+      roleType: RoleType.NONE,
+      characterType: CharacterType.NONE,
       baseDefenseChance: 0,
       onTakeDamage: () => {},
     });

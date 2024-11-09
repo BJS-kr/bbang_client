@@ -1,8 +1,8 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class Vaccine extends Card {
   constructor() {
-    super({ type: CARD_TYPE.VACCINE, isDirectUse: true, isTargetSelect: false });
+    super({ type: CardType.VACCINE, isDirectUse: true, isTargetSelect: false });
   }
 }

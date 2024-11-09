@@ -1,8 +1,12 @@
 import { Room, RoomState } from '../rooms/types';
-import { CARD_TYPE, CHARACTER_TYPE, CharacterState, GAME_INIT_POSITION, PHASE_TYPE, ROLE_MEMBERS, ROLE_TYPE } from '../constants/game';
+import { GAME_INIT_POSITION, ROLE_MEMBERS } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
+  CardType,
+  CharacterStateType,
+  CharacterType,
   GlobalFailCode,
+  RoleType,
   S2CFleaMarketNotification,
   S2CFleaMarketPickResponse,
   S2CGamePrepareNotification,
@@ -77,8 +81,8 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   // 역할, 초기 위치, 캐릭터 셔플
   const shuffleRoles = roles.sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
-  const shuffleCharacters = Object.values(CHARACTER_TYPE)
-    .filter((type) => typeof type === 'number' && type !== CHARACTER_TYPE.NONE)
+  const shuffleCharacters = Object.values(CharacterType)
+    .filter((type) => typeof type === 'number' && type !== CharacterType.NONE)
     .sort(() => Math.random() - 0.5);
 
   // 역할, 캐릭터, 초기 위치 부여
@@ -162,7 +166,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     user.character.handCards.clear();
 
     let initCardCount = user.character.hp;
-    if (user.character.roleType === ROLE_TYPE.TARGET) {
+    if (user.character.roleType === RoleType.TARGET) {
       initCardCount += TARGET_CARD_BONUS;
     }
 
@@ -176,31 +180,31 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   room.users.forEach((user) => {
     const testHandCards = new Map();
 
-    testHandCards.set(CARD_TYPE.BBANG, 5);
-    testHandCards.set(CARD_TYPE.BIG_BBANG, 1);
-    testHandCards.set(CARD_TYPE.SHIELD, 1);
-    testHandCards.set(CARD_TYPE.VACCINE, 1);
-    testHandCards.set(CARD_TYPE.CALL_119, 1);
-    testHandCards.set(CARD_TYPE.DEATH_MATCH, 1);
-    testHandCards.set(CARD_TYPE.GUERRILLA, 1);
-    testHandCards.set(CARD_TYPE.DEATH_MATCH, 1);
-    testHandCards.set(CARD_TYPE.GUERRILLA, 1);
-    testHandCards.set(CARD_TYPE.ABSORB, 1);
-    testHandCards.set(CARD_TYPE.HALLUCINATION, 1);
-    testHandCards.set(CARD_TYPE.FLEA_MARKET, 1);
-    testHandCards.set(CARD_TYPE.MATURED_SAVINGS, 1);
-    testHandCards.set(CARD_TYPE.WIN_LOTTERY, 1);
-    testHandCards.set(CARD_TYPE.SNIPER_GUN, 1);
-    testHandCards.set(CARD_TYPE.HAND_GUN, 1);
-    testHandCards.set(CARD_TYPE.DESERT_EAGLE, 1);
-    testHandCards.set(CARD_TYPE.AUTO_RIFLE, 1);
-    testHandCards.set(CARD_TYPE.LASER_POINTER, 1);
-    testHandCards.set(CARD_TYPE.RADAR, 1);
-    testHandCards.set(CARD_TYPE.AUTO_SHIELD, 1);
-    testHandCards.set(CARD_TYPE.STEALTH_SUIT, 1);
-    testHandCards.set(CARD_TYPE.CONTAINMENT_UNIT, 1);
-    testHandCards.set(CARD_TYPE.SATELLITE_TARGET, 1);
-    testHandCards.set(CARD_TYPE.BOMB, 1);
+    testHandCards.set(CardType.BBANG, 5);
+    testHandCards.set(CardType.BIG_BBANG, 1);
+    testHandCards.set(CardType.SHIELD, 1);
+    testHandCards.set(CardType.VACCINE, 1);
+    testHandCards.set(CardType.CALL_119, 1);
+    testHandCards.set(CardType.DEATH_MATCH, 1);
+    testHandCards.set(CardType.GUERRILLA, 1);
+    testHandCards.set(CardType.DEATH_MATCH, 1);
+    testHandCards.set(CardType.GUERRILLA, 1);
+    testHandCards.set(CardType.ABSORB, 1);
+    testHandCards.set(CardType.HALLUCINATION, 1);
+    testHandCards.set(CardType.FLEA_MARKET, 1);
+    testHandCards.set(CardType.MATURED_SAVINGS, 1);
+    testHandCards.set(CardType.WIN_LOTTERY, 1);
+    testHandCards.set(CardType.SNIPER_GUN, 1);
+    testHandCards.set(CardType.HAND_GUN, 1);
+    testHandCards.set(CardType.DESERT_EAGLE, 1);
+    testHandCards.set(CardType.AUTO_RIFLE, 1);
+    testHandCards.set(CardType.LASER_POINTER, 1);
+    testHandCards.set(CardType.RADAR, 1);
+    testHandCards.set(CardType.AUTO_SHIELD, 1);
+    testHandCards.set(CardType.STEALTH_SUIT, 1);
+    testHandCards.set(CardType.CONTAINMENT_UNIT, 1);
+    testHandCards.set(CardType.SATELLITE_TARGET, 1);
+    testHandCards.set(CardType.BOMB, 1);
 
     user.character.handCards = testHandCards;
   });
@@ -260,7 +264,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
     } satisfies MessageProps<S2CPositionUpdateResponse>);
   }
 
-  if (roomUser.character.stateInfo.state !== CharacterState.NONE) {
+  if (roomUser.character.stateInfo.state !== CharacterStateType.NONE) {
     return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -295,7 +299,7 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
     } satisfies MessageProps<S2CReactionResponse>);
   }
 
-  if (user.character.stateInfo.state === CharacterState.NONE) {
+  if (user.character.stateInfo.state === CharacterStateType.NONE) {
     return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
@@ -303,7 +307,7 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
   }
 
   switch (user.character.stateInfo.state) {
-    case CharacterState.FLEA_MARKET_TURN:
+    case CharacterStateType.FLEA_MARKET_TURN:
       const remainCardTypes = room.fleaMarketCards.map((_, index) => index).filter((index) => !room.pickFleaMarketIndex.includes(index));
       if (remainCardTypes.length <= 0) {
         return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
@@ -321,11 +325,11 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
         pickIndex: room.pickFleaMarketIndex,
       } satisfies MessageProps<S2CFleaMarketNotification>);
 
-      user.character.stateInfo.setState(user.id, CharacterState.FLEA_MARKET_WAIT, null);
+      user.character.stateInfo.setState(user.id, CharacterStateType.FLEA_MARKET_WAIT, null);
       break;
 
     default:
-      user.character.stateInfo.react(CharacterState.NONE);
+      user.character.stateInfo.react(CharacterStateType.NONE);
       break;
   }
 
@@ -356,7 +360,7 @@ export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarke
     } satisfies MessageProps<S2CFleaMarketPickResponse>);
   }
 
-  if (user.character.stateInfo.state !== CharacterState.FLEA_MARKET_TURN) {
+  if (user.character.stateInfo.state !== CharacterStateType.FLEA_MARKET_TURN) {
     return writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
@@ -371,7 +375,7 @@ export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarke
     } satisfies MessageProps<S2CFleaMarketPickResponse>);
   }
 
-  user.character.stateInfo.setState(user.id, CharacterState.FLEA_MARKET_WAIT, null);
+  user.character.stateInfo.setState(user.id, CharacterStateType.FLEA_MARKET_WAIT, null);
   user.character.acquireCard({ type: room.fleaMarketCards[pickIndex], count: 1 });
   room.pickFleaMarketIndex.push(pickIndex);
 

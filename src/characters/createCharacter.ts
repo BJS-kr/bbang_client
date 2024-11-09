@@ -1,4 +1,4 @@
-import { CHARACTER_HP, CHARACTER_TYPE, ROLE_TYPE } from '../constants/game';
+import { CHARACTER_HP } from '../constants/game';
 import { Character } from './class/character';
 import { Blue } from './class/blue';
 import { Red } from './class/red';
@@ -13,23 +13,23 @@ import { Mask } from './class/mask';
 import { Slime } from './class/slime';
 import { Dinosaur } from './class/dinosaur';
 import { PinkSlime } from './class/pinkSlime';
-import { Room } from '../rooms/types';
+import { CharacterType, RoleType } from '../protobuf/compiled';
 
 const TARGET_HP_BONUS = 1;
 const CHARACTER_CLASS_MAP = {
-  [CHARACTER_TYPE.RED]: Red,
-  [CHARACTER_TYPE.BLUE]: Blue,
-  [CHARACTER_TYPE.SHARK]: Shark,
-  [CHARACTER_TYPE.KNIGHT]: Knight,
-  [CHARACTER_TYPE.MALANG]: Malang,
-  [CHARACTER_TYPE.DINO]: Dino,
-  [CHARACTER_TYPE.FROGGY]: Froggy,
-  [CHARACTER_TYPE.PINK]: Pink,
-  [CHARACTER_TYPE.SWIM_GLASSES]: SwimGlasses,
-  [CHARACTER_TYPE.MASK]: Mask,
-  [CHARACTER_TYPE.SLIME]: Slime,
-  [CHARACTER_TYPE.DINOSAUR]: Dinosaur,
-  [CHARACTER_TYPE.PINK_SLIME]: PinkSlime,
+  [CharacterType.RED]: Red,
+  [CharacterType.BLUE]: Blue,
+  [CharacterType.SHARK]: Shark,
+  [CharacterType.KNIGHT]: Knight,
+  [CharacterType.MALANG]: Malang,
+  [CharacterType.DINO]: Dino,
+  [CharacterType.FROGGY]: Froggy,
+  [CharacterType.PINK]: Pink,
+  [CharacterType.SWIM_GLASSES]: SwimGlasses,
+  [CharacterType.MASK]: Mask,
+  [CharacterType.SLIME]: Slime,
+  [CharacterType.DINOSAUR]: Dinosaur,
+  [CharacterType.PINK_SLIME]: PinkSlime,
 };
 
 export const createCharacter = ({
@@ -40,7 +40,7 @@ export const createCharacter = ({
 }: {
   userId: string;
   characterType: number;
-  roleType: ROLE_TYPE;
+  roleType: RoleType;
   onTakeDamage: () => void;
 }) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
@@ -49,7 +49,7 @@ export const createCharacter = ({
   }
 
   switch (roleType) {
-    case ROLE_TYPE.TARGET:
+    case RoleType.TARGET:
       return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, onTakeDamage });
 
     default:

@@ -1,14 +1,12 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import { createUser, getUserByUserId } from './user.repository';
 import { writePayload } from '../protobuf/writePayload';
-import { GlobalFailCode, S2CLoginResponse } from '../protobuf/compiled';
+import { CharacterType, GlobalFailCode, RoleType, S2CLoginResponse } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { session } from './session';
 import { Context } from '../events/types';
 import net from 'node:net';
 import { Character } from '../characters/class/character';
-import { CHARACTER_TYPE } from '../constants/game';
-import { ROLE_TYPE } from '../constants/game';
 
 export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
@@ -53,8 +51,8 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
       character: new Character({
         userId: result.userId,
         hp: 0,
-        roleType: ROLE_TYPE.NONE,
-        characterType: CHARACTER_TYPE.NONE,
+        roleType: RoleType.NONE,
+        characterType: CharacterType.NONE,
         baseDefenseChance: 0,
         onTakeDamage: () => {},
       }).toCharacterData(result.userId),

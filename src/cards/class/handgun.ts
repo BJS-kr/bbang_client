@@ -1,10 +1,10 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class HandGun extends Card {
   constructor() {
     super({
-      type: CARD_TYPE.HAND_GUN,
+      type: CardType.HAND_GUN,
       isDirectUse: true,
       isTargetSelect: false,
     });

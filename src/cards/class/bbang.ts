@@ -1,10 +1,10 @@
-import { CARD_TYPE } from '../../constants/game';
+import { CardType } from '../../protobuf/compiled';
 import { Card } from './card';
 
 export class BBang extends Card {
   constructor() {
     super({
-      type: CARD_TYPE.BBANG,
+      type: CardType.BBANG,
       isDirectUse: true,
       isTargetSelect: true,
     });
