@@ -176,7 +176,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   room.users.forEach((user) => {
     const testHandCards = new Map();
 
-    testHandCards.set(CARD_TYPE.BBANG, 1);
+    testHandCards.set(CARD_TYPE.BBANG, 5);
     testHandCards.set(CARD_TYPE.BIG_BBANG, 1);
     testHandCards.set(CARD_TYPE.SHIELD, 1);
     testHandCards.set(CARD_TYPE.VACCINE, 1);
