@@ -176,40 +176,6 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     }
   });
 
-  // TODO 테스트용. 지워야함!!!!!!!!!!!
-  room.users.forEach((user) => {
-    const testHandCards = new Map();
-
-    testHandCards.set(CardType.BBANG, 5);
-    testHandCards.set(CardType.BIG_BBANG, 1);
-    testHandCards.set(CardType.SHIELD, 1);
-    testHandCards.set(CardType.VACCINE, 1);
-    testHandCards.set(CardType.CALL_119, 1);
-    testHandCards.set(CardType.DEATH_MATCH, 1);
-    testHandCards.set(CardType.GUERRILLA, 1);
-    testHandCards.set(CardType.DEATH_MATCH, 1);
-    testHandCards.set(CardType.GUERRILLA, 1);
-    testHandCards.set(CardType.ABSORB, 1);
-    testHandCards.set(CardType.HALLUCINATION, 1);
-    testHandCards.set(CardType.FLEA_MARKET, 1);
-    testHandCards.set(CardType.MATURED_SAVINGS, 1);
-    testHandCards.set(CardType.WIN_LOTTERY, 1);
-    testHandCards.set(CardType.SNIPER_GUN, 1);
-    testHandCards.set(CardType.HAND_GUN, 1);
-    testHandCards.set(CardType.DESERT_EAGLE, 1);
-    testHandCards.set(CardType.AUTO_RIFLE, 1);
-    testHandCards.set(CardType.LASER_POINTER, 1);
-    testHandCards.set(CardType.RADAR, 1);
-    testHandCards.set(CardType.AUTO_SHIELD, 1);
-    testHandCards.set(CardType.STEALTH_SUIT, 1);
-    testHandCards.set(CardType.CONTAINMENT_UNIT, 1);
-    testHandCards.set(CardType.SATELLITE_TARGET, 1);
-    testHandCards.set(CardType.BOMB, 1);
-
-    user.character.handCards = testHandCards;
-  });
-  // TODO 테스트용. 여기까지 지워야함!!!!!!!!!!!
-
   room.state = RoomStateType.INGAME;
   room.setTimer();
 

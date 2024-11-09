@@ -3,7 +3,6 @@ import { MessageProps } from '../protobuf/props';
 import { GameEvents } from './game.events';
 
 const DAY_SECOND = 180; // 3분
-const EVENING_SECOND = 60; // 1분
 const END_SECOND = 30; // 30초
 
 export class GameState {
@@ -39,13 +38,6 @@ export class GameState {
     this.phaseType = PhaseType.DAY;
     this.nextPhaseAt = Date.now() + DAY_SECOND * 1000;
     this.#gameEvents.emit('DAY');
-    this.#startPhaseTimer();
-  }
-
-  #startEvening() {
-    this.phaseType = PhaseType.EVENING;
-    this.nextPhaseAt = Date.now() + EVENING_SECOND * 1000;
-    this.#gameEvents.emit('EVENING');
     this.#startPhaseTimer();
   }
 
