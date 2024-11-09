@@ -66,9 +66,6 @@ export class GameState {
       () => {
         switch (this.phaseType) {
           case PHASE_TYPE.DAY:
-            this.#startEvening();
-            break;
-          case PHASE_TYPE.EVENING:
             this.#startEnd();
             break;
           case PHASE_TYPE.END:
