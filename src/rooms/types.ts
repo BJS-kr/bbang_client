@@ -87,7 +87,7 @@ export class Room {
 
   setTimer() {
     this.gameState.gameStart();
-    this.startInfomationBroadcastTimer();
+    this.startInformationBroadcastTimer();
   }
 
   resetTimer() {
@@ -107,7 +107,7 @@ export class Room {
     }
   }
 
-  startInfomationBroadcastTimer() {
+  startInformationBroadcastTimer() {
     this.infomationBroadcastTimer = setInterval(() => {
       const now = Date.now();
 
@@ -140,7 +140,7 @@ export class Room {
         if (!user) {
           return;
         }
-        user?.character.takeDamage(2);
+        user?.character.takeDamage(2, null);
         user?.character.debuffs.delete(CardType.BOMB);
         this.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
           user: [user.toUserData(user.id)],
@@ -172,7 +172,7 @@ export class Rooms {
 
   create(roomId, roomName, ownerId, maxUserNum) {
     if (this.isRoomExist(roomId)) return false;
-    const gameEvents = new GameEvents();
+    const gameEvents = new GameEvents(roomId);
     const room = new Room({
       name: roomName,
       ownerId,

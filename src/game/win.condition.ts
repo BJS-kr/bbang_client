@@ -14,13 +14,7 @@ function isTargetAllDead(room: Room) {
 function isAllDeadExceptPsychopath(room: Room) {
   return room.users.filter((u) => u.character.roleType !== RoleType.PSYCHOPATH).every((u) => u.character.isDead());
 }
-export function checkWinCondition(socket: net.Socket, version: string, sequence: number, rooms: Rooms, roomId: number) {
-  const room = rooms.getRoom(roomId);
-
-  if (!room) {
-    throw new Error('Room not found in checkWinCondition');
-  }
-
+export function checkWinCondition(rooms: Rooms, room: Room, roomId: number) {
   return () => {
     if (isHitMenAllDead(room)) {
       rooms.removeRoom(roomId);

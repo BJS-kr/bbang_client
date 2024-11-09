@@ -376,7 +376,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   user.character.stateInfo.setState(targetUser.id, CharacterStateType.BBANG_SHOOTER, onBBangTimeoutShooter(user, room));
 
   const damage = user.character.getBBangDamage();
-  targetUser.character.stateInfo.setState(user.id, CharacterStateType.BBANG_TARGET, onBBangTimeoutTarget(damage, targetUser, room));
+  targetUser.character.stateInfo.setState(user.id, CharacterStateType.BBANG_TARGET, onBBangTimeoutTarget(damage, user, targetUser, room));
 
   responseSuccess(socket, version, sequence, CardType.BBANG, [user, targetUser], room, user, targetUser.id);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
@@ -482,7 +482,7 @@ function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, 
 
   room.users.forEach((targetUser) => {
     user.id !== targetUser.id &&
-      targetUser.character.stateInfo.setState(user.id, CharacterStateType.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, targetUser, room));
+      targetUser.character.stateInfo.setState(user.id, CharacterStateType.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, user, targetUser, room));
   });
 
   responseSuccess(socket, version, sequence, CardType.BIG_BBANG, room.users, room, user, '');

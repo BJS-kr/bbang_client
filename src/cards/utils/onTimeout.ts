@@ -12,9 +12,9 @@ export function onBBangTimeoutShooter(user: User, room: Room) {
   };
 }
 
-export function onBBangTimeoutTarget(damage, targetUser: User, room: Room) {
+export function onBBangTimeoutTarget(damage: number, attacker: User, targetUser: User, room: Room) {
   return () => {
-    targetUser.character.takeDamage(damage);
+    targetUser.character.takeDamage(damage, attacker);
 
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -24,7 +24,7 @@ export function onBBangTimeoutTarget(damage, targetUser: User, room: Room) {
 
 export function onDeathMatchTurnTimeout(user: User, targetUser: User, room: Room) {
   return () => {
-    targetUser.character.takeDamage(1);
+    targetUser.character.takeDamage(1, user);
     user.character.stateInfo.setState(user.id, CharacterStateType.NONE, null);
     targetUser.character.stateInfo.setState(targetUser.id, CharacterStateType.NONE, null);
 
@@ -58,7 +58,7 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
 
 export function onGuerillaTargetTimeout(targetUser: User, room: Room) {
   return () => {
-    targetUser.character.takeDamage(1);
+    targetUser.character.takeDamage(1, null);
     targetUser.character.stateInfo.setState('', CharacterStateType.NONE, null);
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],

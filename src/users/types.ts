@@ -1,5 +1,6 @@
 import { Character } from '../characters/class/character';
 import net from 'node:net';
+import { GameEvents } from '../game/game.events';
 import { CharacterType, RoleType } from '../protobuf/compiled';
 
 export class User {
@@ -18,7 +19,7 @@ export class User {
       roleType: RoleType.NONE,
       characterType: CharacterType.NONE,
       baseDefenseChance: 0,
-      onTakeDamage: () => {},
+      gameEvents: new GameEvents(0),
     });
   }
 

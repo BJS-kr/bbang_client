@@ -13,6 +13,8 @@ import { Mask } from './class/mask';
 import { Slime } from './class/slime';
 import { Dinosaur } from './class/dinosaur';
 import { PinkSlime } from './class/pinkSlime';
+import { Room } from '../rooms/types';
+import { GameEvents } from '../game/game.events';
 import { CharacterType, RoleType } from '../protobuf/compiled';
 
 const TARGET_HP_BONUS = 1;
@@ -36,12 +38,14 @@ export const createCharacter = ({
   userId,
   characterType,
   roleType,
-  onTakeDamage,
+
+  gameEvents,
 }: {
   userId: string;
   characterType: number;
   roleType: RoleType;
-  onTakeDamage: () => void;
+
+  gameEvents: GameEvents;
 }) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
   if (CharacterClass === Character) {
@@ -50,9 +54,9 @@ export const createCharacter = ({
 
   switch (roleType) {
     case RoleType.TARGET:
-      return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, onTakeDamage });
+      return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, gameEvents });
 
     default:
-      return new CharacterClass({ userId, roleType, onTakeDamage });
+      return new CharacterClass({ userId, roleType, gameEvents });
   }
 };
