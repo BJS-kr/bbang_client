@@ -263,6 +263,9 @@ export interface ICharacterData {
     /** CharacterData handCards */
     handCards?: (ICardData[]|null);
 
+    /** CharacterData bbangCount */
+    bbangCount?: (number|null);
+
     /** CharacterData handCardsCount */
     handCardsCount?: (number|null);
 }
@@ -299,6 +302,9 @@ export class CharacterData implements ICharacterData {
 
     /** CharacterData handCards. */
     public handCards: ICardData[];
+
+    /** CharacterData bbangCount. */
+    public bbangCount: number;
 
     /** CharacterData handCardsCount. */
     public handCardsCount: number;

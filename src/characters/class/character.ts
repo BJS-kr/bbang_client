@@ -37,7 +37,7 @@ export class Character extends EventEmitter {
   characterType: number;
   roleType: number;
   baseDefenseChance: number;
-  useBBangCount: number;
+  bbangCount: number;
   handCards = new Map<CardType, number>();
   stateInfo = new CharacterStateInfo();
   positionInfo: CharacterPositionInfo;
@@ -89,6 +89,7 @@ export class Character extends EventEmitter {
       debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
       handCardsCount: this.getTotalHandCardCount(),
+      bbangCount: this.bbangCount,
     };
   }
 
@@ -123,7 +124,7 @@ export class Character extends EventEmitter {
   }
 
   increaseBBangCount() {
-    this.useBBangCount++;
+    this.bbangCount++;
   }
 
   getBBangDamage() {

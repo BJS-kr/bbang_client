@@ -643,6 +643,7 @@ $root.CharacterData = (function() {
      * @property {Array.<number>|null} [equips] CharacterData equips
      * @property {Array.<number>|null} [debuffs] CharacterData debuffs
      * @property {Array.<ICardData>|null} [handCards] CharacterData handCards
+     * @property {number|null} [bbangCount] CharacterData bbangCount
      * @property {number|null} [handCardsCount] CharacterData handCardsCount
      */
 
@@ -729,6 +730,14 @@ $root.CharacterData = (function() {
     CharacterData.prototype.handCards = $util.emptyArray;
 
     /**
+     * CharacterData bbangCount.
+     * @member {number} bbangCount
+     * @memberof CharacterData
+     * @instance
+     */
+    CharacterData.prototype.bbangCount = 0;
+
+    /**
      * CharacterData handCardsCount.
      * @member {number} handCardsCount
      * @memberof CharacterData
@@ -785,8 +794,10 @@ $root.CharacterData = (function() {
         if (message.handCards != null && message.handCards.length)
             for (var i = 0; i < message.handCards.length; ++i)
                 $root.CardData.encode(message.handCards[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+        if (message.bbangCount != null && Object.hasOwnProperty.call(message, "bbangCount"))
+            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.bbangCount);
         if (message.handCardsCount != null && Object.hasOwnProperty.call(message, "handCardsCount"))
-            writer.uint32(/* id 9, wireType 0 =*/72).int32(message.handCardsCount);
+            writer.uint32(/* id 10, wireType 0 =*/80).int32(message.handCardsCount);
         return writer;
     };
 
@@ -870,6 +881,10 @@ $root.CharacterData = (function() {
                     break;
                 }
             case 9: {
+                    message.bbangCount = reader.int32();
+                    break;
+                }
+            case 10: {
                     message.handCardsCount = reader.int32();
                     break;
                 }
@@ -973,6 +988,9 @@ $root.CharacterData = (function() {
                     return "handCards." + error;
             }
         }
+        if (message.bbangCount != null && message.hasOwnProperty("bbangCount"))
+            if (!$util.isInteger(message.bbangCount))
+                return "bbangCount: integer expected";
         if (message.handCardsCount != null && message.hasOwnProperty("handCardsCount"))
             if (!$util.isInteger(message.handCardsCount))
                 return "handCardsCount: integer expected";
@@ -1116,6 +1134,8 @@ $root.CharacterData = (function() {
                 message.handCards[i] = $root.CardData.fromObject(object.handCards[i]);
             }
         }
+        if (object.bbangCount != null)
+            message.bbangCount = object.bbangCount | 0;
         if (object.handCardsCount != null)
             message.handCardsCount = object.handCardsCount | 0;
         return message;
@@ -1145,6 +1165,7 @@ $root.CharacterData = (function() {
             object.hp = 0;
             object.weapon = 0;
             object.stateInfo = null;
+            object.bbangCount = 0;
             object.handCardsCount = 0;
         }
         if (message.characterType != null && message.hasOwnProperty("characterType"))
@@ -1172,6 +1193,8 @@ $root.CharacterData = (function() {
             for (var j = 0; j < message.handCards.length; ++j)
                 object.handCards[j] = $root.CardData.toObject(message.handCards[j], options);
         }
+        if (message.bbangCount != null && message.hasOwnProperty("bbangCount"))
+            object.bbangCount = message.bbangCount;
         if (message.handCardsCount != null && message.hasOwnProperty("handCardsCount"))
             object.handCardsCount = message.handCardsCount;
         return object;

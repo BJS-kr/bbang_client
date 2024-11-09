@@ -365,7 +365,7 @@ function handleGuerrillaTargetBBang({ socket, version, sequence }: HandlerBase, 
 }
 
 function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  if (user.character.getMaxBBangCount() <= user.character.useBBangCount) {
+  if (user.character.getMaxBBangCount() <= user.character.bbangCount) {
     return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.ALREADY_USED_BBANG,

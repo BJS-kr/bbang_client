@@ -39,7 +39,7 @@ export class GameEvents extends EventEmitter {
           const card = { type: pickRandomCardType(), count: 1 };
           user.character.acquireCard(card);
         }
-        user.character.useBBangCount = 0;
+        user.character.bbangCount = 0;
       });
 
       const updatedUsers: User[] = [];
