@@ -118,8 +118,19 @@ export class CharacterStateInfo {
       clearTimeout(this.#stateTimer);
     }
 
-    if (this.state === CharacterState.NONE || this.state === CharacterState.FLEA_MARKET_TURN || this.state === CharacterState.FLEA_MARKET_WAIT) {
-      return;
+    switch (this.state) {
+      case CharacterState.NONE:
+      case CharacterState.FLEA_MARKET_TURN:
+      case CharacterState.FLEA_MARKET_WAIT:
+      case CharacterState.ABSORBING:
+      case CharacterState.ABSORB_TARGET:
+      case CharacterState.HALLUCINATING:
+      case CharacterState.HALLUCINATION_TARGET:
+      case CharacterState.CONTAINED:
+        return;
+
+      default:
+        break;
     }
 
     this.#stateTimer = setTimeout(() => {
