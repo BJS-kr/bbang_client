@@ -8,10 +8,12 @@ import { CharacterPositionInfo } from '../character.position';
 import { Result } from '../../db/types';
 import { log } from '../../utils/logger';
 import { cards } from '../../cards/card.instance.index';
+import { GameEvents } from '../../game/game.events';
+import { User } from '../../users/types';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
-
+export type TakeDamageEvent = { attacker: User | null; damage: number };
 const HP_MIN = 0;
 const handler = {
   get: function (target: Character, key: string) {
@@ -43,22 +45,24 @@ export class Character extends EventEmitter {
   weapon: number = 0;
   equips = new Set<CARD_TYPE>();
   debuffs = new Set<CARD_TYPE>();
-  onTakeDamage: () => void;
 
+  gameEvents: GameEvents;
   constructor({
     userId,
     hp,
     roleType,
     characterType,
     baseDefenseChance,
-    onTakeDamage,
+
+    gameEvents,
   }: {
     userId: string;
     hp: number;
     roleType: number;
     characterType: number;
     baseDefenseChance: number;
-    onTakeDamage: () => void;
+
+    gameEvents: GameEvents;
   }) {
     super();
 
@@ -68,8 +72,8 @@ export class Character extends EventEmitter {
     this.roleType = roleType;
     this.baseDefenseChance = baseDefenseChance;
     this.positionInfo = new CharacterPositionInfo(userId);
-    this.onTakeDamage = onTakeDamage;
 
+    this.gameEvents = gameEvents;
     return new Proxy(this, handler);
   }
 
@@ -147,11 +151,11 @@ export class Character extends EventEmitter {
     return Array.from(this.handCards.values()).reduce((sum, count) => sum + count, 0);
   }
 
-  takeDamage(amount: number) {
+  takeDamage(amount: number, attacker: User | null): TakeDamageEvent {
     this.hp = Math.max(HP_MIN, this.hp - amount);
-    this.onTakeDamage();
+    this.gameEvents.emit('checkWinCondition');
 
-    return amount;
+    return { damage: amount, attacker };
   }
 
   isDefended() {

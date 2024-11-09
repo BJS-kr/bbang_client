@@ -1,6 +1,7 @@
 import { Character } from '../characters/class/character';
 import { ROLE_TYPE, CHARACTER_TYPE } from '../constants/game';
 import net from 'node:net';
+import { GameEvents } from '../game/game.events';
 
 export class User {
   id: string;
@@ -18,7 +19,7 @@ export class User {
       roleType: ROLE_TYPE.NONE,
       characterType: CHARACTER_TYPE.NONE,
       baseDefenseChance: 0,
-      onTakeDamage: () => {},
+      gameEvents: new GameEvents(0),
     });
   }
 

@@ -8,8 +8,6 @@ import { PACKET_TYPE } from '../constants/packetType';
 import { S2CPositionUpdateNotification, S2CUserUpdateNotification, S2CWarningNotification, WarningType } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
-import { Sequence } from 'mysql2/typings/mysql/lib/protocol/sequences/Sequence';
-import { rooms } from './rooms';
 import { CARD_TYPE } from '../constants/game';
 
 export enum RoomState {
@@ -90,7 +88,7 @@ export class Room {
 
   setTimer() {
     this.gameState.gameStart();
-    this.startInfomationBroadcastTimer();
+    this.startInformationBroadcastTimer();
   }
 
   resetTimer() {
@@ -110,7 +108,7 @@ export class Room {
     }
   }
 
-  startInfomationBroadcastTimer() {
+  startInformationBroadcastTimer() {
     this.infomationBroadcastTimer = setInterval(() => {
       const now = Date.now();
 
@@ -143,7 +141,7 @@ export class Room {
         if (!user) {
           return;
         }
-        user?.character.takeDamage(2);
+        user?.character.takeDamage(2, null);
         user?.character.debuffs.delete(CARD_TYPE.BOMB);
         this.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
           user: [user.toUserData(user.id)],
@@ -175,7 +173,7 @@ export class Rooms {
 
   create(roomId, roomName, ownerId, maxUserNum) {
     if (this.isRoomExist(roomId)) return false;
-    const gameEvents = new GameEvents();
+    const gameEvents = new GameEvents(roomId);
     const room = new Room({
       name: roomName,
       ownerId,

@@ -9,16 +9,18 @@ import { error } from '../utils/logger';
 import { S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
+import { checkWinCondition } from './win.condition';
+import { rooms } from '../rooms/rooms';
 
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];
   satelliteTargets: User[] = [];
-
+  roomId: number;
   #room: Room;
 
-  constructor() {
+  constructor(roomId: number) {
     super();
-
+    this.roomId = roomId;
     this.on('DAY', () => {
       if (!this.#room) {
         return error('room is not set in gameEvents');
@@ -56,7 +58,7 @@ export class GameEvents extends EventEmitter {
 
       this.satelliteTargets.forEach((st) => {
         if (SatelliteTarget.isHit()) {
-          st.character.takeDamage(3);
+          st.character.takeDamage(3, null);
         } else {
           st.character.debuffs.delete(CARD_TYPE.SATELLITE_TARGET);
           const userIndex = this.#room.users.findIndex((u) => u === st);
@@ -93,6 +95,22 @@ export class GameEvents extends EventEmitter {
         phaseType: this.#room.gameState.phaseType,
         nextPhaseAt: this.#room.gameState.nextPhaseAt,
       } satisfies MessageProps<S2CPhaseUpdateNotification>);
+    });
+
+    this.on('update', (...userIds: string[]) => {
+      const users = userIds.map((userId) => this.#room.users.find((u) => u.id === userId)).filter((u) => u !== undefined);
+
+      if (!users.length) {
+        return error('user is not found in gameEvents');
+      }
+
+      this.#room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
+        user: users.map((u) => u.toUserData(u.id)),
+      } satisfies MessageProps<S2CUserUpdateNotification>);
+    });
+
+    this.on('checkWinCondition', () => {
+      checkWinCondition(rooms, this.#room, this.roomId);
     });
   }
 

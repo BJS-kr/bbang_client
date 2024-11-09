@@ -9,6 +9,7 @@ import net from 'node:net';
 import { Character } from '../characters/class/character';
 import { CHARACTER_TYPE } from '../constants/game';
 import { ROLE_TYPE } from '../constants/game';
+import { GameEvents } from '../game/game.events';
 
 export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest) => {
   const { id, password, nickname } = registerRequest;
@@ -56,7 +57,7 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
         roleType: ROLE_TYPE.NONE,
         characterType: CHARACTER_TYPE.NONE,
         baseDefenseChance: 0,
-        onTakeDamage: () => {},
+        gameEvents: new GameEvents(0),
       }).toCharacterData(result.userId),
     },
     failCode: GlobalFailCode.NONE,

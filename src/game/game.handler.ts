@@ -23,7 +23,6 @@ import { createCharacter } from '../characters/createCharacter';
 import { log, error } from '../utils/logger';
 import { UserUpdateNotification } from '../cards/utils/types';
 import { pickRandomCardType } from '../cards/utils/helpers';
-import { checkWinCondition } from './win.condition';
 // TODO
 const TARGET_CARD_BONUS = 1;
 
@@ -95,7 +94,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
       userId: room.users[i].id,
       characterType,
       roleType,
-      onTakeDamage: checkWinCondition(socket, version, sequence, rooms, ctx.roomId),
+      gameEvents: room.gameEvents,
     });
     room.users[i].character.setPosition(suhfflePositions[i]);
   }
