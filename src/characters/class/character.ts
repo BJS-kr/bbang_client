@@ -97,9 +97,9 @@ export class Character extends EventEmitter {
 
   getMaxBBangCount() {
     switch (true) {
-      case this.weapon === CARD_TYPE.SNIPER_GUN:
-        return 2;
       case this.weapon === CARD_TYPE.HAND_GUN:
+        return 2;
+      case this.weapon === CARD_TYPE.AUTO_RIFLE:
       case this.characterType === CHARACTER_TYPE.RED:
         return Infinity;
     }
@@ -107,11 +107,13 @@ export class Character extends EventEmitter {
     return 1;
   }
 
-  getShieldAmount() {
-    switch (true) {
-      case this.equips.has(CARD_TYPE.LASER_POINTER):
-      case this.characterType === CHARACTER_TYPE.SHARK:
-        return 2;
+  getShieldAmount(shooter: Character) {
+    if (shooter.equips.has(CARD_TYPE.LASER_POINTER)) {
+      return 2;
+    }
+
+    if (this.characterType === CHARACTER_TYPE.SHARK) {
+      return 2;
     }
 
     return 1;

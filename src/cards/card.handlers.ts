@@ -428,9 +428,10 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     } satisfies UseCardResponse);
   }
 
-  if (user.character.getShieldAmount() > 1) {
+  if (user.character.getShieldAmount(targetUser.character) > 1) {
     // 두번 째 쉴드 draw. 첫 번째 쉴드는 카드 타입으로 인해 handleUseCard에서 이미 뽑았음
     const shield = user.character.drawCard({ type: CARD_TYPE.SHIELD, count: 1 });
+
     if (shield instanceof Error) {
       error('handleShield: character have no sufficient amount of shield card');
       // handler에 진입하기 위해 draw했던 카드 반환
