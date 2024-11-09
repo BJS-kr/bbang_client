@@ -82,7 +82,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   const shuffleRoles = roles.sort(() => Math.random() - 0.5);
   const suhfflePositions = [...GAME_INIT_POSITION].sort(() => Math.random() - 0.5);
   const shuffleCharacters = Object.values(CharacterType)
-    .filter((type) => typeof type === 'number' && type !== CharacterType.NONE)
+    .filter((type) => typeof type === 'number' && type !== CharacterType.NONE_CHARACTER)
     .sort(() => Math.random() - 0.5);
 
   // 역할, 캐릭터, 초기 위치 부여
@@ -110,7 +110,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
   // 게임 준비 응답
   const responsePayload: MessageProps<S2CGamePrepareResponse> = {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   };
   writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, responsePayload);
 
@@ -216,7 +216,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
   // 게임 시작 응답
   writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies MessageProps<S2CGameStartResponse>);
 
   // 게임 시작 알림
@@ -264,7 +264,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
     } satisfies MessageProps<S2CPositionUpdateResponse>);
   }
 
-  if (roomUser.character.stateInfo.state !== CharacterStateType.NONE) {
+  if (roomUser.character.stateInfo.state !== CharacterStateType.NONE_CHARACTER_STATE) {
     return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -274,7 +274,7 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   roomUser.character.setPosition({ x, y });
   writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies MessageProps<S2CPositionUpdateResponse>);
 
   room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
@@ -299,7 +299,7 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
     } satisfies MessageProps<S2CReactionResponse>);
   }
 
-  if (user.character.stateInfo.state === CharacterStateType.NONE) {
+  if (user.character.stateInfo.state === CharacterStateType.NONE_CHARACTER_STATE) {
     return writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.CHARACTER_STATE_ERROR,
@@ -329,13 +329,13 @@ export const reactionHandler = async (socket, version, sequence, reactionRequest
       break;
 
     default:
-      user.character.stateInfo.react(CharacterStateType.NONE);
+      user.character.stateInfo.react(CharacterStateType.NONE_CHARACTER_STATE);
       break;
   }
 
   writePayload(socket, PACKET_TYPE.REACTION_RESPONSE, version, sequence, {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies MessageProps<S2CReactionResponse>);
 
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
@@ -381,7 +381,7 @@ export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarke
 
   writePayload(socket, PACKET_TYPE.FLEA_MARKET_PICK_RESPONSE, version, sequence, {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies MessageProps<S2CFleaMarketPickResponse>);
 
   room.broadcast(PACKET_TYPE.FLEA_MARKET_NOTIFICATION, {

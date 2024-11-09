@@ -16,8 +16,8 @@ export class User {
     this.character = new Character({
       userId: this.id,
       hp: 0,
-      roleType: RoleType.NONE,
-      characterType: CharacterType.NONE,
+      roleType: RoleType.NONE_ROLE,
+      characterType: CharacterType.NONE_CHARACTER,
       baseDefenseChance: 0,
       gameEvents: new GameEvents(0),
     });

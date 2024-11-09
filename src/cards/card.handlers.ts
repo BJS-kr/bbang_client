@@ -183,7 +183,7 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
     }
   }
 
-  return responseCardSelect(socket, version, sequence, room, true, GlobalFailCode.NONE, [user, targetUser]);
+  return responseCardSelect(socket, version, sequence, room, true, GlobalFailCode.NONE_FAILCODE, [user, targetUser]);
 }
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
@@ -358,7 +358,7 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
 }
 
 function handleGuerrillaTargetBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  user.character.stateInfo.setState(targetUser.id, CharacterStateType.NONE, null);
+  user.character.stateInfo.setState(targetUser.id, CharacterStateType.NONE_CHARACTER_STATE, null);
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
     user: [user.toUserData(user.id)],
   } satisfies MessageProps<S2CUserUpdateNotification>);
@@ -381,7 +381,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   responseSuccess(socket, version, sequence, CardType.BBANG, [user, targetUser], room, user, targetUser.id);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
-    targetUser.character.stateInfo.setState('', CharacterStateType.NONE, null);
+    targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -393,7 +393,7 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (isAutoShieldExists && autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
-    shielded && targetUser.character.stateInfo.setState('', CharacterStateType.NONE, null);
+    shielded && targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,
@@ -409,8 +409,8 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
 }
 
 function handleDeathMatchBBang({ socket, version, sequence }: HandlerBase, user: User, targetUser: User, room: Room) {
-  user.character.stateInfo.setState(targetUser.id, CharacterStateType.DEATH_MATCH, null);
-  targetUser.character.stateInfo.setState(user.id, CharacterStateType.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
+  user.character.stateInfo.setState(targetUser.id, CharacterStateType.DEATH_MATCH_STATE, null);
+  targetUser.character.stateInfo.setState(user.id, CharacterStateType.DEATH_MATCH_TURN_STATE, onDeathMatchTurnTimeout(user, targetUser, room));
 
   responseSuccess(socket, version, sequence, CardType.BBANG, [user, targetUser], room, user, targetUser.id);
 }
@@ -444,7 +444,7 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     }
   }
 
-  user.character.stateInfo.setState(user.id, CharacterStateType.NONE, null);
+  user.character.stateInfo.setState(user.id, CharacterStateType.NONE_CHARACTER_STATE, null);
   const shooter = room.getUser(user.character.stateInfo.stateTargetUserId);
   if (!shooter) {
     error('handleShield: shooter not found');
@@ -455,7 +455,7 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
     } satisfies UseCardResponse);
   }
 
-  shooter.character.stateInfo.setState(shooter.id, CharacterStateType.NONE, null);
+  shooter.character.stateInfo.setState(shooter.id, CharacterStateType.NONE_CHARACTER_STATE, null);
   responseSuccess(socket, version, sequence, CardType.SHIELD, [user, shooter], room, user, shooter.id);
 }
 
@@ -471,8 +471,8 @@ function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardReq
     } satisfies UseCardResponse);
   }
 
-  user.character.stateInfo.setState(targetUser.id, CharacterStateType.DEATH_MATCH, null);
-  targetUser.character.stateInfo.setState(user.id, CharacterStateType.DEATH_MATCH_TURN, onDeathMatchTurnTimeout(user, targetUser, room));
+  user.character.stateInfo.setState(targetUser.id, CharacterStateType.DEATH_MATCH_STATE, null);
+  targetUser.character.stateInfo.setState(user.id, CharacterStateType.DEATH_MATCH_TURN_STATE, onDeathMatchTurnTimeout(user, targetUser, room));
 
   responseSuccess(socket, version, sequence, CardType.DEATH_MATCH, [user, targetUser], room, user, targetUser.id);
 }
@@ -762,7 +762,7 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
 
       writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
         success: true,
-        failCode: GlobalFailCode.NONE,
+        failCode: GlobalFailCode.NONE_FAILCODE,
       } satisfies MessageProps<S2CPassDebuffResponse>);
 
       room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {

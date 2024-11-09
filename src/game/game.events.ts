@@ -48,7 +48,7 @@ export class GameEvents extends EventEmitter {
         if (ContainmentUnit.canEscape()) {
           cu.character.debuffs.delete(CardType.CONTAINMENT_UNIT);
           this.containedUsers = this.containedUsers.filter((cu) => cu !== cu);
-          cu.character.stateInfo.setState(cu.id, CharacterStateType.NONE, null);
+          cu.character.stateInfo.setState(cu.id, CharacterStateType.NONE_CHARACTER_STATE, null);
         } else {
           cu.character.stateInfo.setState(cu.id, CharacterStateType.CONTAINED, null);
         }

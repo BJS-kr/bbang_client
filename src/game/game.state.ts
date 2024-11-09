@@ -4,7 +4,7 @@ import { GameEvents } from './game.events';
 
 const DAY_SECOND = 180; // 3분
 const EVENING_SECOND = 60; // 1분
-const END_SECOND = 10; // 10초
+const END_SECOND = 30; // 30초
 
 export class GameState {
   phaseType;
@@ -14,7 +14,7 @@ export class GameState {
 
   constructor(gameEvents: GameEvents) {
     this.#gameEvents = gameEvents;
-    this.phaseType = PhaseType.NONE;
+    this.phaseType = PhaseType.NONE_PHASE;
     this.nextPhaseAt = 0;
   }
 

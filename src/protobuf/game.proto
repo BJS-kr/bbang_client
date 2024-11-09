@@ -376,7 +376,7 @@ message GamePacket {
     실패 코드
 */
 enum GlobalFailCode {
-    NONE = 0;
+    NONE_FAILCODE = 0;
     UNKNOWN_ERROR = 1;
     INVALID_REQUEST = 2;
     AUTHENTICATION_FAILED = 3;
@@ -397,17 +397,17 @@ enum GlobalFailCode {
 
 enum WarningType {
     NO_WARNING = 0;
-    BOMB = 1;
+    BOMB_WANING = 1;
 }
 
 enum WinType {
-    TARGET_AND_BODYGUARD = 0;
-    HITMAN= 1;
-    PSYCHOPATH = 2;
+    TARGET_AND_BODYGUARD_WIN = 0;
+    HITMAN_WIN = 1;
+    PSYCHOPATH_WIN = 2;
 }
 
 enum CharacterType {
-    NONE = 0;
+    NONE_CHARACTER = 0;
     RED = 1; // 빨강이
     BLUE = 2; // 파랑이
     SHARK = 3; // 상어군
@@ -424,11 +424,11 @@ enum CharacterType {
 }
 
 enum CharacterStateType {
-    NONE = 0;
+    NONE_CHARACTER_STATE = 0;
     BBANG_SHOOTER = 1; // 빵야 시전자
     BBANG_TARGET = 2; // 빵야 대상 (쉴드 사용가능 상태)
-    DEATH_MATCH = 3; // 현피 중 자신의 턴이 아닐 때
-    DEATH_MATCH_TURN = 4; // 현피 중 자신의 턴
+    DEATH_MATCH_STATE = 3; // 현피 중 자신의 턴이 아닐 때
+    DEATH_MATCH_TURN_STATE = 4; // 현피 중 자신의 턴
     FLEA_MARKET_TURN = 5; // 플리마켓 자신의 턴
     FLEA_MARKET_WAIT = 6; // 플리마켓 턴 대기 상태
     GUERRILLA_SHOOTER = 7; // 게릴라 시전자
@@ -470,7 +470,7 @@ enum CardType {
 }
 
 enum RoleType {
-    NONE = 0;
+    NONE_ROLE = 0;
     TARGET = 1;
     BODYGUARD = 2;
     HITMAN = 3;
@@ -484,14 +484,14 @@ enum RoomStateType {
 }
 
 enum PhaseType {
-    NONE = 0;
+    NONE_PHASE = 0;
     DAY = 1;
     EVENING = 2;
     END = 3;
 }
 
 enum ReactionType {
-    NONE = 0;
+    NONE_REACTION = 0;
     NOT_USE_CARD = 1;
 }
 

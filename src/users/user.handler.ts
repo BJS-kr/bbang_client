@@ -20,7 +20,7 @@ export const registerRequestHandler = async (socket: net.Socket, version, sequen
   const payload = {
     success: isError ? false : true,
     message: isError ? '회원가입 실패' : '회원가입 성공',
-    failCode: isError ? GlobalFailCode.REGISTER_FAILED : GlobalFailCode.NONE,
+    failCode: isError ? GlobalFailCode.REGISTER_FAILED : GlobalFailCode.NONE_FAILCODE,
   };
 
   writePayload(socket, PACKET_TYPE.REGISTER_RESPONSE, version, sequence, payload);
@@ -52,13 +52,13 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
       character: new Character({
         userId: result.userId,
         hp: 0,
-        roleType: RoleType.NONE,
-        characterType: CharacterType.NONE,
+        roleType: RoleType.NONE_ROLE,
+        characterType: CharacterType.NONE_CHARACTER,
         baseDefenseChance: 0,
         gameEvents: new GameEvents(0),
       }).toCharacterData(result.userId),
     },
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   };
 
   writePayload(socket, PACKET_TYPE.LOGIN_RESPONSE, version, sequence, payload);

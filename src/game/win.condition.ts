@@ -21,7 +21,7 @@ export function checkWinCondition(rooms: Rooms, room: Room, roomId: number) {
 
       return room.broadcast(PACKET_TYPE.GAME_END_NOTIFICATION, {
         winners: room.users.filter((u) => u.character.roleType === RoleType.TARGET || u.character.roleType === RoleType.BODYGUARD).map((u) => u.id),
-        winType: WinType.TARGET_AND_BODYGUARD,
+        winType: WinType.TARGET_AND_BODYGUARD_WIN,
       } satisfies MessageProps<S2CGameEndNotification>);
     }
 
@@ -30,7 +30,7 @@ export function checkWinCondition(rooms: Rooms, room: Room, roomId: number) {
 
       return room.broadcast(PACKET_TYPE.GAME_END_NOTIFICATION, {
         winners: room.users.filter((u) => u.character.roleType === RoleType.HITMAN).map((u) => u.id),
-        winType: WinType.HITMAN,
+        winType: WinType.HITMAN_WIN,
       } satisfies MessageProps<S2CGameEndNotification>);
     }
 
@@ -39,7 +39,7 @@ export function checkWinCondition(rooms: Rooms, room: Room, roomId: number) {
 
       return room.broadcast(PACKET_TYPE.GAME_END_NOTIFICATION, {
         winners: room.users.filter((u) => u.character.roleType === RoleType.PSYCHOPATH).map((u) => u.id),
-        winType: WinType.PSYCHOPATH,
+        winType: WinType.PSYCHOPATH_WIN,
       } satisfies MessageProps<S2CGameEndNotification>);
     }
   };

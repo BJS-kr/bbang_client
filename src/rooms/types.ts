@@ -132,7 +132,7 @@ export class Room {
         }
         bombState.isWarningSend = true;
         writePayload(user.socket, PACKET_TYPE.WARNING_NOTIFICATION, '', 0, {
-          warningType: WarningType.BOMB,
+          warningType: WarningType.BOMB_WANING,
           expectedAt: bombState.expectedAt,
         } satisfies MessageProps<S2CWarningNotification>);
       });

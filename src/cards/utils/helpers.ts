@@ -25,7 +25,8 @@ export function isGuerrillaTargetBBang(user: User) {
 
 export function isDeathMatchBBang(user: User, targetUser: User) {
   return (
-    user.character.stateInfo.state === CharacterStateType.DEATH_MATCH_TURN && targetUser.character.stateInfo.state === CharacterStateType.DEATH_MATCH
+    user.character.stateInfo.state === CharacterStateType.DEATH_MATCH_TURN_STATE &&
+    targetUser.character.stateInfo.state === CharacterStateType.DEATH_MATCH_STATE
   );
 }
 export function responseCardSelect(
@@ -38,7 +39,7 @@ export function responseCardSelect(
   users: User[],
 ) {
   users.forEach((user) => {
-    user.character.stateInfo.setState(user.id, CharacterStateType.NONE, null);
+    user.character.stateInfo.setState(user.id, CharacterStateType.NONE_CHARACTER_STATE, null);
   });
 
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
@@ -63,7 +64,7 @@ export function responseSuccess(
 ) {
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
-    failCode: GlobalFailCode.NONE,
+    failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies UseCardResponse);
 
   room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {

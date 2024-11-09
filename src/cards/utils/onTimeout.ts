@@ -25,8 +25,8 @@ export function onBBangTimeoutTarget(damage: number, attacker: User, targetUser:
 export function onDeathMatchTurnTimeout(user: User, targetUser: User, room: Room) {
   return () => {
     targetUser.character.takeDamage(1, user);
-    user.character.stateInfo.setState(user.id, CharacterStateType.NONE, null);
-    targetUser.character.stateInfo.setState(targetUser.id, CharacterStateType.NONE, null);
+    user.character.stateInfo.setState(user.id, CharacterStateType.NONE_CHARACTER_STATE, null);
+    targetUser.character.stateInfo.setState(targetUser.id, CharacterStateType.NONE_CHARACTER_STATE, null);
 
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [user.toUserData(user.id), targetUser.toUserData(targetUser.id)],
@@ -39,7 +39,7 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
     const userIndex = room.users.findIndex((u) => u.id === user.id);
     const isEnd = userIndex === room.users.length - 1;
     if (isEnd) {
-      room.users.forEach((user) => user.character.stateInfo.setState(user.id, CharacterStateType.NONE, null));
+      room.users.forEach((user) => user.character.stateInfo.setState(user.id, CharacterStateType.NONE_CHARACTER_STATE, null));
     } else {
       const nextIndex = userIndex + 1;
       room.users[userIndex].character.stateInfo.setState(room.users[userIndex].id, CharacterStateType.FLEA_MARKET_WAIT, null);
@@ -59,7 +59,7 @@ export function onFleaMarketTurnTimeout(user: User, room: Room) {
 export function onGuerillaTargetTimeout(targetUser: User, room: Room) {
   return () => {
     targetUser.character.takeDamage(1, null);
-    targetUser.character.stateInfo.setState('', CharacterStateType.NONE, null);
+    targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
     } satisfies MessageProps<S2CUserUpdateNotification>);

@@ -998,7 +998,7 @@ $root.CharacterData = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_CHARACTER":
         case 0:
             message.characterType = 0;
             break;
@@ -1062,7 +1062,7 @@ $root.CharacterData = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_ROLE":
         case 0:
             message.roleType = 0;
             break;
@@ -1140,8 +1140,8 @@ $root.CharacterData = (function() {
             object.handCards = [];
         }
         if (options.defaults) {
-            object.characterType = options.enums === String ? "NONE" : 0;
-            object.roleType = options.enums === String ? "NONE" : 0;
+            object.characterType = options.enums === String ? "NONE_CHARACTER" : 0;
+            object.roleType = options.enums === String ? "NONE_ROLE" : 0;
             object.hp = 0;
             object.weapon = 0;
             object.stateInfo = null;
@@ -1993,7 +1993,7 @@ $root.GameStateData = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_PHASE":
         case 0:
             message.phaseType = 0;
             break;
@@ -2036,7 +2036,7 @@ $root.GameStateData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.phaseType = options.enums === String ? "NONE" : 0;
+            object.phaseType = options.enums === String ? "NONE_PHASE" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.nextPhaseAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -2330,7 +2330,7 @@ $root.CharacterStateInfoData = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_CHARACTER_STATE":
         case 0:
             message.state = 0;
             break;
@@ -2342,11 +2342,11 @@ $root.CharacterStateInfoData = (function() {
         case 2:
             message.state = 2;
             break;
-        case "DEATH_MATCH":
+        case "DEATH_MATCH_STATE":
         case 3:
             message.state = 3;
             break;
-        case "DEATH_MATCH_TURN":
+        case "DEATH_MATCH_TURN_STATE":
         case 4:
             message.state = 4;
             break;
@@ -2402,7 +2402,7 @@ $root.CharacterStateInfoData = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_CHARACTER_STATE":
         case 0:
             message.nextState = 0;
             break;
@@ -2414,11 +2414,11 @@ $root.CharacterStateInfoData = (function() {
         case 2:
             message.nextState = 2;
             break;
-        case "DEATH_MATCH":
+        case "DEATH_MATCH_STATE":
         case 3:
             message.nextState = 3;
             break;
-        case "DEATH_MATCH_TURN":
+        case "DEATH_MATCH_TURN_STATE":
         case 4:
             message.nextState = 4;
             break;
@@ -2495,8 +2495,8 @@ $root.CharacterStateInfoData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.state = options.enums === String ? "NONE" : 0;
-            object.nextState = options.enums === String ? "NONE" : 0;
+            object.state = options.enums === String ? "NONE_CHARACTER_STATE" : 0;
+            object.nextState = options.enums === String ? "NONE_CHARACTER_STATE" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.nextStateAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -3013,7 +3013,7 @@ $root.S2CRegisterResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -3101,7 +3101,7 @@ $root.S2CRegisterResponse = (function() {
         if (options.defaults) {
             object.success = false;
             object.message = "";
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -3629,7 +3629,7 @@ $root.S2CLoginResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -3719,7 +3719,7 @@ $root.S2CLoginResponse = (function() {
             object.message = "";
             object.token = "";
             object.myInfo = null;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -4211,7 +4211,7 @@ $root.S2CCreateRoomResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -4299,7 +4299,7 @@ $root.S2CCreateRoomResponse = (function() {
         if (options.defaults) {
             object.success = false;
             object.room = null;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -5162,7 +5162,7 @@ $root.S2CJoinRoomResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -5250,7 +5250,7 @@ $root.S2CJoinRoomResponse = (function() {
         if (options.defaults) {
             object.success = false;
             object.room = null;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -5714,7 +5714,7 @@ $root.S2CJoinRandomRoomResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -5802,7 +5802,7 @@ $root.S2CJoinRandomRoomResponse = (function() {
         if (options.defaults) {
             object.success = false;
             object.room = null;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -6421,7 +6421,7 @@ $root.S2CLeaveRoomResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -6508,7 +6508,7 @@ $root.S2CLeaveRoomResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -7120,7 +7120,7 @@ $root.S2CGamePrepareResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -7207,7 +7207,7 @@ $root.S2CGamePrepareResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -7824,7 +7824,7 @@ $root.S2CGameStartResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -7911,7 +7911,7 @@ $root.S2CGameStartResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -8670,7 +8670,7 @@ $root.S2CPositionUpdateResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -8757,7 +8757,7 @@ $root.S2CPositionUpdateResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -9571,7 +9571,7 @@ $root.S2CUseCardResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -9658,7 +9658,7 @@ $root.S2CUseCardResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -11613,7 +11613,7 @@ $root.S2CFleaMarketPickResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -11700,7 +11700,7 @@ $root.S2CFleaMarketPickResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -12143,7 +12143,7 @@ $root.S2CPhaseUpdateNotification = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_PHASE":
         case 0:
             message.phaseType = 0;
             break;
@@ -12186,7 +12186,7 @@ $root.S2CPhaseUpdateNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.phaseType = options.enums === String ? "NONE" : 0;
+            object.phaseType = options.enums === String ? "NONE_PHASE" : 0;
             if ($util.Long) {
                 var long = new $util.Long(0, 0, false);
                 object.nextPhaseAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -12393,7 +12393,7 @@ $root.C2SReactionRequest = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_REACTION":
         case 0:
             message.reactionType = 0;
             break;
@@ -12419,7 +12419,7 @@ $root.C2SReactionRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults)
-            object.reactionType = options.enums === String ? "NONE" : 0;
+            object.reactionType = options.enums === String ? "NONE_REACTION" : 0;
         if (message.reactionType != null && message.hasOwnProperty("reactionType"))
             object.reactionType = options.enums === String ? $root.ReactionType[message.reactionType] === undefined ? message.reactionType : $root.ReactionType[message.reactionType] : message.reactionType;
         return object;
@@ -12650,7 +12650,7 @@ $root.S2CReactionResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -12737,7 +12737,7 @@ $root.S2CReactionResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -13418,15 +13418,15 @@ $root.S2CGameEndNotification = (function() {
                 break;
             }
             break;
-        case "TARGET_AND_BODYGUARD":
+        case "TARGET_AND_BODYGUARD_WIN":
         case 0:
             message.winType = 0;
             break;
-        case "HITMAN":
+        case "HITMAN_WIN":
         case 1:
             message.winType = 1;
             break;
-        case "PSYCHOPATH":
+        case "PSYCHOPATH_WIN":
         case 2:
             message.winType = 2;
             break;
@@ -13450,7 +13450,7 @@ $root.S2CGameEndNotification = (function() {
         if (options.arrays || options.defaults)
             object.winners = [];
         if (options.defaults)
-            object.winType = options.enums === String ? "TARGET_AND_BODYGUARD" : 0;
+            object.winType = options.enums === String ? "TARGET_AND_BODYGUARD_WIN" : 0;
         if (message.winners && message.winners.length) {
             object.winners = [];
             for (var j = 0; j < message.winners.length; ++j)
@@ -14071,7 +14071,7 @@ $root.S2CCardSelectResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -14158,7 +14158,7 @@ $root.S2CCardSelectResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -14748,7 +14748,7 @@ $root.S2CPassDebuffResponse = (function() {
                 break;
             }
             break;
-        case "NONE":
+        case "NONE_FAILCODE":
         case 0:
             message.failCode = 0;
             break;
@@ -14835,7 +14835,7 @@ $root.S2CPassDebuffResponse = (function() {
         var object = {};
         if (options.defaults) {
             object.success = false;
-            object.failCode = options.enums === String ? "NONE" : 0;
+            object.failCode = options.enums === String ? "NONE_FAILCODE" : 0;
         }
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
@@ -15056,7 +15056,7 @@ $root.S2CWarningNotification = (function() {
         case 0:
             message.warningType = 0;
             break;
-        case "BOMB":
+        case "BOMB_WANING":
         case 1:
             message.warningType = 1;
             break;
@@ -16904,7 +16904,7 @@ $root.GamePacket = (function() {
  * GlobalFailCode enum.
  * @exports GlobalFailCode
  * @enum {number}
- * @property {number} NONE=0 NONE value
+ * @property {number} NONE_FAILCODE=0 NONE_FAILCODE value
  * @property {number} UNKNOWN_ERROR=1 UNKNOWN_ERROR value
  * @property {number} INVALID_REQUEST=2 INVALID_REQUEST value
  * @property {number} AUTHENTICATION_FAILED=3 AUTHENTICATION_FAILED value
@@ -16924,7 +16924,7 @@ $root.GamePacket = (function() {
  */
 $root.GlobalFailCode = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[0] = "NONE_FAILCODE"] = 0;
     values[valuesById[1] = "UNKNOWN_ERROR"] = 1;
     values[valuesById[2] = "INVALID_REQUEST"] = 2;
     values[valuesById[3] = "AUTHENTICATION_FAILED"] = 3;
@@ -16949,12 +16949,12 @@ $root.GlobalFailCode = (function() {
  * @exports WarningType
  * @enum {number}
  * @property {number} NO_WARNING=0 NO_WARNING value
- * @property {number} BOMB=1 BOMB value
+ * @property {number} BOMB_WANING=1 BOMB_WANING value
  */
 $root.WarningType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NO_WARNING"] = 0;
-    values[valuesById[1] = "BOMB"] = 1;
+    values[valuesById[1] = "BOMB_WANING"] = 1;
     return values;
 })();
 
@@ -16962,15 +16962,15 @@ $root.WarningType = (function() {
  * WinType enum.
  * @exports WinType
  * @enum {number}
- * @property {number} TARGET_AND_BODYGUARD=0 TARGET_AND_BODYGUARD value
- * @property {number} HITMAN=1 HITMAN value
- * @property {number} PSYCHOPATH=2 PSYCHOPATH value
+ * @property {number} TARGET_AND_BODYGUARD_WIN=0 TARGET_AND_BODYGUARD_WIN value
+ * @property {number} HITMAN_WIN=1 HITMAN_WIN value
+ * @property {number} PSYCHOPATH_WIN=2 PSYCHOPATH_WIN value
  */
 $root.WinType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "TARGET_AND_BODYGUARD"] = 0;
-    values[valuesById[1] = "HITMAN"] = 1;
-    values[valuesById[2] = "PSYCHOPATH"] = 2;
+    values[valuesById[0] = "TARGET_AND_BODYGUARD_WIN"] = 0;
+    values[valuesById[1] = "HITMAN_WIN"] = 1;
+    values[valuesById[2] = "PSYCHOPATH_WIN"] = 2;
     return values;
 })();
 
@@ -16978,7 +16978,7 @@ $root.WinType = (function() {
  * CharacterType enum.
  * @exports CharacterType
  * @enum {number}
- * @property {number} NONE=0 NONE value
+ * @property {number} NONE_CHARACTER=0 NONE_CHARACTER value
  * @property {number} RED=1 RED value
  * @property {number} BLUE=2 BLUE value
  * @property {number} SHARK=3 SHARK value
@@ -16995,7 +16995,7 @@ $root.WinType = (function() {
  */
 $root.CharacterType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[0] = "NONE_CHARACTER"] = 0;
     values[valuesById[1] = "RED"] = 1;
     values[valuesById[2] = "BLUE"] = 2;
     values[valuesById[3] = "SHARK"] = 3;
@@ -17016,11 +17016,11 @@ $root.CharacterType = (function() {
  * CharacterStateType enum.
  * @exports CharacterStateType
  * @enum {number}
- * @property {number} NONE=0 NONE value
+ * @property {number} NONE_CHARACTER_STATE=0 NONE_CHARACTER_STATE value
  * @property {number} BBANG_SHOOTER=1 BBANG_SHOOTER value
  * @property {number} BBANG_TARGET=2 BBANG_TARGET value
- * @property {number} DEATH_MATCH=3 DEATH_MATCH value
- * @property {number} DEATH_MATCH_TURN=4 DEATH_MATCH_TURN value
+ * @property {number} DEATH_MATCH_STATE=3 DEATH_MATCH_STATE value
+ * @property {number} DEATH_MATCH_TURN_STATE=4 DEATH_MATCH_TURN_STATE value
  * @property {number} FLEA_MARKET_TURN=5 FLEA_MARKET_TURN value
  * @property {number} FLEA_MARKET_WAIT=6 FLEA_MARKET_WAIT value
  * @property {number} GUERRILLA_SHOOTER=7 GUERRILLA_SHOOTER value
@@ -17035,11 +17035,11 @@ $root.CharacterType = (function() {
  */
 $root.CharacterStateType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[0] = "NONE_CHARACTER_STATE"] = 0;
     values[valuesById[1] = "BBANG_SHOOTER"] = 1;
     values[valuesById[2] = "BBANG_TARGET"] = 2;
-    values[valuesById[3] = "DEATH_MATCH"] = 3;
-    values[valuesById[4] = "DEATH_MATCH_TURN"] = 4;
+    values[valuesById[3] = "DEATH_MATCH_STATE"] = 3;
+    values[valuesById[4] = "DEATH_MATCH_TURN_STATE"] = 4;
     values[valuesById[5] = "FLEA_MARKET_TURN"] = 5;
     values[valuesById[6] = "FLEA_MARKET_WAIT"] = 6;
     values[valuesById[7] = "GUERRILLA_SHOOTER"] = 7;
@@ -17116,7 +17116,7 @@ $root.CardType = (function() {
  * RoleType enum.
  * @exports RoleType
  * @enum {number}
- * @property {number} NONE=0 NONE value
+ * @property {number} NONE_ROLE=0 NONE_ROLE value
  * @property {number} TARGET=1 TARGET value
  * @property {number} BODYGUARD=2 BODYGUARD value
  * @property {number} HITMAN=3 HITMAN value
@@ -17124,7 +17124,7 @@ $root.CardType = (function() {
  */
 $root.RoleType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[0] = "NONE_ROLE"] = 0;
     values[valuesById[1] = "TARGET"] = 1;
     values[valuesById[2] = "BODYGUARD"] = 2;
     values[valuesById[3] = "HITMAN"] = 3;
@@ -17152,14 +17152,14 @@ $root.RoomStateType = (function() {
  * PhaseType enum.
  * @exports PhaseType
  * @enum {number}
- * @property {number} NONE=0 NONE value
+ * @property {number} NONE_PHASE=0 NONE_PHASE value
  * @property {number} DAY=1 DAY value
  * @property {number} EVENING=2 EVENING value
  * @property {number} END=3 END value
  */
 $root.PhaseType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[0] = "NONE_PHASE"] = 0;
     values[valuesById[1] = "DAY"] = 1;
     values[valuesById[2] = "EVENING"] = 2;
     values[valuesById[3] = "END"] = 3;
@@ -17170,12 +17170,12 @@ $root.PhaseType = (function() {
  * ReactionType enum.
  * @exports ReactionType
  * @enum {number}
- * @property {number} NONE=0 NONE value
+ * @property {number} NONE_REACTION=0 NONE_REACTION value
  * @property {number} NOT_USE_CARD=1 NOT_USE_CARD value
  */
 $root.ReactionType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
-    values[valuesById[0] = "NONE"] = 0;
+    values[valuesById[0] = "NONE_REACTION"] = 0;
     values[valuesById[1] = "NOT_USE_CARD"] = 1;
     return values;
 })();

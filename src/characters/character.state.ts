@@ -13,8 +13,8 @@ export class CharacterStateInfo {
   #onStateTimeout: OnStateTimeout | null = null;
 
   constructor() {
-    this.state = CharacterStateType.NONE;
-    this.nextState = CharacterStateType.NONE;
+    this.state = CharacterStateType.NONE_CHARACTER_STATE;
+    this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
     this.nextStateAt = 0;
     this.stateTargetUserId = '';
   }
@@ -22,7 +22,7 @@ export class CharacterStateInfo {
   react(state: CharacterStateType) {
     const prevState = this.state;
     this.state = state;
-    this.nextState = CharacterStateType.NONE;
+    this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
     this.nextStateAt = 0;
     this.stateTargetUserId = '';
 
@@ -47,8 +47,8 @@ export class CharacterStateInfo {
     }
 
     switch (this.state) {
-      case CharacterStateType.NONE:
-        this.nextState = CharacterStateType.NONE;
+      case CharacterStateType.NONE_CHARACTER_STATE:
+        this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
         this.nextStateAt = 0;
         this.resetTimer();
         break;
@@ -70,17 +70,17 @@ export class CharacterStateInfo {
       case CharacterStateType.BIG_BBANG_TARGET:
       case CharacterStateType.GUERRILLA_SHOOTER:
       case CharacterStateType.GUERRILLA_TARGET:
-        this.nextState = CharacterStateType.NONE;
+        this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
         this.nextStateAt = Date.now() + BBANG_SECOND * 1000;
         break;
 
-      case CharacterStateType.DEATH_MATCH:
-        this.nextState = CharacterStateType.DEATH_MATCH_TURN;
+      case CharacterStateType.DEATH_MATCH_STATE:
+        this.nextState = CharacterStateType.DEATH_MATCH_TURN_STATE;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
         break;
 
-      case CharacterStateType.DEATH_MATCH_TURN:
-        this.nextState = CharacterStateType.DEATH_MATCH;
+      case CharacterStateType.DEATH_MATCH_TURN_STATE:
+        this.nextState = CharacterStateType.DEATH_MATCH_STATE;
         this.nextStateAt = Date.now() + DEATH_MATCH_SECOND * 1000;
         break;
 
@@ -88,7 +88,7 @@ export class CharacterStateInfo {
       case CharacterStateType.ABSORB_TARGET:
       case CharacterStateType.HALLUCINATING:
       case CharacterStateType.HALLUCINATION_TARGET:
-        this.nextState = CharacterStateType.NONE;
+        this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
         this.nextStateAt = Date.now() + CARD_SELECT_SECOND * 1000;
         break;
 
@@ -119,7 +119,7 @@ export class CharacterStateInfo {
     }
 
     switch (this.state) {
-      case CharacterStateType.NONE:
+      case CharacterStateType.NONE_CHARACTER_STATE:
       case CharacterStateType.FLEA_MARKET_TURN:
       case CharacterStateType.FLEA_MARKET_WAIT:
       case CharacterStateType.ABSORBING:

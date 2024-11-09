@@ -5758,7 +5758,7 @@ export class GamePacket implements IGamePacket {
 
 /** GlobalFailCode enum. */
 export enum GlobalFailCode {
-    NONE = 0,
+    NONE_FAILCODE = 0,
     UNKNOWN_ERROR = 1,
     INVALID_REQUEST = 2,
     AUTHENTICATION_FAILED = 3,
@@ -5780,19 +5780,19 @@ export enum GlobalFailCode {
 /** WarningType enum. */
 export enum WarningType {
     NO_WARNING = 0,
-    BOMB = 1
+    BOMB_WANING = 1
 }
 
 /** WinType enum. */
 export enum WinType {
-    TARGET_AND_BODYGUARD = 0,
-    HITMAN = 1,
-    PSYCHOPATH = 2
+    TARGET_AND_BODYGUARD_WIN = 0,
+    HITMAN_WIN = 1,
+    PSYCHOPATH_WIN = 2
 }
 
 /** CharacterType enum. */
 export enum CharacterType {
-    NONE = 0,
+    NONE_CHARACTER = 0,
     RED = 1,
     BLUE = 2,
     SHARK = 3,
@@ -5810,11 +5810,11 @@ export enum CharacterType {
 
 /** CharacterStateType enum. */
 export enum CharacterStateType {
-    NONE = 0,
+    NONE_CHARACTER_STATE = 0,
     BBANG_SHOOTER = 1,
     BBANG_TARGET = 2,
-    DEATH_MATCH = 3,
-    DEATH_MATCH_TURN = 4,
+    DEATH_MATCH_STATE = 3,
+    DEATH_MATCH_TURN_STATE = 4,
     FLEA_MARKET_TURN = 5,
     FLEA_MARKET_WAIT = 6,
     GUERRILLA_SHOOTER = 7,
@@ -5858,7 +5858,7 @@ export enum CardType {
 
 /** RoleType enum. */
 export enum RoleType {
-    NONE = 0,
+    NONE_ROLE = 0,
     TARGET = 1,
     BODYGUARD = 2,
     HITMAN = 3,
@@ -5874,7 +5874,7 @@ export enum RoomStateType {
 
 /** PhaseType enum. */
 export enum PhaseType {
-    NONE = 0,
+    NONE_PHASE = 0,
     DAY = 1,
     EVENING = 2,
     END = 3
@@ -5882,7 +5882,7 @@ export enum PhaseType {
 
 /** ReactionType enum. */
 export enum ReactionType {
-    NONE = 0,
+    NONE_REACTION = 0,
     NOT_USE_CARD = 1
 }
 
