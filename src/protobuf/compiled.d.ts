@@ -5398,6 +5398,109 @@ export class S2CWarningNotification implements IS2CWarningNotification {
     public static getTypeUrl(typeUrlPrefix?: string): string;
 }
 
+/** Properties of a S2CAnimationNotification. */
+export interface IS2CAnimationNotification {
+
+    /** S2CAnimationNotification userId */
+    userId?: (string|null);
+
+    /** S2CAnimationNotification animationType */
+    animationType?: (AnimationType|null);
+}
+
+/** Represents a S2CAnimationNotification. */
+export class S2CAnimationNotification implements IS2CAnimationNotification {
+
+    /**
+     * Constructs a new S2CAnimationNotification.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IS2CAnimationNotification);
+
+    /** S2CAnimationNotification userId. */
+    public userId: string;
+
+    /** S2CAnimationNotification animationType. */
+    public animationType: AnimationType;
+
+    /**
+     * Creates a new S2CAnimationNotification instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns S2CAnimationNotification instance
+     */
+    public static create(properties?: IS2CAnimationNotification): S2CAnimationNotification;
+
+    /**
+     * Encodes the specified S2CAnimationNotification message. Does not implicitly {@link S2CAnimationNotification.verify|verify} messages.
+     * @param message S2CAnimationNotification message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IS2CAnimationNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified S2CAnimationNotification message, length delimited. Does not implicitly {@link S2CAnimationNotification.verify|verify} messages.
+     * @param message S2CAnimationNotification message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IS2CAnimationNotification, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a S2CAnimationNotification message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns S2CAnimationNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): S2CAnimationNotification;
+
+    /**
+     * Decodes a S2CAnimationNotification message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns S2CAnimationNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): S2CAnimationNotification;
+
+    /**
+     * Verifies a S2CAnimationNotification message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a S2CAnimationNotification message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns S2CAnimationNotification
+     */
+    public static fromObject(object: { [k: string]: any }): S2CAnimationNotification;
+
+    /**
+     * Creates a plain object from a S2CAnimationNotification message. Also converts values to other types if specified.
+     * @param message S2CAnimationNotification
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: S2CAnimationNotification, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this S2CAnimationNotification to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+
+    /**
+     * Gets the default type url for S2CAnimationNotification
+     * @param [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns The default type url
+     */
+    public static getTypeUrl(typeUrlPrefix?: string): string;
+}
+
 /** Properties of a GamePacket. */
 export interface IGamePacket {
 
@@ -5535,6 +5638,9 @@ export interface IGamePacket {
 
     /** GamePacket warningNotification */
     warningNotification?: (IS2CWarningNotification|null);
+
+    /** GamePacket animationNotification */
+    animationNotification?: (IS2CAnimationNotification|null);
 }
 
 /** Represents a GamePacket. */
@@ -5681,8 +5787,11 @@ export class GamePacket implements IGamePacket {
     /** GamePacket warningNotification. */
     public warningNotification?: (IS2CWarningNotification|null);
 
+    /** GamePacket animationNotification. */
+    public animationNotification?: (IS2CAnimationNotification|null);
+
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|"animationNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.
@@ -5898,4 +6007,11 @@ export enum SelectCardType {
     EQUIP = 1,
     WEAPON = 2,
     DEBUFF = 3
+}
+
+/** AnimationType enum. */
+export enum AnimationType {
+    NO_ANIMATION = 0,
+    SATELLITE_TARGET_ANIMATION = 1,
+    BOMB_ANIMATION = 2
 }

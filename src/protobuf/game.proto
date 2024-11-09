@@ -281,6 +281,11 @@ message S2CWarningNotification {
     int64 expectedAt = 2; // 밀리초 타임스탬프
 }
 
+message S2CAnimationNotification {
+    string userId = 1;
+    AnimationType animationType = 2;
+}
+
 // 최상위 GamePacket 메시지
 message GamePacket {
     oneof payload {
@@ -370,6 +375,9 @@ message GamePacket {
         C2SPassDebuffRequest passDebuffRequest = 43;
         S2CPassDebuffResponse passDebuffResponse = 44;
         S2CWarningNotification warningNotification = 45;
+
+        // 효과 알림
+        S2CAnimationNotification animationNotification = 46;
     }
 }
 
@@ -501,4 +509,10 @@ enum SelectCardType {
     EQUIP = 1;
     WEAPON = 2;
     DEBUFF = 3;
+}
+
+enum AnimationType {
+    NO_ANIMATION = 0;
+    SATELLITE_TARGET_ANIMATION = 1;
+    BOMB_ANIMATION = 2;
 }

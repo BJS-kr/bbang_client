@@ -6,8 +6,10 @@ import { config } from '../config/config';
 import { GameEvents } from '../game/game.events';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
+  AnimationType,
   CardType,
   RoomStateType,
+  S2CAnimationNotification,
   S2CPositionUpdateNotification,
   S2CUserUpdateNotification,
   S2CWarningNotification,
@@ -144,11 +146,19 @@ export class Room {
 
       bombTargetStates.forEach((bombState) => {
         const user = this.getUser(bombState.userId);
+
         if (!user) {
           return;
         }
-        user?.character.takeDamage(2, null);
-        user?.character.debuffs.delete(CardType.BOMB);
+
+        user.character.takeDamage(2, null);
+        user.character.debuffs.delete(CardType.BOMB);
+
+        this.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
+          userId: user.id,
+          animationType: AnimationType.BOMB_ANIMATION,
+        } satisfies MessageProps<S2CAnimationNotification>);
+
         this.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
           user: [user.toUserData(user.id)],
         } satisfies MessageProps<S2CUserUpdateNotification>);

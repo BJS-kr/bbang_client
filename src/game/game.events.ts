@@ -6,7 +6,14 @@ import { User } from '../users/types';
 import { Room } from '../rooms/types';
 import { PACKET_TYPE } from '../constants/packetType';
 import { error } from '../utils/logger';
-import { CardType, CharacterStateType, S2CPhaseUpdateNotification, S2CUserUpdateNotification } from '../protobuf/compiled';
+import {
+  CardType,
+  CharacterStateType,
+  S2CPhaseUpdateNotification,
+  S2CUserUpdateNotification,
+  S2CAnimationNotification,
+  AnimationType,
+} from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { pickRandomCardType } from '../cards/utils/helpers';
 import { checkWinCondition } from './win.condition';
@@ -58,6 +65,11 @@ export class GameEvents extends EventEmitter {
       this.satelliteTargets.forEach((st) => {
         if (SatelliteTarget.isHit()) {
           st.character.takeDamage(3, null);
+
+          this.#room.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
+            userId: st.id,
+            animationType: AnimationType.SATELLITE_TARGET_ANIMATION,
+          } satisfies MessageProps<S2CAnimationNotification>);
         } else {
           st.character.debuffs.delete(CardType.SATELLITE_TARGET);
           const userIndex = this.#room.users.findIndex((u) => u === st);

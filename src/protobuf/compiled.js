@@ -15156,6 +15156,257 @@ $root.S2CWarningNotification = (function() {
     return S2CWarningNotification;
 })();
 
+$root.S2CAnimationNotification = (function() {
+
+    /**
+     * Properties of a S2CAnimationNotification.
+     * @exports IS2CAnimationNotification
+     * @interface IS2CAnimationNotification
+     * @property {string|null} [userId] S2CAnimationNotification userId
+     * @property {AnimationType|null} [animationType] S2CAnimationNotification animationType
+     */
+
+    /**
+     * Constructs a new S2CAnimationNotification.
+     * @exports S2CAnimationNotification
+     * @classdesc Represents a S2CAnimationNotification.
+     * @implements IS2CAnimationNotification
+     * @constructor
+     * @param {IS2CAnimationNotification=} [properties] Properties to set
+     */
+    function S2CAnimationNotification(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * S2CAnimationNotification userId.
+     * @member {string} userId
+     * @memberof S2CAnimationNotification
+     * @instance
+     */
+    S2CAnimationNotification.prototype.userId = "";
+
+    /**
+     * S2CAnimationNotification animationType.
+     * @member {AnimationType} animationType
+     * @memberof S2CAnimationNotification
+     * @instance
+     */
+    S2CAnimationNotification.prototype.animationType = 0;
+
+    /**
+     * Creates a new S2CAnimationNotification instance using the specified properties.
+     * @function create
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {IS2CAnimationNotification=} [properties] Properties to set
+     * @returns {S2CAnimationNotification} S2CAnimationNotification instance
+     */
+    S2CAnimationNotification.create = function create(properties) {
+        return new S2CAnimationNotification(properties);
+    };
+
+    /**
+     * Encodes the specified S2CAnimationNotification message. Does not implicitly {@link S2CAnimationNotification.verify|verify} messages.
+     * @function encode
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {IS2CAnimationNotification} message S2CAnimationNotification message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CAnimationNotification.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+        if (message.animationType != null && Object.hasOwnProperty.call(message, "animationType"))
+            writer.uint32(/* id 2, wireType 0 =*/16).int32(message.animationType);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified S2CAnimationNotification message, length delimited. Does not implicitly {@link S2CAnimationNotification.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {IS2CAnimationNotification} message S2CAnimationNotification message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    S2CAnimationNotification.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a S2CAnimationNotification message from the specified reader or buffer.
+     * @function decode
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {S2CAnimationNotification} S2CAnimationNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CAnimationNotification.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.S2CAnimationNotification();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1: {
+                    message.userId = reader.string();
+                    break;
+                }
+            case 2: {
+                    message.animationType = reader.int32();
+                    break;
+                }
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a S2CAnimationNotification message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {S2CAnimationNotification} S2CAnimationNotification
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    S2CAnimationNotification.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a S2CAnimationNotification message.
+     * @function verify
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    S2CAnimationNotification.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            if (!$util.isString(message.userId))
+                return "userId: string expected";
+        if (message.animationType != null && message.hasOwnProperty("animationType"))
+            switch (message.animationType) {
+            default:
+                return "animationType: enum value expected";
+            case 0:
+            case 1:
+            case 2:
+                break;
+            }
+        return null;
+    };
+
+    /**
+     * Creates a S2CAnimationNotification message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {S2CAnimationNotification} S2CAnimationNotification
+     */
+    S2CAnimationNotification.fromObject = function fromObject(object) {
+        if (object instanceof $root.S2CAnimationNotification)
+            return object;
+        var message = new $root.S2CAnimationNotification();
+        if (object.userId != null)
+            message.userId = String(object.userId);
+        switch (object.animationType) {
+        default:
+            if (typeof object.animationType === "number") {
+                message.animationType = object.animationType;
+                break;
+            }
+            break;
+        case "NO_ANIMATION":
+        case 0:
+            message.animationType = 0;
+            break;
+        case "SATELLITE_TARGET_ANIMATION":
+        case 1:
+            message.animationType = 1;
+            break;
+        case "BOMB_ANIMATION":
+        case 2:
+            message.animationType = 2;
+            break;
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a S2CAnimationNotification message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {S2CAnimationNotification} message S2CAnimationNotification
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    S2CAnimationNotification.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.userId = "";
+            object.animationType = options.enums === String ? "NO_ANIMATION" : 0;
+        }
+        if (message.userId != null && message.hasOwnProperty("userId"))
+            object.userId = message.userId;
+        if (message.animationType != null && message.hasOwnProperty("animationType"))
+            object.animationType = options.enums === String ? $root.AnimationType[message.animationType] === undefined ? message.animationType : $root.AnimationType[message.animationType] : message.animationType;
+        return object;
+    };
+
+    /**
+     * Converts this S2CAnimationNotification to JSON.
+     * @function toJSON
+     * @memberof S2CAnimationNotification
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    S2CAnimationNotification.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    /**
+     * Gets the default type url for S2CAnimationNotification
+     * @function getTypeUrl
+     * @memberof S2CAnimationNotification
+     * @static
+     * @param {string} [typeUrlPrefix] your custom typeUrlPrefix(default "type.googleapis.com")
+     * @returns {string} The default type url
+     */
+    S2CAnimationNotification.getTypeUrl = function getTypeUrl(typeUrlPrefix) {
+        if (typeUrlPrefix === undefined) {
+            typeUrlPrefix = "type.googleapis.com";
+        }
+        return typeUrlPrefix + "/S2CAnimationNotification";
+    };
+
+    return S2CAnimationNotification;
+})();
+
 $root.GamePacket = (function() {
 
     /**
@@ -15207,6 +15458,7 @@ $root.GamePacket = (function() {
      * @property {IC2SPassDebuffRequest|null} [passDebuffRequest] GamePacket passDebuffRequest
      * @property {IS2CPassDebuffResponse|null} [passDebuffResponse] GamePacket passDebuffResponse
      * @property {IS2CWarningNotification|null} [warningNotification] GamePacket warningNotification
+     * @property {IS2CAnimationNotification|null} [animationNotification] GamePacket animationNotification
      */
 
     /**
@@ -15584,17 +15836,25 @@ $root.GamePacket = (function() {
      */
     GamePacket.prototype.warningNotification = null;
 
+    /**
+     * GamePacket animationNotification.
+     * @member {IS2CAnimationNotification|null|undefined} animationNotification
+     * @memberof GamePacket
+     * @instance
+     */
+    GamePacket.prototype.animationNotification = null;
+
     // OneOf field names bound to virtual getters and setters
     var $oneOfFields;
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|"animationNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffRequest", "passDebuffResponse", "warningNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffRequest", "passDebuffResponse", "warningNotification", "animationNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -15712,6 +15972,8 @@ $root.GamePacket = (function() {
             $root.S2CPassDebuffResponse.encode(message.passDebuffResponse, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
         if (message.warningNotification != null && Object.hasOwnProperty.call(message, "warningNotification"))
             $root.S2CWarningNotification.encode(message.warningNotification, writer.uint32(/* id 45, wireType 2 =*/362).fork()).ldelim();
+        if (message.animationNotification != null && Object.hasOwnProperty.call(message, "animationNotification"))
+            $root.S2CAnimationNotification.encode(message.animationNotification, writer.uint32(/* id 46, wireType 2 =*/370).fork()).ldelim();
         return writer;
     };
 
@@ -15924,6 +16186,10 @@ $root.GamePacket = (function() {
                 }
             case 45: {
                     message.warningNotification = $root.S2CWarningNotification.decode(reader, reader.uint32());
+                    break;
+                }
+            case 46: {
+                    message.animationNotification = $root.S2CAnimationNotification.decode(reader, reader.uint32());
                     break;
                 }
             default:
@@ -16410,6 +16676,16 @@ $root.GamePacket = (function() {
                     return "warningNotification." + error;
             }
         }
+        if (message.animationNotification != null && message.hasOwnProperty("animationNotification")) {
+            if (properties.payload === 1)
+                return "payload: multiple values";
+            properties.payload = 1;
+            {
+                var error = $root.S2CAnimationNotification.verify(message.animationNotification);
+                if (error)
+                    return "animationNotification." + error;
+            }
+        }
         return null;
     };
 
@@ -16649,6 +16925,11 @@ $root.GamePacket = (function() {
             if (typeof object.warningNotification !== "object")
                 throw TypeError(".GamePacket.warningNotification: object expected");
             message.warningNotification = $root.S2CWarningNotification.fromObject(object.warningNotification);
+        }
+        if (object.animationNotification != null) {
+            if (typeof object.animationNotification !== "object")
+                throw TypeError(".GamePacket.animationNotification: object expected");
+            message.animationNotification = $root.S2CAnimationNotification.fromObject(object.animationNotification);
         }
         return message;
     };
@@ -16890,6 +17171,11 @@ $root.GamePacket = (function() {
             object.warningNotification = $root.S2CWarningNotification.toObject(message.warningNotification, options);
             if (options.oneofs)
                 object.payload = "warningNotification";
+        }
+        if (message.animationNotification != null && message.hasOwnProperty("animationNotification")) {
+            object.animationNotification = $root.S2CAnimationNotification.toObject(message.animationNotification, options);
+            if (options.oneofs)
+                object.payload = "animationNotification";
         }
         return object;
     };
@@ -17218,6 +17504,22 @@ $root.SelectCardType = (function() {
     values[valuesById[1] = "EQUIP"] = 1;
     values[valuesById[2] = "WEAPON"] = 2;
     values[valuesById[3] = "DEBUFF"] = 3;
+    return values;
+})();
+
+/**
+ * AnimationType enum.
+ * @exports AnimationType
+ * @enum {number}
+ * @property {number} NO_ANIMATION=0 NO_ANIMATION value
+ * @property {number} SATELLITE_TARGET_ANIMATION=1 SATELLITE_TARGET_ANIMATION value
+ * @property {number} BOMB_ANIMATION=2 BOMB_ANIMATION value
+ */
+$root.AnimationType = (function() {
+    var valuesById = {}, values = Object.create(valuesById);
+    values[valuesById[0] = "NO_ANIMATION"] = 0;
+    values[valuesById[1] = "SATELLITE_TARGET_ANIMATION"] = 1;
+    values[valuesById[2] = "BOMB_ANIMATION"] = 2;
     return values;
 })();
 
