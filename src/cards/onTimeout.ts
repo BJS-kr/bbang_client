@@ -1,8 +1,8 @@
-import { PACKET_TYPE } from '../../constants/packetType';
-import { CharacterStateType, S2CUserUpdateNotification } from '../../protobuf/compiled';
-import { MessageProps } from '../../protobuf/props';
-import { Room } from '../../rooms/types';
-import { User } from '../../users/types';
+import { PACKET_TYPE } from '../constants/packetType';
+import { CharacterStateType, S2CUserUpdateNotification } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
+import { Room } from '../rooms/types';
+import { User } from '../users/types';
 
 export function onBBangTimeoutShooter(user: User, room: Room) {
   return () => {

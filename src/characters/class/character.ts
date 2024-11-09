@@ -153,7 +153,11 @@ export class Character extends EventEmitter {
 
   takeDamage(amount: number, attacker: User | null): TakeDamageEvent {
     this.hp = Math.max(HP_MIN, this.hp - amount);
-    this.gameEvents.emit('checkWinCondition');
+
+    if (this.hp <= 0) {
+      this.gameEvents.emit('checkWinCondition');
+      this.gameEvents.emit('dead', this);
+    }
 
     return { damage: amount, attacker };
   }

@@ -1,5 +1,6 @@
 import { CardProps, Character } from '../characters/class/character';
 import {
+  AnimationType,
   C2SCardSelectRequest,
   C2SDestroyCardRequest,
   C2SPassDebuffRequest,
@@ -8,6 +9,7 @@ import {
   CharacterStateType,
   GlobalFailCode,
   PhaseType,
+  S2CAnimationNotification,
   S2CCardSelectResponse,
   S2CDestroyCardResponse,
   S2CFleaMarketNotification,
@@ -33,7 +35,7 @@ import {
   onFleaMarketTurnTimeout,
   onGuerillaShooterTimeout,
   onGuerillaTargetTimeout,
-} from './utils/onTimeout';
+} from './onTimeout';
 import { Vaccine } from './class/vaccine';
 import { Call119 } from './class/call119';
 import { Guerrilla } from './class/guerrilla';
@@ -43,7 +45,7 @@ import { FleaMarket } from './class/fleamarket';
 import { MaturedSavings } from './class/matured.savings';
 import { SniperGun } from './class/snipergun';
 import { WinLottery } from './class/win.lottery';
-import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './utils/types';
+import { CardEffectNotification, HandlerBase, UseCardResponse, UserUpdateNotification } from './types';
 import { LaserPointer } from './class/laser.pointer';
 import { Radar } from './class/radar';
 import { cards } from './card.instance.index';
@@ -64,7 +66,7 @@ import {
   pickRandomCardType,
   responseCardSelect,
   responseSuccess,
-} from './utils/helpers';
+} from './helpers';
 
 export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
   cardSelectRequest.selectType ||= 0;
@@ -381,6 +383,11 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   responseSuccess(socket, version, sequence, CardType.BBANG, [user, targetUser], room, user, targetUser.id);
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
+    writePayload(socket, PACKET_TYPE.ANIMATION_NOTIFICATION, version, sequence, {
+      userId: targetUser.id,
+      animationType: AnimationType.SHIELD_ANIMATION,
+    } satisfies MessageProps<S2CAnimationNotification>);
+
     targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
@@ -393,7 +400,14 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 타겟이 자동 쉴드가 있는 경우 일단 중계
   if (isAutoShieldExists && autoShield instanceof AutoShield) {
     const shielded = autoShield.isAutoShielded();
-    shielded && targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
+
+    if (shielded) {
+      writePayload(socket, PACKET_TYPE.ANIMATION_NOTIFICATION, version, sequence, {
+        userId: targetUser.id,
+        animationType: AnimationType.SHIELD_ANIMATION,
+      } satisfies MessageProps<S2CAnimationNotification>);
+      targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
+    }
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,

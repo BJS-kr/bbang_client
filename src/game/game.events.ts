@@ -13,11 +13,13 @@ import {
   S2CUserUpdateNotification,
   S2CAnimationNotification,
   AnimationType,
+  CharacterType,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { pickRandomCardType } from '../cards/utils/helpers';
+import { pickRandomCardType } from '../cards/helpers';
 import { checkWinCondition } from './win.condition';
 import { rooms } from '../rooms/rooms';
+import { Character } from '../characters/class/character';
 
 export class GameEvents extends EventEmitter {
   containedUsers: User[] = [];
@@ -122,6 +124,16 @@ export class GameEvents extends EventEmitter {
 
     this.on('checkWinCondition', () => {
       checkWinCondition(rooms, this.#room, this.roomId);
+    });
+
+    this.on('dead', (deadCharacter: Character) => {
+      const maskUser = this.#room.users.find((u) => u.character.characterType === CharacterType.MASK);
+
+      if (!maskUser) return;
+
+      for (const [type, count] of deadCharacter.handCards) {
+        maskUser.character.acquireCard({ type, count });
+      }
     });
   }
 

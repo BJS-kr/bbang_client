@@ -15312,6 +15312,7 @@ $root.S2CAnimationNotification = (function() {
             case 0:
             case 1:
             case 2:
+            case 3:
                 break;
             }
         return null;
@@ -15349,6 +15350,10 @@ $root.S2CAnimationNotification = (function() {
         case "BOMB_ANIMATION":
         case 2:
             message.animationType = 2;
+            break;
+        case "SHIELD_ANIMATION":
+        case 3:
+            message.animationType = 3;
             break;
         }
         return message;
@@ -17514,12 +17519,14 @@ $root.SelectCardType = (function() {
  * @property {number} NO_ANIMATION=0 NO_ANIMATION value
  * @property {number} SATELLITE_TARGET_ANIMATION=1 SATELLITE_TARGET_ANIMATION value
  * @property {number} BOMB_ANIMATION=2 BOMB_ANIMATION value
+ * @property {number} SHIELD_ANIMATION=3 SHIELD_ANIMATION value
  */
 $root.AnimationType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NO_ANIMATION"] = 0;
     values[valuesById[1] = "SATELLITE_TARGET_ANIMATION"] = 1;
     values[valuesById[2] = "BOMB_ANIMATION"] = 2;
+    values[valuesById[3] = "SHIELD_ANIMATION"] = 3;
     return values;
 })();
 

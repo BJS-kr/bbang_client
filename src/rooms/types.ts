@@ -16,7 +16,7 @@ import {
   WarningType,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { pickRandomCardType } from '../cards/utils/helpers';
+import { pickRandomCardType } from '../cards/helpers';
 
 export enum RoomState {
   WAIT = 0,

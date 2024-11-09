@@ -1,4 +1,4 @@
-import { pickRandomCardType } from '../../cards/utils/helpers';
+import { pickRandomCardType } from '../../cards/helpers';
 import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP } from '../../constants/game';
 import { GameEvents } from '../../game/game.events';
 import { CharacterType, RoleType } from '../../protobuf/compiled';

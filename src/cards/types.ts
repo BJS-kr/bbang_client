@@ -1,6 +1,6 @@
-import { Context } from '../../events/types';
-import { S2CUseCardResponse, S2CUserUpdateNotification, S2CCardEffectNotification, S2CUseCardNotification } from '../../protobuf/compiled';
-import { MessageProps } from '../../protobuf/props';
+import { Context } from '../events/types';
+import { S2CUseCardResponse, S2CUserUpdateNotification, S2CCardEffectNotification, S2CUseCardNotification } from '../protobuf/compiled';
+import { MessageProps } from '../protobuf/props';
 import { Socket } from 'node:net';
 
 export type UseCardResponse = MessageProps<S2CUseCardResponse>;
