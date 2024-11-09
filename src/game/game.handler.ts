@@ -5,7 +5,6 @@ import {
   GlobalFailCode,
   S2CFleaMarketNotification,
   S2CFleaMarketPickResponse,
-  S2CGameEndNotification,
   S2CGamePrepareNotification,
   S2CGamePrepareResponse,
   S2CGameStartNotification,
@@ -14,7 +13,6 @@ import {
   S2CPositionUpdateResponse,
   S2CReactionResponse,
   S2CUserUpdateNotification,
-  WinType,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { writePayload } from '../protobuf/writePayload';
