@@ -27,7 +27,7 @@ export function checkWinCondition(socket: net.Socket, version: string, sequence:
     if (isHitMenAllDead(room)) {
       rooms.removeRoom(roomId);
 
-      return writePayload(socket, PACKET_TYPE.GAME_END_NOTIFICATION, version, sequence, {
+      return room.broadcast(PACKET_TYPE.GAME_END_NOTIFICATION, {
         winners: room.users.filter((u) => u.character.roleType === ROLE_TYPE.TARGET || u.character.roleType === ROLE_TYPE.BODYGUARD).map((u) => u.id),
         winType: WinType.TARGET_AND_BODYGUARD,
       } satisfies MessageProps<S2CGameEndNotification>);
@@ -36,7 +36,7 @@ export function checkWinCondition(socket: net.Socket, version: string, sequence:
     if (isTargetAllDead(room)) {
       rooms.removeRoom(roomId);
 
-      return writePayload(socket, PACKET_TYPE.GAME_END_NOTIFICATION, version, sequence, {
+      return room.broadcast(PACKET_TYPE.GAME_END_NOTIFICATION, {
         winners: room.users.filter((u) => u.character.roleType === ROLE_TYPE.HITMAN).map((u) => u.id),
         winType: WinType.HITMAN,
       } satisfies MessageProps<S2CGameEndNotification>);
@@ -45,7 +45,7 @@ export function checkWinCondition(socket: net.Socket, version: string, sequence:
     if (isAllDeadExceptPsychopath(room)) {
       rooms.removeRoom(roomId);
 
-      return writePayload(socket, PACKET_TYPE.GAME_END_NOTIFICATION, version, sequence, {
+      return room.broadcast(PACKET_TYPE.GAME_END_NOTIFICATION, {
         winners: room.users.filter((u) => u.character.roleType === ROLE_TYPE.PSYCHOPATH).map((u) => u.id),
         winType: WinType.PSYCHOPATH,
       } satisfies MessageProps<S2CGameEndNotification>);
