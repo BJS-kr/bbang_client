@@ -122,7 +122,6 @@ export class GameEvents extends EventEmitter {
     });
 
     this.on('checkWinCondition', () => {
-      log(`[on checkWinCondition] ${rooms} | ${this.#room} | ${this.roomId}`);
       checkWinCondition(rooms, this.#room, this.roomId);
     });
 
