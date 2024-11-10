@@ -58,6 +58,7 @@ export const createCharacter = ({
   switch (roleType) {
     case RoleType.TARGET:
       character = new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, gameEvents });
+      break;
 
     default:
       character = new CharacterClass({ userId, roleType, gameEvents });
