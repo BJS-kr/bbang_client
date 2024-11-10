@@ -238,10 +238,10 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   }
 
   roomUser.character.setPosition({ x, y });
-  writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE_FAILCODE,
-  } satisfies MessageProps<S2CPositionUpdateResponse>);
+  // writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
+  //   success: true,
+  //   failCode: GlobalFailCode.NONE_FAILCODE,
+  // } satisfies MessageProps<S2CPositionUpdateResponse>);
 
   room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
     characterPositions: room.users.map((user) => user.character.positionInfo.toPositionData()),
