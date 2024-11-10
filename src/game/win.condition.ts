@@ -2,6 +2,7 @@ import { PACKET_TYPE } from '../constants/packetType';
 import { RoleType, S2CGameEndNotification, WinType } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { Room, Rooms } from '../rooms/types';
+import { log } from '../utils/logger';
 
 function isHitMenAllDead(room: Room) {
   return room.users.filter((u) => u.character.roleType === RoleType.HITMAN).every((u) => u.character.isDead());

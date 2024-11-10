@@ -5,7 +5,7 @@ import { SatelliteTarget } from '../cards/class/satellite.target';
 import { User } from '../users/types';
 import { Room } from '../rooms/types';
 import { PACKET_TYPE } from '../constants/packetType';
-import { error } from '../utils/logger';
+import { error, log } from '../utils/logger';
 import {
   CardType,
   CharacterStateType,
@@ -123,6 +123,7 @@ export class GameEvents extends EventEmitter {
     });
 
     this.on('checkWinCondition', () => {
+      log(`[on checkWinCondition] ${rooms} | ${this.#room} | ${this.roomId}`);
       checkWinCondition(rooms, this.#room, this.roomId);
     });
 
