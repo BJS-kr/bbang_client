@@ -27,7 +27,6 @@ import { session } from '../users/session';
 import { createCharacter } from '../characters/createCharacter';
 import { log, error } from '../utils/logger';
 import { UserUpdateNotification } from '../cards/types';
-import { pickRandomCardType } from '../cards/helpers';
 // TODO
 const TARGET_CARD_BONUS = 1;
 
@@ -85,6 +84,11 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     .filter((type) => typeof type === 'number' && type !== CharacterType.NONE_CHARACTER)
     .sort(() => Math.random() - 0.5);
 
+  // 카드 셔플
+  room.shuffleCardTypes = Object.values(CardType)
+    .filter((type) => typeof type === 'number' && type !== CardType.NONE)
+    .sort(() => Math.random() - 0.5);
+
   // 역할, 캐릭터, 초기 위치 부여
   for (let i = 0; i < room.users.length; i++) {
     const characterType = shuffleCharacters[i];
@@ -100,6 +104,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
       characterType,
       roleType,
       gameEvents: room.gameEvents,
+      room,
     });
     room.users[i].character.setPosition(suhfflePositions[i]);
   }
@@ -171,7 +176,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     }
 
     for (let i = 0; i < initCardCount; i++) {
-      const card = { type: pickRandomCardType(), count: 1 };
+      const card = { type: room.pickCardType(), count: 1 };
       user.character.acquireCard(card);
     }
   });

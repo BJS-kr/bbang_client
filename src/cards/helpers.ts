@@ -77,9 +77,3 @@ export function responseSuccess(
     user: targetUsers.map((user) => user.toUserData(user.id)),
   } satisfies UserUpdateNotification);
 }
-
-const cardTypes = Object.values(CardType).filter((v) => typeof v === 'number');
-
-export function pickRandomCardType() {
-  return cardTypes[Math.floor(Math.random() * cardTypes.length)];
-}

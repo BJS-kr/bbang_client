@@ -40,23 +40,29 @@ export const createCharacter = ({
   roleType,
 
   gameEvents,
+  room, // TODO 나중에 고쳐주세요....
 }: {
   userId: string;
   characterType: number;
   roleType: RoleType;
 
   gameEvents: GameEvents;
+  room: Room;
 }) => {
   const CharacterClass = CHARACTER_CLASS_MAP[characterType] || Character;
   if (CharacterClass === Character) {
     throw new Error('CharacterClass is not defined');
   }
 
+  let character;
   switch (roleType) {
     case RoleType.TARGET:
-      return new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, gameEvents });
+      character = new CharacterClass({ userId, hp: CHARACTER_HP[characterType] + TARGET_HP_BONUS, roleType, gameEvents });
 
     default:
-      return new CharacterClass({ userId, roleType, gameEvents });
+      character = new CharacterClass({ userId, roleType, gameEvents });
   }
+
+  character.emit('setRoom', room);
+  return character;
 };

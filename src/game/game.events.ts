@@ -16,7 +16,6 @@ import {
   CharacterType,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { pickRandomCardType } from '../cards/helpers';
 import { checkWinCondition } from './win.condition';
 import { rooms } from '../rooms/rooms';
 import { Character } from '../characters/class/character';
@@ -45,7 +44,7 @@ export class GameEvents extends EventEmitter {
         }
 
         for (let i = 0; i < DAILY_CARD_COUNT; i++) {
-          const card = { type: pickRandomCardType(), count: 1 };
+          const card = { type: this.#room.pickCardType(), count: 1 };
           user.character.acquireCard(card);
         }
         user.character.bbangCount = 0;
@@ -66,7 +65,7 @@ export class GameEvents extends EventEmitter {
 
       this.satelliteTargets.forEach((st) => {
         if (SatelliteTarget.isHit()) {
-          st.character.takeDamage(3, 'SYSTEM');
+          st.character.takeDamage(3, 'SYSTEM', this.#room);
 
           this.#room.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
             userId: st.id,

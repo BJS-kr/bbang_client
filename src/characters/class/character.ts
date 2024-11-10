@@ -9,10 +9,11 @@ import { log } from '../../utils/logger';
 import { cards } from '../../cards/card.instance.index';
 import { GameEvents } from '../../game/game.events';
 import { User } from '../../users/types';
+import { Room } from '../../rooms/types';
 
 export type CharacterPosition = MessageProps<CharacterPositionData>;
 export type CardProps = MessageProps<CardData>;
-export type TakeDamageEvent = { attacker: User | 'SYSTEM'; damage: number };
+export type TakeDamageEvent = { attacker: User | 'SYSTEM'; damage: number; room: Room };
 const HP_MIN = 0;
 const handler = {
   get: function (target: Character, key: string) {
@@ -153,7 +154,7 @@ export class Character extends EventEmitter {
     return Array.from(this.handCards.values()).reduce((sum, count) => sum + count, 0);
   }
 
-  takeDamage(amount: number, attacker: User | 'SYSTEM'): TakeDamageEvent {
+  takeDamage(amount: number, attacker: User | 'SYSTEM', room: Room): TakeDamageEvent {
     this.hp = Math.max(HP_MIN, this.hp - amount);
     if (this.isDead()) {
       this.gameEvents.emit('checkWinCondition');
@@ -161,7 +162,7 @@ export class Character extends EventEmitter {
     }
 
     log(`[takeDamage] hp: ${this.hp} | isDead: ${this.isDead()}`);
-    return { damage: amount, attacker };
+    return { damage: amount, attacker, room };
   }
 
   isDefended() {

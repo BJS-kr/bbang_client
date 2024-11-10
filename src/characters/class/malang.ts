@@ -1,4 +1,3 @@
-import { pickRandomCardType } from '../../cards/helpers';
 import { CHARACTER_BASE_DEFENSE_CHANCE, CHARACTER_HP } from '../../constants/game';
 import { GameEvents } from '../../game/game.events';
 import { CharacterType, RoleType } from '../../protobuf/compiled';
@@ -15,9 +14,9 @@ export class Malang extends Character {
       gameEvents,
     });
 
-    this.on('takeDamage', ({ damage }: TakeDamageEvent) => {
+    this.on('takeDamage', ({ damage, room }: TakeDamageEvent) => {
       for (let i = 0; i < damage; i++) {
-        this.acquireCard({ type: pickRandomCardType(), count: 1 });
+        this.acquireCard({ type: room.pickCardType(), count: 1 });
       }
 
       this.gameEvents.emit('update', this.userId);

@@ -58,15 +58,7 @@ import { DesertEagle } from './class/deserteagle';
 import { AutoRifle } from './class/autorifle';
 import { Context } from '../events/types';
 import { Socket } from 'node:net';
-import {
-  isAbsorb,
-  isDeathMatchBBang,
-  isGuerrillaTargetBBang,
-  isHallucination,
-  pickRandomCardType,
-  responseCardSelect,
-  responseSuccess,
-} from './helpers';
+import { isAbsorb, isDeathMatchBBang, isGuerrillaTargetBBang, isHallucination, responseCardSelect, responseSuccess } from './helpers';
 
 export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
   cardSelectRequest.selectType ||= 0;
@@ -587,8 +579,8 @@ function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room
 }
 
 function handleMaturedSavings({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
-  user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
+  user.character.acquireCard({ type: room.pickCardType(), count: 1 });
+  user.character.acquireCard({ type: room.pickCardType(), count: 1 });
 
   responseSuccess(socket, version, sequence, CardType.MATURED_SAVINGS, [user], room, user, '');
 }
@@ -614,9 +606,9 @@ function handleAutoRifle({ socket, version, sequence }: HandlerBase, room: Room,
 }
 
 function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
-  user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
-  user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
-  user.character.acquireCard({ type: pickRandomCardType(), count: 1 });
+  user.character.acquireCard({ type: room.pickCardType(), count: 1 });
+  user.character.acquireCard({ type: room.pickCardType(), count: 1 });
+  user.character.acquireCard({ type: room.pickCardType(), count: 1 });
 
   responseSuccess(socket, version, sequence, CardType.WIN_LOTTERY, [user], room, user, '');
 }

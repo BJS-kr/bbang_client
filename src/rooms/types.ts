@@ -16,7 +16,6 @@ import {
   WarningType,
 } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
-import { pickRandomCardType } from '../cards/helpers';
 
 export enum RoomState {
   WAIT = 0,
@@ -42,6 +41,7 @@ export class Room {
   pickFleaMarketIndex: number[];
   bombStates: BombState[];
   infomationBroadcastTimer: NodeJS.Timeout | null;
+  shuffleCardTypes: CardType[];
 
   constructor({
     name,
@@ -71,6 +71,7 @@ export class Room {
     this.pickFleaMarketIndex = [];
     this.bombStates = [];
     this.infomationBroadcastTimer = null;
+    this.shuffleCardTypes = [];
   }
 
   broadcast(packetType: number, payload: any) {
@@ -107,12 +108,18 @@ export class Room {
     }
   }
 
+  pickCardType() {
+    const pickCardType = this.shuffleCardTypes[0];
+    this.shuffleCardTypes.push(this.shuffleCardTypes.shift()!);
+    return pickCardType;
+  }
+
   initFleaMarketCards() {
     this.fleaMarketCards = [];
     this.pickFleaMarketIndex = [];
     for (let i = 0; i < this.users.length; i++) {
-      const randomCardType = pickRandomCardType();
-      this.fleaMarketCards.push(randomCardType);
+      const cardType = this.pickCardType();
+      this.fleaMarketCards.push(cardType);
     }
   }
 
@@ -151,7 +158,7 @@ export class Room {
           return;
         }
 
-        user.character.takeDamage(2, 'SYSTEM');
+        user.character.takeDamage(2, 'SYSTEM', this);
         user.character.debuffs.delete(CardType.BOMB);
 
         this.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
