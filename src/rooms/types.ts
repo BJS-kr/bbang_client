@@ -293,7 +293,10 @@ export class Rooms {
 
   pickRandomRoomId(unavailableRoomIds: { [K in number]: true }, userId: string) {
     const roomIds = Array.from(this.#rooms.keys());
-    const filteredRoomIds = roomIds.filter((roomId) => !unavailableRoomIds[roomId]);
+    const filteredRoomIds = roomIds.filter((roomId) => {
+      const room = this.#rooms.get(roomId);
+      return !unavailableRoomIds[roomId] && room?.state === RoomStateType.WAIT;
+    });
 
     if (filteredRoomIds.length === 0) {
       const roomId = this.createRoomId();

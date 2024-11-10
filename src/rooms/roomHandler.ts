@@ -1,6 +1,7 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   GlobalFailCode,
+  RoomStateType,
   S2CCreateRoomResponse,
   S2CGetRoomListResponse,
   S2CJoinRandomRoomResponse,
@@ -73,6 +74,10 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   const room = rooms.getRoom(roomId);
 
   if (!room) {
+    return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
+  }
+
+  if (room.state !== RoomStateType.WAIT) {
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
