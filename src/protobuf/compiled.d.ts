@@ -5573,9 +5573,6 @@ export interface IGamePacket {
     /** GamePacket positionUpdateRequest */
     positionUpdateRequest?: (IC2SPositionUpdateRequest|null);
 
-    /** GamePacket positionUpdateResponse */
-    positionUpdateResponse?: (IS2CPositionUpdateResponse|null);
-
     /** GamePacket positionUpdateNotification */
     positionUpdateNotification?: (IS2CPositionUpdateNotification|null);
 
@@ -5721,9 +5718,6 @@ export class GamePacket implements IGamePacket {
     /** GamePacket positionUpdateRequest. */
     public positionUpdateRequest?: (IC2SPositionUpdateRequest|null);
 
-    /** GamePacket positionUpdateResponse. */
-    public positionUpdateResponse?: (IS2CPositionUpdateResponse|null);
-
     /** GamePacket positionUpdateNotification. */
     public positionUpdateNotification?: (IS2CPositionUpdateNotification|null);
 
@@ -5791,7 +5785,7 @@ export class GamePacket implements IGamePacket {
     public animationNotification?: (IS2CAnimationNotification|null);
 
     /** GamePacket payload. */
-    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|"animationNotification");
+    public payload?: ("registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|"animationNotification");
 
     /**
      * Creates a new GamePacket instance using the specified properties.

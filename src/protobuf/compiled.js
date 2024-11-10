@@ -15441,7 +15441,6 @@ $root.GamePacket = (function() {
      * @property {IS2CGameStartResponse|null} [gameStartResponse] GamePacket gameStartResponse
      * @property {IS2CGameStartNotification|null} [gameStartNotification] GamePacket gameStartNotification
      * @property {IC2SPositionUpdateRequest|null} [positionUpdateRequest] GamePacket positionUpdateRequest
-     * @property {IS2CPositionUpdateResponse|null} [positionUpdateResponse] GamePacket positionUpdateResponse
      * @property {IS2CPositionUpdateNotification|null} [positionUpdateNotification] GamePacket positionUpdateNotification
      * @property {IC2SUseCardRequest|null} [useCardRequest] GamePacket useCardRequest
      * @property {IS2CUseCardResponse|null} [useCardResponse] GamePacket useCardResponse
@@ -15666,14 +15665,6 @@ $root.GamePacket = (function() {
     GamePacket.prototype.positionUpdateRequest = null;
 
     /**
-     * GamePacket positionUpdateResponse.
-     * @member {IS2CPositionUpdateResponse|null|undefined} positionUpdateResponse
-     * @memberof GamePacket
-     * @instance
-     */
-    GamePacket.prototype.positionUpdateResponse = null;
-
-    /**
      * GamePacket positionUpdateNotification.
      * @member {IS2CPositionUpdateNotification|null|undefined} positionUpdateNotification
      * @memberof GamePacket
@@ -15854,12 +15845,12 @@ $root.GamePacket = (function() {
 
     /**
      * GamePacket payload.
-     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateResponse"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|"animationNotification"|undefined} payload
+     * @member {"registerRequest"|"registerResponse"|"loginRequest"|"loginResponse"|"createRoomRequest"|"createRoomResponse"|"getRoomListRequest"|"getRoomListResponse"|"joinRoomRequest"|"joinRoomResponse"|"joinRandomRoomRequest"|"joinRandomRoomResponse"|"joinRoomNotification"|"leaveRoomRequest"|"leaveRoomResponse"|"leaveRoomNotification"|"gamePrepareRequest"|"gamePrepareResponse"|"gamePrepareNotification"|"gameStartRequest"|"gameStartResponse"|"gameStartNotification"|"positionUpdateRequest"|"positionUpdateNotification"|"useCardRequest"|"useCardResponse"|"useCardNotification"|"equipCardNotification"|"cardEffectNotification"|"fleaMarketNotification"|"fleaMarketPickRequest"|"fleaMarketPickResponse"|"userUpdateNotification"|"phaseUpdateNotification"|"reactionRequest"|"reactionResponse"|"destroyCardRequest"|"destroyCardResponse"|"gameEndNotification"|"cardSelectRequest"|"cardSelectResponse"|"passDebuffRequest"|"passDebuffResponse"|"warningNotification"|"animationNotification"|undefined} payload
      * @memberof GamePacket
      * @instance
      */
     Object.defineProperty(GamePacket.prototype, "payload", {
-        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateResponse", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffRequest", "passDebuffResponse", "warningNotification", "animationNotification"]),
+        get: $util.oneOfGetter($oneOfFields = ["registerRequest", "registerResponse", "loginRequest", "loginResponse", "createRoomRequest", "createRoomResponse", "getRoomListRequest", "getRoomListResponse", "joinRoomRequest", "joinRoomResponse", "joinRandomRoomRequest", "joinRandomRoomResponse", "joinRoomNotification", "leaveRoomRequest", "leaveRoomResponse", "leaveRoomNotification", "gamePrepareRequest", "gamePrepareResponse", "gamePrepareNotification", "gameStartRequest", "gameStartResponse", "gameStartNotification", "positionUpdateRequest", "positionUpdateNotification", "useCardRequest", "useCardResponse", "useCardNotification", "equipCardNotification", "cardEffectNotification", "fleaMarketNotification", "fleaMarketPickRequest", "fleaMarketPickResponse", "userUpdateNotification", "phaseUpdateNotification", "reactionRequest", "reactionResponse", "destroyCardRequest", "destroyCardResponse", "gameEndNotification", "cardSelectRequest", "cardSelectResponse", "passDebuffRequest", "passDebuffResponse", "warningNotification", "animationNotification"]),
         set: $util.oneOfSetter($oneOfFields)
     });
 
@@ -15933,52 +15924,50 @@ $root.GamePacket = (function() {
             $root.S2CGameStartNotification.encode(message.gameStartNotification, writer.uint32(/* id 22, wireType 2 =*/178).fork()).ldelim();
         if (message.positionUpdateRequest != null && Object.hasOwnProperty.call(message, "positionUpdateRequest"))
             $root.C2SPositionUpdateRequest.encode(message.positionUpdateRequest, writer.uint32(/* id 23, wireType 2 =*/186).fork()).ldelim();
-        if (message.positionUpdateResponse != null && Object.hasOwnProperty.call(message, "positionUpdateResponse"))
-            $root.S2CPositionUpdateResponse.encode(message.positionUpdateResponse, writer.uint32(/* id 24, wireType 2 =*/194).fork()).ldelim();
         if (message.positionUpdateNotification != null && Object.hasOwnProperty.call(message, "positionUpdateNotification"))
-            $root.S2CPositionUpdateNotification.encode(message.positionUpdateNotification, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
+            $root.S2CPositionUpdateNotification.encode(message.positionUpdateNotification, writer.uint32(/* id 24, wireType 2 =*/194).fork()).ldelim();
         if (message.useCardRequest != null && Object.hasOwnProperty.call(message, "useCardRequest"))
-            $root.C2SUseCardRequest.encode(message.useCardRequest, writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
+            $root.C2SUseCardRequest.encode(message.useCardRequest, writer.uint32(/* id 25, wireType 2 =*/202).fork()).ldelim();
         if (message.useCardResponse != null && Object.hasOwnProperty.call(message, "useCardResponse"))
-            $root.S2CUseCardResponse.encode(message.useCardResponse, writer.uint32(/* id 27, wireType 2 =*/218).fork()).ldelim();
+            $root.S2CUseCardResponse.encode(message.useCardResponse, writer.uint32(/* id 26, wireType 2 =*/210).fork()).ldelim();
         if (message.useCardNotification != null && Object.hasOwnProperty.call(message, "useCardNotification"))
-            $root.S2CUseCardNotification.encode(message.useCardNotification, writer.uint32(/* id 28, wireType 2 =*/226).fork()).ldelim();
+            $root.S2CUseCardNotification.encode(message.useCardNotification, writer.uint32(/* id 27, wireType 2 =*/218).fork()).ldelim();
         if (message.equipCardNotification != null && Object.hasOwnProperty.call(message, "equipCardNotification"))
-            $root.S2CEquipCardNotification.encode(message.equipCardNotification, writer.uint32(/* id 29, wireType 2 =*/234).fork()).ldelim();
+            $root.S2CEquipCardNotification.encode(message.equipCardNotification, writer.uint32(/* id 28, wireType 2 =*/226).fork()).ldelim();
         if (message.cardEffectNotification != null && Object.hasOwnProperty.call(message, "cardEffectNotification"))
-            $root.S2CCardEffectNotification.encode(message.cardEffectNotification, writer.uint32(/* id 30, wireType 2 =*/242).fork()).ldelim();
+            $root.S2CCardEffectNotification.encode(message.cardEffectNotification, writer.uint32(/* id 29, wireType 2 =*/234).fork()).ldelim();
         if (message.fleaMarketNotification != null && Object.hasOwnProperty.call(message, "fleaMarketNotification"))
-            $root.S2CFleaMarketNotification.encode(message.fleaMarketNotification, writer.uint32(/* id 31, wireType 2 =*/250).fork()).ldelim();
+            $root.S2CFleaMarketNotification.encode(message.fleaMarketNotification, writer.uint32(/* id 30, wireType 2 =*/242).fork()).ldelim();
         if (message.fleaMarketPickRequest != null && Object.hasOwnProperty.call(message, "fleaMarketPickRequest"))
-            $root.C2SFleaMarketPickRequest.encode(message.fleaMarketPickRequest, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
+            $root.C2SFleaMarketPickRequest.encode(message.fleaMarketPickRequest, writer.uint32(/* id 31, wireType 2 =*/250).fork()).ldelim();
         if (message.fleaMarketPickResponse != null && Object.hasOwnProperty.call(message, "fleaMarketPickResponse"))
-            $root.S2CFleaMarketPickResponse.encode(message.fleaMarketPickResponse, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
+            $root.S2CFleaMarketPickResponse.encode(message.fleaMarketPickResponse, writer.uint32(/* id 32, wireType 2 =*/258).fork()).ldelim();
         if (message.userUpdateNotification != null && Object.hasOwnProperty.call(message, "userUpdateNotification"))
-            $root.S2CUserUpdateNotification.encode(message.userUpdateNotification, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
+            $root.S2CUserUpdateNotification.encode(message.userUpdateNotification, writer.uint32(/* id 33, wireType 2 =*/266).fork()).ldelim();
         if (message.phaseUpdateNotification != null && Object.hasOwnProperty.call(message, "phaseUpdateNotification"))
-            $root.S2CPhaseUpdateNotification.encode(message.phaseUpdateNotification, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
+            $root.S2CPhaseUpdateNotification.encode(message.phaseUpdateNotification, writer.uint32(/* id 34, wireType 2 =*/274).fork()).ldelim();
         if (message.reactionRequest != null && Object.hasOwnProperty.call(message, "reactionRequest"))
-            $root.C2SReactionRequest.encode(message.reactionRequest, writer.uint32(/* id 36, wireType 2 =*/290).fork()).ldelim();
+            $root.C2SReactionRequest.encode(message.reactionRequest, writer.uint32(/* id 35, wireType 2 =*/282).fork()).ldelim();
         if (message.reactionResponse != null && Object.hasOwnProperty.call(message, "reactionResponse"))
-            $root.S2CReactionResponse.encode(message.reactionResponse, writer.uint32(/* id 37, wireType 2 =*/298).fork()).ldelim();
+            $root.S2CReactionResponse.encode(message.reactionResponse, writer.uint32(/* id 36, wireType 2 =*/290).fork()).ldelim();
         if (message.destroyCardRequest != null && Object.hasOwnProperty.call(message, "destroyCardRequest"))
-            $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 38, wireType 2 =*/306).fork()).ldelim();
+            $root.C2SDestroyCardRequest.encode(message.destroyCardRequest, writer.uint32(/* id 37, wireType 2 =*/298).fork()).ldelim();
         if (message.destroyCardResponse != null && Object.hasOwnProperty.call(message, "destroyCardResponse"))
-            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 39, wireType 2 =*/314).fork()).ldelim();
+            $root.S2CDestroyCardResponse.encode(message.destroyCardResponse, writer.uint32(/* id 38, wireType 2 =*/306).fork()).ldelim();
         if (message.gameEndNotification != null && Object.hasOwnProperty.call(message, "gameEndNotification"))
-            $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 40, wireType 2 =*/322).fork()).ldelim();
+            $root.S2CGameEndNotification.encode(message.gameEndNotification, writer.uint32(/* id 39, wireType 2 =*/314).fork()).ldelim();
         if (message.cardSelectRequest != null && Object.hasOwnProperty.call(message, "cardSelectRequest"))
-            $root.C2SCardSelectRequest.encode(message.cardSelectRequest, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
+            $root.C2SCardSelectRequest.encode(message.cardSelectRequest, writer.uint32(/* id 40, wireType 2 =*/322).fork()).ldelim();
         if (message.cardSelectResponse != null && Object.hasOwnProperty.call(message, "cardSelectResponse"))
-            $root.S2CCardSelectResponse.encode(message.cardSelectResponse, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
+            $root.S2CCardSelectResponse.encode(message.cardSelectResponse, writer.uint32(/* id 41, wireType 2 =*/330).fork()).ldelim();
         if (message.passDebuffRequest != null && Object.hasOwnProperty.call(message, "passDebuffRequest"))
-            $root.C2SPassDebuffRequest.encode(message.passDebuffRequest, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
+            $root.C2SPassDebuffRequest.encode(message.passDebuffRequest, writer.uint32(/* id 42, wireType 2 =*/338).fork()).ldelim();
         if (message.passDebuffResponse != null && Object.hasOwnProperty.call(message, "passDebuffResponse"))
-            $root.S2CPassDebuffResponse.encode(message.passDebuffResponse, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
+            $root.S2CPassDebuffResponse.encode(message.passDebuffResponse, writer.uint32(/* id 43, wireType 2 =*/346).fork()).ldelim();
         if (message.warningNotification != null && Object.hasOwnProperty.call(message, "warningNotification"))
-            $root.S2CWarningNotification.encode(message.warningNotification, writer.uint32(/* id 45, wireType 2 =*/362).fork()).ldelim();
+            $root.S2CWarningNotification.encode(message.warningNotification, writer.uint32(/* id 44, wireType 2 =*/354).fork()).ldelim();
         if (message.animationNotification != null && Object.hasOwnProperty.call(message, "animationNotification"))
-            $root.S2CAnimationNotification.encode(message.animationNotification, writer.uint32(/* id 46, wireType 2 =*/370).fork()).ldelim();
+            $root.S2CAnimationNotification.encode(message.animationNotification, writer.uint32(/* id 45, wireType 2 =*/362).fork()).ldelim();
         return writer;
     };
 
@@ -16106,94 +16095,90 @@ $root.GamePacket = (function() {
                     break;
                 }
             case 24: {
-                    message.positionUpdateResponse = $root.S2CPositionUpdateResponse.decode(reader, reader.uint32());
-                    break;
-                }
-            case 25: {
                     message.positionUpdateNotification = $root.S2CPositionUpdateNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 26: {
+            case 25: {
                     message.useCardRequest = $root.C2SUseCardRequest.decode(reader, reader.uint32());
                     break;
                 }
-            case 27: {
+            case 26: {
                     message.useCardResponse = $root.S2CUseCardResponse.decode(reader, reader.uint32());
                     break;
                 }
-            case 28: {
+            case 27: {
                     message.useCardNotification = $root.S2CUseCardNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 29: {
+            case 28: {
                     message.equipCardNotification = $root.S2CEquipCardNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 30: {
+            case 29: {
                     message.cardEffectNotification = $root.S2CCardEffectNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 31: {
+            case 30: {
                     message.fleaMarketNotification = $root.S2CFleaMarketNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 32: {
+            case 31: {
                     message.fleaMarketPickRequest = $root.C2SFleaMarketPickRequest.decode(reader, reader.uint32());
                     break;
                 }
-            case 33: {
+            case 32: {
                     message.fleaMarketPickResponse = $root.S2CFleaMarketPickResponse.decode(reader, reader.uint32());
                     break;
                 }
-            case 34: {
+            case 33: {
                     message.userUpdateNotification = $root.S2CUserUpdateNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 35: {
+            case 34: {
                     message.phaseUpdateNotification = $root.S2CPhaseUpdateNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 36: {
+            case 35: {
                     message.reactionRequest = $root.C2SReactionRequest.decode(reader, reader.uint32());
                     break;
                 }
-            case 37: {
+            case 36: {
                     message.reactionResponse = $root.S2CReactionResponse.decode(reader, reader.uint32());
                     break;
                 }
-            case 38: {
+            case 37: {
                     message.destroyCardRequest = $root.C2SDestroyCardRequest.decode(reader, reader.uint32());
                     break;
                 }
-            case 39: {
+            case 38: {
                     message.destroyCardResponse = $root.S2CDestroyCardResponse.decode(reader, reader.uint32());
                     break;
                 }
-            case 40: {
+            case 39: {
                     message.gameEndNotification = $root.S2CGameEndNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 41: {
+            case 40: {
                     message.cardSelectRequest = $root.C2SCardSelectRequest.decode(reader, reader.uint32());
                     break;
                 }
-            case 42: {
+            case 41: {
                     message.cardSelectResponse = $root.S2CCardSelectResponse.decode(reader, reader.uint32());
                     break;
                 }
-            case 43: {
+            case 42: {
                     message.passDebuffRequest = $root.C2SPassDebuffRequest.decode(reader, reader.uint32());
                     break;
                 }
-            case 44: {
+            case 43: {
                     message.passDebuffResponse = $root.S2CPassDebuffResponse.decode(reader, reader.uint32());
                     break;
                 }
-            case 45: {
+            case 44: {
                     message.warningNotification = $root.S2CWarningNotification.decode(reader, reader.uint32());
                     break;
                 }
-            case 46: {
+            case 45: {
                     message.animationNotification = $root.S2CAnimationNotification.decode(reader, reader.uint32());
                     break;
                 }
@@ -16459,16 +16444,6 @@ $root.GamePacket = (function() {
                 var error = $root.C2SPositionUpdateRequest.verify(message.positionUpdateRequest);
                 if (error)
                     return "positionUpdateRequest." + error;
-            }
-        }
-        if (message.positionUpdateResponse != null && message.hasOwnProperty("positionUpdateResponse")) {
-            if (properties.payload === 1)
-                return "payload: multiple values";
-            properties.payload = 1;
-            {
-                var error = $root.S2CPositionUpdateResponse.verify(message.positionUpdateResponse);
-                if (error)
-                    return "positionUpdateResponse." + error;
             }
         }
         if (message.positionUpdateNotification != null && message.hasOwnProperty("positionUpdateNotification")) {
@@ -16821,11 +16796,6 @@ $root.GamePacket = (function() {
                 throw TypeError(".GamePacket.positionUpdateRequest: object expected");
             message.positionUpdateRequest = $root.C2SPositionUpdateRequest.fromObject(object.positionUpdateRequest);
         }
-        if (object.positionUpdateResponse != null) {
-            if (typeof object.positionUpdateResponse !== "object")
-                throw TypeError(".GamePacket.positionUpdateResponse: object expected");
-            message.positionUpdateResponse = $root.S2CPositionUpdateResponse.fromObject(object.positionUpdateResponse);
-        }
         if (object.positionUpdateNotification != null) {
             if (typeof object.positionUpdateNotification !== "object")
                 throw TypeError(".GamePacket.positionUpdateNotification: object expected");
@@ -17066,11 +17036,6 @@ $root.GamePacket = (function() {
             object.positionUpdateRequest = $root.C2SPositionUpdateRequest.toObject(message.positionUpdateRequest, options);
             if (options.oneofs)
                 object.payload = "positionUpdateRequest";
-        }
-        if (message.positionUpdateResponse != null && message.hasOwnProperty("positionUpdateResponse")) {
-            object.positionUpdateResponse = $root.S2CPositionUpdateResponse.toObject(message.positionUpdateResponse, options);
-            if (options.oneofs)
-                object.payload = "positionUpdateResponse";
         }
         if (message.positionUpdateNotification != null && message.hasOwnProperty("positionUpdateNotification")) {
             object.positionUpdateNotification = $root.S2CPositionUpdateNotification.toObject(message.positionUpdateNotification, options);

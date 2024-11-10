@@ -201,51 +201,33 @@ export const positionUpdateRequestHandler = async (socket, version, sequence, po
   const { x, y } = positionUpdateRequest;
   const user = session.getUser(ctx.userId);
   if (!user) {
-    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
-    } satisfies MessageProps<S2CPositionUpdateResponse>);
+    error(`[positionUpdateRequestHandler] Cannot Find User.`);
+    return;
   }
 
   const room = rooms.getRoom(ctx.roomId);
   if (!room) {
-    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
-    } satisfies MessageProps<S2CPositionUpdateResponse>);
+    error(`[positionUpdateRequestHandler] Cannot Find Room.`);
+    return;
   }
 
   if (room.state !== RoomStateType.INGAME) {
-    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
-    });
+    error(`[positionUpdateRequestHandler] Invalid Room State.`);
+    return;
   }
 
   const roomUser = room.users.find((user) => user.id === ctx.userId);
   if (!roomUser) {
-    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
-    } satisfies MessageProps<S2CPositionUpdateResponse>);
+    error(`[positionUpdateRequestHandler] Invalid Room User.`);
+    return;
   }
 
   if (roomUser.character.stateInfo.state !== CharacterStateType.NONE_CHARACTER_STATE) {
-    return writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.INVALID_REQUEST,
-    });
+    error(`[positionUpdateRequestHandler] Invalid Character State.`);
+    return;
   }
 
   roomUser.character.setPosition({ x, y });
-  // writePayload(socket, PACKET_TYPE.POSITION_UPDATE_RESPONSE, version, sequence, {
-  //   success: true,
-  //   failCode: GlobalFailCode.NONE_FAILCODE,
-  // } satisfies MessageProps<S2CPositionUpdateResponse>);
-
-  room.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
-    characterPositions: room.users.map((user) => user.character.positionInfo.toPositionData()),
-  } satisfies MessageProps<S2CPositionUpdateNotification>);
 };
 
 export const reactionHandler = async (socket, version, sequence, reactionRequest, ctx: Context) => {

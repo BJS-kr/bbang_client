@@ -333,51 +333,50 @@ message GamePacket {
 
         // 위치 업데이트
         C2SPositionUpdateRequest positionUpdateRequest = 23;
-        S2CPositionUpdateResponse positionUpdateResponse = 24;
-        S2CPositionUpdateNotification positionUpdateNotification = 25;
+        S2CPositionUpdateNotification positionUpdateNotification = 24;
 
         // 카드 사용
-        C2SUseCardRequest useCardRequest = 26;
-        S2CUseCardResponse useCardResponse = 27;
+        C2SUseCardRequest useCardRequest = 25;
+        S2CUseCardResponse useCardResponse = 26;
 
         // 카드 효과 알림
-        S2CUseCardNotification useCardNotification = 28;
-        S2CEquipCardNotification equipCardNotification = 29;
-        S2CCardEffectNotification cardEffectNotification = 30;
+        S2CUseCardNotification useCardNotification = 27;
+        S2CEquipCardNotification equipCardNotification = 28;
+        S2CCardEffectNotification cardEffectNotification = 29;
 
         // 플리마켓
-        S2CFleaMarketNotification fleaMarketNotification = 31;
-        C2SFleaMarketPickRequest fleaMarketPickRequest = 32;
-        S2CFleaMarketPickResponse fleaMarketPickResponse = 33;
+        S2CFleaMarketNotification fleaMarketNotification = 30;
+        C2SFleaMarketPickRequest fleaMarketPickRequest = 31;
+        S2CFleaMarketPickResponse fleaMarketPickResponse = 32;
 
         // 카드 사용 등으로 인한 유저 정보 업데이트
-        S2CUserUpdateNotification userUpdateNotification = 34;
+        S2CUserUpdateNotification userUpdateNotification = 33;
         
         // 페이즈 업데이트
-        S2CPhaseUpdateNotification phaseUpdateNotification = 35;
+        S2CPhaseUpdateNotification phaseUpdateNotification = 34;
 
         // 리액션
-        C2SReactionRequest reactionRequest = 36;
-        S2CReactionResponse reactionResponse = 37;
+        C2SReactionRequest reactionRequest = 35;
+        S2CReactionResponse reactionResponse = 36;
 
         // 턴 종료시 (phaseType 3) 카드 버리기
-        C2SDestroyCardRequest destroyCardRequest = 38;
-        S2CDestroyCardResponse destroyCardResponse = 39;
+        C2SDestroyCardRequest destroyCardRequest = 37;
+        S2CDestroyCardResponse destroyCardResponse = 38;
 
         // 게임 종료
-        S2CGameEndNotification gameEndNotification = 40;
+        S2CGameEndNotification gameEndNotification = 39;
 
         // 카드 선택
-        C2SCardSelectRequest cardSelectRequest = 41;
-        S2CCardSelectResponse cardSelectResponse = 42;
+        C2SCardSelectRequest cardSelectRequest = 40;
+        S2CCardSelectResponse cardSelectResponse = 41;
 
         // 디버프 넘기기
-        C2SPassDebuffRequest passDebuffRequest = 43;
-        S2CPassDebuffResponse passDebuffResponse = 44;
-        S2CWarningNotification warningNotification = 45;
+        C2SPassDebuffRequest passDebuffRequest = 42;
+        S2CPassDebuffResponse passDebuffResponse = 43;
+        S2CWarningNotification warningNotification = 44;
 
         // 효과 알림
-        S2CAnimationNotification animationNotification = 46;
+        S2CAnimationNotification animationNotification = 45;
     }
 }
 
