@@ -570,9 +570,11 @@ function handleHallucination({ socket, version, sequence }: HandlerBase, useCard
 function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   room.initFleaMarketCards();
 
-  room.users.forEach((user, index) => {
+  const userIndex = room.users.findIndex((u) => u.id === user.id);
+  const usersByOrder = [...room.users.slice(userIndex), ...room.users.slice(0, userIndex)];
+  usersByOrder.forEach((user, index) => {
     const state = index === 0 ? CharacterStateType.FLEA_MARKET_TURN : CharacterStateType.FLEA_MARKET_WAIT;
-    const timeout = state === CharacterStateType.FLEA_MARKET_TURN ? onFleaMarketTurnTimeout(user, room) : null;
+    const timeout = state === CharacterStateType.FLEA_MARKET_TURN ? onFleaMarketTurnTimeout(user, room, usersByOrder) : null;
     user.character.stateInfo.setState(user.id, state, timeout);
   });
 
