@@ -179,7 +179,7 @@ export class Room {
       this.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
         characterPositions: this.users.map((user) => user.character.positionInfo.toPositionData()),
       } satisfies MessageProps<S2CPositionUpdateNotification>);
-    }, 1000 / 5); // targetFrame 5
+    }, 1000 / 2.5); // targetFrame 2.5
   }
 
   stopPositionBroadcast() {
