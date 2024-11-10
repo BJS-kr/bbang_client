@@ -759,7 +759,7 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
 
   switch (passDebuffRequest.debuffCardType) {
     case CardType.BOMB:
-      const bombIndex = room.bombStates.findIndex((bombStat) => bombStat.userId === targetUser.id);
+      const bombIndex = room.bombStates.findIndex((bombStat) => bombStat.userId === user.id);
       if (bombIndex < 0) {
         return writePayload(socket, PACKET_TYPE.PASS_DEBUFF_RESPONSE, version, sequence, {
           success: false,
