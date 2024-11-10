@@ -1,4 +1,4 @@
-import { CharacterType, RoleType } from '../protobuf/compiled';
+import { CardType, CharacterType, RoleType } from '../protobuf/compiled';
 
 export const CHARACTER_HP = {
   [CharacterType.RED]: 4, // 빨강이
@@ -91,3 +91,29 @@ export const ROLE_MEMBERS = {
     [RoleType.PSYCHOPATH]: 1,
   },
 } as const;
+
+export const CARD_COUNTS: { [key in CardType]?: number } = {
+  [CardType.BBANG]: 20,
+  [CardType.BIG_BBANG]: 1,
+  [CardType.SHIELD]: 10,
+  [CardType.VACCINE]: 6,
+  [CardType.CALL_119]: 2,
+  [CardType.DEATH_MATCH]: 4,
+  [CardType.GUERRILLA]: 1,
+  [CardType.ABSORB]: 4,
+  [CardType.HALLUCINATION]: 4,
+  [CardType.FLEA_MARKET]: 3,
+  [CardType.MATURED_SAVINGS]: 2,
+  [CardType.WIN_LOTTERY]: 1,
+  [CardType.SNIPER_GUN]: 1,
+  [CardType.HAND_GUN]: 2,
+  [CardType.DESERT_EAGLE]: 3,
+  [CardType.AUTO_RIFLE]: 2,
+  [CardType.LASER_POINTER]: 1,
+  [CardType.RADAR]: 1,
+  [CardType.AUTO_SHIELD]: 2,
+  [CardType.STEALTH_SUIT]: 2,
+  [CardType.CONTAINMENT_UNIT]: 3,
+  [CardType.SATELLITE_TARGET]: 1,
+  [CardType.BOMB]: 1,
+};

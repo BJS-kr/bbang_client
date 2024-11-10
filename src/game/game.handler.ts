@@ -1,5 +1,4 @@
-import { Room, RoomState } from '../rooms/types';
-import { GAME_INIT_POSITION, ROLE_MEMBERS } from '../constants/game';
+import { CARD_COUNTS, GAME_INIT_POSITION, ROLE_MEMBERS } from '../constants/game';
 import { PACKET_TYPE } from '../constants/packetType';
 import {
   CardType,
@@ -14,8 +13,6 @@ import {
   S2CGamePrepareResponse,
   S2CGameStartNotification,
   S2CGameStartResponse,
-  S2CPositionUpdateNotification,
-  S2CPositionUpdateResponse,
   S2CReactionResponse,
   S2CUserUpdateNotification,
 } from '../protobuf/compiled';
@@ -85,8 +82,9 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     .sort(() => Math.random() - 0.5);
 
   // 카드 셔플
-  room.shuffleCardTypes = Object.values(CardType)
-    .filter((type) => typeof type === 'number' && type !== CardType.NONE)
+  room.shuffleCardTypes = Object.entries(CARD_COUNTS)
+    .flatMap(([cardType, count]) => Array(count).fill(Number(cardType)))
+    .filter((type) => type !== CardType.NONE)
     .sort(() => Math.random() - 0.5);
 
   // 역할, 캐릭터, 초기 위치 부여
