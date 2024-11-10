@@ -96,8 +96,7 @@ export class Character extends EventEmitter {
 
   setPosition({ x, y }: { x: number; y: number }) {
     this.positionInfo.userId = this.userId;
-    this.positionInfo.x = x;
-    this.positionInfo.y = y;
+    this.positionInfo.setPosition(x, y);
   }
 
   getMaxBBangCount() {

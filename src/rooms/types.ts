@@ -175,10 +175,19 @@ export class Room {
         (stat) => !bombTargetStates.some((warningState) => warningState.userId === stat.userId && warningState.expectedAt === stat.expectedAt),
       );
 
-      // 위치값 전송
-      this.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
-        characterPositions: this.users.map((user) => user.character.positionInfo.toPositionData()),
-      } satisfies MessageProps<S2CPositionUpdateNotification>);
+      const positionBroadcasts = this.users
+        .filter((user) => user.character.positionInfo.isDirty)
+        .map((user) => {
+          const positionData = user.character.positionInfo.toPositionData();
+          user.character.positionInfo.isDirty = false;
+          return positionData;
+        });
+
+      if (positionBroadcasts.length > 0) {
+        this.broadcast(PACKET_TYPE.POSITION_UPDATE_NOTIFICATION, {
+          characterPositions: positionBroadcasts,
+        } satisfies MessageProps<S2CPositionUpdateNotification>);
+      }
     }, 1000 / 5); // targetFrame 5
   }
 
