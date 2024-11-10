@@ -17,7 +17,7 @@ export function writePayload(socket, packetType: number, version: string, sequen
     return error(encodedPayload);
   }
 
-  if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION && packetType !== PACKET_TYPE.POSITION_UPDATE_RESPONSE) {
+  if (packetType !== PACKET_TYPE.POSITION_UPDATE_NOTIFICATION) {
     log(
       `decodePayload:|${packetType}|${JSON.stringify(decodePayload(packetType, encodedPayload), process.env.DEBUG ? undefined : skipHandCards, 2)}`,
     );
