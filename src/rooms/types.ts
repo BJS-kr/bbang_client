@@ -188,7 +188,7 @@ export class Room {
           characterPositions: positionBroadcasts,
         } satisfies MessageProps<S2CPositionUpdateNotification>);
       }
-    }, 1000 / 5); // targetFrame 5
+    }, 1000 / 10); // targetFrame 10
   }
 
   stopPositionBroadcast() {
