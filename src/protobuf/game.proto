@@ -232,6 +232,7 @@ message S2CUserUpdateNotification {
 message S2CPhaseUpdateNotification {
     PhaseType phaseType = 1; // DAY 1, EVENING 2, END 3
     int64 nextPhaseAt = 2; // 다음 페이즈 시작 시점(밀리초 타임스탬프)
+    repeated CharacterPositionData characterPositions = 3; // 변경된 캐릭터 위치
 }
 
 message C2SReactionRequest {

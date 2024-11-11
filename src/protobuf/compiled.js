@@ -11973,6 +11973,7 @@ $root.S2CPhaseUpdateNotification = (function() {
      * @interface IS2CPhaseUpdateNotification
      * @property {PhaseType|null} [phaseType] S2CPhaseUpdateNotification phaseType
      * @property {number|Long|null} [nextPhaseAt] S2CPhaseUpdateNotification nextPhaseAt
+     * @property {Array.<ICharacterPositionData>|null} [characterPositions] S2CPhaseUpdateNotification characterPositions
      */
 
     /**
@@ -11984,6 +11985,7 @@ $root.S2CPhaseUpdateNotification = (function() {
      * @param {IS2CPhaseUpdateNotification=} [properties] Properties to set
      */
     function S2CPhaseUpdateNotification(properties) {
+        this.characterPositions = [];
         if (properties)
             for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                 if (properties[keys[i]] != null)
@@ -12005,6 +12007,14 @@ $root.S2CPhaseUpdateNotification = (function() {
      * @instance
      */
     S2CPhaseUpdateNotification.prototype.nextPhaseAt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+    /**
+     * S2CPhaseUpdateNotification characterPositions.
+     * @member {Array.<ICharacterPositionData>} characterPositions
+     * @memberof S2CPhaseUpdateNotification
+     * @instance
+     */
+    S2CPhaseUpdateNotification.prototype.characterPositions = $util.emptyArray;
 
     /**
      * Creates a new S2CPhaseUpdateNotification instance using the specified properties.
@@ -12034,6 +12044,9 @@ $root.S2CPhaseUpdateNotification = (function() {
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.phaseType);
         if (message.nextPhaseAt != null && Object.hasOwnProperty.call(message, "nextPhaseAt"))
             writer.uint32(/* id 2, wireType 0 =*/16).int64(message.nextPhaseAt);
+        if (message.characterPositions != null && message.characterPositions.length)
+            for (var i = 0; i < message.characterPositions.length; ++i)
+                $root.CharacterPositionData.encode(message.characterPositions[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
         return writer;
     };
 
@@ -12074,6 +12087,12 @@ $root.S2CPhaseUpdateNotification = (function() {
                 }
             case 2: {
                     message.nextPhaseAt = reader.int64();
+                    break;
+                }
+            case 3: {
+                    if (!(message.characterPositions && message.characterPositions.length))
+                        message.characterPositions = [];
+                    message.characterPositions.push($root.CharacterPositionData.decode(reader, reader.uint32()));
                     break;
                 }
             default:
@@ -12124,6 +12143,15 @@ $root.S2CPhaseUpdateNotification = (function() {
         if (message.nextPhaseAt != null && message.hasOwnProperty("nextPhaseAt"))
             if (!$util.isInteger(message.nextPhaseAt) && !(message.nextPhaseAt && $util.isInteger(message.nextPhaseAt.low) && $util.isInteger(message.nextPhaseAt.high)))
                 return "nextPhaseAt: integer|Long expected";
+        if (message.characterPositions != null && message.hasOwnProperty("characterPositions")) {
+            if (!Array.isArray(message.characterPositions))
+                return "characterPositions: array expected";
+            for (var i = 0; i < message.characterPositions.length; ++i) {
+                var error = $root.CharacterPositionData.verify(message.characterPositions[i]);
+                if (error)
+                    return "characterPositions." + error;
+            }
+        }
         return null;
     };
 
@@ -12172,6 +12200,16 @@ $root.S2CPhaseUpdateNotification = (function() {
                 message.nextPhaseAt = object.nextPhaseAt;
             else if (typeof object.nextPhaseAt === "object")
                 message.nextPhaseAt = new $util.LongBits(object.nextPhaseAt.low >>> 0, object.nextPhaseAt.high >>> 0).toNumber();
+        if (object.characterPositions) {
+            if (!Array.isArray(object.characterPositions))
+                throw TypeError(".S2CPhaseUpdateNotification.characterPositions: array expected");
+            message.characterPositions = [];
+            for (var i = 0; i < object.characterPositions.length; ++i) {
+                if (typeof object.characterPositions[i] !== "object")
+                    throw TypeError(".S2CPhaseUpdateNotification.characterPositions: object expected");
+                message.characterPositions[i] = $root.CharacterPositionData.fromObject(object.characterPositions[i]);
+            }
+        }
         return message;
     };
 
@@ -12188,6 +12226,8 @@ $root.S2CPhaseUpdateNotification = (function() {
         if (!options)
             options = {};
         var object = {};
+        if (options.arrays || options.defaults)
+            object.characterPositions = [];
         if (options.defaults) {
             object.phaseType = options.enums === String ? "NONE_PHASE" : 0;
             if ($util.Long) {
@@ -12203,6 +12243,11 @@ $root.S2CPhaseUpdateNotification = (function() {
                 object.nextPhaseAt = options.longs === String ? String(message.nextPhaseAt) : message.nextPhaseAt;
             else
                 object.nextPhaseAt = options.longs === String ? $util.Long.prototype.toString.call(message.nextPhaseAt) : options.longs === Number ? new $util.LongBits(message.nextPhaseAt.low >>> 0, message.nextPhaseAt.high >>> 0).toNumber() : message.nextPhaseAt;
+        if (message.characterPositions && message.characterPositions.length) {
+            object.characterPositions = [];
+            for (var j = 0; j < message.characterPositions.length; ++j)
+                object.characterPositions[j] = $root.CharacterPositionData.toObject(message.characterPositions[j], options);
+        }
         return object;
     };
 

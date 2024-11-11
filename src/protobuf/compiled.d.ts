@@ -4291,6 +4291,9 @@ export interface IS2CPhaseUpdateNotification {
 
     /** S2CPhaseUpdateNotification nextPhaseAt */
     nextPhaseAt?: (number|Long|null);
+
+    /** S2CPhaseUpdateNotification characterPositions */
+    characterPositions?: (ICharacterPositionData[]|null);
 }
 
 /** Represents a S2CPhaseUpdateNotification. */
@@ -4307,6 +4310,9 @@ export class S2CPhaseUpdateNotification implements IS2CPhaseUpdateNotification {
 
     /** S2CPhaseUpdateNotification nextPhaseAt. */
     public nextPhaseAt: (number|Long);
+
+    /** S2CPhaseUpdateNotification characterPositions. */
+    public characterPositions: ICharacterPositionData[];
 
     /**
      * Creates a new S2CPhaseUpdateNotification instance using the specified properties.

@@ -88,6 +88,7 @@ export class GameEvents extends EventEmitter {
       this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
         phaseType: this.#room.gameState.phaseType,
         nextPhaseAt: this.#room.gameState.nextPhaseAt,
+        characterPositions: this.#room.users.map((user) => user.character.positionInfo.toPositionData()),
       } satisfies MessageProps<S2CPhaseUpdateNotification>);
 
       this.#room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
@@ -99,6 +100,7 @@ export class GameEvents extends EventEmitter {
       this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
         phaseType: this.#room.gameState.phaseType,
         nextPhaseAt: this.#room.gameState.nextPhaseAt,
+        characterPositions: this.#room.users.map((user) => user.character.positionInfo.toPositionData()),
       } satisfies MessageProps<S2CPhaseUpdateNotification>);
     });
 
@@ -106,6 +108,7 @@ export class GameEvents extends EventEmitter {
       this.#room.broadcast(PACKET_TYPE.PHASE_UPDATE_NOTIFICATION, {
         phaseType: this.#room.gameState.phaseType,
         nextPhaseAt: this.#room.gameState.nextPhaseAt,
+        characterPositions: this.#room.users.map((user) => user.character.positionInfo.toPositionData()),
       } satisfies MessageProps<S2CPhaseUpdateNotification>);
     });
 
