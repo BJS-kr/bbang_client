@@ -2,32 +2,32 @@ import { CardType, CharacterType, RoleType } from '../protobuf/compiled';
 
 export const CHARACTER_HP = {
   [CharacterType.RED]: 4, // 빨강이
-  [CharacterType.BLUE]: 4, // 파랑이
+  // [CharacterType.BLUE]: 4, // 파랑이
   [CharacterType.SHARK]: 4, // 상어군
-  [CharacterType.KNIGHT]: 4, // 기사군
+  // [CharacterType.KNIGHT]: 4, // 기사군
   [CharacterType.MALANG]: 4, // 말랑이
-  [CharacterType.DINO]: 4, // 다이노
+  // [CharacterType.DINO]: 4, // 다이노
   [CharacterType.FROGGY]: 4, // 개굴군
   [CharacterType.PINK]: 4, // 핑크군
   [CharacterType.SWIM_GLASSES]: 4, // 물안경군
   [CharacterType.MASK]: 4, // 가면군
-  [CharacterType.SLIME]: 4, // 슬라임
+  // [CharacterType.SLIME]: 4, // 슬라임
   [CharacterType.DINOSAUR]: 3, // 공룡이
   [CharacterType.PINK_SLIME]: 3, // 핑크슬라임
 };
 
 export const CHARACTER_BASE_DEFENSE_CHANCE = {
   [CharacterType.RED]: 0, // 빨강이
-  [CharacterType.BLUE]: 0, // 파랑이
+  // [CharacterType.BLUE]: 0, // 파랑이
   [CharacterType.SHARK]: 0, // 상어군
-  [CharacterType.KNIGHT]: 0, // 기사군
+  // [CharacterType.KNIGHT]: 0, // 기사군
   [CharacterType.MALANG]: 0, // 말랑이
-  [CharacterType.DINO]: 0, // 다이노
+  // [CharacterType.DINO]: 0, // 다이노
   [CharacterType.FROGGY]: 0.25, // 개굴군
   [CharacterType.PINK]: 0, // 핑크군
   [CharacterType.SWIM_GLASSES]: 0, // 물안경군
   [CharacterType.MASK]: 0, // 가면군
-  [CharacterType.SLIME]: 0, // 슬라임
+  // [CharacterType.SLIME]: 0, // 슬라임
   [CharacterType.DINOSAUR]: 0, // 공룡이
   [CharacterType.PINK_SLIME]: 0, // 핑크슬라임
 };

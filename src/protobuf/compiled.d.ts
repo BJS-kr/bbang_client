@@ -5903,16 +5903,12 @@ export enum WinType {
 export enum CharacterType {
     NONE_CHARACTER = 0,
     RED = 1,
-    BLUE = 2,
     SHARK = 3,
-    KNIGHT = 4,
     MALANG = 5,
-    DINO = 6,
     FROGGY = 7,
     PINK = 8,
     SWIM_GLASSES = 9,
     MASK = 10,
-    SLIME = 11,
     DINOSAUR = 12,
     PINK_SLIME = 13
 }

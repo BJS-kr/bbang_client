@@ -417,16 +417,12 @@ enum WinType {
 enum CharacterType {
     NONE_CHARACTER = 0;
     RED = 1; // 빨강이
-    BLUE = 2; // 파랑이
     SHARK = 3; // 상어군
-    KNIGHT = 4; // 기사군
     MALANG = 5; // 말랑이
-    DINO = 6; // 다이노
     FROGGY = 7; // 개굴군
     PINK = 8; // 핑크군
     SWIM_GLASSES = 9; // 물안경군
     MASK = 10; // 가면군
-    SLIME = 11; // 슬라임
     DINOSAUR = 12; // 공룡이
     PINK_SLIME = 13; // 핑크슬라임
 }

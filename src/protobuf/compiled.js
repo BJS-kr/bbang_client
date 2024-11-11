@@ -929,16 +929,12 @@ $root.CharacterData = (function() {
                 return "characterType: enum value expected";
             case 0:
             case 1:
-            case 2:
             case 3:
-            case 4:
             case 5:
-            case 6:
             case 7:
             case 8:
             case 9:
             case 10:
-            case 11:
             case 12:
             case 13:
                 break;
@@ -1024,25 +1020,13 @@ $root.CharacterData = (function() {
         case 1:
             message.characterType = 1;
             break;
-        case "BLUE":
-        case 2:
-            message.characterType = 2;
-            break;
         case "SHARK":
         case 3:
             message.characterType = 3;
             break;
-        case "KNIGHT":
-        case 4:
-            message.characterType = 4;
-            break;
         case "MALANG":
         case 5:
             message.characterType = 5;
-            break;
-        case "DINO":
-        case 6:
-            message.characterType = 6;
             break;
         case "FROGGY":
         case 7:
@@ -1059,10 +1043,6 @@ $root.CharacterData = (function() {
         case "MASK":
         case 10:
             message.characterType = 10;
-            break;
-        case "SLIME":
-        case 11:
-            message.characterType = 11;
             break;
         case "DINOSAUR":
         case 12:
@@ -17259,16 +17239,12 @@ $root.WinType = (function() {
  * @enum {number}
  * @property {number} NONE_CHARACTER=0 NONE_CHARACTER value
  * @property {number} RED=1 RED value
- * @property {number} BLUE=2 BLUE value
  * @property {number} SHARK=3 SHARK value
- * @property {number} KNIGHT=4 KNIGHT value
  * @property {number} MALANG=5 MALANG value
- * @property {number} DINO=6 DINO value
  * @property {number} FROGGY=7 FROGGY value
  * @property {number} PINK=8 PINK value
  * @property {number} SWIM_GLASSES=9 SWIM_GLASSES value
  * @property {number} MASK=10 MASK value
- * @property {number} SLIME=11 SLIME value
  * @property {number} DINOSAUR=12 DINOSAUR value
  * @property {number} PINK_SLIME=13 PINK_SLIME value
  */
@@ -17276,16 +17252,12 @@ $root.CharacterType = (function() {
     var valuesById = {}, values = Object.create(valuesById);
     values[valuesById[0] = "NONE_CHARACTER"] = 0;
     values[valuesById[1] = "RED"] = 1;
-    values[valuesById[2] = "BLUE"] = 2;
     values[valuesById[3] = "SHARK"] = 3;
-    values[valuesById[4] = "KNIGHT"] = 4;
     values[valuesById[5] = "MALANG"] = 5;
-    values[valuesById[6] = "DINO"] = 6;
     values[valuesById[7] = "FROGGY"] = 7;
     values[valuesById[8] = "PINK"] = 8;
     values[valuesById[9] = "SWIM_GLASSES"] = 9;
     values[valuesById[10] = "MASK"] = 10;
-    values[valuesById[11] = "SLIME"] = 11;
     values[valuesById[12] = "DINOSAUR"] = 12;
     values[valuesById[13] = "PINK_SLIME"] = 13;
     return values;
