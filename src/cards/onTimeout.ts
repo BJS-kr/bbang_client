@@ -36,17 +36,17 @@ export function onDeathMatchTurnTimeout(user: User, targetUser: User, room: Room
 
 export function onFleaMarketTurnTimeout(user: User, room: Room, usersByOrder: User[]) {
   return () => {
-    const userIndex = room.users.findIndex((u) => u.id === user.id);
-    const isEnd = userIndex === room.users.length - 1;
+    const userIndex = usersByOrder.findIndex((u) => u.id === user.id);
+    const isEnd = userIndex === usersByOrder.length - 1;
     if (isEnd) {
       room.users.forEach((user) => user.character.stateInfo.setState(user.id, CharacterStateType.NONE_CHARACTER_STATE, null));
     } else {
       const nextIndex = userIndex + 1;
-      room.users[userIndex].character.stateInfo.setState(room.users[userIndex].id, CharacterStateType.FLEA_MARKET_WAIT, null);
-      room.users[nextIndex].character.stateInfo.setState(
-        room.users[nextIndex].id,
+      usersByOrder[userIndex].character.stateInfo.setState(usersByOrder[userIndex].id, CharacterStateType.FLEA_MARKET_WAIT, null);
+      usersByOrder[nextIndex].character.stateInfo.setState(
+        usersByOrder[nextIndex].id,
         CharacterStateType.FLEA_MARKET_TURN,
-        onFleaMarketTurnTimeout(room.users[nextIndex], room, usersByOrder),
+        onFleaMarketTurnTimeout(usersByOrder[nextIndex], room, usersByOrder),
       );
     }
 
