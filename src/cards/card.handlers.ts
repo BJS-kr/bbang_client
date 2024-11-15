@@ -66,7 +66,6 @@ type UseCardRequestNotLong = Omit<C2SUseCardRequest, 'targetUserId'> & { targetU
 export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
   cardSelectRequest.selectType ||= 0;
   cardSelectRequest.selectCardType ||= CardType.NONE;
-  log(`handleCardSelect: cardSelectRequest: ${JSON.stringify(cardSelectRequest, null, 2)}`);
 
   const room = rooms.getRoom(ctx.roomId);
 
@@ -105,8 +104,6 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
     error('handleCardSelect: target user not found');
     return responseCardSelect(socket, version, sequence, room, false, GlobalFailCode.CHARACTER_NOT_FOUND, [user]);
   }
-
-  log(`handleCardSelect: user: ${JSON.stringify(user.character, null, 2)} | targetUser: ${JSON.stringify(targetUser.character, null, 2)}`);
 
   if (!isAbsorb(user, targetUser) && !isHallucination(user, targetUser)) {
     error('handleCardSelect: unknown state');
@@ -184,8 +181,6 @@ export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase
 }
 
 export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, useCardRequest: C2SUseCardRequest) {
-  log(`handleUseCard: useCardRequest: ${JSON.stringify(useCardRequest)}`);
-
   const cardProps: CardProps = { type: useCardRequest.cardType, count: 1 };
   const room = rooms.getRoom(ctx.roomId);
 
@@ -349,7 +344,6 @@ function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User
     } satisfies UseCardResponse);
   }
 
-  log(`[handleBBang] user: ${JSON.stringify(user.character, null, 2)} | targetUser: ${JSON.stringify(targetUser.character, null, 2)}`);
   if (isGuerrillaTargetBBang(user)) {
     // 게릴라 타겟이 된 경우 빵으로 자신을 방어할 수 있다.
     return handleGuerrillaTargetBBang({ socket, version, sequence, ctx }, user, targetUser, room);
