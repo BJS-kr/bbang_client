@@ -24,14 +24,14 @@ export enum RoomState {
 }
 
 export type BombState = {
-  userId: string;
+  userId: bigint;
   expectedAt: number;
   isWarningSend: boolean;
 };
 
 export class Room {
   name: string;
-  ownerId: string;
+  ownerId: bigint;
   maxUserNum: number;
   users: User[];
   state: RoomStateType;
@@ -53,7 +53,7 @@ export class Room {
     gameEvents,
   }: {
     name: string;
-    ownerId: string;
+    ownerId: bigint;
     maxUserNum: number;
     users: User[];
     state: RoomStateType;
@@ -84,14 +84,14 @@ export class Room {
     return {
       id: roomId,
       name: this.name,
-      ownerId: this.ownerId,
+      ownerId: Number(this.ownerId),
       maxUserNum: this.maxUserNum,
       state: this.state,
       users: this.users.map((user) => user.toUserData(user.id)),
     };
   }
 
-  getUser(userId: string) {
+  getUser(userId: bigint) {
     return this.users.find((user) => user.id === userId) ?? null;
   }
 
@@ -162,7 +162,7 @@ export class Room {
         user.character.debuffs.delete(CardType.BOMB);
 
         this.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
-          userId: user.id,
+          userId: Number(user.id),
           animationType: AnimationType.BOMB_ANIMATION,
         } satisfies MessageProps<S2CAnimationNotification>);
 
@@ -266,7 +266,7 @@ export class Rooms {
     return true;
   }
 
-  quit(roomId: number, userId: string, ctx: Context) {
+  quit(roomId: number, userId: bigint, ctx: Context) {
     if (!this.isUserInRoom(roomId, userId)) return null;
 
     const room = this.#rooms.get(roomId);
@@ -307,7 +307,7 @@ export class Rooms {
     return room.users.length >= room.maxUserNum;
   }
 
-  pickRandomRoomId(unavailableRoomIds: { [K in number]: true }, userId: string) {
+  pickRandomRoomId(unavailableRoomIds: { [K in number]: true }, userId: bigint) {
     const roomIds = Array.from(this.#rooms.keys());
     const filteredRoomIds = roomIds.filter((roomId) => {
       const room = this.#rooms.get(roomId);

@@ -1,7 +1,7 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import { createUser, getUserByUserId } from './user.repository';
 import { writePayload } from '../protobuf/writePayload';
-import { CharacterType, GlobalFailCode, RoleType, S2CLoginResponse } from '../protobuf/compiled';
+import { C2SRegisterRequest, CharacterType, GlobalFailCode, RoleType, S2CLoginResponse } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { session } from './session';
 import { Context } from '../events/types';
@@ -9,10 +9,10 @@ import net from 'node:net';
 import { Character } from '../characters/class/character';
 import { GameEvents } from '../game/game.events';
 
-export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest) => {
-  const { id, password, nickname } = registerRequest;
+export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest: C2SRegisterRequest) => {
+  const { email, password, nickname } = registerRequest;
 
-  const result = await createUser(id, password, nickname);
+  const result = await createUser(email, password, nickname);
   const isError = result instanceof Error;
 
   if (isError) console.error(result);
@@ -40,23 +40,23 @@ export const loginRequestHandler = async (socket: net.Socket, version, sequence,
     });
   }
 
-  ctx.userId = result.userId;
+  ctx.userId = result.id;
 
   const payload: MessageProps<S2CLoginResponse> = {
     success: true,
     message: '로그인 성공',
     token: 'pseudo-token',
     myInfo: {
-      id: result.userId,
+      id: Number(result.id),
       nickname: result.nickname,
       character: new Character({
-        userId: result.userId,
+        userId: result.id,
         hp: 0,
         roleType: RoleType.NONE_ROLE,
         characterType: CharacterType.NONE_CHARACTER,
         baseDefenseChance: 0,
         gameEvents: new GameEvents(0),
-      }).toCharacterData(result.userId),
+      }).toCharacterData(result.id),
     },
     failCode: GlobalFailCode.NONE_FAILCODE,
   };

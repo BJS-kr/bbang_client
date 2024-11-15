@@ -2,12 +2,12 @@ import { CharacterPositionData } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 
 export class CharacterPositionInfo {
-  userId: string;
+  userId: bigint;
   x: number;
   y: number;
   isDirty: boolean;
 
-  constructor(userId: string) {
+  constructor(userId: bigint) {
     this.userId = userId;
     this.x = 0;
     this.y = 0;
@@ -16,7 +16,7 @@ export class CharacterPositionInfo {
 
   toPositionData(): MessageProps<CharacterPositionData> {
     return {
-      id: this.userId,
+      id: Number(this.userId),
       x: this.x,
       y: this.y,
     };

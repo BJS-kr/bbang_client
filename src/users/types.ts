@@ -4,13 +4,13 @@ import { GameEvents } from '../game/game.events';
 import { CharacterType, RoleType } from '../protobuf/compiled';
 
 export class User {
-  id: string;
+  id: bigint;
   nickname: string;
   socket: net.Socket;
   character: Character;
 
-  constructor(userId: string, nickname: string, socket: net.Socket) {
-    this.id = userId;
+  constructor(id: bigint, nickname: string, socket: net.Socket) {
+    this.id = id;
     this.nickname = nickname;
     this.socket = socket;
     this.character = new Character({
@@ -25,7 +25,7 @@ export class User {
 
   toUserData(viewerId) {
     return {
-      id: this.id,
+      id: Number(this.id),
       nickname: this.nickname,
       character: this.character?.toCharacterData(viewerId),
     };

@@ -60,7 +60,7 @@ export function responseSuccess(
   targetUsers: User[],
   room: Room,
   user: User,
-  targetUserId: string,
+  targetUserId: bigint,
 ) {
   writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
     success: true,
@@ -69,8 +69,8 @@ export function responseSuccess(
 
   room.broadcast(PACKET_TYPE.USE_CARD_NOTIFICATION, {
     cardType,
-    userId: user.id,
-    targetUserId: targetUserId,
+    userId: Number(user.id),
+    targetUserId: Number(targetUserId),
   } satisfies MessageProps<UseCardNotification>);
 
   room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {

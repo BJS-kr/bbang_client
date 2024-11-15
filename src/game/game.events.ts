@@ -68,7 +68,7 @@ export class GameEvents extends EventEmitter {
           st.character.takeDamage(3, 'SYSTEM', this.#room);
 
           this.#room.broadcast(PACKET_TYPE.ANIMATION_NOTIFICATION, {
-            userId: st.id,
+            userId: Number(st.id),
             animationType: AnimationType.SATELLITE_TARGET_ANIMATION,
           } satisfies MessageProps<S2CAnimationNotification>);
         } else {
@@ -112,7 +112,7 @@ export class GameEvents extends EventEmitter {
       } satisfies MessageProps<S2CPhaseUpdateNotification>);
     });
 
-    this.on('update', (...userIds: string[]) => {
+    this.on('update', (...userIds: bigint[]) => {
       const users = userIds.map((userId) => this.#room.users.find((u) => u.id === userId)).filter((u) => u !== undefined);
 
       if (!users.length) {

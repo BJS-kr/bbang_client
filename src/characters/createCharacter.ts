@@ -42,7 +42,7 @@ export const createCharacter = ({
   gameEvents,
   room, // TODO 나중에 고쳐주세요....
 }: {
-  userId: string;
+  userId: bigint;
   characterType: number;
   roleType: RoleType;
 

@@ -7,7 +7,7 @@ export interface IRoomData {
     id?: (number|null);
 
     /** RoomData ownerId */
-    ownerId?: (string|null);
+    ownerId?: (number|Long|null);
 
     /** RoomData name */
     name?: (string|null);
@@ -35,7 +35,7 @@ export class RoomData implements IRoomData {
     public id: number;
 
     /** RoomData ownerId. */
-    public ownerId: string;
+    public ownerId: (number|Long);
 
     /** RoomData name. */
     public name: string;
@@ -131,7 +131,7 @@ export class RoomData implements IRoomData {
 export interface IUserData {
 
     /** UserData id */
-    id?: (string|null);
+    id?: (number|Long|null);
 
     /** UserData nickname */
     nickname?: (string|null);
@@ -150,7 +150,7 @@ export class UserData implements IUserData {
     constructor(properties?: IUserData);
 
     /** UserData id. */
-    public id: string;
+    public id: (number|Long);
 
     /** UserData nickname. */
     public nickname: string;
@@ -391,7 +391,7 @@ export class CharacterData implements ICharacterData {
 export interface ICharacterPositionData {
 
     /** CharacterPositionData id */
-    id?: (string|null);
+    id?: (number|Long|null);
 
     /** CharacterPositionData x */
     x?: (number|null);
@@ -410,7 +410,7 @@ export class CharacterPositionData implements ICharacterPositionData {
     constructor(properties?: ICharacterPositionData);
 
     /** CharacterPositionData id. */
-    public id: string;
+    public id: (number|Long);
 
     /** CharacterPositionData x. */
     public x: number;
@@ -715,7 +715,7 @@ export interface ICharacterStateInfoData {
     nextStateAt?: (number|Long|null);
 
     /** CharacterStateInfoData stateTargetUserId */
-    stateTargetUserId?: (string|null);
+    stateTargetUserId?: (number|Long|null);
 }
 
 /** Represents a CharacterStateInfoData. */
@@ -737,7 +737,7 @@ export class CharacterStateInfoData implements ICharacterStateInfoData {
     public nextStateAt: (number|Long);
 
     /** CharacterStateInfoData stateTargetUserId. */
-    public stateTargetUserId: string;
+    public stateTargetUserId: (number|Long);
 
     /**
      * Creates a new CharacterStateInfoData instance using the specified properties.
@@ -820,14 +820,14 @@ export class CharacterStateInfoData implements ICharacterStateInfoData {
 /** Properties of a C2SRegisterRequest. */
 export interface IC2SRegisterRequest {
 
-    /** C2SRegisterRequest id */
-    id?: (string|null);
+    /** C2SRegisterRequest email */
+    email?: (string|null);
+
+    /** C2SRegisterRequest nickname */
+    nickname?: (string|null);
 
     /** C2SRegisterRequest password */
     password?: (string|null);
-
-    /** C2SRegisterRequest email */
-    email?: (string|null);
 }
 
 /** Represents a C2SRegisterRequest. */
@@ -839,14 +839,14 @@ export class C2SRegisterRequest implements IC2SRegisterRequest {
      */
     constructor(properties?: IC2SRegisterRequest);
 
-    /** C2SRegisterRequest id. */
-    public id: string;
+    /** C2SRegisterRequest email. */
+    public email: string;
+
+    /** C2SRegisterRequest nickname. */
+    public nickname: string;
 
     /** C2SRegisterRequest password. */
     public password: string;
-
-    /** C2SRegisterRequest email. */
-    public email: string;
 
     /**
      * Creates a new C2SRegisterRequest instance using the specified properties.
@@ -1038,8 +1038,8 @@ export class S2CRegisterResponse implements IS2CRegisterResponse {
 /** Properties of a C2SLoginRequest. */
 export interface IC2SLoginRequest {
 
-    /** C2SLoginRequest id */
-    id?: (string|null);
+    /** C2SLoginRequest email */
+    email?: (string|null);
 
     /** C2SLoginRequest password */
     password?: (string|null);
@@ -1054,8 +1054,8 @@ export class C2SLoginRequest implements IC2SLoginRequest {
      */
     constructor(properties?: IC2SLoginRequest);
 
-    /** C2SLoginRequest id. */
-    public id: string;
+    /** C2SLoginRequest email. */
+    public email: string;
 
     /** C2SLoginRequest password. */
     public password: string;
@@ -1867,9 +1867,6 @@ export class S2CJoinRoomResponse implements IS2CJoinRoomResponse {
 
 /** Properties of a C2SJoinRandomRoomRequest. */
 export interface IC2SJoinRandomRoomRequest {
-
-    /** C2SJoinRandomRoomRequest roomId */
-    roomId?: (number|null);
 }
 
 /** Represents a C2SJoinRandomRoomRequest. */
@@ -1880,9 +1877,6 @@ export class C2SJoinRandomRoomRequest implements IC2SJoinRandomRoomRequest {
      * @param [properties] Properties to set
      */
     constructor(properties?: IC2SJoinRandomRoomRequest);
-
-    /** C2SJoinRandomRoomRequest roomId. */
-    public roomId: number;
 
     /**
      * Creates a new C2SJoinRandomRoomRequest instance using the specified properties.
@@ -2366,7 +2360,7 @@ export class S2CLeaveRoomResponse implements IS2CLeaveRoomResponse {
 export interface IS2CLeaveRoomNotification {
 
     /** S2CLeaveRoomNotification userId */
-    userId?: (string|null);
+    userId?: (number|Long|null);
 }
 
 /** Represents a S2CLeaveRoomNotification. */
@@ -2379,7 +2373,7 @@ export class S2CLeaveRoomNotification implements IS2CLeaveRoomNotification {
     constructor(properties?: IS2CLeaveRoomNotification);
 
     /** S2CLeaveRoomNotification userId. */
-    public userId: string;
+    public userId: (number|Long);
 
     /**
      * Creates a new S2CLeaveRoomNotification instance using the specified properties.
@@ -3363,7 +3357,7 @@ export interface IC2SUseCardRequest {
     cardType?: (CardType|null);
 
     /** C2SUseCardRequest targetUserId */
-    targetUserId?: (string|null);
+    targetUserId?: (number|Long|null);
 }
 
 /** Represents a C2SUseCardRequest. */
@@ -3379,7 +3373,7 @@ export class C2SUseCardRequest implements IC2SUseCardRequest {
     public cardType: CardType;
 
     /** C2SUseCardRequest targetUserId. */
-    public targetUserId: string;
+    public targetUserId: (number|Long);
 
     /**
      * Creates a new C2SUseCardRequest instance using the specified properties.
@@ -3569,10 +3563,10 @@ export interface IS2CUseCardNotification {
     cardType?: (CardType|null);
 
     /** S2CUseCardNotification userId */
-    userId?: (string|null);
+    userId?: (number|Long|null);
 
     /** S2CUseCardNotification targetUserId */
-    targetUserId?: (string|null);
+    targetUserId?: (number|Long|null);
 }
 
 /** Represents a S2CUseCardNotification. */
@@ -3588,10 +3582,10 @@ export class S2CUseCardNotification implements IS2CUseCardNotification {
     public cardType: CardType;
 
     /** S2CUseCardNotification userId. */
-    public userId: string;
+    public userId: (number|Long);
 
     /** S2CUseCardNotification targetUserId. */
-    public targetUserId: string;
+    public targetUserId: (number|Long);
 
     /**
      * Creates a new S2CUseCardNotification instance using the specified properties.
@@ -3678,7 +3672,7 @@ export interface IS2CEquipCardNotification {
     cardType?: (CardType|null);
 
     /** S2CEquipCardNotification userId */
-    userId?: (string|null);
+    userId?: (number|Long|null);
 }
 
 /** Represents a S2CEquipCardNotification. */
@@ -3694,7 +3688,7 @@ export class S2CEquipCardNotification implements IS2CEquipCardNotification {
     public cardType: CardType;
 
     /** S2CEquipCardNotification userId. */
-    public userId: string;
+    public userId: (number|Long);
 
     /**
      * Creates a new S2CEquipCardNotification instance using the specified properties.
@@ -3781,7 +3775,7 @@ export interface IS2CCardEffectNotification {
     cardType?: (CardType|null);
 
     /** S2CCardEffectNotification userId */
-    userId?: (string|null);
+    userId?: (number|Long|null);
 
     /** S2CCardEffectNotification success */
     success?: (boolean|null);
@@ -3800,7 +3794,7 @@ export class S2CCardEffectNotification implements IS2CCardEffectNotification {
     public cardType: CardType;
 
     /** S2CCardEffectNotification userId. */
-    public userId: string;
+    public userId: (number|Long);
 
     /** S2CCardEffectNotification success. */
     public success: boolean;
@@ -4790,7 +4784,7 @@ export class S2CDestroyCardResponse implements IS2CDestroyCardResponse {
 export interface IS2CGameEndNotification {
 
     /** S2CGameEndNotification winners */
-    winners?: (string[]|null);
+    winners?: ((number|Long)[]|null);
 
     /** S2CGameEndNotification winType */
     winType?: (WinType|null);
@@ -4806,7 +4800,7 @@ export class S2CGameEndNotification implements IS2CGameEndNotification {
     constructor(properties?: IS2CGameEndNotification);
 
     /** S2CGameEndNotification winners. */
-    public winners: string[];
+    public winners: (number|Long)[];
 
     /** S2CGameEndNotification winType. */
     public winType: WinType;
@@ -5099,7 +5093,7 @@ export class S2CCardSelectResponse implements IS2CCardSelectResponse {
 export interface IC2SPassDebuffRequest {
 
     /** C2SPassDebuffRequest targetUserId */
-    targetUserId?: (string|null);
+    targetUserId?: (number|Long|null);
 
     /** C2SPassDebuffRequest debuffCardType */
     debuffCardType?: (CardType|null);
@@ -5115,7 +5109,7 @@ export class C2SPassDebuffRequest implements IC2SPassDebuffRequest {
     constructor(properties?: IC2SPassDebuffRequest);
 
     /** C2SPassDebuffRequest targetUserId. */
-    public targetUserId: string;
+    public targetUserId: (number|Long);
 
     /** C2SPassDebuffRequest debuffCardType. */
     public debuffCardType: CardType;
@@ -5408,7 +5402,7 @@ export class S2CWarningNotification implements IS2CWarningNotification {
 export interface IS2CAnimationNotification {
 
     /** S2CAnimationNotification userId */
-    userId?: (string|null);
+    userId?: (number|Long|null);
 
     /** S2CAnimationNotification animationType */
     animationType?: (AnimationType|null);
@@ -5424,7 +5418,7 @@ export class S2CAnimationNotification implements IS2CAnimationNotification {
     constructor(properties?: IS2CAnimationNotification);
 
     /** S2CAnimationNotification userId. */
-    public userId: string;
+    public userId: (number|Long);
 
     /** S2CAnimationNotification animationType. */
     public animationType: AnimationType;

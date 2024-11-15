@@ -16,7 +16,7 @@ $root.RoomData = (function() {
      * @exports IRoomData
      * @interface IRoomData
      * @property {number|null} [id] RoomData id
-     * @property {string|null} [ownerId] RoomData ownerId
+     * @property {number|Long|null} [ownerId] RoomData ownerId
      * @property {string|null} [name] RoomData name
      * @property {number|null} [maxUserNum] RoomData maxUserNum
      * @property {RoomStateType|null} [state] RoomData state
@@ -49,11 +49,11 @@ $root.RoomData = (function() {
 
     /**
      * RoomData ownerId.
-     * @member {string} ownerId
+     * @member {number|Long} ownerId
      * @memberof RoomData
      * @instance
      */
-    RoomData.prototype.ownerId = "";
+    RoomData.prototype.ownerId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * RoomData name.
@@ -114,7 +114,7 @@ $root.RoomData = (function() {
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
         if (message.ownerId != null && Object.hasOwnProperty.call(message, "ownerId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.ownerId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.ownerId);
         if (message.name != null && Object.hasOwnProperty.call(message, "name"))
             writer.uint32(/* id 3, wireType 2 =*/26).string(message.name);
         if (message.maxUserNum != null && Object.hasOwnProperty.call(message, "maxUserNum"))
@@ -163,7 +163,7 @@ $root.RoomData = (function() {
                     break;
                 }
             case 2: {
-                    message.ownerId = reader.string();
+                    message.ownerId = reader.int64();
                     break;
                 }
             case 3: {
@@ -223,8 +223,8 @@ $root.RoomData = (function() {
             if (!$util.isInteger(message.id))
                 return "id: integer expected";
         if (message.ownerId != null && message.hasOwnProperty("ownerId"))
-            if (!$util.isString(message.ownerId))
-                return "ownerId: string expected";
+            if (!$util.isInteger(message.ownerId) && !(message.ownerId && $util.isInteger(message.ownerId.low) && $util.isInteger(message.ownerId.high)))
+                return "ownerId: integer|Long expected";
         if (message.name != null && message.hasOwnProperty("name"))
             if (!$util.isString(message.name))
                 return "name: string expected";
@@ -267,7 +267,14 @@ $root.RoomData = (function() {
         if (object.id != null)
             message.id = object.id | 0;
         if (object.ownerId != null)
-            message.ownerId = String(object.ownerId);
+            if ($util.Long)
+                (message.ownerId = $util.Long.fromValue(object.ownerId)).unsigned = false;
+            else if (typeof object.ownerId === "string")
+                message.ownerId = parseInt(object.ownerId, 10);
+            else if (typeof object.ownerId === "number")
+                message.ownerId = object.ownerId;
+            else if (typeof object.ownerId === "object")
+                message.ownerId = new $util.LongBits(object.ownerId.low >>> 0, object.ownerId.high >>> 0).toNumber();
         if (object.name != null)
             message.name = String(object.name);
         if (object.maxUserNum != null)
@@ -322,7 +329,11 @@ $root.RoomData = (function() {
             object.users = [];
         if (options.defaults) {
             object.id = 0;
-            object.ownerId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.ownerId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.ownerId = options.longs === String ? "0" : 0;
             object.name = "";
             object.maxUserNum = 0;
             object.state = options.enums === String ? "WAIT" : 0;
@@ -330,7 +341,10 @@ $root.RoomData = (function() {
         if (message.id != null && message.hasOwnProperty("id"))
             object.id = message.id;
         if (message.ownerId != null && message.hasOwnProperty("ownerId"))
-            object.ownerId = message.ownerId;
+            if (typeof message.ownerId === "number")
+                object.ownerId = options.longs === String ? String(message.ownerId) : message.ownerId;
+            else
+                object.ownerId = options.longs === String ? $util.Long.prototype.toString.call(message.ownerId) : options.longs === Number ? new $util.LongBits(message.ownerId.low >>> 0, message.ownerId.high >>> 0).toNumber() : message.ownerId;
         if (message.name != null && message.hasOwnProperty("name"))
             object.name = message.name;
         if (message.maxUserNum != null && message.hasOwnProperty("maxUserNum"))
@@ -380,7 +394,7 @@ $root.UserData = (function() {
      * Properties of a UserData.
      * @exports IUserData
      * @interface IUserData
-     * @property {string|null} [id] UserData id
+     * @property {number|Long|null} [id] UserData id
      * @property {string|null} [nickname] UserData nickname
      * @property {ICharacterData|null} [character] UserData character
      */
@@ -402,11 +416,11 @@ $root.UserData = (function() {
 
     /**
      * UserData id.
-     * @member {string} id
+     * @member {number|Long} id
      * @memberof UserData
      * @instance
      */
-    UserData.prototype.id = "";
+    UserData.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * UserData nickname.
@@ -449,7 +463,7 @@ $root.UserData = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
         if (message.nickname != null && Object.hasOwnProperty.call(message, "nickname"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.nickname);
         if (message.character != null && Object.hasOwnProperty.call(message, "character"))
@@ -489,7 +503,7 @@ $root.UserData = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.id = reader.string();
+                    message.id = reader.int64();
                     break;
                 }
             case 2: {
@@ -536,8 +550,8 @@ $root.UserData = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
+            if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                return "id: integer|Long expected";
         if (message.nickname != null && message.hasOwnProperty("nickname"))
             if (!$util.isString(message.nickname))
                 return "nickname: string expected";
@@ -562,7 +576,14 @@ $root.UserData = (function() {
             return object;
         var message = new $root.UserData();
         if (object.id != null)
-            message.id = String(object.id);
+            if ($util.Long)
+                (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+            else if (typeof object.id === "string")
+                message.id = parseInt(object.id, 10);
+            else if (typeof object.id === "number")
+                message.id = object.id;
+            else if (typeof object.id === "object")
+                message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
         if (object.nickname != null)
             message.nickname = String(object.nickname);
         if (object.character != null) {
@@ -587,12 +608,19 @@ $root.UserData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.id = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.id = options.longs === String ? "0" : 0;
             object.nickname = "";
             object.character = null;
         }
         if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
+            if (typeof message.id === "number")
+                object.id = options.longs === String ? String(message.id) : message.id;
+            else
+                object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
         if (message.nickname != null && message.hasOwnProperty("nickname"))
             object.nickname = message.nickname;
         if (message.character != null && message.hasOwnProperty("character"))
@@ -1215,7 +1243,7 @@ $root.CharacterPositionData = (function() {
      * Properties of a CharacterPositionData.
      * @exports ICharacterPositionData
      * @interface ICharacterPositionData
-     * @property {string|null} [id] CharacterPositionData id
+     * @property {number|Long|null} [id] CharacterPositionData id
      * @property {number|null} [x] CharacterPositionData x
      * @property {number|null} [y] CharacterPositionData y
      */
@@ -1237,11 +1265,11 @@ $root.CharacterPositionData = (function() {
 
     /**
      * CharacterPositionData id.
-     * @member {string} id
+     * @member {number|Long} id
      * @memberof CharacterPositionData
      * @instance
      */
-    CharacterPositionData.prototype.id = "";
+    CharacterPositionData.prototype.id = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * CharacterPositionData x.
@@ -1284,7 +1312,7 @@ $root.CharacterPositionData = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.id);
         if (message.x != null && Object.hasOwnProperty.call(message, "x"))
             writer.uint32(/* id 2, wireType 1 =*/17).double(message.x);
         if (message.y != null && Object.hasOwnProperty.call(message, "y"))
@@ -1324,7 +1352,7 @@ $root.CharacterPositionData = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.id = reader.string();
+                    message.id = reader.int64();
                     break;
                 }
             case 2: {
@@ -1371,8 +1399,8 @@ $root.CharacterPositionData = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
+            if (!$util.isInteger(message.id) && !(message.id && $util.isInteger(message.id.low) && $util.isInteger(message.id.high)))
+                return "id: integer|Long expected";
         if (message.x != null && message.hasOwnProperty("x"))
             if (typeof message.x !== "number")
                 return "x: number expected";
@@ -1395,7 +1423,14 @@ $root.CharacterPositionData = (function() {
             return object;
         var message = new $root.CharacterPositionData();
         if (object.id != null)
-            message.id = String(object.id);
+            if ($util.Long)
+                (message.id = $util.Long.fromValue(object.id)).unsigned = false;
+            else if (typeof object.id === "string")
+                message.id = parseInt(object.id, 10);
+            else if (typeof object.id === "number")
+                message.id = object.id;
+            else if (typeof object.id === "object")
+                message.id = new $util.LongBits(object.id.low >>> 0, object.id.high >>> 0).toNumber();
         if (object.x != null)
             message.x = Number(object.x);
         if (object.y != null)
@@ -1417,12 +1452,19 @@ $root.CharacterPositionData = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.id = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.id = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.id = options.longs === String ? "0" : 0;
             object.x = 0;
             object.y = 0;
         }
         if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
+            if (typeof message.id === "number")
+                object.id = options.longs === String ? String(message.id) : message.id;
+            else
+                object.id = options.longs === String ? $util.Long.prototype.toString.call(message.id) : options.longs === Number ? new $util.LongBits(message.id.low >>> 0, message.id.high >>> 0).toNumber() : message.id;
         if (message.x != null && message.hasOwnProperty("x"))
             object.x = options.json && !isFinite(message.x) ? String(message.x) : message.x;
         if (message.y != null && message.hasOwnProperty("y"))
@@ -2094,7 +2136,7 @@ $root.CharacterStateInfoData = (function() {
      * @property {CharacterStateType|null} [state] CharacterStateInfoData state
      * @property {CharacterStateType|null} [nextState] CharacterStateInfoData nextState
      * @property {number|Long|null} [nextStateAt] CharacterStateInfoData nextStateAt
-     * @property {string|null} [stateTargetUserId] CharacterStateInfoData stateTargetUserId
+     * @property {number|Long|null} [stateTargetUserId] CharacterStateInfoData stateTargetUserId
      */
 
     /**
@@ -2138,11 +2180,11 @@ $root.CharacterStateInfoData = (function() {
 
     /**
      * CharacterStateInfoData stateTargetUserId.
-     * @member {string} stateTargetUserId
+     * @member {number|Long} stateTargetUserId
      * @memberof CharacterStateInfoData
      * @instance
      */
-    CharacterStateInfoData.prototype.stateTargetUserId = "";
+    CharacterStateInfoData.prototype.stateTargetUserId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new CharacterStateInfoData instance using the specified properties.
@@ -2175,7 +2217,7 @@ $root.CharacterStateInfoData = (function() {
         if (message.nextStateAt != null && Object.hasOwnProperty.call(message, "nextStateAt"))
             writer.uint32(/* id 3, wireType 0 =*/24).int64(message.nextStateAt);
         if (message.stateTargetUserId != null && Object.hasOwnProperty.call(message, "stateTargetUserId"))
-            writer.uint32(/* id 4, wireType 2 =*/34).string(message.stateTargetUserId);
+            writer.uint32(/* id 4, wireType 0 =*/32).int64(message.stateTargetUserId);
         return writer;
     };
 
@@ -2223,7 +2265,7 @@ $root.CharacterStateInfoData = (function() {
                     break;
                 }
             case 4: {
-                    message.stateTargetUserId = reader.string();
+                    message.stateTargetUserId = reader.int64();
                     break;
                 }
             default:
@@ -2309,8 +2351,8 @@ $root.CharacterStateInfoData = (function() {
             if (!$util.isInteger(message.nextStateAt) && !(message.nextStateAt && $util.isInteger(message.nextStateAt.low) && $util.isInteger(message.nextStateAt.high)))
                 return "nextStateAt: integer|Long expected";
         if (message.stateTargetUserId != null && message.hasOwnProperty("stateTargetUserId"))
-            if (!$util.isString(message.stateTargetUserId))
-                return "stateTargetUserId: string expected";
+            if (!$util.isInteger(message.stateTargetUserId) && !(message.stateTargetUserId && $util.isInteger(message.stateTargetUserId.low) && $util.isInteger(message.stateTargetUserId.high)))
+                return "stateTargetUserId: integer|Long expected";
         return null;
     };
 
@@ -2480,7 +2522,14 @@ $root.CharacterStateInfoData = (function() {
             else if (typeof object.nextStateAt === "object")
                 message.nextStateAt = new $util.LongBits(object.nextStateAt.low >>> 0, object.nextStateAt.high >>> 0).toNumber();
         if (object.stateTargetUserId != null)
-            message.stateTargetUserId = String(object.stateTargetUserId);
+            if ($util.Long)
+                (message.stateTargetUserId = $util.Long.fromValue(object.stateTargetUserId)).unsigned = false;
+            else if (typeof object.stateTargetUserId === "string")
+                message.stateTargetUserId = parseInt(object.stateTargetUserId, 10);
+            else if (typeof object.stateTargetUserId === "number")
+                message.stateTargetUserId = object.stateTargetUserId;
+            else if (typeof object.stateTargetUserId === "object")
+                message.stateTargetUserId = new $util.LongBits(object.stateTargetUserId.low >>> 0, object.stateTargetUserId.high >>> 0).toNumber();
         return message;
     };
 
@@ -2505,7 +2554,11 @@ $root.CharacterStateInfoData = (function() {
                 object.nextStateAt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
             } else
                 object.nextStateAt = options.longs === String ? "0" : 0;
-            object.stateTargetUserId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.stateTargetUserId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.stateTargetUserId = options.longs === String ? "0" : 0;
         }
         if (message.state != null && message.hasOwnProperty("state"))
             object.state = options.enums === String ? $root.CharacterStateType[message.state] === undefined ? message.state : $root.CharacterStateType[message.state] : message.state;
@@ -2517,7 +2570,10 @@ $root.CharacterStateInfoData = (function() {
             else
                 object.nextStateAt = options.longs === String ? $util.Long.prototype.toString.call(message.nextStateAt) : options.longs === Number ? new $util.LongBits(message.nextStateAt.low >>> 0, message.nextStateAt.high >>> 0).toNumber() : message.nextStateAt;
         if (message.stateTargetUserId != null && message.hasOwnProperty("stateTargetUserId"))
-            object.stateTargetUserId = message.stateTargetUserId;
+            if (typeof message.stateTargetUserId === "number")
+                object.stateTargetUserId = options.longs === String ? String(message.stateTargetUserId) : message.stateTargetUserId;
+            else
+                object.stateTargetUserId = options.longs === String ? $util.Long.prototype.toString.call(message.stateTargetUserId) : options.longs === Number ? new $util.LongBits(message.stateTargetUserId.low >>> 0, message.stateTargetUserId.high >>> 0).toNumber() : message.stateTargetUserId;
         return object;
     };
 
@@ -2556,9 +2612,9 @@ $root.C2SRegisterRequest = (function() {
      * Properties of a C2SRegisterRequest.
      * @exports IC2SRegisterRequest
      * @interface IC2SRegisterRequest
-     * @property {string|null} [id] C2SRegisterRequest id
-     * @property {string|null} [password] C2SRegisterRequest password
      * @property {string|null} [email] C2SRegisterRequest email
+     * @property {string|null} [nickname] C2SRegisterRequest nickname
+     * @property {string|null} [password] C2SRegisterRequest password
      */
 
     /**
@@ -2577,12 +2633,20 @@ $root.C2SRegisterRequest = (function() {
     }
 
     /**
-     * C2SRegisterRequest id.
-     * @member {string} id
+     * C2SRegisterRequest email.
+     * @member {string} email
      * @memberof C2SRegisterRequest
      * @instance
      */
-    C2SRegisterRequest.prototype.id = "";
+    C2SRegisterRequest.prototype.email = "";
+
+    /**
+     * C2SRegisterRequest nickname.
+     * @member {string} nickname
+     * @memberof C2SRegisterRequest
+     * @instance
+     */
+    C2SRegisterRequest.prototype.nickname = "";
 
     /**
      * C2SRegisterRequest password.
@@ -2591,14 +2655,6 @@ $root.C2SRegisterRequest = (function() {
      * @instance
      */
     C2SRegisterRequest.prototype.password = "";
-
-    /**
-     * C2SRegisterRequest email.
-     * @member {string} email
-     * @memberof C2SRegisterRequest
-     * @instance
-     */
-    C2SRegisterRequest.prototype.email = "";
 
     /**
      * Creates a new C2SRegisterRequest instance using the specified properties.
@@ -2624,12 +2680,12 @@ $root.C2SRegisterRequest = (function() {
     C2SRegisterRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
-        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
         if (message.email != null && Object.hasOwnProperty.call(message, "email"))
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.email);
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.email);
+        if (message.nickname != null && Object.hasOwnProperty.call(message, "nickname"))
+            writer.uint32(/* id 2, wireType 2 =*/18).string(message.nickname);
+        if (message.password != null && Object.hasOwnProperty.call(message, "password"))
+            writer.uint32(/* id 3, wireType 2 =*/26).string(message.password);
         return writer;
     };
 
@@ -2665,15 +2721,15 @@ $root.C2SRegisterRequest = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.id = reader.string();
+                    message.email = reader.string();
                     break;
                 }
             case 2: {
-                    message.password = reader.string();
+                    message.nickname = reader.string();
                     break;
                 }
             case 3: {
-                    message.email = reader.string();
+                    message.password = reader.string();
                     break;
                 }
             default:
@@ -2711,15 +2767,15 @@ $root.C2SRegisterRequest = (function() {
     C2SRegisterRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
-        if (message.password != null && message.hasOwnProperty("password"))
-            if (!$util.isString(message.password))
-                return "password: string expected";
         if (message.email != null && message.hasOwnProperty("email"))
             if (!$util.isString(message.email))
                 return "email: string expected";
+        if (message.nickname != null && message.hasOwnProperty("nickname"))
+            if (!$util.isString(message.nickname))
+                return "nickname: string expected";
+        if (message.password != null && message.hasOwnProperty("password"))
+            if (!$util.isString(message.password))
+                return "password: string expected";
         return null;
     };
 
@@ -2735,12 +2791,12 @@ $root.C2SRegisterRequest = (function() {
         if (object instanceof $root.C2SRegisterRequest)
             return object;
         var message = new $root.C2SRegisterRequest();
-        if (object.id != null)
-            message.id = String(object.id);
-        if (object.password != null)
-            message.password = String(object.password);
         if (object.email != null)
             message.email = String(object.email);
+        if (object.nickname != null)
+            message.nickname = String(object.nickname);
+        if (object.password != null)
+            message.password = String(object.password);
         return message;
     };
 
@@ -2758,16 +2814,16 @@ $root.C2SRegisterRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.id = "";
-            object.password = "";
             object.email = "";
+            object.nickname = "";
+            object.password = "";
         }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
-        if (message.password != null && message.hasOwnProperty("password"))
-            object.password = message.password;
         if (message.email != null && message.hasOwnProperty("email"))
             object.email = message.email;
+        if (message.nickname != null && message.hasOwnProperty("nickname"))
+            object.nickname = message.nickname;
+        if (message.password != null && message.hasOwnProperty("password"))
+            object.password = message.password;
         return object;
     };
 
@@ -3150,7 +3206,7 @@ $root.C2SLoginRequest = (function() {
      * Properties of a C2SLoginRequest.
      * @exports IC2SLoginRequest
      * @interface IC2SLoginRequest
-     * @property {string|null} [id] C2SLoginRequest id
+     * @property {string|null} [email] C2SLoginRequest email
      * @property {string|null} [password] C2SLoginRequest password
      */
 
@@ -3170,12 +3226,12 @@ $root.C2SLoginRequest = (function() {
     }
 
     /**
-     * C2SLoginRequest id.
-     * @member {string} id
+     * C2SLoginRequest email.
+     * @member {string} email
      * @memberof C2SLoginRequest
      * @instance
      */
-    C2SLoginRequest.prototype.id = "";
+    C2SLoginRequest.prototype.email = "";
 
     /**
      * C2SLoginRequest password.
@@ -3209,8 +3265,8 @@ $root.C2SLoginRequest = (function() {
     C2SLoginRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.id != null && Object.hasOwnProperty.call(message, "id"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+        if (message.email != null && Object.hasOwnProperty.call(message, "email"))
+            writer.uint32(/* id 1, wireType 2 =*/10).string(message.email);
         if (message.password != null && Object.hasOwnProperty.call(message, "password"))
             writer.uint32(/* id 2, wireType 2 =*/18).string(message.password);
         return writer;
@@ -3248,7 +3304,7 @@ $root.C2SLoginRequest = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.id = reader.string();
+                    message.email = reader.string();
                     break;
                 }
             case 2: {
@@ -3290,9 +3346,9 @@ $root.C2SLoginRequest = (function() {
     C2SLoginRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.id != null && message.hasOwnProperty("id"))
-            if (!$util.isString(message.id))
-                return "id: string expected";
+        if (message.email != null && message.hasOwnProperty("email"))
+            if (!$util.isString(message.email))
+                return "email: string expected";
         if (message.password != null && message.hasOwnProperty("password"))
             if (!$util.isString(message.password))
                 return "password: string expected";
@@ -3311,8 +3367,8 @@ $root.C2SLoginRequest = (function() {
         if (object instanceof $root.C2SLoginRequest)
             return object;
         var message = new $root.C2SLoginRequest();
-        if (object.id != null)
-            message.id = String(object.id);
+        if (object.email != null)
+            message.email = String(object.email);
         if (object.password != null)
             message.password = String(object.password);
         return message;
@@ -3332,11 +3388,11 @@ $root.C2SLoginRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.id = "";
+            object.email = "";
             object.password = "";
         }
-        if (message.id != null && message.hasOwnProperty("id"))
-            object.id = message.id;
+        if (message.email != null && message.hasOwnProperty("email"))
+            object.email = message.email;
         if (message.password != null && message.hasOwnProperty("password"))
             object.password = message.password;
         return object;
@@ -5299,7 +5355,6 @@ $root.C2SJoinRandomRoomRequest = (function() {
      * Properties of a C2SJoinRandomRoomRequest.
      * @exports IC2SJoinRandomRoomRequest
      * @interface IC2SJoinRandomRoomRequest
-     * @property {number|null} [roomId] C2SJoinRandomRoomRequest roomId
      */
 
     /**
@@ -5316,14 +5371,6 @@ $root.C2SJoinRandomRoomRequest = (function() {
                 if (properties[keys[i]] != null)
                     this[keys[i]] = properties[keys[i]];
     }
-
-    /**
-     * C2SJoinRandomRoomRequest roomId.
-     * @member {number} roomId
-     * @memberof C2SJoinRandomRoomRequest
-     * @instance
-     */
-    C2SJoinRandomRoomRequest.prototype.roomId = 0;
 
     /**
      * Creates a new C2SJoinRandomRoomRequest instance using the specified properties.
@@ -5349,8 +5396,6 @@ $root.C2SJoinRandomRoomRequest = (function() {
     C2SJoinRandomRoomRequest.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.roomId != null && Object.hasOwnProperty.call(message, "roomId"))
-            writer.uint32(/* id 1, wireType 0 =*/8).int32(message.roomId);
         return writer;
     };
 
@@ -5385,10 +5430,6 @@ $root.C2SJoinRandomRoomRequest = (function() {
         while (reader.pos < end) {
             var tag = reader.uint32();
             switch (tag >>> 3) {
-            case 1: {
-                    message.roomId = reader.int32();
-                    break;
-                }
             default:
                 reader.skipType(tag & 7);
                 break;
@@ -5424,9 +5465,6 @@ $root.C2SJoinRandomRoomRequest = (function() {
     C2SJoinRandomRoomRequest.verify = function verify(message) {
         if (typeof message !== "object" || message === null)
             return "object expected";
-        if (message.roomId != null && message.hasOwnProperty("roomId"))
-            if (!$util.isInteger(message.roomId))
-                return "roomId: integer expected";
         return null;
     };
 
@@ -5441,10 +5479,7 @@ $root.C2SJoinRandomRoomRequest = (function() {
     C2SJoinRandomRoomRequest.fromObject = function fromObject(object) {
         if (object instanceof $root.C2SJoinRandomRoomRequest)
             return object;
-        var message = new $root.C2SJoinRandomRoomRequest();
-        if (object.roomId != null)
-            message.roomId = object.roomId | 0;
-        return message;
+        return new $root.C2SJoinRandomRoomRequest();
     };
 
     /**
@@ -5456,15 +5491,8 @@ $root.C2SJoinRandomRoomRequest = (function() {
      * @param {$protobuf.IConversionOptions} [options] Conversion options
      * @returns {Object.<string,*>} Plain object
      */
-    C2SJoinRandomRoomRequest.toObject = function toObject(message, options) {
-        if (!options)
-            options = {};
-        var object = {};
-        if (options.defaults)
-            object.roomId = 0;
-        if (message.roomId != null && message.hasOwnProperty("roomId"))
-            object.roomId = message.roomId;
-        return object;
+    C2SJoinRandomRoomRequest.toObject = function toObject() {
+        return {};
     };
 
     /**
@@ -6555,7 +6583,7 @@ $root.S2CLeaveRoomNotification = (function() {
      * Properties of a S2CLeaveRoomNotification.
      * @exports IS2CLeaveRoomNotification
      * @interface IS2CLeaveRoomNotification
-     * @property {string|null} [userId] S2CLeaveRoomNotification userId
+     * @property {number|Long|null} [userId] S2CLeaveRoomNotification userId
      */
 
     /**
@@ -6575,11 +6603,11 @@ $root.S2CLeaveRoomNotification = (function() {
 
     /**
      * S2CLeaveRoomNotification userId.
-     * @member {string} userId
+     * @member {number|Long} userId
      * @memberof S2CLeaveRoomNotification
      * @instance
      */
-    S2CLeaveRoomNotification.prototype.userId = "";
+    S2CLeaveRoomNotification.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new S2CLeaveRoomNotification instance using the specified properties.
@@ -6606,7 +6634,7 @@ $root.S2CLeaveRoomNotification = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.userId);
         return writer;
     };
 
@@ -6642,7 +6670,7 @@ $root.S2CLeaveRoomNotification = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.userId = reader.string();
+                    message.userId = reader.int64();
                     break;
                 }
             default:
@@ -6681,8 +6709,8 @@ $root.S2CLeaveRoomNotification = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+            if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                return "userId: integer|Long expected";
         return null;
     };
 
@@ -6699,7 +6727,14 @@ $root.S2CLeaveRoomNotification = (function() {
             return object;
         var message = new $root.S2CLeaveRoomNotification();
         if (object.userId != null)
-            message.userId = String(object.userId);
+            if ($util.Long)
+                (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+            else if (typeof object.userId === "string")
+                message.userId = parseInt(object.userId, 10);
+            else if (typeof object.userId === "number")
+                message.userId = object.userId;
+            else if (typeof object.userId === "object")
+                message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
         return message;
     };
 
@@ -6717,9 +6752,16 @@ $root.S2CLeaveRoomNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults)
-            object.userId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.userId = options.longs === String ? "0" : 0;
         if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+            if (typeof message.userId === "number")
+                object.userId = options.longs === String ? String(message.userId) : message.userId;
+            else
+                object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
         return object;
     };
 
@@ -9029,7 +9071,7 @@ $root.C2SUseCardRequest = (function() {
      * @exports IC2SUseCardRequest
      * @interface IC2SUseCardRequest
      * @property {CardType|null} [cardType] C2SUseCardRequest cardType
-     * @property {string|null} [targetUserId] C2SUseCardRequest targetUserId
+     * @property {number|Long|null} [targetUserId] C2SUseCardRequest targetUserId
      */
 
     /**
@@ -9057,11 +9099,11 @@ $root.C2SUseCardRequest = (function() {
 
     /**
      * C2SUseCardRequest targetUserId.
-     * @member {string} targetUserId
+     * @member {number|Long} targetUserId
      * @memberof C2SUseCardRequest
      * @instance
      */
-    C2SUseCardRequest.prototype.targetUserId = "";
+    C2SUseCardRequest.prototype.targetUserId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new C2SUseCardRequest instance using the specified properties.
@@ -9090,7 +9132,7 @@ $root.C2SUseCardRequest = (function() {
         if (message.cardType != null && Object.hasOwnProperty.call(message, "cardType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.cardType);
         if (message.targetUserId != null && Object.hasOwnProperty.call(message, "targetUserId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.targetUserId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.targetUserId);
         return writer;
     };
 
@@ -9130,7 +9172,7 @@ $root.C2SUseCardRequest = (function() {
                     break;
                 }
             case 2: {
-                    message.targetUserId = reader.string();
+                    message.targetUserId = reader.int64();
                     break;
                 }
             default:
@@ -9199,8 +9241,8 @@ $root.C2SUseCardRequest = (function() {
                 break;
             }
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
-            if (!$util.isString(message.targetUserId))
-                return "targetUserId: string expected";
+            if (!$util.isInteger(message.targetUserId) && !(message.targetUserId && $util.isInteger(message.targetUserId.low) && $util.isInteger(message.targetUserId.high)))
+                return "targetUserId: integer|Long expected";
         return null;
     };
 
@@ -9321,7 +9363,14 @@ $root.C2SUseCardRequest = (function() {
             break;
         }
         if (object.targetUserId != null)
-            message.targetUserId = String(object.targetUserId);
+            if ($util.Long)
+                (message.targetUserId = $util.Long.fromValue(object.targetUserId)).unsigned = false;
+            else if (typeof object.targetUserId === "string")
+                message.targetUserId = parseInt(object.targetUserId, 10);
+            else if (typeof object.targetUserId === "number")
+                message.targetUserId = object.targetUserId;
+            else if (typeof object.targetUserId === "object")
+                message.targetUserId = new $util.LongBits(object.targetUserId.low >>> 0, object.targetUserId.high >>> 0).toNumber();
         return message;
     };
 
@@ -9340,12 +9389,19 @@ $root.C2SUseCardRequest = (function() {
         var object = {};
         if (options.defaults) {
             object.cardType = options.enums === String ? "NONE" : 0;
-            object.targetUserId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.targetUserId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.targetUserId = options.longs === String ? "0" : 0;
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
             object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
-            object.targetUserId = message.targetUserId;
+            if (typeof message.targetUserId === "number")
+                object.targetUserId = options.longs === String ? String(message.targetUserId) : message.targetUserId;
+            else
+                object.targetUserId = options.longs === String ? $util.Long.prototype.toString.call(message.targetUserId) : options.longs === Number ? new $util.LongBits(message.targetUserId.low >>> 0, message.targetUserId.high >>> 0).toNumber() : message.targetUserId;
         return object;
     };
 
@@ -9706,8 +9762,8 @@ $root.S2CUseCardNotification = (function() {
      * @exports IS2CUseCardNotification
      * @interface IS2CUseCardNotification
      * @property {CardType|null} [cardType] S2CUseCardNotification cardType
-     * @property {string|null} [userId] S2CUseCardNotification userId
-     * @property {string|null} [targetUserId] S2CUseCardNotification targetUserId
+     * @property {number|Long|null} [userId] S2CUseCardNotification userId
+     * @property {number|Long|null} [targetUserId] S2CUseCardNotification targetUserId
      */
 
     /**
@@ -9735,19 +9791,19 @@ $root.S2CUseCardNotification = (function() {
 
     /**
      * S2CUseCardNotification userId.
-     * @member {string} userId
+     * @member {number|Long} userId
      * @memberof S2CUseCardNotification
      * @instance
      */
-    S2CUseCardNotification.prototype.userId = "";
+    S2CUseCardNotification.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * S2CUseCardNotification targetUserId.
-     * @member {string} targetUserId
+     * @member {number|Long} targetUserId
      * @memberof S2CUseCardNotification
      * @instance
      */
-    S2CUseCardNotification.prototype.targetUserId = "";
+    S2CUseCardNotification.prototype.targetUserId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new S2CUseCardNotification instance using the specified properties.
@@ -9776,9 +9832,9 @@ $root.S2CUseCardNotification = (function() {
         if (message.cardType != null && Object.hasOwnProperty.call(message, "cardType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.cardType);
         if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.userId);
         if (message.targetUserId != null && Object.hasOwnProperty.call(message, "targetUserId"))
-            writer.uint32(/* id 3, wireType 2 =*/26).string(message.targetUserId);
+            writer.uint32(/* id 3, wireType 0 =*/24).int64(message.targetUserId);
         return writer;
     };
 
@@ -9818,11 +9874,11 @@ $root.S2CUseCardNotification = (function() {
                     break;
                 }
             case 2: {
-                    message.userId = reader.string();
+                    message.userId = reader.int64();
                     break;
                 }
             case 3: {
-                    message.targetUserId = reader.string();
+                    message.targetUserId = reader.int64();
                     break;
                 }
             default:
@@ -9891,11 +9947,11 @@ $root.S2CUseCardNotification = (function() {
                 break;
             }
         if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+            if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                return "userId: integer|Long expected";
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
-            if (!$util.isString(message.targetUserId))
-                return "targetUserId: string expected";
+            if (!$util.isInteger(message.targetUserId) && !(message.targetUserId && $util.isInteger(message.targetUserId.low) && $util.isInteger(message.targetUserId.high)))
+                return "targetUserId: integer|Long expected";
         return null;
     };
 
@@ -10016,9 +10072,23 @@ $root.S2CUseCardNotification = (function() {
             break;
         }
         if (object.userId != null)
-            message.userId = String(object.userId);
+            if ($util.Long)
+                (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+            else if (typeof object.userId === "string")
+                message.userId = parseInt(object.userId, 10);
+            else if (typeof object.userId === "number")
+                message.userId = object.userId;
+            else if (typeof object.userId === "object")
+                message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
         if (object.targetUserId != null)
-            message.targetUserId = String(object.targetUserId);
+            if ($util.Long)
+                (message.targetUserId = $util.Long.fromValue(object.targetUserId)).unsigned = false;
+            else if (typeof object.targetUserId === "string")
+                message.targetUserId = parseInt(object.targetUserId, 10);
+            else if (typeof object.targetUserId === "number")
+                message.targetUserId = object.targetUserId;
+            else if (typeof object.targetUserId === "object")
+                message.targetUserId = new $util.LongBits(object.targetUserId.low >>> 0, object.targetUserId.high >>> 0).toNumber();
         return message;
     };
 
@@ -10037,15 +10107,29 @@ $root.S2CUseCardNotification = (function() {
         var object = {};
         if (options.defaults) {
             object.cardType = options.enums === String ? "NONE" : 0;
-            object.userId = "";
-            object.targetUserId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.userId = options.longs === String ? "0" : 0;
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.targetUserId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.targetUserId = options.longs === String ? "0" : 0;
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
             object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+            if (typeof message.userId === "number")
+                object.userId = options.longs === String ? String(message.userId) : message.userId;
+            else
+                object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
-            object.targetUserId = message.targetUserId;
+            if (typeof message.targetUserId === "number")
+                object.targetUserId = options.longs === String ? String(message.targetUserId) : message.targetUserId;
+            else
+                object.targetUserId = options.longs === String ? $util.Long.prototype.toString.call(message.targetUserId) : options.longs === Number ? new $util.LongBits(message.targetUserId.low >>> 0, message.targetUserId.high >>> 0).toNumber() : message.targetUserId;
         return object;
     };
 
@@ -10085,7 +10169,7 @@ $root.S2CEquipCardNotification = (function() {
      * @exports IS2CEquipCardNotification
      * @interface IS2CEquipCardNotification
      * @property {CardType|null} [cardType] S2CEquipCardNotification cardType
-     * @property {string|null} [userId] S2CEquipCardNotification userId
+     * @property {number|Long|null} [userId] S2CEquipCardNotification userId
      */
 
     /**
@@ -10113,11 +10197,11 @@ $root.S2CEquipCardNotification = (function() {
 
     /**
      * S2CEquipCardNotification userId.
-     * @member {string} userId
+     * @member {number|Long} userId
      * @memberof S2CEquipCardNotification
      * @instance
      */
-    S2CEquipCardNotification.prototype.userId = "";
+    S2CEquipCardNotification.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * Creates a new S2CEquipCardNotification instance using the specified properties.
@@ -10146,7 +10230,7 @@ $root.S2CEquipCardNotification = (function() {
         if (message.cardType != null && Object.hasOwnProperty.call(message, "cardType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.cardType);
         if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.userId);
         return writer;
     };
 
@@ -10186,7 +10270,7 @@ $root.S2CEquipCardNotification = (function() {
                     break;
                 }
             case 2: {
-                    message.userId = reader.string();
+                    message.userId = reader.int64();
                     break;
                 }
             default:
@@ -10255,8 +10339,8 @@ $root.S2CEquipCardNotification = (function() {
                 break;
             }
         if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+            if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                return "userId: integer|Long expected";
         return null;
     };
 
@@ -10377,7 +10461,14 @@ $root.S2CEquipCardNotification = (function() {
             break;
         }
         if (object.userId != null)
-            message.userId = String(object.userId);
+            if ($util.Long)
+                (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+            else if (typeof object.userId === "string")
+                message.userId = parseInt(object.userId, 10);
+            else if (typeof object.userId === "number")
+                message.userId = object.userId;
+            else if (typeof object.userId === "object")
+                message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
         return message;
     };
 
@@ -10396,12 +10487,19 @@ $root.S2CEquipCardNotification = (function() {
         var object = {};
         if (options.defaults) {
             object.cardType = options.enums === String ? "NONE" : 0;
-            object.userId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.userId = options.longs === String ? "0" : 0;
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
             object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+            if (typeof message.userId === "number")
+                object.userId = options.longs === String ? String(message.userId) : message.userId;
+            else
+                object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
         return object;
     };
 
@@ -10441,7 +10539,7 @@ $root.S2CCardEffectNotification = (function() {
      * @exports IS2CCardEffectNotification
      * @interface IS2CCardEffectNotification
      * @property {CardType|null} [cardType] S2CCardEffectNotification cardType
-     * @property {string|null} [userId] S2CCardEffectNotification userId
+     * @property {number|Long|null} [userId] S2CCardEffectNotification userId
      * @property {boolean|null} [success] S2CCardEffectNotification success
      */
 
@@ -10470,11 +10568,11 @@ $root.S2CCardEffectNotification = (function() {
 
     /**
      * S2CCardEffectNotification userId.
-     * @member {string} userId
+     * @member {number|Long} userId
      * @memberof S2CCardEffectNotification
      * @instance
      */
-    S2CCardEffectNotification.prototype.userId = "";
+    S2CCardEffectNotification.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * S2CCardEffectNotification success.
@@ -10511,7 +10609,7 @@ $root.S2CCardEffectNotification = (function() {
         if (message.cardType != null && Object.hasOwnProperty.call(message, "cardType"))
             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.cardType);
         if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 2, wireType 2 =*/18).string(message.userId);
+            writer.uint32(/* id 2, wireType 0 =*/16).int64(message.userId);
         if (message.success != null && Object.hasOwnProperty.call(message, "success"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.success);
         return writer;
@@ -10553,7 +10651,7 @@ $root.S2CCardEffectNotification = (function() {
                     break;
                 }
             case 2: {
-                    message.userId = reader.string();
+                    message.userId = reader.int64();
                     break;
                 }
             case 3: {
@@ -10626,8 +10724,8 @@ $root.S2CCardEffectNotification = (function() {
                 break;
             }
         if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+            if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                return "userId: integer|Long expected";
         if (message.success != null && message.hasOwnProperty("success"))
             if (typeof message.success !== "boolean")
                 return "success: boolean expected";
@@ -10751,7 +10849,14 @@ $root.S2CCardEffectNotification = (function() {
             break;
         }
         if (object.userId != null)
-            message.userId = String(object.userId);
+            if ($util.Long)
+                (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+            else if (typeof object.userId === "string")
+                message.userId = parseInt(object.userId, 10);
+            else if (typeof object.userId === "number")
+                message.userId = object.userId;
+            else if (typeof object.userId === "object")
+                message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
         if (object.success != null)
             message.success = Boolean(object.success);
         return message;
@@ -10772,13 +10877,20 @@ $root.S2CCardEffectNotification = (function() {
         var object = {};
         if (options.defaults) {
             object.cardType = options.enums === String ? "NONE" : 0;
-            object.userId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.userId = options.longs === String ? "0" : 0;
             object.success = false;
         }
         if (message.cardType != null && message.hasOwnProperty("cardType"))
             object.cardType = options.enums === String ? $root.CardType[message.cardType] === undefined ? message.cardType : $root.CardType[message.cardType] : message.cardType;
         if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+            if (typeof message.userId === "number")
+                object.userId = options.longs === String ? String(message.userId) : message.userId;
+            else
+                object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
         if (message.success != null && message.hasOwnProperty("success"))
             object.success = message.success;
         return object;
@@ -13277,7 +13389,7 @@ $root.S2CGameEndNotification = (function() {
      * Properties of a S2CGameEndNotification.
      * @exports IS2CGameEndNotification
      * @interface IS2CGameEndNotification
-     * @property {Array.<string>|null} [winners] S2CGameEndNotification winners
+     * @property {Array.<number|Long>|null} [winners] S2CGameEndNotification winners
      * @property {WinType|null} [winType] S2CGameEndNotification winType
      */
 
@@ -13299,7 +13411,7 @@ $root.S2CGameEndNotification = (function() {
 
     /**
      * S2CGameEndNotification winners.
-     * @member {Array.<string>} winners
+     * @member {Array.<number|Long>} winners
      * @memberof S2CGameEndNotification
      * @instance
      */
@@ -13337,9 +13449,12 @@ $root.S2CGameEndNotification = (function() {
     S2CGameEndNotification.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
-        if (message.winners != null && message.winners.length)
+        if (message.winners != null && message.winners.length) {
+            writer.uint32(/* id 1, wireType 2 =*/10).fork();
             for (var i = 0; i < message.winners.length; ++i)
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.winners[i]);
+                writer.int64(message.winners[i]);
+            writer.ldelim();
+        }
         if (message.winType != null && Object.hasOwnProperty.call(message, "winType"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.winType);
         return writer;
@@ -13379,7 +13494,12 @@ $root.S2CGameEndNotification = (function() {
             case 1: {
                     if (!(message.winners && message.winners.length))
                         message.winners = [];
-                    message.winners.push(reader.string());
+                    if ((tag & 7) === 2) {
+                        var end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.winners.push(reader.int64());
+                    } else
+                        message.winners.push(reader.int64());
                     break;
                 }
             case 2: {
@@ -13425,8 +13545,8 @@ $root.S2CGameEndNotification = (function() {
             if (!Array.isArray(message.winners))
                 return "winners: array expected";
             for (var i = 0; i < message.winners.length; ++i)
-                if (!$util.isString(message.winners[i]))
-                    return "winners: string[] expected";
+                if (!$util.isInteger(message.winners[i]) && !(message.winners[i] && $util.isInteger(message.winners[i].low) && $util.isInteger(message.winners[i].high)))
+                    return "winners: integer|Long[] expected";
         }
         if (message.winType != null && message.hasOwnProperty("winType"))
             switch (message.winType) {
@@ -13457,7 +13577,14 @@ $root.S2CGameEndNotification = (function() {
                 throw TypeError(".S2CGameEndNotification.winners: array expected");
             message.winners = [];
             for (var i = 0; i < object.winners.length; ++i)
-                message.winners[i] = String(object.winners[i]);
+                if ($util.Long)
+                    (message.winners[i] = $util.Long.fromValue(object.winners[i])).unsigned = false;
+                else if (typeof object.winners[i] === "string")
+                    message.winners[i] = parseInt(object.winners[i], 10);
+                else if (typeof object.winners[i] === "number")
+                    message.winners[i] = object.winners[i];
+                else if (typeof object.winners[i] === "object")
+                    message.winners[i] = new $util.LongBits(object.winners[i].low >>> 0, object.winners[i].high >>> 0).toNumber();
         }
         switch (object.winType) {
         default:
@@ -13502,7 +13629,10 @@ $root.S2CGameEndNotification = (function() {
         if (message.winners && message.winners.length) {
             object.winners = [];
             for (var j = 0; j < message.winners.length; ++j)
-                object.winners[j] = message.winners[j];
+                if (typeof message.winners[j] === "number")
+                    object.winners[j] = options.longs === String ? String(message.winners[j]) : message.winners[j];
+                else
+                    object.winners[j] = options.longs === String ? $util.Long.prototype.toString.call(message.winners[j]) : options.longs === Number ? new $util.LongBits(message.winners[j].low >>> 0, message.winners[j].high >>> 0).toNumber() : message.winners[j];
         }
         if (message.winType != null && message.hasOwnProperty("winType"))
             object.winType = options.enums === String ? $root.WinType[message.winType] === undefined ? message.winType : $root.WinType[message.winType] : message.winType;
@@ -14250,7 +14380,7 @@ $root.C2SPassDebuffRequest = (function() {
      * Properties of a C2SPassDebuffRequest.
      * @exports IC2SPassDebuffRequest
      * @interface IC2SPassDebuffRequest
-     * @property {string|null} [targetUserId] C2SPassDebuffRequest targetUserId
+     * @property {number|Long|null} [targetUserId] C2SPassDebuffRequest targetUserId
      * @property {CardType|null} [debuffCardType] C2SPassDebuffRequest debuffCardType
      */
 
@@ -14271,11 +14401,11 @@ $root.C2SPassDebuffRequest = (function() {
 
     /**
      * C2SPassDebuffRequest targetUserId.
-     * @member {string} targetUserId
+     * @member {number|Long} targetUserId
      * @memberof C2SPassDebuffRequest
      * @instance
      */
-    C2SPassDebuffRequest.prototype.targetUserId = "";
+    C2SPassDebuffRequest.prototype.targetUserId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * C2SPassDebuffRequest debuffCardType.
@@ -14310,7 +14440,7 @@ $root.C2SPassDebuffRequest = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.targetUserId != null && Object.hasOwnProperty.call(message, "targetUserId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.targetUserId);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.targetUserId);
         if (message.debuffCardType != null && Object.hasOwnProperty.call(message, "debuffCardType"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.debuffCardType);
         return writer;
@@ -14348,7 +14478,7 @@ $root.C2SPassDebuffRequest = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.targetUserId = reader.string();
+                    message.targetUserId = reader.int64();
                     break;
                 }
             case 2: {
@@ -14391,8 +14521,8 @@ $root.C2SPassDebuffRequest = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
-            if (!$util.isString(message.targetUserId))
-                return "targetUserId: string expected";
+            if (!$util.isInteger(message.targetUserId) && !(message.targetUserId && $util.isInteger(message.targetUserId.low) && $util.isInteger(message.targetUserId.high)))
+                return "targetUserId: integer|Long expected";
         if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
             switch (message.debuffCardType) {
             default:
@@ -14439,7 +14569,14 @@ $root.C2SPassDebuffRequest = (function() {
             return object;
         var message = new $root.C2SPassDebuffRequest();
         if (object.targetUserId != null)
-            message.targetUserId = String(object.targetUserId);
+            if ($util.Long)
+                (message.targetUserId = $util.Long.fromValue(object.targetUserId)).unsigned = false;
+            else if (typeof object.targetUserId === "string")
+                message.targetUserId = parseInt(object.targetUserId, 10);
+            else if (typeof object.targetUserId === "number")
+                message.targetUserId = object.targetUserId;
+            else if (typeof object.targetUserId === "object")
+                message.targetUserId = new $util.LongBits(object.targetUserId.low >>> 0, object.targetUserId.high >>> 0).toNumber();
         switch (object.debuffCardType) {
         default:
             if (typeof object.debuffCardType === "number") {
@@ -14561,11 +14698,18 @@ $root.C2SPassDebuffRequest = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.targetUserId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.targetUserId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.targetUserId = options.longs === String ? "0" : 0;
             object.debuffCardType = options.enums === String ? "NONE" : 0;
         }
         if (message.targetUserId != null && message.hasOwnProperty("targetUserId"))
-            object.targetUserId = message.targetUserId;
+            if (typeof message.targetUserId === "number")
+                object.targetUserId = options.longs === String ? String(message.targetUserId) : message.targetUserId;
+            else
+                object.targetUserId = options.longs === String ? $util.Long.prototype.toString.call(message.targetUserId) : options.longs === Number ? new $util.LongBits(message.targetUserId.low >>> 0, message.targetUserId.high >>> 0).toNumber() : message.targetUserId;
         if (message.debuffCardType != null && message.hasOwnProperty("debuffCardType"))
             object.debuffCardType = options.enums === String ? $root.CardType[message.debuffCardType] === undefined ? message.debuffCardType : $root.CardType[message.debuffCardType] : message.debuffCardType;
         return object;
@@ -15187,7 +15331,7 @@ $root.S2CAnimationNotification = (function() {
      * Properties of a S2CAnimationNotification.
      * @exports IS2CAnimationNotification
      * @interface IS2CAnimationNotification
-     * @property {string|null} [userId] S2CAnimationNotification userId
+     * @property {number|Long|null} [userId] S2CAnimationNotification userId
      * @property {AnimationType|null} [animationType] S2CAnimationNotification animationType
      */
 
@@ -15208,11 +15352,11 @@ $root.S2CAnimationNotification = (function() {
 
     /**
      * S2CAnimationNotification userId.
-     * @member {string} userId
+     * @member {number|Long} userId
      * @memberof S2CAnimationNotification
      * @instance
      */
-    S2CAnimationNotification.prototype.userId = "";
+    S2CAnimationNotification.prototype.userId = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
     /**
      * S2CAnimationNotification animationType.
@@ -15247,7 +15391,7 @@ $root.S2CAnimationNotification = (function() {
         if (!writer)
             writer = $Writer.create();
         if (message.userId != null && Object.hasOwnProperty.call(message, "userId"))
-            writer.uint32(/* id 1, wireType 2 =*/10).string(message.userId);
+            writer.uint32(/* id 1, wireType 0 =*/8).int64(message.userId);
         if (message.animationType != null && Object.hasOwnProperty.call(message, "animationType"))
             writer.uint32(/* id 2, wireType 0 =*/16).int32(message.animationType);
         return writer;
@@ -15285,7 +15429,7 @@ $root.S2CAnimationNotification = (function() {
             var tag = reader.uint32();
             switch (tag >>> 3) {
             case 1: {
-                    message.userId = reader.string();
+                    message.userId = reader.int64();
                     break;
                 }
             case 2: {
@@ -15328,8 +15472,8 @@ $root.S2CAnimationNotification = (function() {
         if (typeof message !== "object" || message === null)
             return "object expected";
         if (message.userId != null && message.hasOwnProperty("userId"))
-            if (!$util.isString(message.userId))
-                return "userId: string expected";
+            if (!$util.isInteger(message.userId) && !(message.userId && $util.isInteger(message.userId.low) && $util.isInteger(message.userId.high)))
+                return "userId: integer|Long expected";
         if (message.animationType != null && message.hasOwnProperty("animationType"))
             switch (message.animationType) {
             default:
@@ -15356,7 +15500,14 @@ $root.S2CAnimationNotification = (function() {
             return object;
         var message = new $root.S2CAnimationNotification();
         if (object.userId != null)
-            message.userId = String(object.userId);
+            if ($util.Long)
+                (message.userId = $util.Long.fromValue(object.userId)).unsigned = false;
+            else if (typeof object.userId === "string")
+                message.userId = parseInt(object.userId, 10);
+            else if (typeof object.userId === "number")
+                message.userId = object.userId;
+            else if (typeof object.userId === "object")
+                message.userId = new $util.LongBits(object.userId.low >>> 0, object.userId.high >>> 0).toNumber();
         switch (object.animationType) {
         default:
             if (typeof object.animationType === "number") {
@@ -15398,11 +15549,18 @@ $root.S2CAnimationNotification = (function() {
             options = {};
         var object = {};
         if (options.defaults) {
-            object.userId = "";
+            if ($util.Long) {
+                var long = new $util.Long(0, 0, false);
+                object.userId = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+            } else
+                object.userId = options.longs === String ? "0" : 0;
             object.animationType = options.enums === String ? "NO_ANIMATION" : 0;
         }
         if (message.userId != null && message.hasOwnProperty("userId"))
-            object.userId = message.userId;
+            if (typeof message.userId === "number")
+                object.userId = options.longs === String ? String(message.userId) : message.userId;
+            else
+                object.userId = options.longs === String ? $util.Long.prototype.toString.call(message.userId) : options.longs === Number ? new $util.LongBits(message.userId.low >>> 0, message.userId.high >>> 0).toNumber() : message.userId;
         if (message.animationType != null && message.hasOwnProperty("animationType"))
             object.animationType = options.enums === String ? $root.AnimationType[message.animationType] === undefined ? message.animationType : $root.AnimationType[message.animationType] : message.animationType;
         return object;

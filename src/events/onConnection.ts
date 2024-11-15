@@ -11,7 +11,7 @@ export const onConnection = (socket: net.Socket) => {
   log(`새로운 클라이언트 연결: ${socket.remoteAddress}:${socket.remotePort}`);
 
   const buf = Buffer.alloc(0);
-  const ctx: Context = { userId: '', roomId: 0 };
+  const ctx: Context = { userId: BigInt(0), roomId: 0 };
 
   socket.on('data', (data: Buffer) => {
     onData(

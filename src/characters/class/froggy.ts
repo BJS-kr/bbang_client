@@ -4,7 +4,7 @@ import { CharacterType, RoleType } from '../../protobuf/compiled';
 import { Character } from './character';
 
 export class Froggy extends Character {
-  constructor({ userId, roleType, hp, gameEvents }: { userId: string; roleType: RoleType; hp?: number; gameEvents: GameEvents }) {
+  constructor({ userId, roleType, hp, gameEvents }: { userId: bigint; roleType: RoleType; hp?: number; gameEvents: GameEvents }) {
     super({
       userId,
       hp: hp ?? CHARACTER_HP[CharacterType.FROGGY],

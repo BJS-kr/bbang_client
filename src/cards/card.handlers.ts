@@ -59,6 +59,9 @@ import { AutoRifle } from './class/autorifle';
 import { Context } from '../events/types';
 import { Socket } from 'node:net';
 import { isAbsorb, isDeathMatchBBang, isGuerrillaTargetBBang, isHallucination, responseCardSelect, responseSuccess } from './helpers';
+import Long from 'long';
+
+type UseCardRequestNotLong = Omit<C2SUseCardRequest, 'targetUserId'> & { targetUserId: number };
 
 export function handleCardSelect({ socket, version, sequence, ctx }: HandlerBase, cardSelectRequest: C2SCardSelectRequest) {
   cardSelectRequest.selectType ||= 0;
@@ -225,10 +228,20 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
   }
 
   const base = { socket, version, sequence, ctx };
+
+  if (useCardRequest.targetUserId instanceof Long) {
+    error('handleUseCard: Long not handled');
+
+    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
+      success: false,
+      failCode: GlobalFailCode.UNKNOWN_ERROR,
+    } satisfies UseCardResponse);
+  }
+
   switch (true) {
     case card instanceof BBang:
       log('handleUseCard: BBang');
-      handleBBang(base, user, room, useCardRequest.targetUserId);
+      handleBBang(base, user, room, useCardRequest as UseCardRequestNotLong);
       break;
     case card instanceof Shield:
       log('handleUseCard: Shield');
@@ -236,7 +249,7 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof DeathMatch:
       log('handleUseCard: DeathMatch');
-      handleDeathMatch(base, useCardRequest, room, user);
+      handleDeathMatch(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     case card instanceof BigBBang:
       log('handleUseCard: BigBBang');
@@ -248,7 +261,7 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof Call119:
       log('handleUseCard: Call119');
-      handleCall119(base, useCardRequest, room, user);
+      handleCall119(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     case card instanceof Guerrilla:
       log('handleUseCard: Guerrilla');
@@ -256,11 +269,11 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof Absorb:
       log('handleUseCard: Absorb');
-      handleAbsorb(base, useCardRequest, room, user);
+      handleAbsorb(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     case card instanceof Hallucination:
       log('handleUseCard: Hallucination');
-      handleHallucination(base, useCardRequest, room, user);
+      handleHallucination(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     case card instanceof FleaMarket:
       log('handleUseCard: FleaMarket');
@@ -308,15 +321,15 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
       break;
     case card instanceof ContainmentUnit:
       log('handleUseCard: ContainmentUnit');
-      handleContainmentUnit(base, useCardRequest, room, user);
+      handleContainmentUnit(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     case card instanceof SatelliteTarget:
       log('handleUseCard: SatelliteTarget');
-      handleSatelliteTarget(base, useCardRequest, room, user);
+      handleSatelliteTarget(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     case card instanceof Bomb:
       log('handleUseCard: Bomb');
-      handleBomb(base, useCardRequest, room, user);
+      handleBomb(base, useCardRequest as UseCardRequestNotLong, room, user);
       break;
     default:
       error(`handleUseCard: unknown card. card type: ${card.type}`);
@@ -327,8 +340,8 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
   }
 }
 
-function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User, room: Room, targetUserId: string) {
-  const targetUser = room.getUser(targetUserId);
+function handleBBang({ socket, version, sequence, ctx }: HandlerBase, user: User, room: Room, useCardRequest: UseCardRequestNotLong) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleBBang: target user not found');
@@ -376,11 +389,11 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
   // 기본 방어 확률로 막혔는지 확인 ex) 개굴이
   if (targetUser.character.isDefended()) {
     writePayload(socket, PACKET_TYPE.ANIMATION_NOTIFICATION, version, sequence, {
-      userId: targetUser.id,
+      userId: Number(targetUser.id),
       animationType: AnimationType.SHIELD_ANIMATION,
     } satisfies MessageProps<S2CAnimationNotification>);
 
-    targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
+    targetUser.character.stateInfo.setState(BigInt(0), CharacterStateType.NONE_CHARACTER_STATE, null);
 
     return room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
@@ -395,15 +408,15 @@ function handleNormalBBang({ socket, version, sequence }: HandlerBase, user: Use
 
     if (shielded) {
       writePayload(socket, PACKET_TYPE.ANIMATION_NOTIFICATION, version, sequence, {
-        userId: targetUser.id,
+        userId: Number(targetUser.id),
         animationType: AnimationType.SHIELD_ANIMATION,
       } satisfies MessageProps<S2CAnimationNotification>);
-      targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
+      targetUser.character.stateInfo.setState(BigInt(0), CharacterStateType.NONE_CHARACTER_STATE, null);
     }
 
     room.broadcast(PACKET_TYPE.CARD_EFFECT_NOTIFICATION, {
       success: shielded,
-      userId: targetUser.id,
+      userId: Number(targetUser.id),
       cardType: CardType.AUTO_SHIELD,
     } satisfies CardEffectNotification);
 
@@ -466,8 +479,8 @@ function handleShield({ socket, version, sequence, ctx }: HandlerBase, room: Roo
   responseSuccess(socket, version, sequence, CardType.SHIELD, [user, shooter], room, user, shooter.id);
 }
 
-function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  const targetUser = room.getUser(useCardRequest.targetUserId);
+function handleDeathMatch({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleDeathMatch: target user not found');
@@ -492,17 +505,17 @@ function handleBigBBang({ socket, version, sequence }: HandlerBase, room: Room, 
       targetUser.character.stateInfo.setState(user.id, CharacterStateType.BIG_BBANG_TARGET, onBBangTimeoutTarget(1, user, targetUser, room));
   });
 
-  responseSuccess(socket, version, sequence, CardType.BIG_BBANG, room.users, room, user, '');
+  responseSuccess(socket, version, sequence, CardType.BIG_BBANG, room.users, room, user, BigInt(0));
 }
 
 function handleVaccine({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   Character.recover(1, user.character);
 
-  responseSuccess(socket, version, sequence, CardType.VACCINE, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.VACCINE, [user], room, user, BigInt(0));
 }
 
-function handleCall119({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  if (useCardRequest.targetUserId === user.id) {
+function handleCall119({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  if (useCardRequest.targetUserId === Number(user.id)) {
     Character.recover(1, user.character);
   } else {
     room.users.forEach((targetUser) => {
@@ -510,7 +523,7 @@ function handleCall119({ socket, version, sequence }: HandlerBase, useCardReques
     });
   }
 
-  responseSuccess(socket, version, sequence, CardType.CALL_119, room.users, room, user, '');
+  responseSuccess(socket, version, sequence, CardType.CALL_119, room.users, room, user, BigInt(0));
 }
 
 function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -520,11 +533,11 @@ function handleGuerrilla({ socket, version, sequence }: HandlerBase, room: Room,
       : user.character.stateInfo.setState(user.id, CharacterStateType.GUERRILLA_SHOOTER, onGuerillaShooterTimeout(user, room));
   });
 
-  responseSuccess(socket, version, sequence, CardType.GUERRILLA, room.users, room, user, '');
+  responseSuccess(socket, version, sequence, CardType.GUERRILLA, room.users, room, user, BigInt(0));
 }
 
-function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  const targetUser = room.getUser(useCardRequest.targetUserId);
+function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleAbsorb: target user not found');
@@ -535,14 +548,14 @@ function handleAbsorb({ socket, version, sequence }: HandlerBase, useCardRequest
     } satisfies UseCardResponse);
   }
 
-  user.character.stateInfo.setState(useCardRequest.targetUserId, CharacterStateType.ABSORBING, null);
+  user.character.stateInfo.setState(BigInt(useCardRequest.targetUserId), CharacterStateType.ABSORBING, null);
   targetUser.character.stateInfo.setState(user.id, CharacterStateType.ABSORB_TARGET, null);
 
   responseSuccess(socket, version, sequence, CardType.ABSORB, [user, targetUser], room, user, targetUser.id);
 }
 
-function handleHallucination({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  const targetUser = room.getUser(useCardRequest.targetUserId);
+function handleHallucination({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleHallucination: target user not found');
@@ -553,7 +566,7 @@ function handleHallucination({ socket, version, sequence }: HandlerBase, useCard
     } satisfies UseCardResponse);
   }
 
-  user.character.stateInfo.setState(useCardRequest.targetUserId, CharacterStateType.HALLUCINATING, null);
+  user.character.stateInfo.setState(BigInt(useCardRequest.targetUserId), CharacterStateType.HALLUCINATING, null);
   targetUser.character.stateInfo.setState(user.id, CharacterStateType.HALLUCINATION_TARGET, null);
 
   responseSuccess(socket, version, sequence, CardType.HALLUCINATION, [user, targetUser], room, user, targetUser.id);
@@ -575,34 +588,34 @@ function handleFleaMarket({ socket, version, sequence }: HandlerBase, room: Room
     pickIndex: room.pickFleaMarketIndex,
   } satisfies MessageProps<S2CFleaMarketNotification>);
 
-  responseSuccess(socket, version, sequence, CardType.FLEA_MARKET, room.users, room, user, '');
+  responseSuccess(socket, version, sequence, CardType.FLEA_MARKET, room.users, room, user, BigInt(0));
 }
 
 function handleMaturedSavings({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.acquireCard({ type: room.pickCardType(), count: 1 });
   user.character.acquireCard({ type: room.pickCardType(), count: 1 });
 
-  responseSuccess(socket, version, sequence, CardType.MATURED_SAVINGS, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.MATURED_SAVINGS, [user], room, user, BigInt(0));
 }
 
 function handleSniperGun({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CardType.SNIPER_GUN;
-  responseSuccess(socket, version, sequence, CardType.SNIPER_GUN, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.SNIPER_GUN, [user], room, user, BigInt(0));
 }
 
 function handleHandGun({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CardType.HAND_GUN;
-  responseSuccess(socket, version, sequence, CardType.HAND_GUN, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.HAND_GUN, [user], room, user, BigInt(0));
 }
 
 function handleDesertEagle({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CardType.DESERT_EAGLE;
-  responseSuccess(socket, version, sequence, CardType.DESERT_EAGLE, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.DESERT_EAGLE, [user], room, user, BigInt(0));
 }
 
 function handleAutoRifle({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.weapon = CardType.AUTO_RIFLE;
-  responseSuccess(socket, version, sequence, CardType.AUTO_RIFLE, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.AUTO_RIFLE, [user], room, user, BigInt(0));
 }
 
 function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
@@ -610,31 +623,31 @@ function handleWinLottery({ socket, version, sequence }: HandlerBase, room: Room
   user.character.acquireCard({ type: room.pickCardType(), count: 1 });
   user.character.acquireCard({ type: room.pickCardType(), count: 1 });
 
-  responseSuccess(socket, version, sequence, CardType.WIN_LOTTERY, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.WIN_LOTTERY, [user], room, user, BigInt(0));
 }
 
 function handleLaserPointer({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CardType.LASER_POINTER);
-  responseSuccess(socket, version, sequence, CardType.LASER_POINTER, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.LASER_POINTER, [user], room, user, BigInt(0));
 }
 
 function handleRadar({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CardType.RADAR);
-  responseSuccess(socket, version, sequence, CardType.RADAR, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.RADAR, [user], room, user, BigInt(0));
 }
 
 function handleAutoShield({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CardType.AUTO_SHIELD);
-  responseSuccess(socket, version, sequence, CardType.AUTO_SHIELD, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.AUTO_SHIELD, [user], room, user, BigInt(0));
 }
 
 function handleStealthSuit({ socket, version, sequence }: HandlerBase, room: Room, user: User) {
   user.character.equips.add(CardType.STEALTH_SUIT);
-  responseSuccess(socket, version, sequence, CardType.STEALTH_SUIT, [user], room, user, '');
+  responseSuccess(socket, version, sequence, CardType.STEALTH_SUIT, [user], room, user, BigInt(0));
 }
 
-function handleContainmentUnit({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  const targetUser = room.getUser(useCardRequest.targetUserId);
+function handleContainmentUnit({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleContainmentUnit: target user not found');
@@ -650,8 +663,8 @@ function handleContainmentUnit({ socket, version, sequence }: HandlerBase, useCa
   responseSuccess(socket, version, sequence, CardType.CONTAINMENT_UNIT, [user, targetUser], room, user, targetUser.id);
 }
 
-function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  const targetUser = room.getUser(useCardRequest.targetUserId);
+function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleSatelliteTarget: target user not found');
@@ -667,8 +680,8 @@ function handleSatelliteTarget({ socket, version, sequence }: HandlerBase, useCa
   responseSuccess(socket, version, sequence, CardType.SATELLITE_TARGET, [user, targetUser], room, user, targetUser.id);
 }
 
-function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: C2SUseCardRequest, room: Room, user: User) {
-  const targetUser = room.getUser(useCardRequest.targetUserId);
+function handleBomb({ socket, version, sequence }: HandlerBase, useCardRequest: UseCardRequestNotLong, room: Room, user: User) {
+  const targetUser = room.getUser(BigInt(useCardRequest.targetUserId));
 
   if (!targetUser) {
     error('handleBomb: target user not found');
@@ -716,6 +729,10 @@ export function handleDestroyCard(socket: Socket, version: string, sequence: num
 }
 
 export function handlePassDebuff(socket: Socket, version: string, sequence: number, passDebuffRequest: C2SPassDebuffRequest, ctx: Context) {
+  if (passDebuffRequest.targetUserId instanceof Long) {
+    throw new Error('handlePassDebuff: Long not handled');
+  }
+
   const room = rooms.getRoom(ctx.roomId);
 
   if (!room) {
@@ -736,7 +753,7 @@ export function handlePassDebuff(socket: Socket, version: string, sequence: numb
     } satisfies MessageProps<S2CPassDebuffResponse>);
   }
 
-  const targetUser = room.getUser(passDebuffRequest.targetUserId);
+  const targetUser = room.getUser(BigInt(passDebuffRequest.targetUserId));
 
   if (!targetUser) {
     error('handlePassDebuff: target user not found');

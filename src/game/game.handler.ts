@@ -52,7 +52,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
     } satisfies MessageProps<S2CGamePrepareResponse>);
   }
 
-  if (user.userId !== room.ownerId) {
+  if (user.id !== room.ownerId) {
     return writePayload(socket, PACKET_TYPE.GAME_PREPARE_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,
@@ -123,7 +123,7 @@ export const gamePrepareRequestHandler = async (socket, version, sequence, gameP
       room: {
         id: ctx.roomId,
         name: room.name,
-        ownerId: room.ownerId,
+        ownerId: Number(room.ownerId),
         maxUserNum: room.maxUserNum,
         state: room.state,
         users: createUserDataView(user, room.users),
@@ -158,7 +158,7 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
     } satisfies MessageProps<S2CGameStartResponse>);
   }
 
-  if (user.userId !== room.ownerId) {
+  if (user.id !== room.ownerId) {
     return writePayload(socket, PACKET_TYPE.GAME_START_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.INVALID_REQUEST,

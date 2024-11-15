@@ -7,10 +7,10 @@ import { eq } from 'drizzle-orm';
 import CustomError from '../utils/customError';
 import { ERROR_CODES } from '../constants/error';
 
-export const createUser = async (userId, password, nickname): Promise<Result<InsertedUser>> => {
+export const createUser = async (email, password, nickname): Promise<Result<InsertedUser>> => {
   const id = uuidv4();
 
-  const user: InsertedUser = { id, userId, password, nickname };
+  const user: InsertedUser = { id, email, password, nickname };
 
   const result = await db
     .insert($users)
@@ -22,7 +22,7 @@ export const createUser = async (userId, password, nickname): Promise<Result<Ins
 
 export const getUserByUserId = async (userId): Promise<Result<SelectedUser>> => {
   const user = await db.query.$users.findFirst({
-    where: eq($users.userId, userId),
+    where: eq($users.id, userId),
   });
 
   if (!user) {

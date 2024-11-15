@@ -59,7 +59,7 @@ export function onFleaMarketTurnTimeout(user: User, room: Room, usersByOrder: Us
 export function onGuerillaTargetTimeout(targetUser: User, room: Room) {
   return () => {
     targetUser.character.takeDamage(1, 'SYSTEM', room);
-    targetUser.character.stateInfo.setState('', CharacterStateType.NONE_CHARACTER_STATE, null);
+    targetUser.character.stateInfo.setState(BigInt(0), CharacterStateType.NONE_CHARACTER_STATE, null);
     room.broadcast(PACKET_TYPE.USER_UPDATE_NOTIFICATION, {
       user: [targetUser.toUserData(targetUser.id)],
     } satisfies MessageProps<S2CUserUpdateNotification>);

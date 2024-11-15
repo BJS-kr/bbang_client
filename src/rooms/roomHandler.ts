@@ -36,12 +36,12 @@ export const createRoomRequestHandler = async (socket: net.Socket, version, sequ
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const createResult = rooms.create(roomId, name, user.userId, maxUserNum);
+  const createResult = rooms.create(roomId, name, user.id, maxUserNum);
   if (!createResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, createRoomFailPayload);
   }
 
-  const joinResult = rooms.join(roomId, new User(user.userId, user.nickname ?? 'pseudo-nickname', socket), ctx);
+  const joinResult = rooms.join(roomId, new User(user.id, user.nickname ?? 'pseudo-nickname', socket), ctx);
 
   if (!joinResult) {
     return writePayload(socket, PACKET_TYPE.CREATE_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
@@ -64,7 +64,7 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
   if (!user) {
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
-  const joinUser = new User(user.userId, user.nickname ?? 'pseudo-nickname', socket);
+  const joinUser = new User(user.id, user.nickname ?? 'pseudo-nickname', socket);
   const joinResult = rooms.join(roomId, joinUser, ctx);
 
   if (!joinResult) {
@@ -104,7 +104,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
     return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
-  const joinUser = new User(user.userId, user.nickname ?? 'pseudo-nickname', socket);
+  const joinUser = new User(user.id, user.nickname ?? 'pseudo-nickname', socket);
   const joinResult = rooms.join(roomId, joinUser, ctx);
 
   if (!joinResult) {
@@ -167,7 +167,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   } satisfies MessageProps<S2CLeaveRoomResponse>);
 
   const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
-    userId: leavedUser.id,
+    userId: Number(leavedUser.id),
   };
 
   room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);

@@ -32,7 +32,7 @@ export class CharacterStateInfo {
     }
   }
 
-  setState(targetUserId: string, state: CharacterStateType, onStateTimeout: OnStateTimeout | null) {
+  setState(targetUserId: bigint, state: CharacterStateType, onStateTimeout: OnStateTimeout | null) {
     const prevState = this.state;
     const prevOnStateTimeout = this.#onStateTimeout;
 

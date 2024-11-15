@@ -1,18 +1,18 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "0d04d10f-001b-4302-a8fd-1b31612b68b1",
-  "prevId": "5fad3aa4-b3f6-42f4-9813-92fffdeab56f",
+  "id": "39a1de27-4aed-4e6b-960d-086dde0f68cf",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "users": {
       "name": "users",
       "columns": {
         "id": {
           "name": "id",
-          "type": "varchar(36)",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "user_id": {
           "name": "user_id",
@@ -67,12 +67,6 @@
           "name": "users_user_id_unique",
           "columns": [
             "user_id"
-          ]
-        },
-        "users_nickname_unique": {
-          "name": "users_nickname_unique",
-          "columns": [
-            "nickname"
           ]
         }
       },

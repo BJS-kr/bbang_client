@@ -6,7 +6,7 @@ import { Character } from './character';
 
 export class Pink extends Character {
   #room; // TODO 나중에 고쳐주세요....
-  constructor({ userId, roleType, hp, gameEvents }: { userId: string; roleType: RoleType; hp?: number; gameEvents: GameEvents }) {
+  constructor({ userId, roleType, hp, gameEvents }: { userId: bigint; roleType: RoleType; hp?: number; gameEvents: GameEvents }) {
     super({
       userId,
       hp: hp ?? CHARACTER_HP[CharacterType.PINK],

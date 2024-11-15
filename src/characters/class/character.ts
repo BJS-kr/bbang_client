@@ -33,7 +33,7 @@ const handler = {
 };
 
 export class Character extends EventEmitter {
-  userId: string;
+  userId: bigint;
   hp: number;
   characterType: number;
   roleType: number;
@@ -56,7 +56,7 @@ export class Character extends EventEmitter {
 
     gameEvents,
   }: {
-    userId: string;
+    userId: bigint;
     hp: number;
     roleType: number;
     characterType: number;
@@ -77,7 +77,7 @@ export class Character extends EventEmitter {
     return new Proxy(this, handler);
   }
 
-  toCharacterData(viewUserId: string): MessageProps<CharacterData> {
+  toCharacterData(viewUserId: bigint): MessageProps<CharacterData> {
     const roleType = viewUserId === this.userId || this.roleType === RoleType.TARGET ? this.roleType : RoleType.NONE_ROLE;
     log(`createUserDataView viewUserId: ${viewUserId} this.userId: ${this.userId}`);
     return {

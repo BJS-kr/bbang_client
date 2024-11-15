@@ -1,4 +1,4 @@
 export type Context = {
-  userId: string;
+  userId: bigint;
   roomId: number;
 };
