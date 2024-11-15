@@ -17,6 +17,7 @@ import { rooms } from './rooms';
 import { Context } from '../events/types';
 import { session } from '../users/session';
 import { User } from '../users/types';
+import { error } from '../utils/logger';
 
 const createRoomFailPayload: MessageProps<S2CCreateRoomResponse> = {
   success: false,
@@ -137,6 +138,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   const user = session.getUser(ctx.userId);
 
   if (!user) {
+    error('leaveRoomRequestHandler: user not found');
     return writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.LEAVE_ROOM_FAILED,
@@ -146,6 +148,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   const room = rooms.getRoom(roomId);
 
   if (!room) {
+    error('leaveRoomRequestHandler: room not found');
     return writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.LEAVE_ROOM_FAILED,
@@ -155,6 +158,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
   const leavedUser = rooms.quit(roomId, ctx.userId, ctx);
 
   if (!leavedUser) {
+    error('leaveRoomRequestHandler: leavedUser not found');
     return writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
       success: false,
       failCode: GlobalFailCode.LEAVE_ROOM_FAILED,
