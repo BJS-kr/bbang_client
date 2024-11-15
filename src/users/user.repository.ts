@@ -18,9 +18,9 @@ export const createUser = async (email, password, nickname): Promise<Result<Inse
   return result instanceof Error ? result : user;
 };
 
-export const getUserByUserId = async (userId): Promise<Result<SelectedUser>> => {
+export const getUserByUserEmail = async (email: string): Promise<Result<SelectedUser>> => {
   const user = await db.query.$users.findFirst({
-    where: eq($users.id, userId),
+    where: eq($users.email, email),
   });
 
   if (!user) {

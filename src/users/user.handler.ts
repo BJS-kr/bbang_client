@@ -1,7 +1,7 @@
 import { PACKET_TYPE } from '../constants/packetType';
-import { createUser, getUserByUserId } from './user.repository';
+import { createUser, getUserByUserEmail } from './user.repository';
 import { writePayload } from '../protobuf/writePayload';
-import { C2SRegisterRequest, CharacterType, GlobalFailCode, RoleType, S2CLoginResponse } from '../protobuf/compiled';
+import { C2SLoginRequest, C2SRegisterRequest, CharacterType, GlobalFailCode, RoleType, S2CLoginResponse } from '../protobuf/compiled';
 import { MessageProps } from '../protobuf/props';
 import { session } from './session';
 import { Context } from '../events/types';
@@ -27,10 +27,10 @@ export const registerRequestHandler = async (socket: net.Socket, version, sequen
   writePayload(socket, PACKET_TYPE.REGISTER_RESPONSE, version, sequence, payload);
 };
 
-export const loginRequestHandler = async (socket: net.Socket, version, sequence, loginRequest, ctx: Context) => {
+export const loginRequestHandler = async (socket: net.Socket, version, sequence, loginRequest: C2SLoginRequest, ctx: Context) => {
   const { email, password } = loginRequest;
 
-  const result = await getUserByUserId(email);
+  const result = await getUserByUserEmail(email);
   const isError = result instanceof Error;
 
   if (isError || result.password !== password) {
