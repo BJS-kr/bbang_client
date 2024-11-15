@@ -8,6 +8,7 @@ import { Context } from '../events/types';
 import net from 'node:net';
 import { Character } from '../characters/class/character';
 import { GameEvents } from '../game/game.events';
+import { error } from '../utils/logger';
 
 export const registerRequestHandler = async (socket: net.Socket, version, sequence, registerRequest: C2SRegisterRequest) => {
   const { email, password, nickname } = registerRequest;
@@ -27,12 +28,14 @@ export const registerRequestHandler = async (socket: net.Socket, version, sequen
 };
 
 export const loginRequestHandler = async (socket: net.Socket, version, sequence, loginRequest, ctx: Context) => {
-  const { id, password } = loginRequest;
+  const { email, password } = loginRequest;
 
-  const result = await getUserByUserId(id);
+  const result = await getUserByUserId(email);
   const isError = result instanceof Error;
 
   if (isError || result.password !== password) {
+    error('loginRequestHandler: login failed');
+
     return writePayload(socket, PACKET_TYPE.LOGIN_RESPONSE, version, sequence, {
       success: false,
       message: '로그인 실패',
