@@ -24,6 +24,7 @@ import { session } from '../users/session';
 import { createCharacter } from '../characters/createCharacter';
 import { log, error } from '../utils/logger';
 import { UserUpdateNotification } from '../cards/types';
+import { User } from '../users/types';
 // TODO
 const TARGET_CARD_BONUS = 1;
 
@@ -345,10 +346,10 @@ export const fleaMarketPickHandler = async (socket, version, sequence, fleaMarke
   } satisfies MessageProps<UserUpdateNotification>);
 };
 
-function createUserDataView(user, userDatas) {
+function createUserDataView(user: User, userDatas: User[]) {
   log(`createUserDataView userId: ${user.id}`);
   const result = userDatas.map((userData) => ({
-    id: userData.id,
+    id: Number(userData.id),
     nickname: userData.nickname,
     character: userData.character.toCharacterData(user.id),
   }));
