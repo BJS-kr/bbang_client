@@ -8,7 +8,7 @@ import { log } from '../utils/logger';
 const onPhaseChange = (phaseType) => {
   log(phaseType);
 };
-const ctx: Context = { userId: '', roomId: 0 };
+const ctx: Context = { userId: BigInt(0), roomId: 0 };
 
 test('Rooms Test', async (t) => {
   await t.test('create room', () => {
@@ -31,7 +31,7 @@ test('Rooms Test', async (t) => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
     const result = rooms.create(roomId, 'test', 'test', 10);
-    const joinResult = rooms.join(roomId, new User('test', 'test', null as any), ctx);
+    const joinResult = rooms.join(roomId, new User(BigInt(0), 'test', null as any), ctx);
     const room = rooms.getRoom(roomId);
 
     if (!room) {
@@ -48,8 +48,8 @@ test('Rooms Test', async (t) => {
     const rooms = new Rooms();
     const roomId = rooms.createRoomId();
     const result = rooms.create(roomId, 'test', 'test', 10);
-    const joinResult = rooms.join(roomId, new User('test', 'test', null as any), ctx);
-    const leaveResult = rooms.quit(roomId, 'test', ctx);
+    const joinResult = rooms.join(roomId, new User(BigInt(0), 'test', null as any), ctx);
+    const leaveResult = rooms.quit(roomId, BigInt(0), ctx);
     const room = rooms.getRoom(roomId);
 
     assert.equal(result, true);
