@@ -8,9 +8,7 @@ import CustomError from '../utils/customError';
 import { ERROR_CODES } from '../constants/error';
 
 export const createUser = async (email, password, nickname): Promise<Result<InsertedUser>> => {
-  const id = uuidv4();
-
-  const user: InsertedUser = { id, email, password, nickname };
+  const user: InsertedUser = { email, password, nickname };
 
   const result = await db
     .insert($users)
