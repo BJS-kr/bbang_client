@@ -8,7 +8,7 @@ export class CharacterStateInfo {
   state;
   nextState;
   nextStateAt;
-  stateTargetUserId;
+  stateTargetUserId: bigint;
   #stateTimer;
   #onStateTimeout: OnStateTimeout | null = null;
 
@@ -16,7 +16,14 @@ export class CharacterStateInfo {
     this.state = CharacterStateType.NONE_CHARACTER_STATE;
     this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
     this.nextStateAt = 0;
-    this.stateTargetUserId = '';
+    this.stateTargetUserId = BigInt(0);
+  }
+
+  toCharacterStateInfoData() {
+    return {
+      ...this,
+      stateTargetUserId: Number(this.stateTargetUserId),
+    };
   }
 
   react(state: CharacterStateType) {
@@ -24,7 +31,7 @@ export class CharacterStateInfo {
     this.state = state;
     this.nextState = CharacterStateType.NONE_CHARACTER_STATE;
     this.nextStateAt = 0;
-    this.stateTargetUserId = '';
+    this.stateTargetUserId = BigInt(0);
 
     if (this.#onStateTimeout) {
       this.#onStateTimeout(prevState, this.state);

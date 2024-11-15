@@ -85,7 +85,7 @@ export class Character extends EventEmitter {
       roleType,
       hp: this.hp,
       weapon: this.weapon,
-      stateInfo: this.stateInfo,
+      stateInfo: this.stateInfo.toCharacterStateInfoData(),
       equips: Array.from(this.equips),
       debuffs: Array.from(this.debuffs),
       handCards: viewUserId === this.userId ? this.getHandCards() : [],
