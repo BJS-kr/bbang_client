@@ -1,5 +1,6 @@
 import { PACKET_TYPE } from '../constants/packetType';
 import {
+  C2SLeaveRoomRequest,
   GlobalFailCode,
   RoomStateType,
   S2CCreateRoomResponse,
@@ -82,6 +83,8 @@ export const joinRoomRequestHandler = async (socket: net.Socket, version, sequen
     return writePayload(socket, PACKET_TYPE.JOIN_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
+  ctx.roomId = roomId;
+
   const payload: MessageProps<S2CJoinRoomResponse> = {
     success: true,
     room: room?.toRoomData(roomId),
@@ -118,6 +121,8 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
     return writePayload(socket, PACKET_TYPE.JOIN_RANDOM_ROOM_RESPONSE, version, sequence, joinRoomFailPayload);
   }
 
+  ctx.roomId = roomId;
+
   const payload: MessageProps<S2CJoinRandomRoomResponse> = {
     success: true,
     room: room?.toRoomData(roomId),
@@ -133,8 +138,7 @@ export const joinRandomRoomRequestHandler = async (socket: net.Socket, version, 
   room.broadcast(PACKET_TYPE.JOIN_ROOM_NOTIFICATION, joinNotificationPayload);
 };
 
-export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, leaveRoomRequest, ctx: Context) => {
-  const { roomId } = leaveRoomRequest;
+export const leaveRoomRequestHandler = async (socket: net.Socket, version, sequence, ctx: Context) => {
   const user = session.getUser(ctx.userId);
 
   if (!user) {
@@ -145,7 +149,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     } satisfies MessageProps<S2CLeaveRoomResponse>);
   }
 
-  const room = rooms.getRoom(roomId);
+  const room = rooms.getRoom(ctx.roomId);
 
   if (!room) {
     error('leaveRoomRequestHandler: room not found');
@@ -155,7 +159,7 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     } satisfies MessageProps<S2CLeaveRoomResponse>);
   }
 
-  const leavedUser = rooms.quit(roomId, ctx.userId, ctx);
+  const leavedUser = rooms.quit(ctx.roomId, ctx.userId, ctx);
 
   if (!leavedUser) {
     error('leaveRoomRequestHandler: leavedUser not found');
@@ -165,16 +169,18 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     } satisfies MessageProps<S2CLeaveRoomResponse>);
   }
 
-  const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
-    userId: Number(leavedUser.id),
-  };
-
-  room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
+  ctx.roomId = 0;
 
   writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
     success: true,
     failCode: GlobalFailCode.NONE_FAILCODE,
   } satisfies MessageProps<S2CLeaveRoomResponse>);
+
+  const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
+    userId: Number(leavedUser.id),
+  };
+
+  room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
 };
 
 export const getRoomListRequestHandler = async (socket: net.Socket, version, sequence, getRoomListRequest, ctx: Context) => {
