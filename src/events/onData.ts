@@ -113,7 +113,7 @@ export const onData = (socket: net.Socket, ctx: Context, buf: Buffer) => async (
       case PACKET_TYPE.LEAVE_ROOM_REQUEST:
         const leaveRoomRequest = decodePayload(packetType, payloadBuffer);
         log(`${ctx.userId}|leaveRoomRequest: ${JSON.stringify(leaveRoomRequest, null, 2)}`);
-        await leaveRoomRequestHandler(socket, version, sequence, leaveRoomRequest, ctx);
+        await leaveRoomRequestHandler(socket, version, sequence, ctx);
 
         break;
       case PACKET_TYPE.GET_ROOM_LIST_REQUEST:
