@@ -230,12 +230,9 @@ export function handleUseCard({ socket, version, sequence, ctx }: HandlerBase, u
   const base = { socket, version, sequence, ctx };
 
   if (useCardRequest.targetUserId instanceof Long) {
-    error('handleUseCard: Long not handled');
+    log('handleUseCard: Long not handled');
 
-    return writePayload(socket, PACKET_TYPE.USE_CARD_RESPONSE, version, sequence, {
-      success: false,
-      failCode: GlobalFailCode.UNKNOWN_ERROR,
-    } satisfies UseCardResponse);
+    useCardRequest.targetUserId = useCardRequest.targetUserId.toInt();
   }
 
   switch (true) {
