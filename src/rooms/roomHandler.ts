@@ -165,16 +165,16 @@ export const leaveRoomRequestHandler = async (socket: net.Socket, version, seque
     } satisfies MessageProps<S2CLeaveRoomResponse>);
   }
 
-  writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
-    success: true,
-    failCode: GlobalFailCode.NONE_FAILCODE,
-  } satisfies MessageProps<S2CLeaveRoomResponse>);
-
   const leaveNotificationPayload: MessageProps<S2CLeaveRoomNotification> = {
     userId: Number(leavedUser.id),
   };
 
   room.broadcast(PACKET_TYPE.LEAVE_ROOM_NOTIFICATION, leaveNotificationPayload);
+
+  writePayload(socket, PACKET_TYPE.LEAVE_ROOM_RESPONSE, version, sequence, {
+    success: true,
+    failCode: GlobalFailCode.NONE_FAILCODE,
+  } satisfies MessageProps<S2CLeaveRoomResponse>);
 };
 
 export const getRoomListRequestHandler = async (socket: net.Socket, version, sequence, getRoomListRequest, ctx: Context) => {
