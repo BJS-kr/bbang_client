@@ -5,3 +5,4 @@ ssh.sh
 flow
 test.*
 dist
+*.pem
