@@ -13,11 +13,11 @@ export const createUser = async (email, password, nickname): Promise<Result<Inse
   if (!db) {
     const userWithId = {
       ...user,
-      id: BigInt(mockDb.length),
+      id: BigInt(mockDb.length + 1),
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    mockDb.push({ ...user, id: BigInt(mockDb.length) });
+    mockDb.push(userWithId);
     return userWithId;
   }
   const result = await db
