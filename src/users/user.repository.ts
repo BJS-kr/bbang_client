@@ -11,8 +11,14 @@ export const createUser = async (email, password, nickname): Promise<Result<Inse
   const user: InsertedUser = { email, password, nickname };
 
   if (!db) {
-    mockDb.push(user);
-    return user;
+    const userWithId = {
+      ...user,
+      id: BigInt(mockDb.length),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    mockDb.push({ ...user, id: BigInt(mockDb.length) });
+    return userWithId;
   }
   const result = await db
     .insert($users)
@@ -30,7 +36,7 @@ export const getUserByUserEmail = async (email: string): Promise<Result<Selected
       return new CustomError(ERROR_CODES.USER_NOT_FOUND, 'user not found');
     }
 
-    return user;
+    return { ...user };
   }
 
   const user = await db.query.$users.findFirst({
