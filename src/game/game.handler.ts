@@ -181,9 +181,10 @@ export const gameStartRequestHandler = async (socket, version, sequence, gameSta
 
     // 버그 테스트용
     user.character.handCards = new Map([
-      [CardType.GUERRILLA, 3],
-      [CardType.SHIELD, 3],
-      [CardType.BIG_BBANG, 3],
+      [CardType.GUERRILLA, 2],
+      [CardType.SHIELD, 2],
+      [CardType.BIG_BBANG, 2],
+      [CardType.BBANG, 2],
     ]);
   });
 
