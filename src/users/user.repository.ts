@@ -6,7 +6,6 @@ import { eq } from 'drizzle-orm';
 import CustomError from '../utils/customError';
 import { ERROR_CODES } from '../constants/error';
 
-console.log(db);
 export const createUser = async (email, password, nickname): Promise<Result<InsertedUser>> => {
   const user: InsertedUser = { email, password, nickname };
 

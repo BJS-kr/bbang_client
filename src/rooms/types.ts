@@ -109,8 +109,14 @@ export class Room {
   }
 
   pickCardType() {
-    const pickCardType = this.shuffleCardTypes[0];
-    this.shuffleCardTypes.push(this.shuffleCardTypes.shift()!);
+    const pickCardType = this.shuffleCardTypes.shift();
+
+    if (!pickCardType) {
+      throw new Error('shuffleCardTypes is empty');
+    }
+
+    this.shuffleCardTypes.push(pickCardType);
+
     return pickCardType;
   }
 
