@@ -1,16 +1,15 @@
 {
-  "name": "node6_final_server",
+  "name": "bbang_server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "NO_DB=true ts-node src/server.ts",
-    "dev": "nodemon src/server.ts",
     "migrate": "drizzle-kit generate --config ./src/db/drizzle.config.ts && drizzle-kit migrate --config ./src/db/drizzle.config.ts",
     "push": "drizzle-kit push --config ./src/db/drizzle.config.ts",
     "generate:types": "pbjs -t static-module -w commonjs -o src/protobuf/compiled.js src/protobuf/game.proto && pbts -o src/protobuf/compiled.d.ts src/protobuf/compiled.js",
-    "start:dev": "pm2 kill && npx tsc && cp src/protobuf/compiled.js dist/protobuf/ && pm2 start dist/server.js --name game-server",
-    "start:no_db": "pm2 kill && npx tsc && cp src/protobuf/compiled.js dist/protobuf/ && NO_DB=true pm2 start dist/server.js --name game-server",
-    "start:debug": "pm2 kill && npx tsc && cp src/protobuf/compiled.js dist/protobuf/ && DEBUG=true pm2 start dist/server.js --name game-server"
+    "bootstrap": "pm2 kill && npx tsc && cp src/protobuf/compiled.js dist/protobuf/",
+    "start": "npm run bootstrap && pm2 start dist/server.js --name game-server",
+    "start:no_db": "npm run bootstrap && NO_DB=true pm2 start dist/server.js --watch --name game-server",
+    "start:debug": "npm run bootstrap && DEBUG=true pm2 start dist/server.js --watch --name game-server"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +17,10 @@
   "description": "",
   "devDependencies": {
     "drizzle-kit": "^0.26.2",
-    "nodemon": "^3.1.7",
+    "pm2": "^5.4.3",
     "prettier": "^3.3.3",
     "protobufjs": "^7.4.0",
-    "protobufjs-cli": "^1.1.3",
-    "ts-node": "^10.9.2"
+    "protobufjs-cli": "^1.1.3"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

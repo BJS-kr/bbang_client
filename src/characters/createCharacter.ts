@@ -20,16 +20,12 @@ import { CharacterType, RoleType } from '../protobuf/compiled';
 const TARGET_HP_BONUS = 1;
 const CHARACTER_CLASS_MAP = {
   [CharacterType.RED]: Red,
-  // [CharacterType.BLUE]: Blue,
   [CharacterType.SHARK]: Shark,
-  // [CharacterType.KNIGHT]: Knight,
   [CharacterType.MALANG]: Malang,
-  // [CharacterType.DINO]: Dino,
   [CharacterType.FROGGY]: Froggy,
   [CharacterType.PINK]: Pink,
   [CharacterType.SWIM_GLASSES]: SwimGlasses,
   [CharacterType.MASK]: Mask,
-  // [CharacterType.SLIME]: Slime,
   [CharacterType.DINOSAUR]: Dinosaur,
   [CharacterType.PINK_SLIME]: PinkSlime,
 };
